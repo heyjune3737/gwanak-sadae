@@ -1115,7 +1115,7 @@ class RemoteStore extends LocalStore{
     }catch(e){ this.online=false; console.warn('flush',e); }
     finally{ this.flushing=false; renderSync(); }
     if(dropped){ const m=dropped.message||'';
-      if(/register first/.test(m)){ this.setAuth(null); toast('이 기기 로그인이 풀렸어요. 내 캐릭터를 다시 불러와 주세요'); setTimeout(()=>openLogin(S.me&&S.me.name),300); }
+      if(/register first/.test(m)){ const had=!!this.auth; this.setAuth(null); renderAll(); if(had){ toast('이 기기 로그인이 풀렸어요. 내 캐릭터를 다시 불러와 주세요'); setTimeout(()=>openLogin(S.me&&S.me.name),300); } else { toast('비밀번호를 걸면 정 사원들에게 저장돼요. 등록 후 다시 눌러 주세요'); setTimeout(()=>S.me?openClaim():openProfile(),300); } }
       else if(/name taken/.test(m)) toast('정에 같은 이름이 있어 이름은 바꾸지 못했어요');
       else toast('내 것이 아닌 기록이라 저장하지 않았어요');
       this.refresh(); }
@@ -1369,8 +1369,10 @@ function renderToday(){
     $('#attPickMe').addEventListener('click', openProfile); const al=$('#attLogin'); if(al) al.addEventListener('click',()=>openLogin(''));
   } else {
     mineEl.innerHTML = `
+      ${needPin()?`<div class="card flat" style="padding:10px 12px;margin-bottom:8px;display:flex;gap:8px;align-items:center;justify-content:space-between"><span class="tiny">비밀번호를 걸어야 습사 등록이 정 사원들에게 보여요</span><button class="btn sm pri" id="attClaim">비밀번호 걸기</button></div>`:''}
       <div id="slotChips">${SLOTS.map(s=>`<button class="chip ${mine&&mine.slot===s?'on':''}" data-slot="${s}">${s}</button>`).join('')}</div>
       ${mine?`<div class="note-row"><input class="input grow" id="attNote" maxlength="20" placeholder="한마디 (선택) 예: 6시 반쯤" value="${esc(mine.note||'')}"><button class="btn sm ghost" id="attCancel">안 가요</button></div>`:''}`;
+    const acl=$('#attClaim'); if(acl) acl.addEventListener('click',openClaim);
     $('#slotChips').addEventListener('click', async e=>{ const b=e.target.closest('.chip'); if(!b) return; const note=$('#attNote')?$('#attNote').value.trim():'';
       const ok = await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:{slot:b.dataset.slot, note, name:S.me.name, char:S.me.char, at:Date.now()}}}));
       if(ok) toast(`${b.dataset.slot}에 사대에 섭니다 🏹`); });
@@ -1879,6 +1881,8 @@ setInterval(()=>{ const t=today(); if(subAtt.q.doc!=='attendance/'+t){ resub(sub
   }catch(e){ console.warn('db unavailable', e); }
 })();
 </script>
-<script>if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }</script>
+<script>if('serviceWorker' in navigator){ const had=!!navigator.serviceWorker.controller; let done=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(!had||done) return; done=true; location.reload(); });
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{ const up=()=>reg.update().catch(()=>{}); setInterval(up,20*60e3); document.addEventListener('visibilitychange',()=>{ if(!document.hidden) up(); }); }).catch(()=>{})); }</script>
 </body>
 </html>
