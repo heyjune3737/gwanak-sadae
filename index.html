@@ -37,7 +37,9 @@
 .beta-box{display:flex;gap:10px;align-items:center;text-align:left;background:color-mix(in srgb,var(--gold) 22%,var(--card));border:2px dashed var(--ink);padding:10px 12px;font-size:13.5px;line-height:1.65}
 .beta-ch{width:52px;flex:0 0 52px;display:block}.beta-tx a{color:var(--indigo);font-weight:600;text-decoration:underline;word-break:break-all}
 .gate-card .beta-box{margin-top:4px}.info-card h2{font-size:16px;margin:0 0 6px}.info-card ol{margin:6px 0 8px;padding-left:20px;line-height:1.8}.info-card p{margin:6px 0;line-height:1.6}
-.notice{border-top:1px dashed var(--line);padding:8px 0}.notice summary{cursor:pointer;font-weight:600}.notice p{color:var(--ink2);font-size:14px}
+.notice{border-top:1px dashed var(--line);padding:8px 0}
+.step{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px dashed var(--line)}.step-n{font-size:22px;line-height:1;color:var(--red)}.step ul{margin:6px 0;padding-left:18px;line-height:1.75}.step code{font-size:12.5px;background:var(--card2);padding:1px 4px;word-break:break-all}
+.step-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.now-line{background:color-mix(in srgb,var(--red) 10%,var(--card));padding:8px 10px;border-left:4px solid var(--red)}.notice summary{cursor:pointer;font-weight:600}.notice p{color:var(--ink2);font-size:14px}
 .info-btns{display:flex;flex-direction:column;gap:8px;margin-top:10px}.ok-line{color:var(--green);font-weight:600}
 .pin-in{letter-spacing:.5em;font-size:20px;text-align:center;max-width:180px}
 #approveBox{position:fixed;inset:0;z-index:40;background:rgba(27,31,46,.6);display:flex;align-items:center;justify-content:center;padding:16px}
@@ -1168,6 +1170,9 @@ const PIN_ERR = r => r.error==='name_taken' ? '정에 같은 이름이 이미 �
   : r.error==='already' ? '이미 비밀번호가 걸린 캐릭터예요. "불러오기"로 들어와 주세요'
   : r.error==='bad_pin' ? '비밀번호는 숫자 4자리예요' : r.error==='bad_name' ? '이름은 1~10자로 적어 주세요'
   : r.error==='no_name' ? '그 이름으로 등록된 캐릭터가 없어요. 이름을 다시 확인해 주세요'
+  : r.error==='reset_pending' ? '새 비밀번호는 관리자가 승인한 뒤에 쓸 수 있어요 (요청 처리 중)'
+  : r.error==='wait' ? '방금 요청했어요. 10분 뒤에 다시 할 수 있어요'
+  : r.error==='blocked' ? '이용이 제한된 캐릭터예요. 관리자에게 문의해 주세요'
   : r.error==='wrong_pin' ? `비밀번호가 달라요 (남은 기회 ${r.left}번)` : r.error==='locked' ? `여러 번 틀려서 잠겼어요. ${r.wait||10}분 뒤에 다시 해 주세요`
   : '잠시 후 다시 해 주세요';
 async function pinRpc(fn, args){
@@ -1188,7 +1193,9 @@ function openLogin(name){
   const sh=openSheet(`<h3>내 캐릭터 불러오기</h3><p class="muted" style="margin:0">다른 폰에서 만든 캐릭터의 이름과 비밀번호 4자리를 넣으면 기록이 그대로 이어져요.</p>
     <div class="field"><label for="lgName">이름</label><input class="input" id="lgName" maxlength="12" value="${esc(name||'')}" placeholder="예: 홍길동" autocomplete="off"></div>
     <div class="field"><label for="lgPin">비밀번호</label>${pinInput('lgPin')}</div>
+    <button class="linkbtn" id="lgForgot" style="align-self:flex-start">🔑 비밀번호를 잊었어요</button>
     <div class="actions"><button class="btn ghost" id="lgCancel">닫기</button><button class="btn pri" id="lgGo">불러오기</button></div>`);
+  $('#lgForgot',sh).addEventListener('click',()=>openResetRequest($('#lgName',sh).value.trim()));
   onlyDigits($('#lgPin',sh)); setTimeout(()=>{ const f=name?$('#lgPin',sh):$('#lgName',sh); f&&f.focus(); },120);
   $('#lgCancel',sh).addEventListener('click',closeSheet);
   const go=async()=>{ const nm=$('#lgName',sh).value.trim(), pin=$('#lgPin',sh).value;
@@ -1200,6 +1207,21 @@ function openLogin(name){
     const d=memberDoc(r.mid); setMe(d?meFromDoc(d):{...(S.me||{}), id:r.mid, name:nm, char:(S.me&&S.me.char)||DEFAULT_CHAR});
     closeSheet(); toast(store.gate==='pending'?'아직 관리자 승인 전이에요':`${S.me.name} 님, 다시 오신 걸 환영해요`); };
   $('#lgGo',sh).addEventListener('click',go); $('#lgPin',sh).addEventListener('keydown',e=>{ if(e.key==='Enter') go(); });
+}
+// 비밀번호를 잊었을 때: 새 비밀번호로 초기화 요청 → 관리자 승인 → 새 비밀번호로 불러오기
+function openResetRequest(name){
+  const sh=openSheet(`<h3>🔑 비밀번호 초기화 요청</h3><p class="muted" style="margin:0">쓰고 싶은 새 비밀번호를 정해 요청하면, 관리자가 본인인지 확인하고 승인해요. 승인되면 새 비밀번호로 불러오기 하세요.</p>
+    <div class="field"><label for="rsName">이름</label><input class="input" id="rsName" maxlength="12" value="${esc(name||'')}" placeholder="예: 홍길동" autocomplete="off"></div>
+    <div class="field"><label for="rsPin">새 비밀번호</label>${pinInput('rsPin')}</div>
+    <div class="field"><label for="rsPin2">한 번 더</label>${pinInput('rsPin2')}</div>
+    <div class="actions"><button class="btn ghost" id="rsCancel">닫기</button><button class="btn pri" id="rsGo">요청하기</button></div>`);
+  onlyDigits($('#rsPin',sh)); onlyDigits($('#rsPin2',sh)); $('#rsCancel',sh).addEventListener('click',closeSheet);
+  $('#rsGo',sh).addEventListener('click',async()=>{ const nm=$('#rsName',sh).value.trim(), p1=$('#rsPin',sh).value, p2=$('#rsPin2',sh).value;
+    if(!nm){ toast('이름을 적어 주세요'); return; } if(!/^\d{4}$/.test(p1)){ toast('새 비밀번호 숫자 4자리를 넣어 주세요'); return; } if(p1!==p2){ toast('두 번 넣은 비밀번호가 달라요'); return; }
+    const bt=$('#rsGo',sh); bt.disabled=true; const r=await pinRpc('sadae_reset_request',{p_name:nm, p_pin:p1}); bt.disabled=false;
+    if(r.error){ toast(r.error==='net'?'인터넷 연결을 확인해 주세요':PIN_ERR(r)); return; }
+    fnCall({op:'notify_reset', space:store.space, mid:r.mid}).catch(()=>{});
+    closeSheet(); openSheet(`<h3>요청했어요 🙏</h3><p>관리자가 승인하면 <b>새 비밀번호</b>로 "이미 가입했어요 → 불러오기" 하세요.</p><div class="actions"><button class="btn pri" onclick="closeSheet()">확인</button></div>`); });
 }
 // 예전에 비밀번호 없이 만든 캐릭터 → 비밀번호 걸기
 function openClaim(){
@@ -1243,6 +1265,10 @@ async function openApproveLink(){
   const info=await fnCall({op:'info', ...a});
   if(info.error){ paint(`<h2>링크를 쓸 수 없어요</h2><p>${info.error==='link'?'기간(7일)이 지났거나 잘못된 링크예요.':'잠시 후 다시 열어 주세요.'}<br>궁패 → 사원 관리에서 처리할 수 있어요.</p><button class="btn ghost block" id="apClose">닫기</button>`); box.querySelector('#apClose').onclick=close; return; }
   const who=`<div class="gate-me"><span class="gate-ch">${charSVG(info.char||DEFAULT_CHAR)}</span><b>${esc(info.name||'(이름 없음)')}</b></div>`;
+  if(info.reset && info.status!=='pending'){
+    paint(`<h2>🔑 비밀번호 초기화 요청</h2>${who}<p>이 사원이 비밀번호를 잊어 새 비밀번호로 바꾸려고 해요.<br><span class="tiny muted">본인이 맞으면 승인하세요</span></p><button class="btn pri block" id="apYes">승인</button><button class="btn ghost block" id="apNo">거절</button>`);
+    const ract=async(x)=>{ const r=await fnCall({op:'act', act:x, ...a}); if(r.ok){ paint(`<h2>${x==='reset_ok'?'승인했어요':'거절했어요'}</h2>${who}<button class="btn pri block" id="apClose">확인</button>`); box.querySelector('#apClose').onclick=close; } else toast('처리하지 못했어요'); };
+    box.querySelector('#apYes').onclick=()=>ract('reset_ok'); box.querySelector('#apNo').onclick=()=>ract('reset_no'); return; }
   if(info.status!=='pending'){ paint(`<h2>이미 처리됐어요</h2>${who}<p>${info.status==='active'?'승인된 사원이에요.':info.status==='blocked'?'차단된 사원이에요.':'신청이 없어요(거절·삭제됨).'}</p><button class="btn ghost block" id="apClose">닫기</button>`); box.querySelector('#apClose').onclick=close; return; }
   paint(`<h2>가입 신청</h2>${who}<p>이 사람을 관악정 사원으로 승인할까요?<br><span class="tiny muted">모르는 이름·가명이면 거절하세요</span></p>
     <button class="btn pri block" id="apYes">승인</button><button class="btn ghost block" id="apNo">거절</button>`);
@@ -1252,6 +1278,7 @@ async function openApproveLink(){
 }
 // ---------- 안내 탭 ----------
 const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 점
+  {id:'2026-09-24c', date:'9월 24일', title:'앱으로 설치하세요 📱', body:'① 카톡방 공지의 링크로 접속 → 크롬으로 열기  ② 크롬 ⋮ → 홈 화면에 추가 → 설치. 바탕화면의 오늘 사대 아이콘으로 들어오면 앱처럼 쓸 수 있어요.'},
   {id:'2026-09-24b', date:'9월 24일', title:'가입 승인제 · 안내 탭이 생겼어요', body:'링크를 받은 분은 가입 신청 후 관리자 승인이 나면 쓸 수 있어요. 이 안내 탭에서 앱 설치 방법, 이용법, 로그아웃을 찾을 수 있어요.'},
   {id:'2026-09-24a', date:'9월 24일', title:'이름 + 비밀번호로 어느 폰에서나', body:'다른 폰·카톡에서 열어도 "이미 가입했어요 → 불러오기"에 이름과 비밀번호 4자리를 넣으면 내 기록이 그대로 나와요.'},
 ];
@@ -1266,19 +1293,35 @@ function betaHTML(compact){ return `<div class="beta-box"><span class="beta-ch">
   <a href="mailto:${ADMIN_MAIL}?subject=${encodeURIComponent('[오늘 사대] 의견')}">✉️ ${ADMIN_MAIL}</a></div></div>`; }
 function siteURL(){ return location.origin+location.pathname; }
 function openInChrome(){ if(IS_AND){ location.href='intent://'+siteURL().replace(/^https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end'; } else if(IS_KAKAO){ location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(siteURL()); } }
+// 설치 안내: ① 카톡 공지 링크로 접속 → ② 크롬에서 설치 (기기와 상관없이 전체 순서를 보여 주고, 지금 있는 단계를 표시)
 function installHTML(){
-  if(IS_STANDALONE) return `<p class="ok-line">✓ 지금 홈 화면 앱으로 쓰고 있어요.</p>`;
-  const steps = IS_INAPP ? `<p><b>지금은 ${IS_KAKAO?'카톡':'앱'} 안에서 열려 있어요.</b> 여기서는 홈 화면에 추가가 안 돼요. 먼저 ${IS_IOS?'사파리':'크롬'}으로 여세요.</p>
-      <ol><li>${IS_IOS?'오른쪽 아래 <b>공유(⋯)</b> → <b>Safari로 열기</b>':'오른쪽 위 <b>⋮</b> → <b>다른 브라우저로 열기</b>'}</li><li>열린 화면에서 아래 방법으로 추가</li></ol>
-      ${(IS_AND||IS_KAKAO)?'<button class="btn pri block" id="inOpenChrome">'+(IS_IOS?'사파리로 열기':'크롬으로 열기')+'</button>':''}`
-    : IS_IOS ? `<ol><li>사파리 아래쪽 <b>공유 버튼(□↑)</b></li><li><b>홈 화면에 추가</b></li><li>오른쪽 위 <b>추가</b></li></ol><p class="tiny muted">크롬에서도 공유 → 홈 화면에 추가로 됩니다.</p>`
-    : window.__bip ? `<button class="btn pri block" id="inInstall">홈 화면에 앱 추가</button>`
-    : IS_SAMSUNG ? `<ol><li>아래쪽 <b>≡</b> 메뉴</li><li><b>현재 페이지 추가 → 홈 화면</b></li></ol>`
-    : `<ol><li>크롬 오른쪽 위 <b>⋮</b></li><li><b>홈 화면에 추가</b> (또는 <b>앱 설치</b>)</li><li><b>설치 / 추가</b></li></ol>`;
-  return steps + `<p class="tiny muted">홈 화면 아이콘으로 열면 주소창 없이 앱처럼 열리고, 로그인도 유지돼요.</p>`;
+  const url=siteURL().replace(/^https?:\/\//,'').replace(/\/$/,'');
+  const now = IS_STANDALONE ? `<p class="ok-line">✓ 지금 설치된 앱으로 쓰고 있어요. 다음부터 홈 화면 아이콘으로 들어오세요.</p>`
+    : IS_INAPP ? `<p class="now-line">👉 지금 <b>${IS_KAKAO?'카톡':'앱'} 안</b>에서 보고 있어요. <b>①의 크롬으로 열기</b>부터 하세요.</p>`
+    : IS_IOS ? `<p class="now-line">👉 아이폰은 아래 <b>아이폰</b> 방법으로 설치하세요.</p>`
+    : `<p class="now-line">👉 지금 브라우저에서 보고 있어요. <b>②만 하면</b> 끝나요.</p>`;
+  return `${now}
+  <div class="step"><b class="step-n">①</b><div><b>링크로 접속하기</b>
+    <ul><li>정 <b>카톡방 공지(게시판)</b>에 올라온 링크를 눌러요.</li>
+      <li>카톡 안에서 열리면 오른쪽 위 <b>⋮</b> → <b>다른 브라우저로 열기</b> → <b>Chrome</b></li>
+      <li>또는 크롬 주소창에 직접 입력: <code>${esc(url)}</code></li></ul>
+    <div class="step-btns">${(IS_INAPP&&!IS_IOS)?'<button class="btn pri sm" id="inOpenChrome">크롬으로 열기</button>':''}<button class="btn ghost sm" id="inCopy">주소 복사</button></div></div></div>
+  <div class="step"><b class="step-n">②</b><div><b>크롬에서 설치하기</b>
+    <ul><li>크롬 오른쪽 위 <b>⋮</b> → <b>홈 화면에 추가</b> (또는 <b>앱 설치</b>)</li>
+      <li>창이 뜨면 <b>설치</b> (바로가기 만들기도 돼요)</li>
+      <li>폰 바탕화면에 <b>오늘 사대</b> 아이콘이 생기면 끝! 🎉 앞으로는 아이콘으로 들어오세요.</li></ul>
+    ${window.__bip?'<div class="step-btns"><button class="btn pri sm" id="inInstall">지금 바로 설치</button></div>':''}</div></div>
+  <details class="notice"><summary>아이폰 · 삼성 인터넷</summary>
+    <p><b>아이폰:</b> 링크를 <b>사파리</b>로 열기 → 아래 <b>공유(□↑)</b> → <b>홈 화면에 추가</b> → <b>추가</b></p>
+    <p><b>삼성 인터넷:</b> 아래 <b>≡</b> → <b>현재 페이지 추가</b> → <b>홈 화면</b></p></details>
+  <p class="tiny muted">설치한 아이콘으로 열면 주소창 없이 앱처럼 열리고, 로그인도 그대로 유지돼요.</p>`;
 }
-function linkHTML(){ return `<ol><li>단톡방 공지에 이 주소를 올려 두기</li><li>카톡 <b>나와의 채팅</b>에 보내 두기</li><li>크롬 <b>☆ 북마크</b></li></ol>
-  <div class="row" style="gap:6px;align-items:center"><code class="tiny" style="word-break:break-all;flex:1">${esc(siteURL())}</code><button class="btn sm ghost" id="inCopy">주소 복사</button></div>`; }
+function bindInstall(root){
+  const on=(id,f)=>{ const b=root.querySelector(id); if(b) b.addEventListener('click',f); };
+  on('#inOpenChrome',openInChrome);
+  on('#inInstall',async()=>{ const e=window.__bip; if(!e) return; e.prompt(); try{ await e.userChoice; }catch(x){} window.__bip=null; if(S.tab==='info') renderInfo(); });
+  on('#inCopy',async()=>{ try{ await navigator.clipboard.writeText(siteURL()); toast('주소를 복사했어요. 크롬 주소창에 붙여 넣으세요'); }catch(x){ toast('주소를 길게 눌러 복사하세요'); } });
+}
 function renderInfo(){
   const el=$('#infoBody'); if(!el) return;
   const who=store.who||{}; const loggedIn=store.kind==='remote'&&store.token&&S.me;
@@ -1286,14 +1329,13 @@ function renderInfo(){
   <div class="card info-card">${betaHTML(false)}</div>
   <div class="card info-card"><div class="sec-head"><h2>공지사항</h2></div>
     ${NOTICES.map(n=>`<details class="notice" ${n.id===NOTICES[0].id?'open':''}><summary><span class="tiny muted">${n.date}</span> ${esc(n.title)}</summary><p>${esc(n.body)}</p></details>`).join('')}</div>
-  <div class="card info-card"><div class="sec-head"><h2>앱처럼 설치하기</h2></div>${installHTML()}</div>
-  <div class="card info-card"><div class="sec-head"><h2>링크로 다시 들어오기</h2></div>${linkHTML()}</div>
+  <div class="card info-card"><div class="sec-head"><h2>📱 앱으로 설치하기</h2></div>${installHTML()}</div>
   <div class="card info-card"><div class="sec-head"><h2>이용법</h2></div>
     <details class="notice"><summary>오늘 정 — 습사 등록</summary><p>시간대(새벽~저녁)를 누르면 사대에 내 캐릭터가 서요. 다른 사원 캐릭터를 눌러 이모지로 응원할 수 있어요. 안 가게 되면 "안 가요".</p></details>
     <details class="notice"><summary>표 기록 — 한 발씩</summary><p>가운데 관중, 화살표는 앞남(→)·뒤남(←)·코박음(↓)·넘어감(↑). 5시가 차면 한 순이 저장돼요. 잘못 누르면 "↶ 한 발".</p></details>
     <details class="notice"><summary>내 방 — 장비 · 기록 보관함</summary><p>활·화살·궁체·단급을 적고, 지난 표 기록을 날짜별로 보고 엑셀로 받을 수 있어요.</p></details>
     <details class="notice"><summary>대회 — 월례회 3순 · 승단 9순</summary><p>정식은 협회 규정(선다시수순·각궁 우대·비교전)으로 순위를 내요. 사대 기록 모드로 한 사람이 모두의 점수를 넣을 수 있어요.</p></details>
-    <details class="notice"><summary>다른 폰에서 쓰기 · 비밀번호</summary><p>처음 화면 "이미 가입했어요 → 불러오기"에 이름과 비밀번호 4자리. 비밀번호를 잊으면 관리자에게 초기화를 부탁하세요.</p></details>
+    <details class="notice"><summary>다른 폰에서 쓰기 · 비밀번호</summary><p>처음 화면 "이미 가입했어요 → 불러오기"에 이름과 비밀번호 4자리. 비밀번호를 잊으면 불러오기 화면의 "🔑 비밀번호를 잊었어요"에서 새 비밀번호로 요청하세요. 관리자가 승인하면 바로 쓸 수 있어요.</p></details>
   </div>
   <div class="card info-card"><div class="sec-head"><h2>내 계정</h2></div>
     ${loggedIn?`<div class="row" style="align-items:center;gap:10px"><span style="width:48px;display:block">${charSVG(S.me.char)}</span><div class="grow"><b>${esc(S.me.name)}</b>${who.admin?' <span class="adm-tag">관리자</span>':''}<br><span class="tiny muted">이 기기에 로그인돼 있어요</span></div></div>
@@ -1302,19 +1344,15 @@ function renderInfo(){
   </div>
   <p class="tiny muted" style="text-align:center;margin:8px 0 0">오늘 사대 · 웹앱 ${esc(APP_VER)}</p>`;
   const on=(id,f)=>{ const b=el.querySelector(id); if(b) b.addEventListener('click',f); };
-  on('#inAdmin',openAdmin); on('#inPin',openPinChange); on('#inOut',logoutHere); on('#inLogin',()=>openLogin('')); on('#inOpenChrome',openInChrome);
-  on('#inInstall',async()=>{ const e=window.__bip; if(!e) return; e.prompt(); try{ await e.userChoice; }catch(x){} window.__bip=null; renderInfo(); });
-  const copy=async(t,msg)=>{ try{ await navigator.clipboard.writeText(t); toast(msg); }catch(x){ toast('주소를 길게 눌러 복사하세요'); } };
-  on('#inCopy',()=>copy(siteURL(),'주소를 복사했어요')); on('#inInvite',()=>copy(inviteLink(),'초대 링크를 복사했어요. 단톡방에 붙여 넣으세요'));
+  on('#inAdmin',openAdmin); on('#inPin',openPinChange); on('#inOut',logoutHere); on('#inLogin',()=>openLogin('')); bindInstall(el);
+  on('#inInvite',async()=>{ try{ await navigator.clipboard.writeText(inviteLink()); toast('초대 링크를 복사했어요. 단톡방 공지에 올려 주세요'); }catch(x){ toast('주소를 길게 눌러 복사하세요'); } });
   try{ lsSet('sadae.noticeSeen', NOTICES[0].id); }catch(x){} renderInfoDot();
 }
 function renderInfoDot(){ const d=$('#infoDot'); if(d) d.hidden = lsGet('sadae.noticeSeen','')===NOTICES[0].id; }
 // 처음 승인된 사원에게 한 번: 설치 방법 안내
 function maybeWelcome(){ if(lsGet('sadae.welcomed',false) || IS_STANDALONE) return; lsSet('sadae.welcomed',true);
-  const sh=openSheet(`<h3>환영해요! 🎉</h3>${betaHTML(false)}<h3 style="margin-top:6px">앱처럼 쓰려면</h3>${installHTML()}<h3 style="margin-top:6px">링크로 다시 들어오기</h3>${linkHTML()}<p class="tiny muted">이 안내는 아래 <b>안내</b> 탭에서 언제든 다시 볼 수 있어요.</p><div class="actions"><button class="btn pri" id="wcOk">확인</button></div>`);
-  $('#wcOk',sh).addEventListener('click',closeSheet); const oc=$('#inOpenChrome',sh); if(oc) oc.addEventListener('click',openInChrome);
-  const ib=$('#inInstall',sh); if(ib) ib.addEventListener('click',async()=>{ const e=window.__bip; if(e){ e.prompt(); window.__bip=null; } closeSheet(); });
-  const cp=$('#inCopy',sh); if(cp) cp.addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(siteURL()); toast('주소를 복사했어요'); }catch(x){} });
+  const sh=openSheet(`<h3>환영해요! 🎉</h3>${betaHTML(false)}<h3 style="margin-top:6px">📱 앱으로 설치하기</h3>${installHTML()}<p class="tiny muted">이 안내는 아래 <b>안내</b> 탭에서 언제든 다시 볼 수 있어요.</p><div class="actions"><button class="btn pri" id="wcOk">확인</button></div>`);
+  $('#wcOk',sh).addEventListener('click',closeSheet); bindInstall(sh);
 }
 // 승인 전 화면 (링크만 받은 외부인은 여기까지만)
 function renderGate(){
@@ -1330,8 +1368,8 @@ function renderGate(){
     : `<h2>오늘 사대</h2><p>${esc(j.name||'')} 사원 전용이에요.<br>가입 신청 후 관리자가 승인하면 쓸 수 있어요.</p>
       ${me?`<button class="btn pri block" id="gClaim">${esc(me.name)} 캐릭터로 가입 신청</button>`:`<button class="btn pri block" id="gNew">처음이에요 · 가입 신청</button>`}
       <button class="btn ghost block" id="gIn">이미 가입했어요 · 불러오기</button>`;
-  g.innerHTML=`<div class="gate-card"><span class="plaque"><span class="hj">${esc(j.hanja||j.name||'')}</span></span>${body}<button class="linkbtn" id="gHow" style="margin-top:4px">📱 앱처럼 설치하는 방법</button>${betaHTML(false)}</div>`;
-  g.querySelector('#gHow').addEventListener('click',()=>{ const sh=openSheet(`<h3>앱처럼 설치하기</h3>${installHTML()}<h3>링크로 다시 들어오기</h3>${linkHTML()}<div class="actions"><button class="btn pri" id="hwOk">확인</button></div>`); $('#hwOk',sh).addEventListener('click',closeSheet); const oc=$('#inOpenChrome',sh); if(oc) oc.addEventListener('click',openInChrome); const ib=$('#inInstall',sh); if(ib) ib.addEventListener('click',()=>{ const e=window.__bip; if(e){ e.prompt(); window.__bip=null; } closeSheet(); }); const cp=$('#inCopy',sh); if(cp) cp.addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(siteURL()); toast('주소를 복사했어요'); }catch(x){} }); });
+  g.innerHTML=`<div class="gate-card"><span class="plaque"><span class="hj">${esc(j.hanja||j.name||'')}</span></span>${body}<button class="linkbtn" id="gHow" style="margin-top:4px">📱 앱으로 설치하는 방법</button>${betaHTML(false)}</div>`;
+  g.querySelector('#gHow').addEventListener('click',()=>{ const sh=openSheet(`<h3>📱 앱으로 설치하기</h3>${installHTML()}<div class="actions"><button class="btn pri" id="hwOk">확인</button></div>`); $('#hwOk',sh).addEventListener('click',closeSheet); bindInstall(sh); });
   const on=(id,f)=>{ const b=g.querySelector(id); if(b) b.addEventListener('click',f); };
   on('#gNew',openProfile); on('#gClaim',openClaim); on('#gIn',()=>openLogin(''));
   on('#gRe',async()=>{ await store.refresh(); if(store.gate==='pending') toast('아직 승인 전이에요'); });
@@ -1340,14 +1378,14 @@ function renderGate(){
 function renderAdminBadge(){ const b=$('#brandBtn'); if(!b) return; const n=(store.who&&store.who.admin&&store.who.pending)||0; b.classList.toggle('has-badge',n>0); b.dataset.badge=n||''; }
 async function openAdmin(){
   const r=await pinRpc('sadae_admin_list',{p_token:store.token}); if(r.error){ toast(r.error==='not_admin'?'관리자만 볼 수 있어요':'잠시 후 다시 해 주세요'); return; }
-  const L=r.members||[]; const grp={pending:[],active:[],blocked:[]}; L.forEach(m=>(grp[m.status]||grp.active).push(m));
+  const L=r.members||[]; const grp={pending:[],active:[],blocked:[]}; L.forEach(m=>(grp[m.status]||grp.active).push(m)); const resets=L.filter(m=>m.reset&&m.status!=='pending');
   const row=m=>`<div class="adm-row" data-mid="${esc(m.mid)}"><span class="adm-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><span class="grow"><b>${esc(m.name||'(이름 없음)')}</b>${m.admin?' <span class="adm-tag">관리자</span>':''}<br><span class="tiny muted">${(m.since||'').slice(0,10)} 신청</span></span>
-    <span class="adm-btns">${m.status==='pending'?'<button class="btn sm pri" data-act="approve">승인</button><button class="btn sm ghost" data-act="delete">거절</button>'
+    <span class="adm-btns">${m._reset?'<button class="btn sm pri" data-act="reset_ok">비번 승인</button><button class="btn sm ghost" data-act="reset_no">거절</button>':m.status==='pending'?'<button class="btn sm pri" data-act="approve">승인</button><button class="btn sm ghost" data-act="delete">거절</button>'
       : m.status==='blocked'?'<button class="btn sm ghost" data-act="approve">차단 풀기</button><button class="btn sm ghost" data-act="delete">삭제</button>'
       : m.mid===r.me?'<span class="tiny muted">나</span>':`<button class="btn sm ghost" data-act="more">관리 ▾</button>`}</span></div>`;
   const sec=(t,a)=>a.length?`<div class="adm-sec"><div class="adm-h">${t} <b>${a.length}</b></div>${a.map(row).join('')}</div>`:'';
   const sh=openSheet(`<h3>사원 관리</h3><p class="muted" style="margin:0">모르는 이름·가명은 거절하거나 차단하세요. 거절·삭제하면 그 사람의 기록도 지워져요.</p>
-    ${sec('승인 대기',grp.pending)||'<div class="tiny muted">승인 대기 중인 신청이 없어요</div>'}${sec('사원',grp.active)}${sec('차단',grp.blocked)}
+    ${sec('🔑 비밀번호 초기화 요청',resets.map(m=>({...m,_reset:true})))}${sec('승인 대기',grp.pending)||'<div class="tiny muted">승인 대기 중인 신청이 없어요</div>'}${sec('사원',grp.active)}${sec('차단',grp.blocked)}
     <div class="actions"><button class="btn ghost" id="admClose">닫기</button></div>`);
   $('#admClose',sh).addEventListener('click',closeSheet);
   const act=async(mid,a,label)=>{ const x=await pinRpc('sadae_admin_act',{p_token:store.token,p_mid:mid,p_act:a});
@@ -1356,6 +1394,8 @@ async function openAdmin(){
     toast(label); await store.refresh(); openAdmin(); };
   $$('.adm-row',sh).forEach(rw=>rw.addEventListener('click',e=>{ const b=e.target.closest('[data-act]'); if(!b) return; const mid=rw.dataset.mid, nm=rw.querySelector('b').textContent, a=b.dataset.act;
     if(a==='approve') return act(mid,'approve',`${nm} 님을 승인했어요`);
+    if(a==='reset_ok') return act(mid,'reset_ok',`${nm} 님 새 비밀번호를 승인했어요`);
+    if(a==='reset_no') return act(mid,'reset_no',`${nm} 님 비밀번호 요청을 거절했어요`);
     if(a==='delete'){ if(b.dataset.sure){ return act(mid,'delete',`${nm} 님을 삭제했어요`); } b.dataset.sure=1; b.textContent='정말 삭제?'; b.classList.add('red'); return; }
     if(a==='more'){ const m=L.find(x=>x.mid===mid); b.parentElement.innerHTML=`<button class="btn sm ghost" data-act="reset">비번 초기화</button><button class="btn sm ghost" data-act="${m.admin?'unadmin':'mkadmin'}">${m.admin?'관리자 해제':'관리자 지정'}</button><button class="btn sm ghost" data-act="block">차단</button><button class="btn sm ghost" data-act="delete">삭제</button>`; return; }
     if(a==='reset') return act(mid,'reset_pin','');
