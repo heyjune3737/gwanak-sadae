@@ -1263,7 +1263,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.09.29';
+const APP_VER = '2026.09.29b';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1523,7 +1523,7 @@ function renderRoomExtras(){
   // 기록 공개 · 내 방명록
   const sw=$('#shareRec'); if(sw){ const mine=S.me&&S.members.find(x=>x.id===S.me.id); sw.checked=!!(mine&&mine.shareRecords); sw.disabled=!(S.me&&store.kind==='remote'&&store.token);
     sw.onchange=async()=>{ const v=sw.checked; const ok=await write(st=>st.merge('members/'+S.me.id,{shareRecords:v, updatedAt:Date.now()})); if(ok) toast(v?'날짜별 기록을 공개했어요':'이번 달 통계만 보이게 했어요'); else sw.checked=!v; }; }
-  const G=$('#myGuest'); if(G){ if(!S.me||store.kind!=='remote'){ $('#myGuestCard').hidden=true; } else { const n=guestEntries(S.me.id).length; $('#myGuestCount').textContent=n?`${n}개`:''; G.innerHTML=guestHTML(S.me.id); bindGuestDel(G, S.me.id, renderRoomExtras); } }
+  const G=$('#myGuest'); if(G){ const gc=$('#myGuestCard'); if(!S.me||store.kind!=='remote'){ gc.hidden=true; } else { gc.hidden=false; const n=guestEntries(S.me.id).length; $('#myGuestCount').textContent=n?`${n}개`:''; G.innerHTML=guestHTML(S.me.id); bindGuestDel(G, S.me.id, renderRoomExtras); } }
 }
 // 방 구경 진입: 사대 캐릭터 · 오늘 명단 · 사원 명부
 document.addEventListener('click',e=>{ const f=e.target.closest('[data-room]'); if(f && !e.target.closest('.sheet')){ openRoom(f.dataset.room); return; }
