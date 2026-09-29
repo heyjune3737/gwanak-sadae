@@ -891,6 +891,15 @@ button.d{font:inherit;cursor:pointer;padding:0}.cal .d.sel{outline:3px solid var
 .plaza.art{background-color:#8FCBE3;background-position:center top;background-size:cover;background-repeat:no-repeat;image-rendering:pixelated}
 .plaza.art::after,.plaza.art .pz-hall,.plaza.art .pz-tree,.plaza.art .pz-sky{display:none}
 .plaza.art .pz-crowd{top:37%}
+.results{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr);grid-template-rows:62px 100px 62px 46px;grid-template-areas:"ul u ur" "l h r" "dl d dr" "x x z";gap:7px}
+.res.corner .k{font-size:22px}.res.corner .l{font-size:10.5px}
+.res.X{flex-direction:row;gap:8px}.res.X .k{font-size:16px}.res.undo{min-height:0}
+.mgrid{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:4px}
+.mg-c{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:58px;border:2px solid var(--ink);background:color-mix(in srgb,var(--indigo) calc(var(--p,0)*100%),var(--card));color:var(--ink);padding:2px}
+.mg-c b{font-size:18px;line-height:1}.mg-c span{font-size:10.5px}.mg-c em{font-style:normal;font-family:var(--display);font-size:15px}
+.mg-c[style*="--p:0.6"],.mg-c[style*="--p:0.7"],.mg-c[style*="--p:0.8"],.mg-c[style*="--p:0.9"],.mg-c[style*="--p:1"]{color:#fff}
+.mg-c.H{background:var(--red);color:#fff}
+.mg-c:empty{border:0;background:none}
 </style>
 
 <div class="app" id="app">
@@ -984,7 +993,7 @@ button.d{font:inherit;cursor:pointer;padding:0}.cal .d.sel{outline:3px solid var
         <div class="sec-head"><h2>이번 달 <small id="monthLabel"></small></h2></div>
         <div class="stats" id="monthStats"></div>
         <div style="height:14px"></div>
-        <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="muted">낙점 분포</span><span class="tiny">불 중 어디로 갔는지</span></div>
+        <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="muted">낙점 분포</span><span class="tiny">이번 달 · 가운데가 관중</span></div>
         <div class="dist" id="missDist"></div>
         <div style="height:14px"></div>
         <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="muted">습사 달력</span><span class="tiny">날짜를 누르면 그날 기록</span></div>
@@ -1124,11 +1133,22 @@ const RES = {
   B:{k:'←', l:'뒤남'},
   S:{k:'↓', l:'코박음'},
   O:{k:'↑', l:'넘어감'},
+  FO:{k:'↗', l:'앞넘음'},
+  BO:{k:'↖', l:'뒤넘음'},
+  FS:{k:'↘', l:'앞짧음'},
+  BS:{k:'↙', l:'뒤짧음'},
   X:{k:'?', l:'불(기타)'},
 };
 // 좌궁은 앞·뒤 방향이 반대 (앞남 = 줌손 앞쪽 = 좌궁이면 과녁 왼쪽)
-const glyph = k => { const isL = S && S.me && S.me.hand==='좌궁'; if(k==='F') return isL?'←':'→'; if(k==='B') return isL?'→':'←'; return RES[k]?RES[k].k:'?'; };
-const RES_ORDER = ['H','F','B','S','O','X'];
+const resSide = k => { const isL = S && S.me && S.me.hand==='좌궁'; if(k[0]==='F') return isL?'l':'r'; if(k[0]==='B') return isL?'r':'l'; return ''; };
+const resArea = k => { if(k==='H') return 'h'; if(k==='X') return 'x'; const v = k.includes('O')?'u' : (k==='S'||k.endsWith('S'))?'d' : ''; const sd=resSide(k); return v&&sd ? v+sd : (v||sd); };
+const glyph = k => { if(!RES[k]) return '?'; const a=resArea(k); return ({h:RES.H.k, x:'?', u:'↑', d:'↓', l:'←', r:'→', ul:'↖', ur:'↗', dl:'↙', dr:'↘'})[a] || RES[k].k; };
+const RES_ORDER = ['H','F','B','S','O','FO','BO','FS','BS','X'];
+const MISS_KEYS = ['F','B','S','O','FO','BO','FS','BS','X'];
+const rc = k => (k==='H'||k==='X' ? k+' ' : '') + 'r-'+k;   // 클래스 이름 (BS·FO 같은 코드가 다른 스타일과 겹치지 않게)
+const emptyMiss = () => Object.fromEntries(MISS_KEYS.map(k=>[k,0]));
+// 팁·요약용: 대각선은 두 방향 모두에 더함 (앞넘음 = 앞 + 넘음)
+const missAgg = m => ({F:(m.F||0)+(m.FO||0)+(m.FS||0), B:(m.B||0)+(m.BO||0)+(m.BS||0), O:(m.O||0)+(m.FO||0)+(m.BO||0), S:(m.S||0)+(m.FS||0)+(m.BS||0), X:m.X||0});
 const SLOTS = ['새벽','오전','점심','오후','저녁'];
 const EMOJIS = ['👍','🏹','🎯','🔥','💪','☕'];
 let reactOpen=null;
@@ -1316,7 +1336,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.09.29d';
+const APP_VER = '2026.09.30';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1432,6 +1452,7 @@ async function openApproveLink(){
 }
 // ---------- 안내 탭 ----------
 const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 점
+  {id:'2026-09-30a', date:'9월 30일', title:'표 기록 9방향 🎯', body:'표 기록 입력판이 과녁 모양 9칸으로 바뀌었어요. 관중·넘어감·코박음·앞남·뒤남에 더해 앞넘음·뒤넘음·앞짧음·뒤짧음까지 한 번에 눌러 기록해요. 이번 달 낙점 분포와 🎯 낙점 그림도 9방향으로 보여요. 예전 기록은 그대로예요.'},
   {id:'2026-09-29d', date:'9월 29일', title:'서울 8개 정 배경 🏯', body:'황학정·석호정·공항정·살곶이정·영학정·화랑정·수락정·관악정 모두 정마다 다른 도트 배경이 생겼어요(봄·여름·가을·겨울·해질녘). 인왕산과 도심, 남산 서울타워, 공항 비행기, 살곶이 돌다리, 안양천 빌딩숲, 불암산, 수락산 철쭉처럼 그 정의 특징을 담았어요. 광장도 내 정의 건물로 바뀌어요. 우리 정 사진을 보내 주시면 더 닮게 고칠게요.'},
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
@@ -1491,7 +1512,7 @@ function renderInfo(){
   <div class="card info-card"><div class="sec-head"><h2>이용법</h2></div>
     <details class="notice"><summary>오늘 정 — 습사 등록</summary><p>시간대(새벽~저녁)를 누르면 사대에 내 캐릭터가 서요. 사대에는 <b>내 소속 정</b> 사원만 보여요. 다른 정에 가는 날은 위의 📍정 이름을 눌러 그 정을 고르고 시간대를 누르세요. 다른 사원 이름 옆 ＋로 이모지 응원, 안 가게 되면 "안 가요".</p></details>
     <details class="notice"><summary>광장 — 모든 정 사원과 한마디</summary><p>가입한 사원 모두가 광장에 모여요. 캐릭터를 누르면 그 사원의 방에 놀러 가고, 아래에서 한마디(하루 30개까지)를 남길 수 있어요. 오늘 몰기·새 배지 소식도 여기 떠요.</p></details>
-    <details class="notice"><summary>표 기록 — 한 발씩</summary><p>위쪽 "✍️ 입력 / 📖 기록 보기"로 화면을 바꿔요. 기록 보기에선 큰 글씨로 순을 보고 ◀ ▶로 날짜를 넘겨요. 가운데 관중, 화살표는 앞남(→)·뒤남(←)·코박음(↓)·넘어감(↑). 5시가 차면 한 순이 저장돼요. 잘못 누르면 "↶ 한 발".</p></details>
+    <details class="notice"><summary>표 기록 — 한 발씩</summary><p>위쪽 "✍️ 입력 / 📖 기록 보기"로 화면을 바꿔요. 기록 보기에선 큰 글씨로 순을 보고 ◀ ▶로 날짜를 넘겨요. 입력판은 과녁을 바라본 모양 그대로 9칸이에요: 가운데 관중, 위 넘어감, 아래 코박음(짧음), 옆은 앞남·뒤남, 네 귀퉁이는 앞넘음·뒤넘음·앞짧음·뒤짧음. 좌궁이면 앞·뒤가 좌우로 바뀌어요. 잘못 누르면 "↶ 한 발".</p></details>
     <details class="notice"><summary>내 방 — 장비 · 기록 보관함</summary><p>활·화살·궁체·단급을 적고, 지난 표 기록을 날짜별로 보고 엑셀로 받을 수 있어요.</p></details>
     <details class="notice"><summary>대회 — 월례회 3순 · 승단 9순</summary><p>정식은 협회 규정(선다시수순·각궁 우대·비교전)으로 순위를 내요. 사대 기록 모드로 한 사람이 모두의 점수를 넣을 수 있어요.</p></details>
     <details class="notice"><summary>다른 폰에서 쓰기 · 비밀번호</summary><p>처음 화면 "이미 가입했어요 → 불러오기"에 이름과 비밀번호 4자리. 비밀번호를 잊으면 불러오기 화면의 "🔑 비밀번호를 잊었어요"에서 새 비밀번호로 요청하세요. 관리자가 승인하면 바로 쓸 수 있어요.</p></details>
@@ -1853,11 +1874,11 @@ function renderToday(){
 /* =========================================================
    표 기록
    ========================================================= */
-const padArea = k => k==='H'?'h':k==='S'?'d':k==='O'?'u':k==='X'?'x':(glyph(k)==='←'?'l':'r'); // 과녁 기준 낙점 방향 = 버튼 위치
-const RES_PAD = ['O','B','H','F','X','S'];
+const padArea = k => resArea(k); // 과녁 기준 낙점 방향 = 버튼 위치 (좌궁이면 앞·뒤 좌우 반전)
+const RES_PAD = ['BO','O','FO','B','H','F','BS','S','FS','X'];
 function renderRoundInput(){
-  const slots=$('#arrowSlots'); slots.innerHTML = [0,1,2,3,4].map(i=>{ const r=S.round[i]; return `<button class="arrow ${r?'set '+r:''}" data-i="${i}" aria-label="${i+1}시 ${r?RES[r].l:'비어 있음'}">${r?`<span class="k">${glyph(r)}</span><span>${i+1}시</span>`:`<span>${i+1}시</span>`}</button>`; }).join('');
-  $('#resultBtns').innerHTML = RES_PAD.map(k=>`<button class="res ${k}" data-r="${k}" style="grid-area:${padArea(k)}"><span class="k">${glyph(k)}</span><span class="l">${RES[k].l}</span></button>`).join('') + `<button class="res undo" id="undoArrow" ${S.round.some(Boolean)?'':'disabled'}>↶ 한 발</button>`;
+  const slots=$('#arrowSlots'); slots.innerHTML = [0,1,2,3,4].map(i=>{ const r=S.round[i]; return `<button class="arrow ${r?'set '+rc(r):''}" data-i="${i}" aria-label="${i+1}시 ${r?RES[r].l:'비어 있음'}">${r?`<span class="k">${glyph(r)}</span><span>${i+1}시</span>`:`<span>${i+1}시</span>`}</button>`; }).join('');
+  $('#resultBtns').innerHTML = RES_PAD.map(k=>`<button class="res ${rc(k)} ${padArea(k).length===2?'corner':''}" data-r="${k}" style="grid-area:${padArea(k)}"><span class="k">${glyph(k)}</span><span class="l">${RES[k].l}</span></button>`).join('') + `<button class="res undo" id="undoArrow" ${S.round.some(Boolean)?'':'disabled'}>↶ 한 발</button>`;
   $('#saveRound').disabled = S.round.filter(Boolean).length<5;
   const n=S.round.filter(Boolean).length; $('#saveRound').textContent = n<5 ? `순 저장 (${n}/5시)` : (S.round.every(r=>r==='H') ? '몰기! 순 저장' : '순 저장');
   $('#saveRound').classList.toggle('molgi', n===5 && S.round.every(r=>r==='H'));
@@ -1883,18 +1904,18 @@ function renderRecord(){
   const th=rounds.reduce((a,r)=>a+hitsOf(r),0), ta=rounds.length*5, tm=rounds.filter(r=>hitsOf(r)===5).length;
   $('#todaySum').innerHTML = ta ? `${th}/${ta}시 · <b>${Math.round(th/ta*100)}%</b> · 몰기 ${tm}` : '';
   $('#cardToday').hidden = !rounds.length;
-  $('#todayRounds').innerHTML = rounds.length ? rounds.map((r,i)=>`<div class="rnd"><span class="n">${i+1}순</span><div class="dots">${r.map(x=>`<span class="dot ${x}">${glyph(x)}</span>`).join('')}</div>${hitsOf(r)===5?'<span class="molgi">몰기</span>':''}<span class="sum num">${hitsOf(r)}중</span><button class="btn sm ghost" data-del="${i}" aria-label="${i+1}순 삭제">✕</button></div>`).reverse().join('')
+  $('#todayRounds').innerHTML = rounds.length ? rounds.map((r,i)=>`<div class="rnd"><span class="n">${i+1}순</span><div class="dots">${r.map(x=>`<span class="dot ${rc(x)}">${glyph(x)}</span>`).join('')}</div>${hitsOf(r)===5?'<span class="molgi">몰기</span>':''}<span class="sum num">${hitsOf(r)}중</span><button class="btn sm ghost" data-del="${i}" aria-label="${i+1}순 삭제">✕</button></div>`).reverse().join('')
     : `<div class="muted">${S.me?'오늘 낸 순이 아직 없어요. 위에서 5시를 채우고 저장해 보세요.':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>`;
   $$('#todayRounds [data-del]').forEach(b=>b.addEventListener('click', ()=>confirmDelRound(+b.dataset.del)));
   // 이번 달
   const ym=t.slice(0,7); const [Y,M]=ym.split('-').map(Number);
   $('#monthLabel').textContent = `${M}월`;
   const mdays=S.myDays.filter(d=>d.date.startsWith(ym));
-  let mh=0, ma=0, mr=0, mm=0; const miss={F:0,B:0,S:0,O:0,X:0};
+  let mh=0, ma=0, mr=0, mm=0; const miss=emptyMiss();
   for(const d of mdays) for(const r of (d.rounds||[])){ mr++; const h=hitsOf(r); mh+=h; ma+=5; if(h===5) mm++; for(const x of r) if(x!=='H' && miss[x]!==undefined) miss[x]++; }
   $('#monthStats').innerHTML = statTiles([[ma?Math.round(mh/ma*100)+'<small>%</small>':'–',`관중률 · ${mh}/${ma}시`],[`${mdays.length}<small>일</small>`,`습사 · ${mr}순`],[mm,'몰기']]);
   const missTotal=Object.values(miss).reduce((a,b)=>a+b,0);
-  $('#missDist').innerHTML = ['F','B','S','O','X'].map(k=>`<div class="bar"><span>${glyph(k)} ${RES[k].l}</span><span class="tr"><i style="width:${missTotal?Math.round(miss[k]/missTotal*100):0}%"></i></span><span class="v num">${miss[k]}</span></div>`).join('');
+  $('#missDist').innerHTML = missGridHTML(miss, mh);
   // 달력
   const first=new Date(Y,M-1,1).getDay(), dim=new Date(Y,M,0).getDate(); const byDate=Object.fromEntries(mdays.map(d=>[d.date,d]));
   let cal = WD.map(w=>`<div class="d" style="background:none;color:var(--ink3)">${w}</div>`).join('') + Array(first).fill('<div></div>').join('');
@@ -1903,7 +1924,15 @@ function renderRecord(){
   $$('#monthCal [data-cal]').forEach(b=>b.addEventListener('click',()=>{ openDayView(b.dataset.cal); }));
   $('#todayBig').hidden = !rounds.length;
   if(S.recView==='view') renderDayView();
-  renderTips(miss);
+  renderTips(missAgg(miss));
+}
+// 낙점 분포 3×3 (입력판과 같은 자리) — 진할수록 많이 간 방향
+function missGridHTML(miss, hits){
+  const tot = MISS_KEYS.reduce((a,k)=>a+(miss[k]||0),0) + (hits||0);
+  const at = {}; RES_ORDER.forEach(k=>{ at[resArea(k)]=k; });
+  const cell = a => { const k=at[a]; if(!k) return '<div class="mg-c"></div>'; const n = k==='H' ? (hits||0) : (miss[k]||0); const p = tot? n/tot : 0;
+    return `<div class="mg-c ${k==='H'?'H':''}" style="--p:${Math.min(1,p*3).toFixed(2)}"><b>${glyph(k)}</b><span>${RES[k].l}</span><em class="num">${n}</em></div>`; };
+  return `<div class="mgrid">${['ul','u','ur','l','h','r','dl','d','dr'].map(cell).join('')}</div>${miss.X?`<div class="tiny muted" style="margin-top:6px">? 불(기타) ${miss.X}발</div>`:''}`;
 }
 const statTiles = arr => arr.map(([v,l])=>`<div class="stat"><div class="v num">${v}</div><div class="l">${l}</div></div>`).join('');
 function confirmDelRound(i){
@@ -2174,7 +2203,7 @@ function renderArchive(){
     const h=d.rounds.reduce((a,r)=>a+hitsOf(r),0), a=d.rounds.length*5, molgi=d.rounds.filter(r=>hitsOf(r)===5).length;
     const [Y,M,D]=d.date.split('-').map(Number); const wd=WD[new Date(Y,M-1,D).getDay()];
     html+=`<button class="day" data-d="${d.date}"><span class="d">${M}/${D} <span class="tiny">${wd}</span></span><span class="bar"><i style="width:${Math.round(h/a*100)}%"></i></span><span class="s num">${h}/${a}시 · ${d.rounds.length}순${molgi?` · 몰기 ${molgi}`:''}</span></button>`;
-    if(archOpen===d.date) html+=`<div class="rounds"><div class="rounds">${d.rounds.map((r,i)=>`<div class="rnd"><span class="n">${i+1}순</span><div class="dots">${r.map(x=>`<span class="dot ${x}">${glyph(x)}</span>`).join('')}</div>${hitsOf(r)===5?'<span class="molgi">몰기</span>':''}<span class="sum num">${hitsOf(r)}중</span></div>`).join('')}</div><div class="row" style="gap:6px;margin-top:6px"><button class="btn sm" data-bigday="${d.date}" type="button">📖 크게 보기</button><button class="btn sm ghost" data-card="${d.date}" type="button">📸 기록 카드</button></div></div>`;
+    if(archOpen===d.date) html+=`<div class="rounds"><div class="rounds">${d.rounds.map((r,i)=>`<div class="rnd"><span class="n">${i+1}순</span><div class="dots">${r.map(x=>`<span class="dot ${rc(x)}">${glyph(x)}</span>`).join('')}</div>${hitsOf(r)===5?'<span class="molgi">몰기</span>':''}<span class="sum num">${hitsOf(r)}중</span></div>`).join('')}</div><div class="row" style="gap:6px;margin-top:6px"><button class="btn sm" data-bigday="${d.date}" type="button">📖 크게 보기</button><button class="btn sm ghost" data-card="${d.date}" type="button">📸 기록 카드</button></div></div>`;
   });
   if(days.length>archLimit) html+=`<button class="btn block ghost" id="archMore">더 보기 (${days.length-archLimit}일 남음)</button>`;
   el.innerHTML=html;
@@ -2587,7 +2616,7 @@ $('#dPrev').addEventListener('click',()=>shiftDay(-1)); $('#dNext').addEventList
 (function(){ let x0=null,y0=null; const el=$('#dayCard'); el.addEventListener('touchstart',e=>{ const t=e.touches[0]; x0=t.clientX; y0=t.clientY; },{passive:true});
   el.addEventListener('touchend',e=>{ if(x0===null) return; const t=e.changedTouches[0]; const dx=t.clientX-x0, dy=t.clientY-y0; x0=null; if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.5) shiftDay(dx<0?1:-1); },{passive:true}); })();
 $$('#mapSeg [data-mr]').forEach(b=>b.addEventListener('click',()=>{ S.mapRange=b.dataset.mr; $$('#mapSeg [data-mr]').forEach(x=>x.classList.toggle('on',x===b)); renderDayView(); }));
-const bigDots = r => `<div class="bdots">${r.map(x=>`<span class="bdot ${x}">${x==='H'?'中':glyph(x)}</span>`).join('')}</div>`;
+const bigDots = r => `<div class="bdots">${r.map(x=>`<span class="bdot ${rc(x)}">${x==='H'?'中':glyph(x)}</span>`).join('')}</div>`;
 function renderDayView(){
   const L=recDays(); if(!S.viewDate) S.viewDate = L.includes(today()) ? today() : (L[L.length-1]||today());
   const d=(S.myDays||[]).find(x=>x.date===S.viewDate); const rs=((d&&d.rounds)||[]).filter(Array.isArray);
@@ -2610,13 +2639,12 @@ function renderDayView(){
 }
 // 과녁 그림 위에 한 발씩 점 찍기 (같은 방향끼리 모임)
 function targetMapSVG(arrows){
-  const W=300,H=250; const T={x:110,y:60,w:80,h:110};
-  const isL = S.me && S.me.hand==='좌궁';
-  const zone = k => { if(k==='H') return {x:T.x+10,y:T.y+26,w:T.w-20,h:T.h-36};
-    if(k==='O') return {x:T.x-6,y:12,w:T.w+12,h:36};
-    if(k==='S') return {x:T.x-6,y:T.y+T.h+10,w:T.w+12,h:32};
-    const right = glyph(k)==='→'; if(k==='F'||k==='B') return right ? {x:T.x+T.w+14,y:T.y+14,w:70,h:T.h-28} : {x:16,y:T.y+14,w:70,h:T.h-28};
-    return {x:14,y:H-44,w:60,h:30}; };
+  const W=300,H=270; const T={x:110,y:60,w:80,h:110};
+  const ZN = { h:{x:T.x+10,y:T.y+26,w:T.w-20,h:T.h-36}, u:{x:T.x-6,y:12,w:T.w+12,h:36}, d:{x:T.x-6,y:T.y+T.h+10,w:T.w+12,h:34},
+    l:{x:16,y:T.y+14,w:70,h:T.h-28}, r:{x:T.x+T.w+14,y:T.y+14,w:70,h:T.h-28},
+    ul:{x:16,y:12,w:70,h:36}, ur:{x:T.x+T.w+14,y:12,w:70,h:36}, dl:{x:16,y:T.y+T.h+10,w:70,h:34}, dr:{x:T.x+T.w+14,y:T.y+T.h+10,w:70,h:34},
+    x:{x:14,y:H-30,w:80,h:22} };
+  const zone = k => ZN[resArea(k)] || ZN.x;
   const cnt={}; arrows.forEach(k=>cnt[k]=(cnt[k]||0)+1);
   const pos={}; let dots='';
   // 결정적 흩뿌리기 (다시 그려도 같은 자리)
@@ -2624,7 +2652,6 @@ function targetMapSVG(arrows){
   arrows.forEach((k,i)=>{ const z=zone(k); const j=pos[k]=(pos[k]||0)+1; const x=z.x+6+rnd(i*7+j)*(z.w-12), y=z.y+6+rnd(i*13+j*3+1)*(z.h-12);
     dots += k==='H' ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.5" fill="#E2463B" stroke="#2A2233" stroke-width="1.5"/>` : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#FFFFFF" stroke="#2A2233" stroke-width="1.5"/>`; });
   const lab=(k,x,y,anchor)=> cnt[k] ? `<text x="${x}" y="${y}" text-anchor="${anchor||'middle'}" class="ml">${RES[k].l} ${cnt[k]}</text>` : '';
-  const sideF = glyph('F')==='→';
   const n=arrows.length, h=cnt.H||0;
   return `<svg class="tmap" viewBox="0 0 ${W} ${H}" role="img" aria-label="낙점 그림: ${n}시 중 관중 ${h}">
     <rect x="0" y="0" width="${W}" height="${H}" fill="var(--card2)"/>
@@ -2633,9 +2660,8 @@ function targetMapSVG(arrows){
     <rect x="${T.x}" y="${T.y}" width="${T.w}" height="18" fill="#2A2233"/>
     <rect x="${T.x+T.w/2-13}" y="${T.y+T.h/2-4}" width="26" height="26" fill="#E2463B" opacity=".9"/>
     ${dots}
-    ${lab('O',W/2,11)}${lab('S',W/2,H-6)}
-    ${lab(sideF?'F':'B',W-8,T.y+8,'end')}${lab(sideF?'B':'F',8,T.y+8,'start')}
-    ${lab('X',8,H-50,'start')}
+    ${['O','S','F','B','FO','BO','FS','BS','X'].map(k=>{ const z=ZN[resArea(k)]; const a=resArea(k); const ax = a.endsWith('l')||a==='x' ? 'start' : a.endsWith('r') ? 'end' : 'middle';
+      const x = ax==='start' ? z.x : ax==='end' ? z.x+z.w : z.x+z.w/2; const y = a[0]==='u' ? 10 : (a[0]==='d' ? z.y+z.h+12 : a==='x' ? z.y+z.h : z.y-4); return lab(k,x,y,ax); }).join('')}
     ${h?`<text x="${W/2}" y="${T.y+14}" text-anchor="middle" class="mlh">관중 ${h}</text>`:''}
   </svg><div class="mlegend num">${n?`${n}시 중 관중 ${h} · ${Math.round(h/n*100)}%`:''}</div>`;
 }
