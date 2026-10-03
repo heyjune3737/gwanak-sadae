@@ -425,6 +425,48 @@ td.total{font-family:var(--display);font-size:16px}
 .room.rt-mini .rm-plant{transform:scale(.6);transform-origin:0 100%}
 .room.rt-mini .rfx{animation:none!important}
 .room.rt-mini{isolation:isolate;z-index:0}.room.rt-mini .rm-lan{animation:none;transform:scale(.55);transform-origin:50% 0}.room.rt-mini .pt{display:none}.room.rt-mini .rm-bird{animation:none}
+/* 배지판 (단계형) */
+.bboard{display:block}
+.bb-tier{--c:#B87333}.bb-tier.t1{--c:#B87333}.bb-tier.t2{--c:#A8A9AD}.bb-tier.t3{--c:#D4AF37}.bb-tier.t4{--c:#3FA98B}.bb-tier.t5{--c:#6B2E78}.bb-tier.t6{--c:#D4AF37}
+.bb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bb{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 8px;background:var(--card);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);font:inherit;color:var(--ink);min-width:0;text-align:center}
+.bb.none{border-style:dashed;box-shadow:none;color:var(--ink3);background:var(--card2)}
+.bb .ring{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:radial-gradient(circle,#fff 0 58%,var(--c) 60% 100%);box-shadow:0 0 0 2px var(--ink) inset}
+.bb-tier.t6 .ring{box-shadow:0 0 0 2px var(--ink) inset,0 0 10px 3px rgba(240,200,80,.85);animation:bbGlow 2.4s ease-in-out infinite}@keyframes bbGlow{50%{box-shadow:0 0 0 2px var(--ink) inset,0 0 16px 6px rgba(255,214,90,1)}}
+.calm-fx .bb-tier.t6 .ring{animation:none}
+.bb.none .ring{background:var(--card2);filter:grayscale(1);opacity:.45;box-shadow:0 0 0 2px var(--line2) inset}
+.bb b{font-size:12.5px}.bb .tl{font-size:10.5px;font-weight:700;color:#fff;background:var(--c);padding:1px 6px;border-radius:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bb.none .tl{background:var(--line2);color:var(--ink3)}
+.bb .pg{width:86%;height:5px;background:var(--card2);border:1px solid var(--line2);margin-top:2px}.bb .pg i{display:block;height:100%;background:var(--c)}
+.bb small{font-size:10px;color:var(--ink3);line-height:1.3;word-break:keep-all}
+.bb .skill{position:absolute;top:4px;left:5px;font-size:9px;color:#6B2E78;font-weight:700}
+.bb-sec{margin:12px 0 6px;font-size:12px;color:var(--ink2);font-weight:700}
+.bb.sp{--c:#C8402F}.bb.sp .ring{background:radial-gradient(circle,#fff 0 58%,var(--c) 60% 100%)}.bb.sp.blue{--c:#3B6FB6}.bb.sp.paper{--c:#B8322A}.bb.sp.t3{--c:#D4AF37}.bb.sp.t2{--c:#A8A9AD}.bb.sp.t1{--c:#B87333}.bb.sp.hidok{--c:#5B4B8A}
+.bb.hid .ring{background:radial-gradient(circle,#2A2622 0 58%,#6B6B6B 60% 100%);color:#fff;font-size:20px}.bb.hid .tl{background:#6B6B6B}
+.bb-rib{display:flex;flex-wrap:wrap;gap:6px}.bb-rib span{font-size:12px;padding:3px 8px;background:#FFF1F4;border:1.5px solid #D9668A;color:#8A2E4C}
+.bb.mini{padding:6px 2px;box-shadow:none;border-width:1.5px}.bb.mini .ring{width:34px;height:34px;font-size:18px}.bb.mini b{font-size:11px}
+.wp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.wp-grid button{display:flex;flex-direction:column;align-items:center;gap:1px;font:inherit;font-size:18px;padding:6px 2px;border:2px solid var(--line2,var(--ink));background:var(--card);color:var(--ink);cursor:pointer;min-width:0}
+.wp-grid button b{font-size:11.5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wp-grid button small{font-size:10px;color:var(--ink3)}
+.wp-grid button.on{border-color:#E2463B;box-shadow:0 0 0 2px rgba(226,70,59,.25);background:#FFF4F2}
+/* 방에 건 것 */
+.wall-jokja{position:absolute;left:4%;top:34%;width:10%;height:30%;z-index:3;display:flex;flex-direction:column;align-items:center}
+.wall-jokja::before,.wall-jokja::after{content:"";display:block;width:118%;height:5px;background:#6B4226;border-radius:3px;flex:none}
+.wall-jokja .hj{flex:1;width:100%;background:#F7EFDB;border-left:2px solid #E3D3AE;border-right:2px solid #E3D3AE;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:2px 2px 0 rgba(0,0,0,.15);overflow:hidden}
+.wall-jokja .hj span{font-size:17px;line-height:1}.wall-jokja .hj em{font-style:normal;font-size:8px;color:#fff;background:var(--c);padding:0 3px;white-space:nowrap}.wall-jokja .hj b{font-size:7px;color:#3A2A1C;writing-mode:vertical-rl;letter-spacing:0;max-height:62%;overflow:hidden;white-space:nowrap}
+.wall-jokja .str{position:absolute;top:-9px;width:40%;height:9px;border:1px solid #6B4226;border-bottom:0;border-radius:50% 50% 0 0}
+.wall-cover{position:absolute;left:17%;top:36%;width:11%;aspect-ratio:3/4;z-index:3;background:#F4EEDD;border:3px solid #2F2F2F;box-shadow:2px 2px 0 rgba(0,0,0,.2);display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.wall-cover .mh{width:100%;background:#B8322A;color:#fff;font-size:6.5px;text-align:center;line-height:1.6;letter-spacing:.05em}
+.wall-cover svg{width:78%;height:auto}.wall-cover small{font-size:6px;color:#3A2A1C;line-height:1.1;white-space:nowrap}
+.shelf-trophy{position:absolute;left:37%;top:calc(30% - 26px);width:20px;z-index:3}.shelf-trophy svg{display:block;width:100%;height:auto}
+.shelf-trophy i{position:absolute;right:-5px;bottom:-3px;min-width:11px;height:11px;border-radius:50%;background:#C8402F;color:#fff;font:700 8px/11px var(--small,sans-serif);text-align:center;font-style:normal;border:1px solid #fff}
+.shelf-trophy.r2 svg{filter:grayscale(1) brightness(1.25)}.shelf-trophy.r3 svg{filter:sepia(1) saturate(2.2) hue-rotate(-18deg) brightness(.85)}
+.shelf-medal{position:absolute;left:30%;top:calc(30% + 7px);z-index:3;font-size:8px;background:#fff;color:#2A2233;border:1.5px solid #2A2233;padding:0 3px;white-space:nowrap}
+.room.has-wall .rm-jangji,.room.has-wall.th-hanok .rm-jangji{display:none!important}
+.room.has-wall .rm-stove{left:auto;right:3%;bottom:28%}
+.room.has-wall .rm-fire{left:auto;right:3%;width:20%;height:20%}
+.room.has-wall .rm-plant.mon{left:auto;right:16%;bottom:8%}.room.has-wall .rm-side{right:31%}
+.room.has-wall .rm-fall{left:auto;right:36%}
 .rm-plant.orchid{left:27%;bottom:20%;width:28px;z-index:2}
 /* 한옥: 일월오봉 병풍 · 장지문 */
 .rm-byeong{position:absolute;left:31%;width:38%;bottom:31%;height:30%;z-index:0;border:3px solid #5A361E;background:#2F6C8E;overflow:hidden;box-shadow:2px 2px 0 rgba(0,0,0,.2)}
@@ -1840,7 +1882,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04l';
+const APP_VER = '2026.10.04m';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1963,6 +2005,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-10-04m', date:'10월 4일', title:'🏅 배지가 새로워졌어요 · 방에 걸기', body:'🎯 단계형 배지\n같은 종류의 배지를 한 칸으로 모아 동 → 은 → 금 → 옥으로 올라가요. 몰기 · 관중률은 실력 칸이라 그 위로 명궁 · 신궁까지 있어요. 칸마다 다음 단계까지 얼마 남았는지 막대로 보여요. 그동안 받은 배지는 새 단계로 그대로 옮겨졌어요.\n\n🎖 특별 · 한정 · 숨은 배지\n승단, 대회 입상(부별 1~3위), 이달의 표지(월보 표지 주인공), 그리고 베타 기간(9/23~10/3)에 함께한 분만 받는 🧪 베타 테스터 배지가 있어요. 조건이 숨겨진 배지도 몇 개 있으니 찾아보세요. 월보 분야별 1위는 🎀 리본으로 남아요.\n\n🖼 방에 걸기\n내 방 배지 칸의 "🖼 방에 걸기"에서 배지 하나를 한지 족자로 걸 수 있어요. 월보 표지 주인공이 되면 그 달 표지 액자가, 대회에서 입상하면 선반 트로피가 생겨요. 방 구경 온 사원에게도 보여요.'},
   {id:'2026-10-04c', date:'10월 4일', title:'🐶🐱 강아지 · 고양이 6종씩 · 월보는 매달 1일에', body:'🐶 강아지 6종\n베레모 푸들 · 헤드폰 보더콜리 · 별망토 치와와 · 모자 쓴 달마시안 · 비옷 골든 · 탐정 바셋이 왔어요. 이제 강아지는 15종이에요.\n\n🐱 고양이 6종\n한복 삼색이 · 까만 아기 고양이 · 하얀 무사 · 오드아이 장모 · 나뭇잎 두건 · 삿갓 고양이가 왔어요. 고양이도 15종이에요.\n\n📏 크기가 조금씩 달라요\n사대·광장·내 방에서 강아지와 고양이가 덩치에 따라 조금 작게(0.92배) 또는 조금 크게(1.06배) 서요. 새 친구에는 고르기 화면에 NEW 표시가 붙어요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n📰 사대 월보는 매달 1일에\n월보는 매달 1일에 지난달 기록을 담아 완성된 채로 나와요. 지금은 10월 창간호(베타 9/23~10/3)가 최신호이고, 11월호(10/4~10/31 기록)는 11월 1일에 나와요. 이번 달 실시간 순위는 광장 순위 카드에서 볼 수 있어요.'},
   {id:'2026-10-03n', date:'10월 3일', title:'🎉 10월 3일 업데이트 모음 · 사대 월보 · 광장 · 새 친구 · 알림', body:'📰 사대 월보\n하단 "소식" 칸에 월간지 「사대 월보(射臺月報)」가 생겼어요. 10월 창간호는 베타 기간(9/23~10/3)의 기록, 9월은 관리자의 변과 연혁을 담은 "오늘 사대 이야기"예요. 앞으로는 매달 1일에 지난달 기록으로 한 호씩 나와요. 축하 소식 옆 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고, 내 방에서 단급을 바꾸면 승단 소식으로 실려요. 가입 10명 + 그 호 기록 3명이 넘는 정은 "우리 정 월보"도 따로 나와요.\n\n🏯 광장\n배경이 계절(봄·여름·가을·겨울)과 시간(낮·해질녘·밤)에 따라 바뀌고, 🖼 로 직접 골라 볼 수 있어요. 한마디는 장면 바로 아래에서 15개씩 페이지로 넘겨요. 🏆 이달의 순위(성실·관중·관중률·몰기·정심·다정)는 접어 둘 수 있고, 누르고 있으면 멈춰요. 순위에 나오기 싫으면 "랭킹에서 나 숨기기"를 누르세요. 움직임이 부담스러우면 🍵 "차분하게 보기"로 끌 수 있어요.\n\n🐻🐹🐧 새 친구\n곰 · 햄스터 · 펭귄이 9종씩 들어왔어요. 곰은 한 뼘 크게, 햄스터는 아담하게 서요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n🏹 오늘 정 사대\n사람이 많으면 2층 사대(앞줄 7 · 뒷줄 7)로 서고, 위의 시간대(새벽~저녁)를 눌러 그 시간대 사람만 볼 수 있어요.\n\n🔔 알림\n누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 @내이름 으로 부르면 위쪽 🔔 에 표시돼요. 🔔 → "폰 알림 켜기"를 하면 앱을 닫아 둬도 폰으로 알림이 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 ↩ 답글로 @이름을 쉽게 넣을 수 있어요.'},
   {id:'2026-10-03l', date:'10월 3일', title:'🔒 소속 정은 한 달 동안 고정돼요', body:'이제 관악정 밖 다른 정으로도 오늘 사대가 넓어져요. 정마다 사원·순위·월보가 섞이지 않도록, 소속 정(궁패)은 가입한 날(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 고르셨다면 관리자에게 메일(heyjune3737@gmail.com)이나 방명록으로 알려 주시면 바로 고쳐 드려요. 다른 정에 가는 날은 지금처럼 오늘 정 탭 위 📍에서 그 정 사대를 구경하고 습사 등록할 수 있어요.'},
@@ -2037,6 +2080,7 @@ function renderInfo(){
     <details class="notice"><summary>표 기록 — 한 발씩</summary><p>위쪽 "✍️ 입력 / 📖 기록 보기"로 화면을 바꿔요. 기록 보기에선 큰 글씨로 순을 보고 ◀ ▶로 날짜를 넘겨요. 입력판은 과녁을 바라본 모양 그대로 9칸이에요: 가운데 관중, 위 넘어감, 아래 코박음(짧음), 옆은 앞남·뒤남, 네 귀퉁이는 앞넘음·뒤넘음·앞짧음·뒤짧음. 좌궁이면 앞·뒤가 좌우로 바뀌어요. 잘못 누르면 "↶ 한 발".</p></details>
     <details class="notice"><summary>🔒 소속 정 · 다른 정 가기</summary><p>소속 정은 내 궁패이자 정별 순위·월보의 기준이라, 가입(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 골랐다면 관리자에게 메일(heyjune3737@gmail.com)이나 관리자 방명록으로 알려 주세요. 다른 정에 가는 날은 오늘 정 탭 위 📍정 이름을 눌러 그 정 사대를 보고, 시간대를 누르면 그 정에 등록돼요. 이건 언제든 자유예요.</p></details>
     <details class="notice"><summary>🍵 차분하게 보기</summary><p>광장 장면 오른쪽 아래 🍵 버튼을 누르세요. "차분하게 보기"를 켜면 순위 자동 넘김, 꽃잎·낙엽·눈 흩날림, 광장 위 소식 띠, 말풍선 효과, 캐릭터 걸음이 한 번에 멈춰요. 하나씩 켜고 끌 수도 있어요. 이 기기에만 저장되고, 폰 설정에서 "동작 줄이기"를 켜 두셨다면 처음부터 차분하게 보여요. 순위 카드는 "접기"로 한 줄만 남길 수 있고, 누르고 있는 동안은 넘어가지 않아요.</p></details>
+    <details class="notice"><summary>🏅 배지 · 방에 걸기</summary><p>내 방 → 🏅 배지에서 볼 수 있어요. 같은 종류는 한 칸에 모여 동 · 은 · 금 · 옥으로 올라가고, 실력 칸(몰기 · 관중률)만 명궁 · 신궁까지 있어요. 관중률 금부터는 그 달 30순 이상 쏜 달만 세요. 칸을 누르면 단계별 기준이 보여요. 특별 배지는 승단 · 대회 입상(부별 1~3위) · 이달의 표지 · 베타 테스터(한정)이고, 조건을 숨긴 배지도 있어요. 월보 분야별 1위는 🎀 리본으로 남아요. "🖼 방에 걸기"에서 배지 하나를 한지 족자로 걸고, 표지 액자 · 대회 트로피를 고르거나 내릴 수 있어요. 방 구경 온 사원에게도 보여요.</p></details>
     <details class="notice"><summary>📰 사대 월보</summary><p>소식 탭의 월간지예요. 매달 1일에 지난달 기록을 담아 한 호씩 나와요. 10월 창간호는 베타 테스트 기간(9/23~10/3) 기록, 11월호(11월 1일 발행)는 10월 4일~31일 기록이에요. 다음 호가 나오기 전까지는 최신호를 보여 주고, 이번 달 실시간 순위는 광장 순위 카드에서 볼 수 있어요. 9월은 "오늘 사대 이야기"(관리자의 변 · 연혁)예요. 표지는 그 달 습사한 날이 가장 많은 성실왕, 축하 소식은 몰기 상위 3명 · 새 배지 · 승단(내 방에서 단급을 바꾼 날) · 집궁 100일/1000일/주년 · 그 달 처음 기록한 사원이에요. 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고 알림이 가요. "지난 호"에서 예전 달을 다시 볼 수 있어요. 랭킹에서 숨긴 사원은 표지와 순위에서 빠져요. 맨 위에서 「🏯 전체 월보」와 「우리 정 월보」를 고를 수 있어요. 우리 정 월보는 가입 사원 10명 이상 + 그 호에 표를 기록한 사원 3명 이상인 정에 나오고, 집계는 소속 정(궁패) 기준이에요.</p></details>
     <details class="notice"><summary>🏆 이달의 순위</summary><p>광장의 순위는 매달 1일 새로 시작해요. 관중률과 정심은 이번 달 30순 이상 쏜 사원만 들어가요. 정심(正心)은 궁도 구계훈 "정심정기"에서 따온 이름으로, 관중률에 순마다 고른 관중(기복이 적음)과 빗나가도 한쪽으로 모이는 표를 더한 점수예요. 다정(多情)은 남의 방명록 2점·응원 1점·광장 한마디 1점이고 하루 10점까지만 세요. 날짜별 표는 그대로 비공개이고 순위 숫자만 보여요. 숨기고 싶으면 "랭킹에서 나 숨기기".</p></details>
     <details class="notice"><summary>🌬 바람 기록</summary><p>표 기록 맨 위 바람 칸에 정 위치의 지금 바람이 자동으로 떠요(날씨 정보 Open-Meteo). 순을 저장하면 그 바람이 순 옆에 작게 남아요(⬇맞바람 ⬆뒷바람 ➡좌→우 ⬅우→좌). 실제와 다르면 바람 칸을 눌러 직접 고르면 오늘 하루 그대로 기록돼요. 정마다 처음 한 번 "과녁 방향"(사대에서 과녁이 있는 쪽)을 정해야 맞바람·좌우가 계산돼요.</p></details>
@@ -2084,15 +2128,15 @@ function openRoom(mid){
   const g=m.gear||{}; const t=today(); const ym=t.slice(0,7); const st=dayStats(mid, ym);
   let since=''; if(m.since){ const d=Math.floor((new Date(t)-new Date(m.since))/86400000); since = d>=0? `D+${d}` : ''; }
   const slots=[['bow','활',g.bowName||m.bow,[g.bowSize,g.bowLb?g.bowLb+'파운드':'',m.bow].filter(Boolean).join(' · ')],['arrow','화살',g.arrowName||m.arrow,[lenLabel(g.arrowLen),g.arrowWeight?g.arrowWeight+'돈':'',m.arrow].filter(Boolean).join(' · ')],['kkakji','깍지',g.kkakji,g.kkakjiNote],['etc','그 외',g.etc,'']];
-  const draw=()=>{ const s=dayStats(mid, ym); const VTH=roomThemeOf(m); const VFX=roomFxHTML(memberJ(m).id, VTH);
+  const draw=()=>{ const s=dayStats(mid, ym); const VTH=roomThemeOf(m); const VFX=roomFxHTML(memberJ(m).id, VTH); const VST=badgeState(mid, docsOf('days/'+mid+'_')); const VWALL=wallHTML(m, VST);
     const sh=openSheet(`
-    <div class="room visit th-${VTH}">
+    <div class="room visit th-${VTH}${VWALL?' has-wall':''}">
       <div class="floor"></div><div class="win" style="${VFX.winStyle}">${VFX.win}<div class="tg"><i></i></div></div><div class="shelf"></div>${VFX.room}
       <div class="item" style="left:8%;top:13%">${ICON.bow}<span class="lb">${esc(g.bowName||m.bow||'활')}</span></div>
       <div class="item" style="left:26%;top:13%">${ICON.arrow}<span class="lb">${esc(g.arrowName||m.arrow||'화살')}</span></div>
       ${hasCert(m.grade)?`<div class="frame">${esc(m.grade)}<br>단증</div>`:''}
       <div class="item" style="right:8%;bottom:10%">${ICON.kkakji}<span class="lb">${esc(g.kkakji||'깍지')}</span></div>
-      <div class="hero">${charSVG(m.char||DEFAULT_CHAR)}</div><div class="sign">${esc(memberJ(m).name)} · ${esc(m.name)}의 방</div>
+      ${VWALL}<div class="hero">${charSVG(m.char||DEFAULT_CHAR)}</div><div class="sign">${esc(memberJ(m).name)} · ${esc(m.name)}의 방</div>
       ${m.status?`<div class="bubble">${esc(m.status)}</div>`:''}
     </div>
 <button type="button" class="fav-btn ${isFav(mid)?'on':''}" id="rmFav" aria-pressed="${isFav(mid)}"><b>${isFav(mid)?'★ 사대 동무':'☆ 사대 동무'}</b><small>자주 함께 사대에 서거나 같이 배운 동기 · 나만 보여요</small></button>
@@ -2101,7 +2145,7 @@ function openRoom(mid){
     <div class="info">${statTiles([[s.n?Math.round(s.h/(s.n*5)*100)+'<small>%</small>':'–',`관중률 · ${s.h}/${s.n*5}시`],[`${s.days}<small>일</small>`,`습사 · ${s.n}순`],[s.mo,'몰기']])}</div>
     ${s.full.length?`<details class="notice"><summary>날짜별 기록 (공개됨)</summary>${s.full.slice(0,20).map(d=>{ const h=d.rounds.reduce((a,r)=>a+hitsOf(r),0); const [Y,M,D]=d.date.split('-').map(Number); return `<div class="vday"><span>${M}/${D}</span><span class="num">${h}/${d.rounds.length*5}시 · ${d.rounds.length}순</span><span class="dots">${d.rounds.map(r=>`<i>${hitsOf(r)}</i>`).join('')}</span></div>`; }).join('')}</details>`:'<p class="tiny muted" style="margin:0">날짜별 기록은 본인이 공개하면 볼 수 있어요</p>'}
     <h3 style="margin:6px 0 0">🏅 배지</h3>
-    <div class="badges">${(()=>{ const bh=badgeHTML(growthOf(docsOf('days/'+mid+'_'), mid), true); return bh || '<span class="tiny muted" style="grid-column:1/-1">아직 받은 배지가 없어요</span>'; })()}</div>
+    <div class="bb-grid">${(()=>{ const bh=badgeHTML(VST.g, true)+VST.sp.map(x=>`<div class="bb mini sp ${x.cls}"><span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">${esc(x.lab.split(' · ')[0])}</span></div>`).join('')+VST.hidden.map(x=>`<div class="bb mini sp hidok"><span class="ring">${x.ic}</span><b>${esc(x.t)}</b></div>`).join(''); return bh || '<span class="tiny muted" style="grid-column:1/-1">아직 받은 배지가 없어요</span>'; })()}</div>
     <h3 style="margin:6px 0 0">🧰 장비</h3>
     <div class="gear">${slots.map(([ic,l,b,sx])=>`<div class="gslot ${b?'':'empty'}">${ICON[ic]}<span class="t"><small>${l}</small><b>${esc(b||'–')}</b><span>${esc(sx||'')}</span></span></div>`).join('')}</div>
     <h3 style="margin:6px 0 0">📮 방명록</h3>
@@ -3033,12 +3077,12 @@ function renderRoom(){
   const me=S.me; const g=gearOf(); const t=today();
   const td=S.myDays.find(d=>d.date===t); const todayHits=((td&&td.rounds)||[]).reduce((a,r)=>a+hitsOf(r),0);
   const ym=t.slice(0,7); const monthHits=S.myDays.filter(d=>d.date.startsWith(ym)).reduce((a,d)=>a+(d.rounds||[]).reduce((x,r)=>x+hitsOf(r),0),0);
-  const nm = me? me.name : '???'; const TH=roomThemeOf(me&&memberById(me.id)); const FX=roomFxHTML(homeJ().id, TH); room.className='room th-'+TH;
+  const nm = me? me.name : '???'; const TH=roomThemeOf(me&&memberById(me.id)); const FX=roomFxHTML(homeJ().id, TH); const WALL = me ? wallHTML(memberById(me.id), badgeState(me.id, S.myDays||[])) : ''; room.className='room th-'+TH+(WALL?' has-wall':'');
   room.innerHTML = `
     <div class="floor"></div>
     <div class="counter">TODAY <b class="num">${todayHits}</b> · MONTH <b class="num">${monthHits}</b> <span style="opacity:.7">관중</span></div>
     <div class="win" style="${FX.winStyle}">${FX.win}<div class="tg"><i></i></div></div>
-    <div class="shelf"></div>${FX.room}
+    <div class="shelf"></div>${FX.room}${WALL}
     <div class="item" style="left:8%;top:13%">${ICON.bow}<span class="lb">${esc(g.bowName||(me&&me.bow)||'활')}</span></div>
     <div class="item" style="left:26%;top:13%">${ICON.arrow}<span class="lb">${esc(g.arrowName||(me&&me.arrow)||'화살')}</span></div>
     ${me&&hasCert(me.grade)?`<div class="frame">${esc(me.grade)}<br>단증</div>`:''}
@@ -3334,40 +3378,161 @@ const dNum = s => { const [y,m,d]=s.split('-').map(Number); return Math.round(Da
 const wNum = s => Math.floor((dNum(s)+3)/7);   // 월요일 시작 주 번호
 function growthOf(days, mid){
   const L=days.map(dayBrief).filter(d=>d.date && d.n>0).sort((a,b)=>a.date<b.date?-1:1);
-  const g={days:L.length, n:0, h:0, mo:0, maxN:0, best:null, bestDays:0, bestWeeks:0, curWeeks:0, months:{}, bestMonthPct:0, comps:0};
+  const g={mid, days:L.length, n:0, h:0, mo:0, maxN:0, best:null, bestDays:0, bestWeeks:0, curWeeks:0, months:{}, bestMonthPct:0, bestMonthPct30:0, comps:0};
   let run=0, prev=null;
   for(const d of L){ g.n+=d.n; g.h+=d.h; g.mo+=d.mo; g.maxN=Math.max(g.maxN,d.n);
     if(d.n>=3){ const r=d.h/(d.n*5); if(!g.best || r>g.best.r || (r===g.best.r && d.n>g.best.n)) g.best={...d, r}; }
     const x=dNum(d.date); run = (prev!==null && x===prev+1) ? run+1 : 1; prev=x; g.bestDays=Math.max(g.bestDays,run);
     const ym=d.date.slice(0,7); const M=g.months[ym]||(g.months[ym]={n:0,h:0,d:0}); M.n+=d.n; M.h+=d.h; M.d++; }
-  for(const M of Object.values(g.months)) if(M.n>=5) g.bestMonthPct=Math.max(g.bestMonthPct, Math.round(M.h/(M.n*5)*100));
+  for(const M of Object.values(g.months)){ if(M.n>=5) g.bestMonthPct=Math.max(g.bestMonthPct, Math.round(M.h/(M.n*5)*100)); if(M.n>=30) g.bestMonthPct30=Math.max(g.bestMonthPct30, Math.round(M.h/(M.n*5)*100)); }
   const W=[...new Set(L.map(d=>wNum(d.date)))].sort((a,b)=>a-b); let wr=0, wp=null;
   for(const w of W){ wr = (wp!==null && w===wp+1) ? wr+1 : 1; wp=w; g.bestWeeks=Math.max(g.bestWeeks,wr); }
   const tw=wNum(today()); if(W.length && (W[W.length-1]===tw || W[W.length-1]===tw-1)){ let k=W.length-1, c=1; while(k>0 && W[k-1]===W[k]-1){ c++; k--; } g.curWeeks=c; }
   g.comps=(S.comps||[]).filter(c=>{ const e=(c.entries||{})[mid]; return e && (e.rounds||[]).some(r=>Array.isArray(r)&&r.some(x=>x===true||x===false)); }).length;
   return g;
 }
-const BADGES = [
-  {id:'first',  ic:'🏹', t:'첫 순',       d:'첫 순을 기록해요',                     v:g=>g.n,    goal:1},
-  {id:'molgi1', ic:'🎯', t:'첫 몰기',     d:'한 순 5시를 모두 관중',                 v:g=>g.mo,   goal:1},
-  {id:'molgi5', ic:'🔥', t:'몰기 5회',    d:'몰기를 다섯 번',                        v:g=>g.mo,   goal:5},
-  {id:'molgi20',ic:'🌟', t:'몰기 20회',   d:'몰기를 스무 번',                        v:g=>g.mo,   goal:20},
-  {id:'day10',  ic:'📅', t:'습사 10일',   d:'활 낸 날이 10일',                       v:g=>g.days, goal:10},
-  {id:'day50',  ic:'🗓️', t:'습사 50일',   d:'활 낸 날이 50일',                       v:g=>g.days, goal:50},
-  {id:'day100', ic:'🏯', t:'습사 100일',  d:'활 낸 날이 100일',                      v:g=>g.days, goal:100},
-  {id:'r100',   ic:'💯', t:'100순',       d:'누적 100순 (500시)',                    v:g=>g.n,    goal:100},
-  {id:'r500',   ic:'🎖️', t:'500순',       d:'누적 500순',                            v:g=>g.n,    goal:500},
-  {id:'r1000',  ic:'👑', t:'1000순',      d:'누적 1000순',                           v:g=>g.n,    goal:1000},
-  {id:'nine',   ic:'⚡', t:'하루 9순',    d:'하루에 9순(45시) — 승단 심사만큼',       v:g=>g.maxN, goal:9},
-  {id:'wk4',    ic:'🔁', t:'4주 연속',    d:'4주 내리 한 번 이상 활터에',            v:g=>g.bestWeeks, goal:4},
-  {id:'m50',    ic:'📈', t:'관중률 50%',  d:'한 달(5순 이상) 관중률 50% 넘기기',      v:g=>g.bestMonthPct, goal:50},
-  {id:'m70',    ic:'🚀', t:'관중률 70%',  d:'한 달(5순 이상) 관중률 70% 넘기기',      v:g=>g.bestMonthPct, goal:70},
-  {id:'comp',   ic:'🏆', t:'대회 출전',   d:'정 대회에 한 번 나가기',                v:g=>g.comps, goal:1},
+// ---------- 배지: 단계형 (실력 6단계 · 노력 4단계) ----------
+const BTIER = ['','동','은','금','옥','명궁','신궁'];
+const BSETS = [
+  {id:'molgi', ic:'🎯', t:'몰기',     u:'회',      skill:1, T:[1,10,50,100,300,1000], v:g=>g.mo, d:'한 순 5시를 모두 관중'},
+  {id:'rate',  ic:'📈', t:'관중률',   u:'%',       skill:1, T:[50,60,70,80,85,90], v:(g,k)=> k>=3 ? g.bestMonthPct30 : g.bestMonthPct, d:'한 달 관중률 (동 · 은은 5순 이상, 금부터는 그 달 30순 이상)'},
+  {id:'days',  ic:'🏹', t:'성실',     u:'일',      T:[10,100,300,1000], v:g=>g.days, d:'활 낸 날 수'},
+  {id:'rounds',ic:'💯', t:'누적',     u:'순',      T:[100,1000,3000,10000], v:g=>g.n, d:'쌓인 순 수'},
+  {id:'weeks', ic:'🔁', t:'꾸준함',   u:'주 연속', T:[4,12,26,52], v:g=>g.bestWeeks, d:'한 주도 빠짐없이 활터에 온 주'},
+  {id:'day',   ic:'⚡', t:'하루',     u:'순',      T:[9,12,15,20], v:g=>g.maxN, d:'하루에 쏜 순 (9순 = 승단 심사만큼)'},
+  {id:'comp',  ic:'🏆', t:'대회',     u:'회 출전', T:[1,10,30,100], v:g=>g.comps, d:'정 대회에 나간 횟수'},
+  {id:'cover', ic:'📰', t:'표지 스타', u:'번',     T:[1,6,12,36], v:g=>coverInfo(g.mid).n, d:'사대 월보 표지(성실왕)에 오른 횟수 · 정별 월보 포함', mag:false},
+  {id:'kind',  ic:'💞', t:'함께',     u:'번',      T:[10,100,300,1000], v:g=>kindCount(g.mid), d:'다른 사원 방명록에 남긴 글 + 보낸 응원', mag:false},
 ];
+const setTier = (set, g) => { let k=0; set.T.forEach((x,i)=>{ if(set.v(g,i+1)>=x) k=i+1; }); return k; };
+// 예전 BADGES 자리: 단계마다 한 줄 (월보 '새 배지' · 광장 소식이 그대로 씀)
+const BADGES = BSETS.flatMap(set => set.T.map((goal,i)=>({id:set.id+(i+1), set:set.id, k:i+1, ic:set.ic, t:`${set.t} ${BTIER[i+1]}`, d:`${set.d} · ${goal}${set.u}`, v:g=>set.v(g,i+1), goal, mag:set.mag})));
+const bVer = () => `${(store&&store.lastRefresh)||0}:${Object.keys((store&&store.docs)||{}).length}:${(S.comps||[]).length}:${(S.members||[]).length}:${typeof magCurYM==='function'?magCurYM():''}`;   // 기록이 바뀌면 다시 셈
+// 표지 스타: 나온 호(창간호부터 최신호)마다 표지 성실왕 — 전체 월보 + 정별 월보
+let _covC={at:0,map:null,busy:false};
+function coverInfo(mid){
+  if(_covC.busy) return {n:0,list:[]};
+  if(!_covC.map || _covC.ver!==bVer() || Date.now()-_covC.at>60e3){ _covC.busy=true; const map={}; const ver=bVer();
+    try{ if(typeof magCurYM==='function'){ const last=magCurYM(); for(let ym=MAG_START; ym<=last; ym=ymAdd(ym,1)){ if(magLive(ym)) continue;
+        const dA=magData(ym,'all'); const add=(m,scope)=>{ if(!m) return; (map[m]=map[m]||[]).push({ym, scope}); };
+        if(dA.king) add(dA.king.mid,'all');
+        for(const [jid,o] of Object.entries(dA.jst||{})) if(o.ok){ const dj=magData(ym,jid); if(dj.king) add(dj.king.mid,jid); } } } }
+    catch(e){ console.warn('cover',e); }
+    _covC={at:Date.now(),map,busy:false,ver}; }
+  const L=_covC.map[mid]||[]; return {n:L.length, list:L};
+}
+// 함께: 남의 방명록에 남긴 글 + 보낸 응원
+let _kindC={at:0,map:null};
+function kindCount(mid){
+  if(!_kindC.map || _kindC.ver!==bVer() || Date.now()-_kindC.at>60e3){ const ver=bVer(); const D=(store&&store.docs)||{}; const map={};
+    for(const k in D){ const d=D[k]; if(!d||!d.entries) continue;
+      if(k.startsWith('guestbook/')){ const owner=k.slice(10); for(const v of Object.values(d.entries)) if(v&&v.from&&v.from!==owner) map[v.from]=(map[v.from]||0)+1; }
+      else if(k.startsWith('attendance/')){ for(const [tid,e] of Object.entries(d.entries)) for(const [f,em] of Object.entries((e&&e.reactions)||{})) if(em&&f!==tid) map[f]=(map[f]||0)+1; } }
+    _kindC={at:Date.now(),map,ver}; }
+  return _kindC.map[mid]||0;
+}
+// 🎀 리본: 나온 호마다 월보 순위 분야별 1위 (몰기 · 관중률 · 정심 · 다정)
+const RIB_CATS = ['molgi','rate','jeongsim','dajeong'];
+let _ribC={at:0,map:null};
+function ribbonsOf(mid){
+  if(!_ribC.map || _ribC.ver!==bVer() || Date.now()-_ribC.at>60e3){ const map={}; const ver=bVer();
+    try{ const last=magCurYM(); for(let ym=MAG_START; ym<=last; ym=ymAdd(ym,1)){ if(magLive(ym)) continue; const [f,t]=magRange(ym); const L=(rankLocal(f,t).members||[]);
+        for(const cid of RIB_CATS){ const c=RK_CATS.find(x=>x.id===cid); if(!c) continue; const top=L.filter(c.ok).sort((a,b)=>c.v(b)-c.v(a))[0]; if(top) (map[top.mid]=map[top.mid]||[]).push({ym, cat:cid, ic:c.ic, t:`${ym===MAG_START?'창간호':(+t.slice(5,7))+'월'} ${c.t}왕`}); } } }
+    catch(e){ console.warn('ribbon',e); }
+    _ribC={at:Date.now(),map,ver}; }
+  return _ribC.map[mid]||[];
+}
+// 대회 입상: 끝까지 쏜 대회에서 부별 1~3위
+function placesOf(mid){
+  const out=[]; for(const c of (S.comps||[])){ if(!(c.members||[]).includes(mid)) continue;
+    const div=(typeof divOf==='function')?divOf(c,mid):null; const mem = div ? (c.members||[]).filter(id=>divOf(c,id)===div) : (c.members||[]);
+    const rows=rankComp({...c, members:mem}); const r=rows.find(x=>x.id===mid); if(!r || r.done!==c.roundCount) continue;
+    if(rows.some(x=>x.done!==c.roundCount)) continue;   // 그 부가 다 끝난 대회만
+    if(r.rank<=3) out.push({id:c.id, name:c.name, date:c.date, rank:r.rank, div: div?divName(div):''}); }
+  return out.sort((a,b)=>a.rank-b.rank || String(b.date).localeCompare(String(a.date)));
+}
+// 숨은 배지 (받기 전엔 조건 비공개)
+const HIDDEN = [
+  {id:'moon',  ic:'🌙', t:'달빛 궁사',  d:'저녁 사대에 선 날 몰기'},
+  {id:'dawn',  ic:'🌅', t:'새벽 궁사',  d:'새벽 사대 등록 10번'},
+  {id:'combo', ic:'🔥', t:'연속 몰기',  d:'한 날 두 순 연달아 몰기'},
+  {id:'nomad', ic:'🧭', t:'나그네 궁사', d:'다른 정 3곳에서 습사'},
+  {id:'anniv', ic:'📅', t:'1년 전 오늘', d:'1년 전 오늘에도 활을 냈어요'},
+];
+function hiddenOf(mid, days){
+  const D=(store&&store.docs)||{}; const got={}; const att=[]; for(const k in D){ if(k.startsWith('attendance/') && D[k] && D[k].entries && D[k].entries[mid]) att.push([k.slice(11), D[k].entries[mid]]); }
+  const byDate={}; (days||[]).forEach(d=>{ const b=dayBrief(d); if(b.n) byDate[d.date]={b, d}; });
+  if(att.some(([dt,e])=>e.slot==='저녁' && byDate[dt] && byDate[dt].b.mo>0)) got.moon=1;
+  if(att.filter(([,e])=>e.slot==='새벽').length>=10) got.dawn=1;
+  if((days||[]).some(d=>{ const rs=(d.rounds||[]).filter(Array.isArray).map(r=>hitsOf(r)); return rs.some((h,i)=>i>0&&h===5&&rs[i-1]===5); })) got.combo=1;
+  const home=memberById(mid)?memberJ(memberById(mid)).id:''; if(new Set(att.map(([,e])=>e.jid).filter(j=>j&&j!==home)).size>=3) got.nomad=1;
+  if(Object.keys(byDate).some(dt=>byDate[(+dt.slice(0,4)-1)+dt.slice(4)])) got.anniv=1;
+  return got;
+}
+const isBeta = (mid, days) => (days||[]).some(d=>d.date>=MAG_BETA && d.date<=MAG_BETA_END && dayBrief(d).n>0) || Object.keys((store&&store.docs)||{}).some(k=>k.startsWith('attendance/') && k.slice(11)>=MAG_BETA && k.slice(11)<=MAG_BETA_END && ((store.docs[k]||{}).entries||{})[mid]);
+function gradeUp(m){ const H=(m&&m.gradeHist)||{}; const ks=Object.keys(H).filter(k=>{ const g=H[k]||{}; return g.to && hasCert(g.to) && g.to!==g.from; }).sort(); if(!ks.length) return null; const g=H[ks[ks.length-1]]; return {to:g.to, date:ks[ks.length-1]}; }
+// 한 사원의 배지 전체
+function badgeState(mid, days){
+  const g=growthOf(days||[], mid); const m=memberById(mid)||{};
+  const sets=BSETS.map(set=>{ const k=setTier(set,g); const nx=set.T[k]; return {...set, k, val:set.v(g, Math.min(k+1,set.T.length)), next:nx, max:set.T.length}; });
+  const sp=[]; const gu=gradeUp(m); if(gu) sp.push({id:'grade', ic:'🎖', t:'승단', lab:`${gu.to} · ${+gu.date.slice(5,7)}/${+gu.date.slice(8,10)}`, sub:'단급이 오른 날', cls:'red'});
+  const P=placesOf(mid); if(P.length){ const b=P[0]; sp.push({id:'place', ic:['','🥇','🥈','🥉'][b.rank], t:'대회 입상', lab:`${['','금','은','동'][b.rank]} · ${b.name}`, sub:`${b.div?b.div+' ':''}${b.rank}위${P.length>1?` 외 ${P.length-1}번`:''}`, cls:'t'+(4-b.rank)}); }
+  if(isBeta(mid, days)) sp.push({id:'beta', ic:'🧪', t:'베타 테스터', lab:'한정 · 9/23~10/3', sub:'다시 받을 수 없어요', cls:'blue'});
+  const C=coverInfo(mid); if(C.n){ const L=C.list[C.list.length-1]; sp.push({id:'covermark', ic:'📰', t:'이달의 표지', lab:`${+L.ym.slice(5)}월호${L.scope!=='all'?' · 정별':''}`, sub:'월보 표지 주인공', cls:'paper'}); }
+  const H=hiddenOf(mid, days); const hid=HIDDEN.filter(x=>H[x.id]);
+  return {g, sets, sp, ribbons:ribbonsOf(mid), hidden:hid, hiddenLeft:HIDDEN.length-hid.length, places:P, covers:C.list};
+}
 const earnedOf = g => BADGES.filter(b=>b.v(g)>=b.goal);
-function badgeHTML(g, compact){
-  return BADGES.map(b=>{ const v=b.v(g), ok=v>=b.goal; if(compact && !ok) return '';
-    return `<button class="bdg ${ok?'ok':''}" type="button" data-bdg="${b.id}" title="${esc(b.t)} · ${esc(b.d)}"><span class="bi">${b.ic}</span><b>${esc(b.t)}</b>${ok?'':`<small class="num">${Math.min(v,b.goal)}/${b.goal}</small>`}</button>`; }).join('');
+function badgeHTML(g, compact){   // 남의 방 등: 받은 칸만, 최고 단계
+  const L=BSETS.map(set=>({set,k:setTier(set,g)})).filter(x=>x.k>0);
+  return L.map(({set,k})=>`<button class="bb mini bb-tier t${k}" type="button" title="${esc(set.t)} ${BTIER[k]}"><span class="ring">${set.ic}</span><b>${esc(set.t)}</b><span class="tl">${BTIER[k]}</span></button>`).join('');
+}
+function boardHTML(st){
+  const card=x=>{ const pct = x.next ? Math.max(4, Math.round(Math.min(1, (x.val-(x.T[x.k-1]||0))/(x.next-(x.T[x.k-1]||0)))*100)) : 100;
+    return `<button type="button" class="bb bb-tier t${x.k} ${x.k?'':'none'}" data-bset="${x.id}">${x.skill?'<span class="skill">실력</span>':''}<span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">${x.k?`${BTIER[x.k]} · ${x.T[x.k-1]}${x.u}`:'아직'}</span><span class="pg"><i style="width:${pct}%"></i></span><small>${x.next?`다음 ${BTIER[x.k+1]} ${x.next}${x.u} · 지금 ${x.val}${x.id==='rate'&&x.k>=2?'(30순 달)':''}`:'최고 단계'}</small></button>`; };
+  const sp=st.sp.map(x=>`<div class="bb sp ${x.cls}"><span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">${esc(x.lab)}</span><small>${esc(x.sub)}</small></div>`).join('');
+  const hid=st.hidden.map(x=>`<div class="bb sp hidok"><span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">숨은 배지</span><small>${esc(x.d)}</small></div>`).join('')
+    + (st.hiddenLeft?`<div class="bb hid"><span class="ring">❓</span><b>숨은 배지</b><span class="tl">${st.hiddenLeft}개 남음</span><small>조건은 받으면 공개</small></div>`:'');
+  const rib=st.ribbons.length?`<div class="bb-sec">🎀 리본 · 월보 분야별 1위</div><div class="bb-rib">${st.ribbons.map(r=>`<span>${r.ic} ${esc(r.t)}</span>`).join('')}</div>`:'';
+  return `<div class="bb-grid">${st.sets.map(card).join('')}</div><div class="bb-sec">특별 · 한정 · 숨은 배지</div><div class="bb-grid">${sp}${hid}</div>${rib}`;
+}
+// 방에 거는 것: 한지 족자(배지) · 월보 표지 액자 · 선반 트로피
+function wallChoices(st){
+  const L=[]; st.sets.filter(x=>x.k>0).forEach(x=>L.push({key:'set:'+x.id, ic:x.ic, t:x.t, tier:BTIER[x.k], k:x.k}));
+  st.sp.forEach(x=>{ if(x.id!=='covermark') L.push({key:'sp:'+x.id, ic:x.ic, t:x.t, tier:x.lab.split(' · ')[0], k:x.id==='place'?0:3, cls:x.cls}); });
+  st.hidden.forEach(x=>L.push({key:'hd:'+x.id, ic:x.ic, t:x.t, tier:'숨은', k:5}));
+  st.ribbons.forEach((r,i)=>L.push({key:'rb:'+r.ym+':'+r.cat, ic:'🎀', t:r.t, tier:'리본', k:3}));
+  return L;
+}
+const NUM_KO = n => { const D=['','일','이','삼','사','오','육','칠','팔','구']; if(n>=10000) return n; let s=''; const th=Math.floor(n/1000), h=Math.floor(n%1000/100), t=Math.floor(n%100/10), o=n%10; if(th) s+=(th>1?D[th]:'')+'천'; if(h) s+=(h>1?D[h]:'')+'백'; if(t) s+=(t>1?D[t]:'')+'십'; s+=D[o]; return s||'영'; };
+const PX_TROPHY = ['....yyyy....','...yyyyyy...','.y.yyyyyy.y.','.y.yyyyyy.y.','..yyyyyyyy..','....yyyy....','.....yy.....','.....yy.....','....hhhh....','...hhhhhh...'];
+function wallHTML(m, st){
+  if(!m) return ''; const W=m.roomWall||{}; let h='';
+  const ch=wallChoices(st); const sc = W.scroll && W.scroll!=='none' ? ch.find(x=>x.key===W.scroll) : null;
+  if(sc){ const set=sc.key.startsWith('set:')?BSETS.find(x=>'set:'+x.id===sc.key):null; const name = set ? `${set.t}${set.u==='%'?set.T[sc.k-1]+'%':NUM_KO(set.T[sc.k-1])+set.u.replace('회 출전','회')}` : sc.t;
+    h+=`<div class="wall-jokja bb-tier t${Math.min(sc.k,6)}"><span class="str"></span><div class="hj"><span>${sc.ic}</span><em>${esc(sc.tier)}</em><b>${esc(name)}</b></div></div>`; }
+  const cv = W.cover==='none' ? null : (W.cover ? st.covers.find(x=>x.ym===W.cover) : st.covers[st.covers.length-1]);
+  if(cv) h+=`<div class="wall-cover"><div class="mh">射臺月報</div>${charSVG(m.char||DEFAULT_CHAR)}<small>${+cv.ym.slice(5)}월호 표지</small></div>`;
+  const tp = W.trophy==='none' ? null : (W.trophy ? st.places.find(x=>x.id===W.trophy) : st.places[0]);
+  if(tp) h+=`<div class="shelf-trophy r${tp.rank}" title="${esc(tp.name)} ${esc(tp.div)} ${tp.rank}위">${pxSVG(PX_TROPHY)}<i>${tp.rank}</i></div>`;
+  return h;
+}
+function openWallPick(){
+  if(!S.me){ openProfile(); return; } const m=memberById(S.me.id)||{}; const st=badgeState(S.me.id, S.myDays||[]); const W={...(m.roomWall||{})};
+  const ch=wallChoices(st);
+  const sh=openSheet(`<h3>🖼 방에 걸기</h3><p class="tiny muted" style="margin:0">받은 배지를 방 벽과 선반에 걸어요. 방 구경 온 사원에게도 보여요.</p>
+    <div class="field"><label>한지 족자 (벽) · 배지 하나</label><div class="wp-grid">${ch.map(x=>`<button type="button" data-ws="${esc(x.key)}">${x.ic}<b>${esc(x.t)}</b><small>${esc(x.tier)}</small></button>`).join('')}<button type="button" data-ws="none">✕<b>걸지 않기</b></button></div>${ch.length?'':'<p class="tiny muted">아직 받은 배지가 없어요</p>'}</div>
+    <div class="field"><label>월보 표지 액자 (벽) · 표지 주인공이 되면 생겨요</label><div class="wp-grid">${st.covers.map(c=>`<button type="button" data-wc="${c.ym}">📰<b>${+c.ym.slice(5)}월호</b><small>${c.scope==='all'?'전체 월보':'정별 월보'}</small></button>`).join('')}<button type="button" data-wc="none">✕<b>걸지 않기</b></button></div></div>
+    <div class="field"><label>선반 트로피 · 대회에서 입상하면 생겨요</label><div class="wp-grid">${st.places.map(p=>`<button type="button" data-wt="${esc(p.id)}">${['','🥇','🥈','🥉'][p.rank]}<b>${esc(p.name)}</b><small>${esc(p.div)} ${p.rank}위</small></button>`).join('')}<button type="button" data-wt="none">✕<b>올리지 않기</b></button></div></div>
+    <div class="actions"><button class="btn ghost" id="wpClose" type="button">닫기</button><button class="btn pri" id="wpSave" type="button">이렇게 걸기</button></div>`);
+  sh.classList.add('sheet-tall');
+  const curC = W.cover || (st.covers.length?st.covers[st.covers.length-1].ym:'none'), curT = W.trophy || (st.places.length?st.places[0].id:'none');
+  W.scroll=W.scroll||'none'; W.cover=curC; W.trophy=curT;
+  const draw=()=>{ $$('[data-ws]',sh).forEach(b=>b.classList.toggle('on',b.dataset.ws===W.scroll)); $$('[data-wc]',sh).forEach(b=>b.classList.toggle('on',b.dataset.wc===W.cover)); $$('[data-wt]',sh).forEach(b=>b.classList.toggle('on',b.dataset.wt===W.trophy)); };
+  draw();
+  $$('[data-ws]',sh).forEach(b=>b.onclick=()=>{ W.scroll=b.dataset.ws; draw(); }); $$('[data-wc]',sh).forEach(b=>b.onclick=()=>{ W.cover=b.dataset.wc; draw(); }); $$('[data-wt]',sh).forEach(b=>b.onclick=()=>{ W.trophy=b.dataset.wt; draw(); });
+  $('#wpClose',sh).onclick=closeSheet;
+  $('#wpSave',sh).onclick=async()=>{ const ok=await write(st2=>st2.merge('members/'+S.me.id,{roomWall:{scroll:W.scroll, cover:W.cover, trophy:W.trophy}, updatedAt:Date.now()})); if(ok){ const mm=memberById(S.me.id); if(mm) mm.roomWall={...W}; closeSheet(); renderRoom(); toast('방에 걸었어요 🖼'); } };
 }
 function monthsBack(k){ const d=new Date(); d.setDate(1); const out=[]; for(let i=k-1;i>=0;i--){ const x=new Date(d.getFullYear(), d.getMonth()-i, 1); out.push(`${x.getFullYear()}-${pad(x.getMonth()+1)}`); } return out; }
 function growthChartHTML(g){
@@ -3384,11 +3549,13 @@ function renderGrowth(){
     ${growthChartHTML(g)}
     <div class="stats" style="margin-top:12px">${statTiles([[Math.round(g.h/(g.n*5)*100)+'<small>%</small>',`통산 관중률 · ${g.h}/${g.n*5}시`],[g.mo,'통산 몰기'],[g.curWeeks?`${g.curWeeks}<small>주</small>`:'–','연속 습사 중']])}</div>
     <div class="pb">${g.best?`<div><span>🥇 하루 최고</span><b class="num">${Math.round(g.best.r*100)}%</b><small>${fmtShort(g.best.date)} · ${g.best.h}/${g.best.n*5}시</small></div>`:''}<div><span>⚡ 하루 최다</span><b class="num">${g.maxN}순</b><small>${g.maxN*5}시</small></div><div><span>🔁 최장 연속</span><b class="num">${g.bestWeeks}주</b><small>${g.bestDays>1?`${g.bestDays}일 내리`:''}</small></div></div>`;
-  const E=earnedOf(g); $('#badgeCount').textContent=`${E.length}/${BADGES.length}`;
-  const bx=$('#badges'); bx.innerHTML=badgeHTML(g);
-  bx.onclick=e=>{ const b=e.target.closest('[data-bdg]'); if(!b) return; const B=BADGES.find(x=>x.id===b.dataset.bdg); const v=B.v(g); toast(`${B.ic} ${B.t} — ${B.d}${v>=B.goal?' ✓':` (${Math.min(v,B.goal)}/${B.goal})`}`); };
+  const E=earnedOf(g); const ST=badgeState(S.me.id, S.myDays||[]);
+  $('#badgeCount').textContent=`받은 단계 ${ST.sets.reduce((a,x)=>a+x.k,0)} · 특별 ${ST.sp.length+ST.hidden.length}`;
+  const bx=$('#badges'); bx.className='bboard'; bx.innerHTML=boardHTML(ST);
+  bx.onclick=e=>{ const b=e.target.closest('[data-bset]'); if(!b) return; const x=ST.sets.find(y=>y.id===b.dataset.bset); toast(`${x.ic} ${x.t} — ${x.d} · ${x.T.map((v,i)=>BTIER[i+1]+' '+v+x.u).join(' → ')}`); };
+  let wb=$('#wallBtn'); if(!wb){ const h=bx.parentElement.querySelector('.sec-head'); if(h){ wb=document.createElement('button'); wb.type='button'; wb.id='wallBtn'; wb.className='btn sm'; wb.textContent='🖼 방에 걸기'; const old=h.querySelector('.tiny.muted'); if(old) old.remove(); h.appendChild(wb); wb.onclick=openWallPick; } }
   // 새로 얻은 배지 알림 (처음 한 번은 조용히 기억만)
-  const KEY='sadae.badges.'+S.me.id; const seen=lsGet(KEY,null); const ids=E.map(b=>b.id);
+  const KEY='sadae.badges2.'+S.me.id; const seen=lsGet(KEY,null); const ids=E.map(b=>b.id);
   const loaded = S.daysLoaded && (store.kind!=='remote' || store.lastRefresh>0);   // 서버 기록을 다 받은 뒤에만 (새 기기에서 배지 폭탄 방지)
   if(!loaded) return;
   if(seen===null){ lsSet(KEY, ids); }
@@ -3723,7 +3890,7 @@ function magData(ym, scope){
   let nBadge=0;
   for(const [id,days] of Object.entries(idx)){ if(!memberById(id)) continue; const inM=days.some(d=>d.date>=from&&d.date<=to&&dayBrief(d).n); if(!inM) continue;
     const before=growthOf(days.filter(d=>d.date<from), id), now=growthOf(days.filter(d=>d.date<=to), id);
-    const fresh=BADGES.filter(x=>x.id!=='comp' && !(wide && x.id==='first') && x.v(now)>=x.goal && x.v(before)<x.goal); if(!fresh.length) continue; nBadge+=fresh.length;
+    const fresh=BADGES.filter(x=>x.mag!==false && x.set!=='comp' && x.v(now)>=x.goal && x.v(before)<x.goal); if(!fresh.length) continue; nBadge+=fresh.length;
     const top=fresh[fresh.length-1];
     ev.push({tag:'새 배지', mid:id, t:`${nm(id)} 사원 · ${fresh.slice(-2).map(x=>x.ic+' '+x.t).join(' ')}${fresh.length>2?` 외 ${fresh.length-2}개`:''}`, p:`${top.d}${fresh.length>1?` — 이 기간 배지 ${fresh.length}개를 새로 받았어요.`:'.'}`, k:'badge'}); }
   // 집궁 기념일 (100일 · 1000일 · n주년) — 이번 달 안의 날
@@ -3958,7 +4125,7 @@ function renderPlaza(){
   if(nAtt) F.push({ic:'🏹', tx:`오늘 활터에 ${nAtt}명 — ${Object.entries(byJ).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${esc(k)} ${v}`).join(' · ')}`});
   for(const m of mem){ const isMe=S.me&&m.id===S.me.id; const days = isMe ? (S.myDays||[]) : allDaysOf(m.id); const td=days.find(d=>d.date===t); if(!td) continue; const b=dayBrief(td); if(!b.n) continue;
     if(b.mo) F.push({ic:'🎯', mid:m.id, tx:`<b>${esc(m.name)}</b> 님 오늘 몰기${b.mo>1?` ${b.mo}번`:''}! 축하해요`, at:2});
-    const before=growthOf(days.filter(d=>d.date!==t), m.id), now=growthOf(days, m.id); const fresh=BADGES.filter(x=>x.v(now)>=x.goal && x.v(before)<x.goal && x.id!=='comp');
+    const before=growthOf(days.filter(d=>d.date!==t), m.id), now=growthOf(days, m.id); const fresh=BADGES.filter(x=>x.mag!==false && x.v(now)>=x.goal && x.v(before)<x.goal && x.set!=='comp');
     for(const x of fresh) F.push({ic:x.ic, mid:m.id, tx:`<b>${esc(m.name)}</b> 님 새 배지 · ${esc(x.t)}`, at:1});
   }
   const nShot=mem.filter(m=>{ const days=(S.me&&m.id===S.me.id)?(S.myDays||[]):allDaysOf(m.id); const td=days.find(d=>d.date===t); return td && dayBrief(td).n; }).length;
