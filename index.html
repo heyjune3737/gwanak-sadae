@@ -72,7 +72,7 @@ body.gated{overflow:hidden}
 .adm-sec{display:flex;flex-direction:column;gap:6px}.adm-h{font-size:13px;color:var(--ink2);margin-top:6px}
 .adm-row{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--line);background:var(--card)}
 .adm-ch{width:40px;flex:0 0 40px;display:block}.adm-btns{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:58%}
-.adm-tag{font-size:11px;background:var(--gold);color:var(--ink);padding:1px 5px}
+.adm-tag{font-size:11px;background:var(--gold);color:#2A2233;padding:1px 5px}
 #brandBtn{position:relative}#brandBtn.has-badge::after{content:attr(data-badge);position:absolute;top:-6px;left:-6px;min-width:18px;height:18px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
@@ -907,7 +907,7 @@ button.d{font:inherit;cursor:pointer;padding:0}.cal .d.sel{outline:3px solid var
 .scene.art::before,.scene.art .targets{display:none}
 .scene.art .empty{top:auto;bottom:114px;left:50%;right:auto;transform:translateX(-50%);background:var(--card);border:2px solid var(--ink);padding:1px 10px;white-space:nowrap}
 .bg-pill{position:absolute;right:6px;top:6px;z-index:3;background:var(--card);border:2px solid var(--ink);font:inherit;font-size:11.5px;padding:1px 7px;color:var(--ink);cursor:pointer}
-.plaza.art{background-color:#8FCBE3;background-position:center top;background-size:cover;background-repeat:no-repeat;image-rendering:pixelated}
+.plaza.art{background-color:#A9D27A;background-position:center top;background-size:100% auto;background-repeat:no-repeat;image-rendering:pixelated}
 .plaza.art::after,.plaza.art .pz-hall,.plaza.art .pz-tree,.plaza.art .pz-sky{display:none}
 .plaza.art .pz-crowd{top:37%}
 .results{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr);grid-template-rows:62px 100px 62px 46px;grid-template-areas:"ul u ur" "l h r" "dl d dr" "x x z";gap:7px}
@@ -919,6 +919,24 @@ button.d{font:inherit;cursor:pointer;padding:0}.cal .d.sel{outline:3px solid var
 .mg-c[style*="--p:0.6"],.mg-c[style*="--p:0.7"],.mg-c[style*="--p:0.8"],.mg-c[style*="--p:0.9"],.mg-c[style*="--p:1"]{color:#fff}
 .mg-c.H{background:var(--red);color:#fff}
 .mg-c:empty{border:0;background:none}
+.slotf{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;scrollbar-width:none}.slotf::-webkit-scrollbar{display:none}
+.slotf button{flex:none;font:inherit;font-size:13px;padding:5px 11px;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer}
+.slotf button b{font-family:var(--display);color:var(--red);margin-left:2px}.slotf button.on{background:var(--ink);color:var(--card)}.slotf button.on b{color:inherit;text-decoration:underline}
+.scene.two{height:316px}.scene.two .sd-back{bottom:96px}
+.pz-filter{display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 12px}
+.pz-filter button{font:inherit;font-size:12.5px;padding:4px 10px;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer}
+.pz-filter button b{font-family:var(--display);color:var(--red)}.pz-filter button.on{background:var(--ink);color:var(--card)}.pz-filter button.on b{color:inherit}.pz-filter .pz-all{margin-left:auto}
+.plaza{transition:height .3s ease}
+button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);bottom:8px;right:8px;z-index:200;border:2px solid var(--ink)}
+.windbar{display:flex;align-items:center;gap:8px;width:100%;margin:0 0 10px;padding:7px 10px;background:color-mix(in srgb,var(--sky,#BFE3F2) 35%,var(--card));border:2px dashed var(--ink);font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.windbar .wb-ic{font-size:20px}.windbar b{display:block;font-size:14px}.windbar small{display:block;font-size:11.5px;color:var(--ink2)}.windbar .wb-go{font-size:12px;color:var(--indigo);text-decoration:underline;white-space:nowrap}
+.wpick{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.wpick button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;background:var(--card);color:var(--ink);border:2px solid var(--ink);font:inherit;cursor:pointer}
+.wpick button b{font-size:20px;line-height:1}.wpick button span{font-size:11px}.wpick button.on,.wlv button.on,.wcomp button.on{background:var(--ink);color:var(--card)}
+.wlv{display:flex;gap:6px}.wlv button{flex:1;padding:8px;background:var(--card);color:var(--ink);border:2px solid var(--ink);font:inherit;cursor:pointer}
+.wcomp{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.wcomp button{padding:6px 2px;background:var(--card);color:var(--ink);border:2px solid var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.wchip{display:inline-block;margin-left:4px;font-size:10.5px;line-height:1.2;padding:0 3px;border:1px solid var(--line2);background:var(--card2);color:var(--ink2);vertical-align:middle;white-space:nowrap}
+.wstats{display:flex;flex-direction:column;gap:4px}.wst{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--card2);border:1px solid var(--line2)}
+.wst .wk{font-size:18px;width:24px;text-align:center}.wst b{display:block;font-size:13.5px}.wst small{display:block;font-size:11.5px;color:var(--ink2)}.wst .wp{font-family:var(--display);font-size:20px}
 </style>
 
 <div class="app" id="app">
@@ -939,6 +957,7 @@ button.d{font:inherit;cursor:pointer;padding:0}.cal .d.sel{outline:3px solid var
     <!-- ===== 오늘 정 ===== -->
     <section class="view" id="view-today">
       <button class="jbar" id="jBar" type="button"></button>
+      <div class="slotf" id="slotFilter" hidden></div>
       <div class="scene" id="scene" aria-label="오늘 사대">
         <div class="targets" aria-hidden="true"><div class="tgt"><b>一</b><i></i></div><div class="tgt"><b>二</b><i></i></div><div class="tgt"><b>三</b><i></i></div></div>
         <div class="count" id="sceneCount"></div>
@@ -968,6 +987,7 @@ button.d{font:inherit;cursor:pointer;padding:0}.cal .d.sel{outline:3px solid var
         <div class="pz-count" id="plazaCount"></div>
         <div class="pz-crowd" id="plazaCrowd"></div>
       </div>
+      <div class="pz-filter" id="plazaFilter"></div>
       <div class="card">
         <div class="sec-head"><h2>💬 광장 한마디</h2><span class="tiny muted">모든 정 사원이 봐요</span></div>
         <div id="plazaWrite"></div>
@@ -984,6 +1004,7 @@ button.d{font:inherit;cursor:pointer;padding:0}.cal .d.sel{outline:3px solid var
       <div class="recseg" id="recSeg" role="tablist"><button type="button" data-rv="input" role="tab">✍️ 입력</button><button type="button" data-rv="view" role="tab">📖 기록 보기</button></div>
       <div id="recInput">
       <div class="card">
+        <button class="windbar" id="windBar" type="button"></button>
         <div class="arrows" id="arrowSlots"></div>
         <div style="height:12px"></div>
         <div class="results" id="resultBtns"></div>
@@ -1015,6 +1036,7 @@ button.d{font:inherit;cursor:pointer;padding:0}.cal .d.sel{outline:3px solid var
         <div style="height:14px"></div>
         <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="muted">낙점 분포</span><span class="tiny">이번 달 · 가운데가 관중</span></div>
         <div class="dist" id="missDist"></div>
+        <div id="windStats"></div>
         <div style="height:14px"></div>
         <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="muted">습사 달력</span><span class="tiny">날짜를 누르면 그날 기록</span></div>
         <div class="cal" id="monthCal"></div>
@@ -1170,6 +1192,7 @@ const emptyMiss = () => Object.fromEntries(MISS_KEYS.map(k=>[k,0]));
 // 팁·요약용: 대각선은 두 방향 모두에 더함 (앞넘음 = 앞 + 넘음)
 const missAgg = m => ({F:(m.F||0)+(m.FO||0)+(m.FS||0), B:(m.B||0)+(m.BO||0)+(m.BS||0), O:(m.O||0)+(m.FO||0)+(m.BO||0), S:(m.S||0)+(m.FS||0)+(m.BS||0), X:m.X||0});
 const SLOTS = ['새벽','오전','점심','오후','저녁'];
+const slotNow = () => { const h=new Date().getHours(); return h<8?'새벽':h<11?'오전':h<14?'점심':h<18?'오후':'저녁'; };
 const EMOJIS = ['👍','🏹','🎯','🔥','💪','☕'];
 let reactOpen=null;
 
@@ -1357,7 +1380,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.03';
+const APP_VER = '2026.10.03b';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1474,17 +1497,20 @@ async function openApproveLink(){
 }
 // ---------- 안내 탭 ----------
 const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 점
-  {id:'2026-09-30b', date:'9월 30일', title:'🔔 알림이 생겼어요', body:'누가 내 방명록을 남기거나, 내 습사 등록에 응원을 보내거나, 광장에서 @내이름 으로 부르면 위쪽 🔔 에 표시돼요. 🔔 를 눌러 "폰 알림 켜기"를 하면 앱을 닫아 둬도 폰으로 알림이 와요. 광장 글의 ↩ 답글로 @이름을 쉽게 넣을 수 있어요. (아이폰은 홈 화면에 추가한 앱에서만 폰 알림이 돼요)'},
-  {id:'2026-09-30a', date:'9월 30일', title:'표 기록 9방향 🎯', body:'표 기록 입력판이 과녁 모양 9칸으로 바뀌었어요. 관중·넘어감·코박음·앞남·뒤남에 더해 앞넘음·뒤넘음·앞짧음·뒤짧음까지 한 번에 눌러 기록해요. 이번 달 낙점 분포와 🎯 낙점 그림도 9방향으로 보여요. 예전 기록은 그대로예요.'},
+  {id:'2026-09-30b', date:'10월 3일', title:'🔔 알림이 생겼어요', body:'누가 내 방명록을 남기거나, 내 습사 등록에 응원을 보내거나, 광장에서 @내이름 으로 부르면 위쪽 🔔 에 표시돼요. 🔔 를 눌러 "폰 알림 켜기"를 하면 앱을 닫아 둬도 폰으로 알림이 와요. 광장 글의 ↩ 답글로 @이름을 쉽게 넣을 수 있어요. (아이폰은 홈 화면에 추가한 앱에서만 폰 알림이 돼요)'},
+  {id:'2026-09-30a', date:'9월 29일', title:'표 기록 9방향 🎯', body:'표 기록 입력판이 과녁 모양 9칸으로 바뀌었어요. 관중·넘어감·코박음·앞남·뒤남에 더해 앞넘음·뒤넘음·앞짧음·뒤짧음까지 한 번에 눌러 기록해요. 이번 달 낙점 분포와 🎯 낙점 그림도 9방향으로 보여요. 예전 기록은 그대로예요.'},
   {id:'2026-09-29d', date:'9월 29일', title:'서울 8개 정 배경 🏯', body:'황학정·석호정·공항정·살곶이정·영학정·화랑정·수락정·관악정 모두 정마다 다른 도트 배경이 생겼어요(봄·여름·가을·겨울·해질녘). 인왕산과 도심, 남산 서울타워, 공항 비행기, 살곶이 돌다리, 안양천 빌딩숲, 불암산, 수락산 철쭉처럼 그 정의 특징을 담았어요. 광장도 내 정의 건물로 바뀌어요. 우리 정 사진을 보내 주시면 더 닮게 고칠게요.'},
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-10-03b', date:'10월 3일', title:'🌬 바람 기록 · 넓어진 사대와 광장', body:'① 표 기록 맨 위에 그날의 바람이 떠요. 정 위치의 지금 풍향·풍속을 자동으로 가져와 "맞바람·뒷바람·좌→우·우→좌 + 약·중·강"으로 보여 주고, 순을 저장하면 그 바람이 함께 남아요. 눌러서 직접 고칠 수도 있어요. 처음엔 바람 칸 → "과녁 방향"을 한 번 정해 주세요(정마다 한 번, 폰 나침반으로도 잴 수 있어요). 이번 달 바람별 관중률도 보여요. ② 사대에 사람이 많으면 위의 시간대(새벽·오전·점심·오후·저녁)를 눌러 그 시간대 사람만 볼 수 있어요. ③ 광장은 사람 수에 맞춰 세로로 커지고, 모든 정/우리 정 보기와 "모두 보기"가 생겼어요.'},
   {id:'2026-10-03a', date:'10월 3일', title:'단급 · 집궁일 · 활 세기 고쳤어요', body:'테스터분들 의견을 반영했어요. ① 단급에 무급·무단을 넣었어요. ② 집궁일은 이제 고르지 않아도 되고, 내 방 → 프로필 수정에서 바꾸거나 "지우기"로 지울 수 있어요(내 방의 단급·궁체·집궁 칸을 눌러도 열려요). ③ 활 세기는 호 대신 파운드로 적어요. 예전에 적은 숫자는 그대로예요.'},
   {id:'2026-09-24c', date:'9월 24일', title:'앱으로 설치하세요 📱', body:'① 카톡방 공지의 링크로 접속 → 크롬으로 열기  ② 크롬 ⋮ → 홈 화면에 추가 → 설치. 바탕화면의 오늘 사대 아이콘으로 들어오면 앱처럼 쓸 수 있어요.'},
   {id:'2026-09-24b', date:'9월 24일', title:'가입 승인제 · 안내 탭이 생겼어요', body:'링크를 받은 분은 가입 신청 후 관리자 승인이 나면 쓸 수 있어요. 이 안내 탭에서 앱 설치 방법, 이용법, 로그아웃을 찾을 수 있어요.'},
   {id:'2026-09-24a', date:'9월 24일', title:'이름 + 비밀번호로 어느 폰에서나', body:'다른 폰·카톡에서 열어도 "이미 가입했어요 → 불러오기"에 이름과 비밀번호 4자리를 넣으면 내 기록이 그대로 나와요.'},
 ];
+// 최신 공지가 맨 위 (날짜 → 같은 날이면 나중에 쓴 것)
+NOTICES.sort((a,b)=>{ const k=v=>{ const m=/(\d+)월\s*(\d+)일/.exec(v.date||''); return m?(+m[1])*100+(+m[2]):0; }; return k(b)-k(a) || String(b.id).localeCompare(String(a.id)); });
 const ua = navigator.userAgent||'';
 const IS_IOS=/iPhone|iPad|iPod/i.test(ua), IS_AND=/Android/i.test(ua), IS_KAKAO=/KAKAOTALK/i.test(ua), IS_INAPP=IS_KAKAO||/NAVER|Instagram|FBAN|FBAV|Line\/|DaumApps|BAND/i.test(ua), IS_SAMSUNG=/SamsungBrowser/i.test(ua);
 const IS_STANDALONE = matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
@@ -1537,6 +1563,7 @@ function renderInfo(){
     <details class="notice"><summary>오늘 정 — 습사 등록</summary><p>시간대(새벽~저녁)를 누르면 사대에 내 캐릭터가 서요. 사대에는 <b>내 소속 정</b> 사원만 보여요. 다른 정에 가는 날은 위의 📍정 이름을 눌러 그 정을 고르고 시간대를 누르세요. 다른 사원 이름 옆 ＋로 이모지 응원, 안 가게 되면 "안 가요".</p></details>
     <details class="notice"><summary>광장 — 모든 정 사원과 한마디</summary><p>가입한 사원 모두가 광장에 모여요. 캐릭터를 누르면 그 사원의 방에 놀러 가고, 아래에서 한마디(하루 30개까지)를 남길 수 있어요. 오늘 몰기·새 배지 소식도 여기 떠요.</p></details>
     <details class="notice"><summary>표 기록 — 한 발씩</summary><p>위쪽 "✍️ 입력 / 📖 기록 보기"로 화면을 바꿔요. 기록 보기에선 큰 글씨로 순을 보고 ◀ ▶로 날짜를 넘겨요. 입력판은 과녁을 바라본 모양 그대로 9칸이에요: 가운데 관중, 위 넘어감, 아래 코박음(짧음), 옆은 앞남·뒤남, 네 귀퉁이는 앞넘음·뒤넘음·앞짧음·뒤짧음. 좌궁이면 앞·뒤가 좌우로 바뀌어요. 잘못 누르면 "↶ 한 발".</p></details>
+    <details class="notice"><summary>🌬 바람 기록</summary><p>표 기록 맨 위 바람 칸에 정 위치의 지금 바람이 자동으로 떠요(날씨 정보 Open-Meteo). 순을 저장하면 그 바람이 순 옆에 작게 남아요(⬇맞바람 ⬆뒷바람 ➡좌→우 ⬅우→좌). 실제와 다르면 바람 칸을 눌러 직접 고르면 오늘 하루 그대로 기록돼요. 정마다 처음 한 번 "과녁 방향"(사대에서 과녁이 있는 쪽)을 정해야 맞바람·좌우가 계산돼요.</p></details>
     <details class="notice"><summary>🔔 알림 — 방명록 · 응원 · @부름</summary><p>누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 <b>@내이름</b>으로 부르면 위쪽 🔔 에 빨간 숫자가 떠요. 🔔 → <b>폰 알림 켜기</b>를 하면 앱을 닫아 둬도 폰 알림으로 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 "↩ 답글"을 누르면 @이름이 자동으로 들어가요.</p></details>
     <details class="notice"><summary>내 방 — 장비 · 기록 보관함</summary><p>활·화살·궁체·단급을 적고, 지난 표 기록을 날짜별로 보고 엑셀로 받을 수 있어요.</p></details>
     <details class="notice"><summary>대회 — 월례회 3순 · 승단 9순</summary><p>정식은 협회 규정(선다시수순·각궁 우대·비교전)으로 순위를 내요. 사대 기록 모드로 한 사람이 모두의 점수를 넣을 수 있어요.</p></details>
@@ -1831,7 +1858,7 @@ function daysQuery(){ return {col:'days', where:[['memberId','==', S.me ? S.me.i
 
 /* ---------- 탭 ---------- */
 $$('.tab').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
-function setTab(t){ S.tab=t; if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); lsSet('sadae.tab',t); window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
+function setTab(t){ S.tab=t; if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); lsSet('sadae.tab',t); window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
 (function(){ const h=(location.hash||'').replace('#','').split('&')[0]; const t = ['today','plaza','record','room','comp','info'].includes(h) ? h : (lsGet('sadae.tab','today')); setTab(t); })();
 
 /* ---------- 헤더 ---------- */
@@ -1950,7 +1977,16 @@ function openJeongView(){
 }
 $('#jBar').addEventListener('click', openJeongView);
 function renderToday(){
-  const t=today(); const allAtt=attEntries(); const VJ=viewJ(); const list=allAtt.filter(e=>entryJid(e)===VJ.id);
+  const t=today(); const allAtt=attEntries(); const VJ=viewJ(); const listAll=allAtt.filter(e=>entryJid(e)===VJ.id);
+  // 시간대 칩: 사람이 많으면 그 시간대 사람만 사대에 (아래 명단은 그대로 전체)
+  const slotCnt={}; listAll.forEach(e=>{ slotCnt[e.slot]=(slotCnt[e.slot]||0)+1; });
+  const slotsHere=SLOTS.filter(x=>slotCnt[x]);
+  if(S.sceneSlot && S.sceneSlot!=='all' && !slotCnt[S.sceneSlot]) S.sceneSlot=null;
+  if(!S.sceneSlot || S.sceneSlotAuto){ const nowS=slotNow(); S.sceneSlot = (listAll.length>6 && slotsHere.length>1) ? (slotCnt[nowS]?nowS:slotsHere.slice().sort((a,b)=>slotCnt[b]-slotCnt[a])[0]) : 'all'; S.sceneSlotAuto=true; }
+  const SF=$('#slotFilter'); const showF = listAll.length>4 && slotsHere.length>1; SF.hidden=!showF;
+  if(showF){ SF.innerHTML = `<button type="button" data-sf="all" class="${S.sceneSlot==='all'?'on':''}">전체 <b class="num">${listAll.length}</b></button>` + slotsHere.map(x=>`<button type="button" data-sf="${x}" class="${S.sceneSlot===x?'on':''}">${x} <b class="num">${slotCnt[x]}</b></button>`).join('');
+    $$('[data-sf]',SF).forEach(b=>b.onclick=()=>{ S.sceneSlot=b.dataset.sf; S.sceneSlotAuto=false; renderToday(); }); }
+  const list = (showF && S.sceneSlot!=='all') ? listAll.filter(e=>e.slot===S.sceneSlot) : listAll;
   const away=S.me ? allAtt.find(e=>e.id===S.me.id && entryJid(e)!==VJ.id) : null;
   if(typeof applySceneArt==='function') applySceneArt();
   $('#jBar').innerHTML = `<span class="jb-pin">📍</span><b>${esc(VJ.name)}</b><span class="jb-sub">${S.viewJ?'다른 정 보는 중':'오늘 사대'}</span><span class="jb-go">바꾸기 ▾</span>`;
@@ -1974,9 +2010,10 @@ function renderToday(){
     back.innerHTML='';
     $('#sceneEmpty').hidden=false;
   }
-  $('#sceneCount').innerHTML = list.length ? `오늘 <b class="num">${list.length}</b>명` : `오늘 사대`;
+  $('#sceneCount').innerHTML = !list.length ? `오늘 사대` : (list.length!==listAll.length ? `${esc(S.sceneSlot)} <b class="num">${list.length}</b>명 · 오늘 ${listAll.length}명` : `오늘 <b class="num">${list.length}</b>명`);
+  $('#scene').classList.toggle('two', list.length>7);
   // 오늘 나는 — 시간대 한 번 누르면 등록
-  const mineEl=$('#attMine'); const mine=S.me?list.find(e=>e.id===S.me.id):null;
+  const mineEl=$('#attMine'); const mine=S.me?listAll.find(e=>e.id===S.me.id):null;
   if(!S.me){
     mineEl.innerHTML = `<div class="empty-cta"><div class="ec-t"><b>처음 오셨나요?</b><span class="muted">캐릭터를 고르고 이름을 적으면 사대에 설 수 있어요.</span></div><button class="btn pri block" id="attPickMe">캐릭터 고르기</button>${store.kind==='remote'?'<button class="btn ghost block" id="attLogin" style="margin-top:8px">다른 폰에서 쓰던 캐릭터 불러오기</button>':''}</div>`;
     $('#attPickMe').addEventListener('click', openProfile); const al=$('#attLogin'); if(al) al.addEventListener('click',()=>openLogin(''));
@@ -1995,8 +2032,8 @@ function renderToday(){
   }
   $('#attHint').textContent = mine ? `${mine.slot}에 갑니다` : away ? `${away.jname||'다른 정'} ${away.slot}` : (S.me && store.kind!=='db' && store.kind!=='remote' ? '이 기기에서만 보여요' : '');
   // 목록
-  $('#attCount').textContent = list.length ? `${list.length}명` : '';
-  $('#attList').innerHTML = list.length ? list.map(e=>{ const m=memberById(e.id); const c=(m&&m.char)||e.char||DEFAULT_CHAR; const nm=(m&&m.name)||e.name||'사원';
+  $('#attCount').textContent = listAll.length ? `${listAll.length}명` : '';
+  $('#attList').innerHTML = listAll.length ? listAll.map(e=>{ const m=memberById(e.id); const c=(m&&m.char)||e.char||DEFAULT_CHAR; const nm=(m&&m.name)||e.name||'사원';
       const rx=e.reactions||{}; const counts={}; Object.entries(rx).forEach(([who,em])=>{ if(em) counts[em]=(counts[em]||[]).concat(who); }); const mine=S.me?rx[S.me.id]:null; const isMe=S.me&&S.me.id===e.id;
       const chips=Object.entries(counts).map(([em,whos])=>`<span class="react ${whos.includes(S.me&&S.me.id)?'mine':''}" title="${esc(whos.map(w=>{const mm=memberById(w);return mm?mm.name:'사원';}).join(', '))}">${em} ${whos.length}</span>`).join('');
       return `<div class="att ${reactOpen===e.id?'open':''}" data-att="${e.id}"><span class="av">${charSVG(c)}</span><div class="who"><b>${esc(nm)}</b><span>${esc([e.slot,e.note].filter(Boolean).join(' · '))}</span>${chips?`<div class="reacts">${chips}</div>`:''}</div>
@@ -2029,11 +2066,112 @@ $('#saveRound').addEventListener('click', async ()=>{
   const arr=[0,1,2,3,4].map(i=>S.round[i]); if(arr.some(x=>!x)) return;
   const t=today(), p=`days/${S.me.id}_${t}`;
   const cur = (await store.get(p)) || {memberId:S.me.id, date:t, rounds:[]};
+  const n0=(cur.rounds||[]).length; const cw=currentWind();
+  if(cw && cw.r){ const ws=(cur.winds||[]).slice(0,n0); while(ws.length<n0) ws.push(null); ws.push({r:cw.r, l:cw.l||0, src:cw.src, ...(cw.ms!=null?{ms:cw.ms,deg:cw.deg,g:cw.g}:{})}); cur.winds=ws; }
+  else if(cur.winds){ const ws=cur.winds.slice(0,n0); while(ws.length<n0) ws.push(null); ws.push(null); cur.winds=ws; }
   cur.rounds=[...(cur.rounds||[]), arr]; cur.updatedAt=Date.now();
   const ok=await write(st=>st.set(p, cur));
   if(ok){ const h=arr.filter(x=>x==='H').length; S.round=[]; saveDraft(); showRoundPop(arr, cur.rounds.length, cur.rounds.reduce((a,r)=>a+hitsOf(r),0)); }
 });
 const hitsOf = r => r.filter(x=>x==='H').length;
+
+/* =========================================================
+   그날의 바람 — 자동(Open-Meteo) + 수동, 과녁 기준 방향
+   ========================================================= */
+const JEONG_GEO = { hwanghak:[37.5773,126.9644], gonghang:[37.5528,126.8438], salgoji:[37.5582,127.0697], seokho:[37.5530,127.0035],
+  yeonghak:[37.5273,126.8794], hwarang:[37.6240,127.1030], gwanak:[37.4760,126.9470], sungnak:[37.6797,127.0898] };
+const WREL = { '0':{k:'·', l:'바람 없음'}, H:{k:'⬇', l:'맞바람'}, T:{k:'⬆', l:'뒷바람'}, LR:{k:'➡', l:'좌→우'}, RL:{k:'⬅', l:'우→좌'} };
+const WREL_ORDER = ['0','H','T','LR','RL'];
+const WLV = ['','약','중','강'];
+const COMPASS = ['북','북동','동','남동','남','남서','서','북서'];
+const compassOf = deg => COMPASS[Math.round(((deg%360)+360)%360/45)%8];
+const wLevel = ms => ms<1.5?0: ms<3.5?1: ms<6?2: 3;
+// 풍향(바람이 불어오는 쪽) - 과녁 방향 → 사대에서 본 바람
+function wRelOf(deg, bearing){ const a=((deg-bearing)%360+360)%360; return a<45||a>=315?'H': a<135?'RL': a<225?'T':'LR'; }
+S.windSet = null;
+const subWindSet = sub({doc:'settings/wind'}, d => { S.windSet=d||{}; if(window.__booted && typeof renderWindBar==='function') renderWindBar(); });
+const windJ = () => homeJ();   // 표 기록은 내 소속 정 기준 (다른 정에 간 날은 오늘 등록한 정)
+function windJid(){ try{ const me=S.me&&attEntries().find(e=>e.id===S.me.id); if(me && entryJid(me)) return entryJid(me); }catch(e){} return windJ().id; }
+const bearingOf = jid => { const b=S.windSet&&S.windSet.bearing&&S.windSet.bearing[jid]; return (typeof b==='number' && b>=0 && b<360) ? b : null; };
+S.windNow = {}; // jid → {at, ms, deg, g} 또는 {err}
+async function fetchWind(jid, force){
+  const geo=JEONG_GEO[jid]; if(!geo) return null;
+  const c=S.windNow[jid] || lsGet('sadae.wind.'+jid, null);
+  if(c && !c.err && !force && Date.now()-c.at < 15*60e3){ S.windNow[jid]=c; return c; }
+  if(c && c.err && !force && Date.now()-c.at < 60e3) return null;
+  S.windBusy=S.windBusy||{}; if(S.windBusy[jid]) return S.windBusy[jid];
+  return (S.windBusy[jid] = fetchWind0(jid, geo, c).finally(()=>{ S.windBusy[jid]=null; }));
+}
+async function fetchWind0(jid, geo, c){
+  try{
+    const u=`https://api.open-meteo.com/v1/forecast?latitude=${geo[0]}&longitude=${geo[1]}&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=ms&timezone=Asia%2FSeoul`;
+    const r=await fetch(u); const j=await r.json(); const cu=j&&j.current; if(!cu || typeof cu.wind_speed_10m!=='number') throw new Error('no data');
+    const w={at:Date.now(), ms:+cu.wind_speed_10m.toFixed(1), deg:Math.round(cu.wind_direction_10m), g:+(cu.wind_gusts_10m||0).toFixed(1)};
+    S.windNow[jid]=w; lsSet('sadae.wind.'+jid, w); return w;
+  }catch(e){ S.windNow[jid] = c && !c.err ? c : {err:true, at:Date.now()}; return S.windNow[jid].err?null:S.windNow[jid]; }
+}
+// 지금 기록에 쓸 바람: 오늘 손으로 고친 게 있으면 그것, 아니면 자동
+function windManual(){ const m=lsGet('sadae.windman', null); return (m && m.date===today() && WREL[m.r]) ? m : null; }
+function currentWind(){
+  const jid=windJid(), w=S.windNow[jid], b=bearingOf(jid), man=windManual();
+  const auto = (w && !w.err) ? {ms:w.ms, deg:w.deg, g:w.g, l:wLevel(w.ms), r: wLevel(w.ms)===0?'0' : (b!=null? wRelOf(w.deg,b) : null)} : null;
+  if(man) return {r:man.r, l:man.r==='0'?0:man.l, src:'m', ...(auto?{ms:auto.ms,deg:auto.deg,g:auto.g}:{})};
+  if(auto) return {...auto, src:'a'};
+  return null;
+}
+const windLabel = w => !w || !w.r ? '' : (w.r==='0' ? '바람 없음' : `${WREL[w.r].l} ${WLV[w.l]||''}`.trim());
+const windChip = w => !w || !w.r ? '' : `<span class="wchip w-${w.r}" title="${esc(windLabel(w))}${w.ms!=null?` · ${w.ms}m/s`:''}">${WREL[w.r].k}${w.r==='0'?'':WLV[w.l]||''}</span>`;
+function renderWindBar(){
+  const el=$('#windBar'); if(!el) return; const jid=windJid(); const w=S.windNow[jid]; const cw=currentWind(); const b=bearingOf(jid);
+  const raw = w && !w.err ? `${compassOf(w.deg)}풍 ${w.ms}m/s${w.g>w.ms+1?` · 돌풍 ${w.g}`:''}` : '';
+  let main, sub;
+  if(cw && cw.r){ main=`${WREL[cw.r].k} ${windLabel(cw)}`; sub = cw.src==='m' ? `직접 고름${raw?' · 지금 '+raw:''}` : raw; }
+  else if(w && !w.err && b==null){ main=raw; sub='과녁 방향을 정하면 좌→우처럼 보여요'; }
+  else if(w===undefined){ main='바람 불러오는 중…'; sub=''; }
+  else { main='바람 기록하기'; sub='눌러서 방향·세기를 골라요'; }
+  el.innerHTML = `<span class="wb-ic">🌬</span><span class="grow"><b>${esc(main)}</b>${sub?`<small>${esc(sub)}</small>`:''}</span><span class="wb-go">바꾸기</span>`;
+}
+async function refreshWind(force){ const jid=windJid(); if(!JEONG_GEO[jid]){ S.windNow[jid]={err:true}; renderWindBar(); return; } renderWindBar(); await fetchWind(jid, force); renderWindBar(); }
+$('#windBar').addEventListener('click', openWindSheet);
+function openWindSheet(){
+  const jid=windJid(); const jn=(JEONGS.find(j=>j.id===jid)||windJ()).name; const w=S.windNow[jid]; const b=bearingOf(jid); const cw=currentWind()||{};
+  let pr=cw.r||null, pl=cw.l||1;
+  const by = S.windSet&&S.windSet.by&&S.windSet.by[jid]; const byName = by ? ((memberById(by)||{}).name||'사원') : '';
+  const sh=openSheet(`<h3>🌬 지금 바람</h3>
+    <div class="card flat" style="padding:10px 12px">${w && !w.err ? `<b>${esc(jn)} · ${compassOf(w.deg)}풍 ${w.ms}m/s</b>${w.g?` <span class="tiny muted">(돌풍 ${w.g}m/s)</span>`:''}<br><span class="tiny muted">${new Date(w.at).toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit'})} 기준 · 날씨 정보 Open-Meteo.com</span>` : `<span class="tiny muted">${JEONG_GEO[jid]?'날씨 정보를 불러오지 못했어요. 아래에서 직접 골라 주세요.':'이 정은 위치 정보가 없어 직접 골라 주세요.'}</span>`}</div>
+    <div class="field"><label>사대에서 과녁을 바라볼 때</label><div class="wpick">${WREL_ORDER.map(k=>`<button type="button" data-wr="${k}" class="${pr===k?'on':''}"><b>${WREL[k].k}</b><span>${WREL[k].l}</span></button>`).join('')}</div></div>
+    <div class="field" id="wLvF"><label>세기</label><div class="wlv">${[1,2,3].map(l=>`<button type="button" data-wl="${l}" class="${pl===l?'on':''}">${WLV[l]}</button>`).join('')}</div><span class="tiny muted">약 ~3m/s · 중 ~6m/s · 강 6m/s 넘게</span></div>
+    <div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn pri grow" id="wSave" type="button">이 바람으로 기록</button>${windManual()?'<button class="btn ghost" id="wAuto" type="button">자동으로</button>':''}</div>
+    <details class="notice" ${b==null?'open':''}><summary>🎯 ${esc(jn)} 과녁 방향 ${b!=null?`<span class="tiny muted">· ${compassOf(b)}쪽 (${b}°)${byName?' · '+esc(byName)+' 님이 정함':''}</span>`:'<span class="tiny" style="color:var(--red)">· 아직 안 정함</span>'}</summary>
+      <p class="tiny" style="margin:6px 0">사대에서 과녁이 어느 쪽에 있나요? 한 번만 정하면 정 사원 모두에게 맞바람·좌→우처럼 자동으로 보여요.</p>
+      <div class="wcomp">${COMPASS.map((c,i)=>`<button type="button" data-wb="${i*45}" class="${b===i*45?'on':''}">${c}</button>`).join('')}</div>
+      <button class="btn sm ghost" id="wCompass" type="button" style="margin-top:8px">📱 폰 나침반으로 재기</button><div class="tiny muted" id="wCompassOut"></div></details>
+    <div class="actions"><button class="btn ghost" id="wClose">닫기</button></div>`);
+  const paint=()=>{ $$('[data-wr]',sh).forEach(x=>x.classList.toggle('on',x.dataset.wr===pr)); $$('[data-wl]',sh).forEach(x=>x.classList.toggle('on',+x.dataset.wl===pl)); $('#wLvF',sh).hidden = pr==='0'; };
+  paint();
+  $$('[data-wr]',sh).forEach(x=>x.onclick=()=>{ pr=x.dataset.wr; paint(); });
+  $$('[data-wl]',sh).forEach(x=>x.onclick=()=>{ pl=+x.dataset.wl; paint(); });
+  $('#wClose',sh).onclick=closeSheet;
+  $('#wSave',sh).onclick=()=>{ if(!pr){ toast('바람 방향을 골라 주세요'); return; } lsSet('sadae.windman',{date:today(), r:pr, l:pr==='0'?0:pl}); closeSheet(); renderWindBar(); toast('다음 순부터 이 바람으로 기록해요'); };
+  const wa=$('#wAuto',sh); if(wa) wa.onclick=()=>{ lsSet('sadae.windman',null); closeSheet(); renderWindBar(); };
+  const setB=async deg=>{ deg=Math.round(((deg%360)+360)%360); const ok=await write(st=>st.merge('settings/wind',{bearing:{[jid]:deg}, by:{[jid]:S.me?S.me.id:''}})); if(ok){ toast(`${jn} 과녁 방향을 ${compassOf(deg)}쪽으로 정했어요`); closeSheet(); renderWindBar(); } };
+  $$('[data-wb]',sh).forEach(x=>x.onclick=()=>setB(+x.dataset.wb));
+  $('#wCompass',sh).onclick=async()=>{ const out=$('#wCompassOut',sh);
+    try{ if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){ const p=await DeviceOrientationEvent.requestPermission(); if(p!=='granted'){ out.textContent='나침반 권한이 필요해요'; return; } } }catch(e){}
+    let head=null; const on=e=>{ let h=null; if(typeof e.webkitCompassHeading==='number') h=e.webkitCompassHeading; else if(e.absolute && typeof e.alpha==='number') h=(360-e.alpha)%360; if(h!=null){ head=Math.round(h); out.innerHTML=`지금 폰 위쪽이 <b>${compassOf(head)}쪽 (${head}°)</b> · 폰을 눕혀 위쪽 끝을 과녁에 향하고 <button class="btn sm pri" id="wCSave" type="button">이 방향으로 정하기</button>`; const bs=$('#wCSave',sh); if(bs) bs.onclick=()=>{ stop(); setB(head); }; } };
+    const stop=()=>{ window.removeEventListener('deviceorientationabsolute',on); window.removeEventListener('deviceorientation',on); };
+    window.addEventListener('deviceorientationabsolute',on); window.addEventListener('deviceorientation',on);
+    out.textContent='폰을 눕혀 위쪽 끝을 과녁 쪽으로 향해 주세요…'; setTimeout(()=>{ if(head==null){ stop(); out.textContent='이 기기에선 나침반을 읽지 못했어요. 위의 8방향에서 골라 주세요.'; } },4000); };
+}
+// 이번 달 바람별
+function windStatsHTML(mdays){
+  const g={}; let any=0;
+  for(const d of mdays){ const ws=d.winds||[]; (d.rounds||[]).forEach((r,i)=>{ const w=ws[i]; if(!w||!w.r||!Array.isArray(r)) return; any++; const o=g[w.r]||(g[w.r]={n:0,h:0,miss:{}}); o.n++; o.h+=hitsOf(r); r.forEach(x=>{ if(x&&x!=='H'&&x!=='X'){ const a=resArea(x); o.miss[a]=(o.miss[a]||0)+1; } }); }); }
+  if(!any) return '<div class="tiny muted" style="margin-top:12px">🌬 순을 저장할 때 바람도 함께 남아요. 쌓이면 바람별 관중률이 여기 보여요.</div>';
+  const AG={u:'↑ 넘음',d:'↓ 짧음',l:'← 왼쪽',r:'→ 오른쪽',ul:'↖',ur:'↗',dl:'↙',dr:'↘'};
+  return `<div class="row" style="justify-content:space-between;margin:14px 0 6px"><span class="muted">🌬 바람별</span><span class="tiny">이번 달 · 바람과 함께 남긴 순</span></div><div class="wstats">${WREL_ORDER.filter(k=>g[k]).map(k=>{ const o=g[k]; const top=Object.entries(o.miss).sort((a,b)=>b[1]-a[1])[0]; return `<div class="wst"><span class="wk w-${k}">${WREL[k].k}</span><span class="grow"><b>${WREL[k].l}</b><small>${o.n}순${top?` · 주로 ${AG[top[0]]||top[0]}`:''}</small></span><span class="num wp">${Math.round(o.h/(o.n*5)*100)}<small>%</small></span></div>`; }).join('')}</div>`;
+}
+
 function renderRecord(){
   renderRoundInput();
   const t=today();
@@ -2041,7 +2179,8 @@ function renderRecord(){
   const th=rounds.reduce((a,r)=>a+hitsOf(r),0), ta=rounds.length*5, tm=rounds.filter(r=>hitsOf(r)===5).length;
   $('#todaySum').innerHTML = ta ? `${th}/${ta}시 · <b>${Math.round(th/ta*100)}%</b> · 몰기 ${tm}` : '';
   $('#cardToday').hidden = !rounds.length;
-  $('#todayRounds').innerHTML = rounds.length ? rounds.map((r,i)=>`<div class="rnd"><span class="n">${i+1}순</span><div class="dots">${r.map(x=>`<span class="dot ${rc(x)}">${glyph(x)}</span>`).join('')}</div>${hitsOf(r)===5?'<span class="molgi">몰기</span>':''}<span class="sum num">${hitsOf(r)}중</span><button class="btn sm ghost" data-del="${i}" aria-label="${i+1}순 삭제">✕</button></div>`).reverse().join('')
+  const tws=(td&&td.winds)||[];
+  $('#todayRounds').innerHTML = rounds.length ? rounds.map((r,i)=>`<div class="rnd"><span class="n">${i+1}순${windChip(tws[i])}</span><div class="dots">${r.map(x=>`<span class="dot ${rc(x)}">${glyph(x)}</span>`).join('')}</div>${hitsOf(r)===5?'<span class="molgi">몰기</span>':''}<span class="sum num">${hitsOf(r)}중</span><button class="btn sm ghost" data-del="${i}" aria-label="${i+1}순 삭제">✕</button></div>`).reverse().join('')
     : `<div class="muted">${S.me?'오늘 낸 순이 아직 없어요. 위에서 5시를 채우고 저장해 보세요.':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>`;
   $$('#todayRounds [data-del]').forEach(b=>b.addEventListener('click', ()=>confirmDelRound(+b.dataset.del)));
   // 이번 달
@@ -2053,6 +2192,8 @@ function renderRecord(){
   $('#monthStats').innerHTML = statTiles([[ma?Math.round(mh/ma*100)+'<small>%</small>':'–',`관중률 · ${mh}/${ma}시`],[`${mdays.length}<small>일</small>`,`습사 · ${mr}순`],[mm,'몰기']]);
   const missTotal=Object.values(miss).reduce((a,b)=>a+b,0);
   $('#missDist').innerHTML = missGridHTML(miss, mh);
+  $('#windStats').innerHTML = windStatsHTML(mdays);
+  renderWindBar(); if(S.tab==='record' && S.recView!=='view'){ const jw=S.windNow[windJid()]; if(!jw || Date.now()-(jw.at||0) > 15*60e3) refreshWind(); }
   // 달력
   const first=new Date(Y,M-1,1).getDay(), dim=new Date(Y,M,0).getDate(); const byDate=Object.fromEntries(mdays.map(d=>[d.date,d]));
   let cal = WD.map(w=>`<div class="d" style="background:none;color:var(--ink3)">${w}</div>`).join('') + Array(first).fill('<div></div>').join('');
@@ -2075,7 +2216,7 @@ const statTiles = arr => arr.map(([v,l])=>`<div class="stat"><div class="v num">
 function confirmDelRound(i){
   const sh=openSheet(`<h3>${i+1}순 기록을 지울까요?</h3><p class="muted">지운 기록은 되돌릴 수 없어요.</p><div class="actions"><button class="btn ghost" id="cNo">취소</button><button class="btn red" id="cYes">지우기</button></div>`);
   $('#cNo',sh).addEventListener('click',closeSheet);
-  $('#cYes',sh).addEventListener('click', async ()=>{ const t=today(), p=`days/${S.me.id}_${t}`; const cur=await store.get(p); if(cur){ cur.rounds.splice(i,1); cur.updatedAt=Date.now(); await write(st=> cur.rounds.length ? st.set(p,cur) : st.del(p)); } closeSheet(); });
+  $('#cYes',sh).addEventListener('click', async ()=>{ const t=today(), p=`days/${S.me.id}_${t}`; const cur=await store.get(p); if(cur){ cur.rounds.splice(i,1); if(Array.isArray(cur.winds)) cur.winds.splice(i,1); cur.updatedAt=Date.now(); await write(st=> cur.rounds.length ? st.set(p,cur) : st.del(p)); } closeSheet(); });
 }
 
 /* =========================================================
@@ -2682,6 +2823,17 @@ const isAdminNow = () => !!(typeof store==='object' && store && store.who && sto
 function hhmm(ms){ const d=new Date(ms||0); const h=d.getHours(); return `${h<12?'오전':'오후'} ${h%12||12}:${pad(d.getMinutes())}`; }
 function othersDay(mid, date){ const D=(store&&store.docs)||{}; const d=D['days/'+mid+'_'+date]; return d ? dayBrief({...d, date:d.date||date}) : null; }
 function allDaysOf(mid){ const D=(store&&store.docs)||{}; const out=[]; const pre='days/'+mid+'_'; for(const k in D){ if(k.startsWith(pre) && D[k]) out.push({...D[k], date:D[k].date||k.slice(pre.length)}); } return out; }
+// 광장 사원 모두 (정별)
+function openPlazaList(){
+  const all=(S.members||[]).filter(m=>m&&m.name); const byJ={}; all.forEach(m=>{ const j=memberJ(m).name; (byJ[j]=byJ[j]||[]).push(m); });
+  const hj=homeJ().name; const keys=Object.keys(byJ).sort((a,b)=>(b===hj)-(a===hj) || byJ[b].length-byJ[a].length);
+  const cell=m=>`<button class="rs" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name)}</b><small>${esc(m.grade||'신사')}</small></button>`;
+  const sh=openSheet(`<h3>👥 광장 사원 모두 <small class="muted">${all.length}명</small></h3><p class="tiny muted" style="margin:0">누르면 그 사원의 방에 놀러 가요</p>
+    ${keys.map(k=>`<div class="adm-h" style="margin-top:8px">${esc(k)} <b>${byJ[k].length}</b></div><div class="roster">${byJ[k].sort((a,b)=>String(a.name).localeCompare(String(b.name),'ko')).map(cell).join('')}</div>`).join('')}
+    <div class="actions"><button class="btn ghost" id="plClose">닫기</button></div>`);
+  sh.classList.add('sheet-tall'); $('#plClose',sh).addEventListener('click',closeSheet);
+  $$('[data-room]',sh).forEach(b=>b.addEventListener('click',()=>{ const id=b.dataset.room; closeSheet(); if(typeof openRoom==='function') openRoom(id); }));
+}
 function renderPlaza(){
   const box=$('#plazaCrowd'); if(!box) return; applyPlazaArt();
   const t=today(); const att=attEntries(); const attBy=Object.fromEntries(att.map(e=>[e.id,e]));
@@ -2689,13 +2841,19 @@ function renderPlaza(){
   const lastMsg={}; for(const m of msgs) if(!lastMsg[m.from]) lastMsg[m.from]=m;
   let mem=(S.members||[]).filter(m=>m&&m.name);
   if(S.me && !mem.some(m=>m.id===S.me.id)) mem=[...mem, S.me];
+  const memAll=mem; const hjId=homeJ().id; const nMine=memAll.filter(m=>memberJ(m).id===hjId).length;
+  if(S.plazaMine && nMine) mem=memAll.filter(m=>memberJ(m).id===hjId);
+  const PF=$('#plazaFilter'); if(PF){ PF.innerHTML = memAll.length>nMine && nMine ? `<button type="button" data-pf="all" class="${S.plazaMine?'':'on'}">🌏 모든 정 <b class="num">${memAll.length}</b></button><button type="button" data-pf="mine" class="${S.plazaMine?'on':''}">🏯 ${esc(homeJ().name)} <b class="num">${nMine}</b></button><button type="button" class="pz-all" data-pf="list">👥 모두 보기</button>` : `<button type="button" class="pz-all" data-pf="list">👥 사원 모두 보기</button>`;
+    $$('[data-pf]',PF).forEach(b=>b.onclick=()=>{ const v=b.dataset.pf; if(v==='list'){ openPlazaList(); return; } S.plazaMine = v==='mine'; renderPlaza(); }); }
   const score=m=>(S.me&&m.id===S.me.id?1e15:0)+(lastMsg[m.id]?lastMsg[m.id].at:0)+(attBy[m.id]?1e12:0)+(m.updatedAt||0)/1e3;
-  const shown=mem.slice().sort((a,b)=>score(b)-score(a)).slice(0,36); const more=mem.length-shown.length;
-  // 자리: 사람 수에 맞춘 모눈 + 사람마다 고정된 흔들림 (다시 그려도 같은 자리)
-  const n=shown.length, cols=Math.min(7, Math.max(3, Math.ceil(Math.sqrt(n*1.8)))), rows=Math.max(1, Math.ceil(n/cols));
+  const shown=mem.slice().sort((a,b)=>score(b)-score(a)).slice(0,42); const more=mem.length-shown.length;
+  // 자리: 사람 수에 맞춘 모눈 + 사람마다 고정된 흔들림 (다시 그려도 같은 자리). 한 줄 최대 6명, 줄이 늘면 광장이 세로로 커짐
+  const n=shown.length, cols=Math.min(6, Math.max(3, Math.ceil(Math.sqrt(n*1.5)))), rows=Math.max(1, Math.ceil(n/cols));
+  const PZ=$('#plaza'); if(PZ){ const W=PZ.clientWidth||360; const imgH = PZ.classList.contains('art') ? W*(+PZ.dataset.ratio||0.95) : 380; const top0 = PZ.classList.contains('art') ? Math.round(imgH*0.40) : 118;
+    const H = Math.max(380, Math.min(720, top0 + rows*74 + 70)); PZ.style.height = H+'px'; box.style.top = top0+'px'; box.style.bottom = '54px'; }
   const order=shown.slice().sort((a,b)=>hashN(a.id,997)-hashN(b.id,997));
   const POS={}; order.forEach((m,i)=>{ const r=Math.floor(i/cols), c=i%cols; const jx=(hashN(m.id+'x',100)/100-.5)*0.3, jy=(hashN(m.id+'y',100)/100-.5)*0.3;
-    POS[m.id]={x:Math.min(92, Math.max(6, ((c+.5+jx+(r%2?.35:0))/cols)*100)), y:rows===1?70:Math.min(100, Math.max(18, 18+((r+.5+jy)/rows)*84))}; });
+    POS[m.id]={x:Math.min(92, Math.max(6, ((c+.5+jx+(r%2?.35:0))/cols)*100)), y:rows===1?70:Math.min(100, Math.max(14, 12+((r+.5+jy*.7)/rows)*88))}; });
   // 말풍선: 최근 3시간 안에 말한 사람 중, 서로 겹치지 않게 최대 3명
   const bubbleOf=new Set(), bubLv={}; let newestBub=null;
   for(const m of msgs){ if(bubbleOf.size>=3) break; const p=POS[m.from]; if(!p || bubbleOf.has(m.from)) continue;
@@ -2707,7 +2865,7 @@ function renderPlaza(){
     const isMe=S.me&&m.id===S.me.id; const a=attBy[m.id]; const td=othersDay(m.id,t)||(isMe?(()=>{ const d=(S.myDays||[]).find(x=>x.date===t); return d?dayBrief(d):null; })():null);
     const mark = td&&td.mo ? '🎯' : a ? '🏹' : '';
     const bt=String(bubbleOf.has(m.id)?lastMsg[m.id].text:''); const bub = bt ? `<span class="pz-bub ${x<28?'l':x>72?'r':''} ${bubLv[m.id]?'lv'+bubLv[m.id]:''} ${popNew&&newestBub.from===m.id?'pop':''}">${esc(bt.slice(0,18))}${bt.length>18?'…':''}</span>` : '';
-    return `<div class="pz-fig ${isMe?'me':''}" data-room="${esc(m.id)}" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;z-index:${Math.round(y)+(bub?100+(bubLv[m.id]||0)*10:0)};--dur:${dur.toFixed(1)}s;--dx:${dx}px;--dl:${delay.toFixed(1)}s" title="${esc(m.name)} · ${esc(memberJ(m).name)}">${bub}<span class="pz-walk"><span class="pz-ch">${charSVG(m.char||DEFAULT_CHAR)}</span></span>${mark?`<span class="pz-mk">${mark}</span>`:''}<span class="pz-tag">${esc(m.name)}</span></div>`; }).join('') + (more>0?`<div class="pz-more">외 ${more}명</div>`:'');
+    return `<div class="pz-fig ${isMe?'me':''}" data-room="${esc(m.id)}" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;z-index:${Math.round(y)+(bub?100+(bubLv[m.id]||0)*10:0)};--dur:${dur.toFixed(1)}s;--dx:${dx}px;--dl:${delay.toFixed(1)}s" title="${esc(m.name)} · ${esc(memberJ(m).name)}">${bub}<span class="pz-walk"><span class="pz-ch">${charSVG(m.char||DEFAULT_CHAR)}</span></span>${mark?`<span class="pz-mk">${mark}</span>`:''}<span class="pz-tag">${esc(m.name)}</span></div>`; }).join('') + (more>0?`<button type="button" class="pz-more" onclick="openPlazaList()">외 ${more}명 보기</button>`:'');
   const nAtt=att.length; $('#plazaCount').innerHTML = `사원 <b class="num">${mem.length}</b>명${nAtt?` · 오늘 활터에 <b class="num">${nAtt}</b>명`:''}`;
   // 글쓰기
   const W=$('#plazaWrite');
@@ -2770,7 +2928,7 @@ function renderDayView(){
   const h=rs.reduce((a,r)=>a+hitsOf(r),0), a=rs.length*5, mo=rs.filter(r=>hitsOf(r)===5).length;
   $('#dBody').innerHTML = !rs.length ? `<div class="muted" style="padding:18px 0;text-align:center">${S.me?'이 날은 기록이 없어요. ◀ ▶ 로 기록한 날을 넘겨 보세요.':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>` : `
     <div class="dsum"><div class="dsum-big num">${h}<small>/${a}시</small></div><div class="dsum-side"><b class="num">${Math.round(h/a*100)}%</b><span>${rs.length}순${mo?` · 🎯 몰기 ${mo}`:''}</span></div></div>
-    <div class="brounds">${rs.map((r,k)=>`<div class="bround ${hitsOf(r)===5?'molgi':''}"><span class="bn">${k+1}순</span>${bigDots(r)}<span class="bs num">${hitsOf(r)}<small>중</small></span></div>`).join('')}</div>
+    <div class="brounds">${rs.map((r,k)=>`<div class="bround ${hitsOf(r)===5?'molgi':''}"><span class="bn">${k+1}순${windChip(((d&&d.winds)||[])[k])}</span>${bigDots(r)}<span class="bs num">${hitsOf(r)}<small>중</small></span></div>`).join('')}</div>
     <div class="drow"><button type="button" class="btn sm" id="dCard">📸 기록 카드</button>${S.viewDate===today()?'<button type="button" class="btn sm ghost" id="dMore">✍️ 이어서 입력</button>':''}</div>`;
   const dc=$('#dCard'); if(dc) dc.addEventListener('click',()=>openDayCard(S.viewDate));
   const dm=$('#dMore'); if(dm) dm.addEventListener('click',()=>{ setRecView('input'); window.scrollTo({top:0}); });
@@ -2837,7 +2995,10 @@ function applySceneArt(){
 }
 function applyPlazaArt(){
   const pz=$('#plaza'); if(!pz) return; const A=JEONG_ART[homeJ().id];
-  if(A && A.plaza){ pz.classList.add('art'); pz.style.backgroundImage=`url(${A.plaza})`; } else { pz.classList.remove('art'); pz.style.backgroundImage=''; }
+  if(A && A.plaza){ pz.classList.add('art'); pz.style.backgroundImage=`url(${A.plaza})`;
+    // 광장이 세로로 길어지면 그림은 위에 폭 맞춰 두고, 아래는 그림 맨 아래 잔디색으로 이어 칠함
+    if(pz.dataset.art!==A.plaza){ pz.dataset.art=A.plaza; const im=new Image(); im.onload=()=>{ try{ const c=document.createElement('canvas'); c.width=1; c.height=1; const x=c.getContext('2d'); x.drawImage(im,Math.floor(im.width/2),im.height-2,1,1,0,0,1,1); const d=x.getImageData(0,0,1,1).data; pz.style.backgroundColor=`rgb(${d[0]},${d[1]},${d[2]})`; }catch(e){} pz.dataset.ratio=String(im.height/im.width); if(S.tab==='plaza') renderPlaza(); }; im.src=A.plaza; }
+  } else { pz.classList.remove('art'); pz.style.backgroundImage=''; pz.style.backgroundColor=''; delete pz.dataset.art; }
 }
 function renderAll(){ renderHeader(); renderToday(); renderRecord(); renderRoom(); renderComp(); if(S.tab==='plaza') renderPlaza(); }
 window.__booted = true;
