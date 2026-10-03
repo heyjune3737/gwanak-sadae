@@ -891,6 +891,7 @@ table.score td.name,table.score th.name,table.score th.tot,table.score td.total{
 .bs{font-family:var(--display);font-size:26px;width:52px;text-align:right;flex:none}.bs small{font-size:14px;color:var(--ink3)}
 .drow{display:flex;gap:8px;justify-content:center;margin-top:12px}
 .mapseg{display:flex;border:2px solid var(--ink)}.mapseg button{font:inherit;font-size:12.5px;padding:4px 10px;background:var(--card);border:0;color:var(--ink2);cursor:pointer}.mapseg button.on{background:var(--ink);color:var(--card)}
+#mapCard .sec-head{flex-wrap:wrap;gap:6px}.mapseg button{padding:4px 8px}.maprange{text-align:center;color:var(--ink2);margin:-2px 0 6px}
 .tmap{display:block;width:100%;max-width:420px;margin:0 auto;border:2px solid var(--ink)}
 .tmap .ml{font-size:12px;fill:var(--ink);font-family:var(--small)}.tmap .mlh{font-size:11px;fill:#F6F2E8;font-family:var(--small)}
 .mlegend{text-align:center;font-size:14px;margin-top:6px;color:var(--ink2)}
@@ -1026,7 +1027,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
         <div id="dBody"></div>
       </div>
       <div class="card" id="mapCard">
-        <div class="sec-head"><h2>🎯 낙점 그림</h2><div class="mapseg" id="mapSeg"><button type="button" data-mr="day" class="on">이 날</button><button type="button" data-mr="month">이번 달</button></div></div>
+        <div class="sec-head"><h2>🎯 낙점 그림</h2><div class="mapseg" id="mapSeg"><button type="button" data-mr="day" class="on">이 날</button><button type="button" data-mr="month">이번 달</button><button type="button" data-mr="d100">100일</button><button type="button" data-mr="all">전체</button></div></div>
         <div id="mapBody"></div>
       </div>
 
@@ -1380,7 +1381,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.03b';
+const APP_VER = '2026.10.03c';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1503,6 +1504,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-10-03c', date:'10월 3일', title:'낙점 그림 100일·전체 · 엑셀에 바람', body:'① 기록 보기의 🎯 낙점 그림을 "이 날 · 이번 달 · 100일 · 전체"로 볼 수 있어요. 기록이 많으면 방향마다 몇 %인지로 보여 줘요. ② 내 방의 엑셀(CSV) 내려받기에 순마다 바람(과녁 기준·세기·풍향·풍속·돌풍·자동/직접)이 함께 들어가요.'},
   {id:'2026-10-03b', date:'10월 3일', title:'🌬 바람 기록 · 넓어진 사대와 광장', body:'① 표 기록 맨 위에 그날의 바람이 떠요. 정 위치의 지금 풍향·풍속을 자동으로 가져와 "맞바람·뒷바람·좌→우·우→좌 + 약·중·강"으로 보여 주고, 순을 저장하면 그 바람이 함께 남아요. 눌러서 직접 고칠 수도 있어요. 처음엔 바람 칸 → "과녁 방향"을 한 번 정해 주세요(정마다 한 번, 폰 나침반으로도 잴 수 있어요). 이번 달 바람별 관중률도 보여요. ② 사대에 사람이 많으면 위의 시간대(새벽·오전·점심·오후·저녁)를 눌러 그 시간대 사람만 볼 수 있어요. ③ 광장은 사람 수에 맞춰 세로로 커지고, 모든 정/우리 정 보기와 "모두 보기"가 생겼어요.'},
   {id:'2026-10-03a', date:'10월 3일', title:'단급 · 집궁일 · 활 세기 고쳤어요', body:'테스터분들 의견을 반영했어요. ① 단급에 무급·무단을 넣었어요. ② 집궁일은 이제 고르지 않아도 되고, 내 방 → 프로필 수정에서 바꾸거나 "지우기"로 지울 수 있어요(내 방의 단급·궁체·집궁 칸을 눌러도 열려요). ③ 활 세기는 호 대신 파운드로 적어요. 예전에 적은 숫자는 그대로예요.'},
   {id:'2026-09-24c', date:'9월 24일', title:'앱으로 설치하세요 📱', body:'① 카톡방 공지의 링크로 접속 → 크롬으로 열기  ② 크롬 ⋮ → 홈 화면에 추가 → 설치. 바탕화면의 오늘 사대 아이콘으로 들어오면 앱처럼 쓸 수 있어요.'},
@@ -2593,9 +2595,10 @@ async function exportCSV(filename, rows){
 }
 const RES_KO = k => RES[k]?RES[k].l:k;
 function dayRows(days, withName){
-  const head=[...(withName?['사원']:[]),'날짜','순','1시','2시','3시','4시','5시','관중','몰기'];
+  const head=[...(withName?['사원']:[]),'날짜','순','1시','2시','3시','4시','5시','관중','몰기','바람(과녁 기준)','바람 세기','풍향','풍속(m/s)','돌풍(m/s)','바람 입력'];
   const rows=[head];
-  days.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0).forEach(d=>{ const m=memberById(d.memberId); (d.rounds||[]).forEach((r,i)=>rows.push([...(withName?[m?m.name:d.memberId]:[]), d.date, i+1, ...r.map(RES_KO), hitsOf(r), hitsOf(r)===5?'몰기':''])); });
+  const W = w => !w||!w.r ? ['','','','','',''] : [WREL[w.r]?WREL[w.r].l:w.r, w.r==='0'?'':(WLV[w.l]||''), w.deg!=null?`${compassOf(w.deg)}풍 ${w.deg}°`:'', w.ms!=null?w.ms:'', w.g!=null?w.g:'', w.src==='m'?'직접':'자동'];
+  days.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0).forEach(d=>{ const m=memberById(d.memberId); const ws=d.winds||[]; (d.rounds||[]).forEach((r,i)=>rows.push([...(withName?[m?m.name:d.memberId]:[]), d.date, i+1, ...r.map(RES_KO), hitsOf(r), hitsOf(r)===5?'몰기':'', ...W(ws[i])])); });
   return rows;
 }
 $('#expMine').addEventListener('click',()=>{ if(!S.me){ openProfile(); return; } const days=S.myDays.filter(d=>d.rounds&&d.rounds.length); if(!days.length){ toast('내보낼 기록이 없어요'); return; } exportCSV(`표기록_${S.me.name}_${today()}.csv`, dayRows(days,false)); });
@@ -2933,10 +2936,13 @@ function renderDayView(){
   const dc=$('#dCard'); if(dc) dc.addEventListener('click',()=>openDayCard(S.viewDate));
   const dm=$('#dMore'); if(dm) dm.addEventListener('click',()=>{ setRecView('input'); window.scrollTo({top:0}); });
   // 낙점 그림
-  let arrows=[];
-  if(S.mapRange==='month'){ const ym=S.viewDate.slice(0,7); for(const x of (S.myDays||[])) if(x.date&&x.date.startsWith(ym)) for(const r of (x.rounds||[])) if(Array.isArray(r)) arrows.push(...r.filter(Boolean)); }
-  else for(const r of rs) arrows.push(...r.filter(Boolean));
-  $('#mapBody').innerHTML = targetMapSVG(arrows) + (arrows.length?'':'<p class="tiny muted" style="text-align:center;margin:4px 0 0">기록이 쌓이면 화살이 어디로 갔는지 모여서 보여요</p>');
+  // 범위: 이 날 / 이번 달(보는 날의 달) / 100일(보는 날까지 100일) / 전체
+  let arrows=[], nDays=0, nRounds=0; const vd=S.viewDate;
+  const from100 = (()=>{ const [y,m,dd]=vd.split('-').map(Number); return dstr(new Date(y,m-1,dd-99)); })();
+  const inRange = x => !x.date ? false : S.mapRange==='month' ? x.date.startsWith(vd.slice(0,7)) : S.mapRange==='d100' ? (x.date>=from100 && x.date<=vd) : S.mapRange==='all' ? true : x.date===vd;
+  for(const x of (S.myDays||[])) if(inRange(x)){ const rr=(x.rounds||[]).filter(Array.isArray); if(rr.length){ nDays++; nRounds+=rr.length; } for(const r of rr) arrows.push(...r.filter(Boolean)); }
+  const rangeLabel = {day:'이 날', month:`${Number(vd.slice(5,7))}월`, d100:`${Number(from100.slice(5,7))}/${Number(from100.slice(8))} ~ ${Number(vd.slice(5,7))}/${Number(vd.slice(8))} (100일)`, all:'전체 기록'}[S.mapRange]||'';
+  $('#mapBody').innerHTML = (S.mapRange!=='day' && nRounds ? `<div class="maprange tiny"><b>${esc(rangeLabel)}</b> · ${nDays}일 ${nRounds}순</div>` : '') + targetMapSVG(arrows) + (arrows.length?'':'<p class="tiny muted" style="text-align:center;margin:4px 0 0">기록이 쌓이면 화살이 어디로 갔는지 모여서 보여요</p>');
 }
 // 과녁 그림 위에 한 발씩 점 찍기 (같은 방향끼리 모임)
 function targetMapSVG(arrows){
@@ -2947,13 +2953,15 @@ function targetMapSVG(arrows){
     x:{x:14,y:H-30,w:80,h:22} };
   const zone = k => ZN[resArea(k)] || ZN.x;
   const cnt={}; arrows.forEach(k=>cnt[k]=(cnt[k]||0)+1);
-  const pos={}; let dots='';
+  const pos={}; let dots=''; const big=arrows.length>150; const CAP=45; const seen={};
+  if(big){ const keep=[]; const per={}; arrows.forEach(k=>{ per[k]=(per[k]||0)+1; }); const scale=Math.min(1, CAP/Math.max(...Object.values(per))); arrows.forEach(k=>{ seen[k]=(seen[k]||0)+1; if(Math.floor(seen[k]*scale)!==Math.floor((seen[k]-1)*scale) || seen[k]===1) keep.push(k); }); arrows = keep; }
+  const NALL = Object.values(cnt).reduce((a,b)=>a+b,0);
   // 결정적 흩뿌리기 (다시 그려도 같은 자리)
   const rnd = n => { let h=2166136261^n; h=Math.imul(h^(h>>>15),2246822507); h=Math.imul(h^(h>>>13),3266489909); return ((h^(h>>>16))>>>0)/4294967296; };
   arrows.forEach((k,i)=>{ const z=zone(k); const j=pos[k]=(pos[k]||0)+1; const x=z.x+6+rnd(i*7+j)*(z.w-12), y=z.y+6+rnd(i*13+j*3+1)*(z.h-12);
     dots += k==='H' ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.5" fill="#E2463B" stroke="#2A2233" stroke-width="1.5"/>` : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#FFFFFF" stroke="#2A2233" stroke-width="1.5"/>`; });
-  const lab=(k,x,y,anchor)=> cnt[k] ? `<text x="${x}" y="${y}" text-anchor="${anchor||'middle'}" class="ml">${RES[k].l} ${cnt[k]}</text>` : '';
-  const n=arrows.length, h=cnt.H||0;
+  const lab=(k,x,y,anchor)=> cnt[k] ? `<text x="${x}" y="${y}" text-anchor="${anchor||'middle'}" class="ml">${RES[k].l} ${big?Math.round(cnt[k]/NALL*100)+'%':cnt[k]}</text>` : '';
+  const n=NALL, h=cnt.H||0;
   return `<svg class="tmap" viewBox="0 0 ${W} ${H}" role="img" aria-label="낙점 그림: ${n}시 중 관중 ${h}">
     <rect x="0" y="0" width="${W}" height="${H}" fill="var(--card2)"/>
     <rect x="0" y="${T.y+T.h-4}" width="${W}" height="${H-(T.y+T.h-4)}" fill="#BFD9A0" opacity=".55"/>
@@ -2963,7 +2971,7 @@ function targetMapSVG(arrows){
     ${dots}
     ${['O','S','F','B','FO','BO','FS','BS','X'].map(k=>{ const z=ZN[resArea(k)]; const a=resArea(k); const ax = a.endsWith('l')||a==='x' ? 'start' : a.endsWith('r') ? 'end' : 'middle';
       const x = ax==='start' ? z.x : ax==='end' ? z.x+z.w : z.x+z.w/2; const y = a[0]==='u' ? 10 : (a[0]==='d' ? z.y+z.h+12 : a==='x' ? z.y+z.h : z.y-4); return lab(k,x,y,ax); }).join('')}
-    ${h?`<text x="${W/2}" y="${T.y+14}" text-anchor="middle" class="mlh">관중 ${h}</text>`:''}
+    ${h?`<text x="${W/2}" y="${T.y+14}" text-anchor="middle" class="mlh">관중 ${big?Math.round(h/NALL*100)+'%':h}</text>`:''}
   </svg><div class="mlegend num">${n?`${n}시 중 관중 ${h} · ${Math.round(h/n*100)}%`:''}</div>`;
 }
 // 순 저장 직후: 큰 카드 잠깐
