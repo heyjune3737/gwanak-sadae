@@ -450,13 +450,22 @@ td.total{font-family:var(--display);font-size:16px}
 .wp-grid button b{font-size:11.5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wp-grid button small{font-size:10px;color:var(--ink3)}
 .wp-grid button.on{border-color:#E2463B;box-shadow:0 0 0 2px rgba(226,70,59,.25);background:#FFF4F2}
 /* 방에 건 것 */
-.wall-jokja{position:absolute;left:4%;top:34%;width:10%;height:30%;z-index:3;display:flex;flex-direction:column;align-items:center}
+.wall-jokja{position:absolute;left:3%;top:34%;width:8.6%;height:36%;z-index:3;display:flex;flex-direction:column;align-items:center}
 .wall-jokja::before,.wall-jokja::after{content:"";display:block;width:118%;height:5px;background:#6B4226;border-radius:3px;flex:none}
 .wall-jokja .hj{flex:1;width:100%;background:#F7EFDB;border-left:2px solid #E3D3AE;border-right:2px solid #E3D3AE;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:2px 2px 0 rgba(0,0,0,.15);overflow:hidden}
-.wall-jokja .hj span{font-size:17px;line-height:1}.wall-jokja .hj em{font-style:normal;font-size:8px;color:#fff;background:var(--c);padding:0 3px;white-space:nowrap}.wall-jokja .hj b{font-size:7px;color:#3A2A1C;writing-mode:vertical-rl;letter-spacing:0;max-height:62%;overflow:hidden;white-space:nowrap}
+.wall-jokja.w1{left:12.6%}.wall-jokja.w2{left:22.2%}
+.wall-jokja .hj{justify-content:flex-start!important;padding:3px 0 2px;gap:1px!important}
+.wall-jokja .hj i{font-style:normal;font-size:6px;line-height:1.15;color:#5A4632;text-align:center;max-width:100%;word-break:keep-all;margin-top:auto}
+.wall-jokja .hj span{font-size:15px;line-height:1}.wall-jokja .hj em{font-style:normal;font-size:8px;color:#fff;background:var(--c);padding:0 3px;white-space:nowrap}.wall-jokja .hj b{color:#3A2A1C;writing-mode:vertical-rl;letter-spacing:0;line-height:1.05;white-space:nowrap;overflow:hidden;max-height:58%}
 .wall-jokja .str{position:absolute;top:-9px;width:40%;height:9px;border:1px solid #6B4226;border-bottom:0;border-radius:50% 50% 0 0}
-.wall-cover{position:absolute;left:17%;top:36%;width:11%;aspect-ratio:3/4;z-index:3;background:#F4EEDD;border:3px solid #2F2F2F;box-shadow:2px 2px 0 rgba(0,0,0,.2);display:flex;flex-direction:column;align-items:center;overflow:hidden}
-.wall-cover .mh{width:100%;background:#B8322A;color:#fff;font-size:6.5px;text-align:center;line-height:1.6;letter-spacing:.05em}
+.wall-cover{position:absolute;left:2.6%;top:38%;width:9.4%;aspect-ratio:3/4;z-index:3;background:#F4EEDD;border:3px solid #2F2F2F;box-shadow:2px 2px 0 rgba(0,0,0,.2);display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.wall-cover.w1{left:12.2%}.wall-cover.w2{left:21.8%}
+.wp-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 8px}
+.wp-slots button{display:flex;flex-direction:column;align-items:center;gap:1px;font:inherit;padding:6px 2px;border:2px dashed var(--line2,var(--ink));background:var(--card2,var(--card));color:var(--ink);cursor:pointer;min-width:0}
+.wp-slots button b{font-size:11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wp-slots button small{font-size:10px;color:var(--ink3)}
+.wp-slots button.on{border-style:solid;border-color:#E2463B;background:#FFF4F2}
+.wp-grid button:disabled{opacity:.45;cursor:default}
+.wall-cover .mh{width:100%;background:#B8322A;color:#fff;font-size:5.5px;text-align:center;line-height:1.7;letter-spacing:0;white-space:nowrap;overflow:hidden}
 .wall-cover svg{width:78%;height:auto}.wall-cover small{font-size:6px;color:#3A2A1C;line-height:1.1;white-space:nowrap}
 .shelf-trophy{position:absolute;left:37%;top:calc(30% - 26px);width:20px;z-index:3}.shelf-trophy svg{display:block;width:100%;height:auto}
 .shelf-trophy i{position:absolute;right:-5px;bottom:-3px;min-width:11px;height:11px;border-radius:50%;background:#C8402F;color:#fff;font:700 8px/11px var(--small,sans-serif);text-align:center;font-style:normal;border:1px solid #fff}
@@ -467,6 +476,10 @@ td.total{font-family:var(--display);font-size:16px}
 .room.has-wall .rm-fire{left:auto;right:3%;width:20%;height:20%}
 .room.has-wall .rm-plant.mon{left:auto;right:16%;bottom:8%}.room.has-wall .rm-side{right:31%}
 .room.has-wall .rm-fall{left:auto;right:36%}
+.visit-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0 0;padding:6px 8px;background:var(--card);border:2px dashed var(--line2,var(--ink))}
+.visit-row .vr-t{font-size:12px;font-weight:700;margin-right:2px}
+.vr-a{display:flex;flex-direction:column;align-items:center;font:inherit;background:none;border:0;padding:0;cursor:pointer;color:var(--ink)}.vr-a svg{width:28px;height:34px}.vr-a small{font-size:9px;line-height:1}
+.vcount{position:absolute;left:6px;top:6px;z-index:6;font:10px/1.35 var(--small,sans-serif);background:rgba(255,255,255,.92);color:#2A2233;border:2px solid #2A2233;padding:2px 6px}.vcount b{font-family:var(--display);color:#C8402F}.vcount b+br+span b{color:#3B4BA0}
 .rm-plant.orchid{left:27%;bottom:20%;width:28px;z-index:2}
 /* 한옥: 일월오봉 병풍 · 장지문 */
 .rm-byeong{position:absolute;left:31%;width:38%;bottom:31%;height:30%;z-index:0;border:3px solid #5A361E;background:#2F6C8E;overflow:hidden;box-shadow:2px 2px 0 rgba(0,0,0,.2)}
@@ -868,6 +881,9 @@ svg.pixc image{image-rendering:auto}
 #slotChips .chip:active{transform:translate(2px,2px)}
 .note-row{display:flex;gap:8px;margin-top:10px}
 .note-row .input{min-height:44px;font-size:16px}
+#slotChips .chip.draft{background:var(--card2);color:var(--ink);border-style:dashed;box-shadow:none;outline:3px solid var(--red);outline-offset:-5px}
+.share-row{display:flex;gap:8px;margin-top:8px}.share-row .btn{min-height:46px}.share-row .grow{flex:1;font-size:15px}
+.share-tip{margin:8px 0 0;font-size:11.5px}
 .empty-cta .ec-t b{font-family:var(--display);font-size:15px}
 /* 오늘 오는 사원 */
 .att-list{gap:0}
@@ -1681,7 +1697,7 @@ const missAgg = m => ({F:(m.F||0)+(m.FO||0)+(m.FS||0), B:(m.B||0)+(m.BO||0)+(m.B
 const SLOTS = ['새벽','오전','점심','오후','저녁'];
 const slotNow = () => { const h=new Date().getHours(); return h<8?'새벽':h<11?'오전':h<14?'점심':h<18?'오후':'저녁'; };
 const EMOJIS = ['👍','🏹','🎯','🔥','💪','☕'];
-let reactOpen=null;
+let reactOpen=null; let attDraft=null; /* 오늘 나는: 공유 전 고른 시간대·한마디 {day,jid,slot,note} */
 
 /* ---------- 동물 궁사 캐릭터 ---------- */
 const CHARS = [
@@ -1882,7 +1898,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04m';
+const APP_VER = '2026.10.04p';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2005,7 +2021,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
-  {id:'2026-10-04m', date:'10월 4일', title:'🏅 배지가 새로워졌어요 · 방에 걸기', body:'🎯 단계형 배지\n같은 종류의 배지를 한 칸으로 모아 동 → 은 → 금 → 옥으로 올라가요. 몰기 · 관중률은 실력 칸이라 그 위로 명궁 · 신궁까지 있어요. 칸마다 다음 단계까지 얼마 남았는지 막대로 보여요. 그동안 받은 배지는 새 단계로 그대로 옮겨졌어요.\n\n🎖 특별 · 한정 · 숨은 배지\n승단, 대회 입상(부별 1~3위), 이달의 표지(월보 표지 주인공), 그리고 베타 기간(9/23~10/3)에 함께한 분만 받는 🧪 베타 테스터 배지가 있어요. 조건이 숨겨진 배지도 몇 개 있으니 찾아보세요. 월보 분야별 1위는 🎀 리본으로 남아요.\n\n🖼 방에 걸기\n내 방 배지 칸의 "🖼 방에 걸기"에서 배지 하나를 한지 족자로 걸 수 있어요. 월보 표지 주인공이 되면 그 달 표지 액자가, 대회에서 입상하면 선반 트로피가 생겨요. 방 구경 온 사원에게도 보여요.'},
+  {id:'2026-10-04m', date:'10월 4일', title:'🏅 배지가 새로워졌어요 · 방에 걸기', body:'🎯 단계형 배지\n같은 종류의 배지를 한 칸으로 모아 동 → 은 → 금 → 옥으로 올라가요. 몰기 · 관중률은 실력 칸이라 그 위로 명궁 · 신궁까지 있어요. 칸마다 다음 단계까지 얼마 남았는지 막대로 보여요. 그동안 받은 배지는 새 단계로 그대로 옮겨졌어요. 🏯 정 순례(다른 정 습사) · 🌬 바람 궁사(바람 ‘강’일 때 쏜 순) 칸도 생겼어요.\n\n🎖 특별 · 한정 · 숨은 배지\n승단, 대회 입상(부별 1~3위), 이달의 표지(월보 표지 주인공), 🍂 사계절 궁사(한 해 사계절 모두 습사), 🏅 올해의 표지, 그리고 베타 기간(9/23~10/3)에 함께한 분만 받는 🧪 베타 테스터 배지가 있어요. 조건이 숨겨진 배지도 몇 개 있으니 찾아보세요. 월보 분야별 1위는 🎀 리본으로 남아요.\n\n🖼 방에 걸기\n내 방 배지 칸의 "🖼 방에 걸기"에서 서로 다른 배지 족자 · 월보 표지 액자를 벽에 3개까지 걸 수 있어요. 대회에서 입상하면 선반 트로피가 생겨요. 방 구경 온 사원에게도 보여요.\n\n👣 내 방 방문자\n내 방 위 TODAY · TOTAL은 내 방에 다녀간 사원 수예요(하루 한 사람 1번). 방 아래 ‘최근 다녀간 사원’은 나만 보여요.'},
   {id:'2026-10-04c', date:'10월 4일', title:'🐶🐱 강아지 · 고양이 6종씩 · 월보는 매달 1일에', body:'🐶 강아지 6종\n베레모 푸들 · 헤드폰 보더콜리 · 별망토 치와와 · 모자 쓴 달마시안 · 비옷 골든 · 탐정 바셋이 왔어요. 이제 강아지는 15종이에요.\n\n🐱 고양이 6종\n한복 삼색이 · 까만 아기 고양이 · 하얀 무사 · 오드아이 장모 · 나뭇잎 두건 · 삿갓 고양이가 왔어요. 고양이도 15종이에요.\n\n📏 크기가 조금씩 달라요\n사대·광장·내 방에서 강아지와 고양이가 덩치에 따라 조금 작게(0.92배) 또는 조금 크게(1.06배) 서요. 새 친구에는 고르기 화면에 NEW 표시가 붙어요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n📰 사대 월보는 매달 1일에\n월보는 매달 1일에 지난달 기록을 담아 완성된 채로 나와요. 지금은 10월 창간호(베타 9/23~10/3)가 최신호이고, 11월호(10/4~10/31 기록)는 11월 1일에 나와요. 이번 달 실시간 순위는 광장 순위 카드에서 볼 수 있어요.'},
   {id:'2026-10-03n', date:'10월 3일', title:'🎉 10월 3일 업데이트 모음 · 사대 월보 · 광장 · 새 친구 · 알림', body:'📰 사대 월보\n하단 "소식" 칸에 월간지 「사대 월보(射臺月報)」가 생겼어요. 10월 창간호는 베타 기간(9/23~10/3)의 기록, 9월은 관리자의 변과 연혁을 담은 "오늘 사대 이야기"예요. 앞으로는 매달 1일에 지난달 기록으로 한 호씩 나와요. 축하 소식 옆 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고, 내 방에서 단급을 바꾸면 승단 소식으로 실려요. 가입 10명 + 그 호 기록 3명이 넘는 정은 "우리 정 월보"도 따로 나와요.\n\n🏯 광장\n배경이 계절(봄·여름·가을·겨울)과 시간(낮·해질녘·밤)에 따라 바뀌고, 🖼 로 직접 골라 볼 수 있어요. 한마디는 장면 바로 아래에서 15개씩 페이지로 넘겨요. 🏆 이달의 순위(성실·관중·관중률·몰기·정심·다정)는 접어 둘 수 있고, 누르고 있으면 멈춰요. 순위에 나오기 싫으면 "랭킹에서 나 숨기기"를 누르세요. 움직임이 부담스러우면 🍵 "차분하게 보기"로 끌 수 있어요.\n\n🐻🐹🐧 새 친구\n곰 · 햄스터 · 펭귄이 9종씩 들어왔어요. 곰은 한 뼘 크게, 햄스터는 아담하게 서요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n🏹 오늘 정 사대\n사람이 많으면 2층 사대(앞줄 7 · 뒷줄 7)로 서고, 위의 시간대(새벽~저녁)를 눌러 그 시간대 사람만 볼 수 있어요.\n\n🔔 알림\n누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 @내이름 으로 부르면 위쪽 🔔 에 표시돼요. 🔔 → "폰 알림 켜기"를 하면 앱을 닫아 둬도 폰으로 알림이 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 ↩ 답글로 @이름을 쉽게 넣을 수 있어요.'},
   {id:'2026-10-03l', date:'10월 3일', title:'🔒 소속 정은 한 달 동안 고정돼요', body:'이제 관악정 밖 다른 정으로도 오늘 사대가 넓어져요. 정마다 사원·순위·월보가 섞이지 않도록, 소속 정(궁패)은 가입한 날(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 고르셨다면 관리자에게 메일(heyjune3737@gmail.com)이나 방명록으로 알려 주시면 바로 고쳐 드려요. 다른 정에 가는 날은 지금처럼 오늘 정 탭 위 📍에서 그 정 사대를 구경하고 습사 등록할 수 있어요.'},
@@ -2128,7 +2144,8 @@ function openRoom(mid){
   const g=m.gear||{}; const t=today(); const ym=t.slice(0,7); const st=dayStats(mid, ym);
   let since=''; if(m.since){ const d=Math.floor((new Date(t)-new Date(m.since))/86400000); since = d>=0? `D+${d}` : ''; }
   const slots=[['bow','활',g.bowName||m.bow,[g.bowSize,g.bowLb?g.bowLb+'파운드':'',m.bow].filter(Boolean).join(' · ')],['arrow','화살',g.arrowName||m.arrow,[lenLabel(g.arrowLen),g.arrowWeight?g.arrowWeight+'돈':'',m.arrow].filter(Boolean).join(' · ')],['kkakji','깍지',g.kkakji,g.kkakjiNote],['etc','그 외',g.etc,'']];
-  const draw=()=>{ const s=dayStats(mid, ym); const VTH=roomThemeOf(m); const VFX=roomFxHTML(memberJ(m).id, VTH); const VST=badgeState(mid, docsOf('days/'+mid+'_')); const VWALL=wallHTML(m, VST);
+  markVisit(mid);
+  const draw=()=>{ const s=dayStats(mid, ym); const VV=visitStats(mid); const VTH=roomThemeOf(m); const VFX=roomFxHTML(memberJ(m).id, VTH); const VST=badgeState(mid, docsOf('days/'+mid+'_')); const VWALL=wallHTML(m, VST);
     const sh=openSheet(`
     <div class="room visit th-${VTH}${VWALL?' has-wall':''}">
       <div class="floor"></div><div class="win" style="${VFX.winStyle}">${VFX.win}<div class="tg"><i></i></div></div><div class="shelf"></div>${VFX.room}
@@ -2136,7 +2153,7 @@ function openRoom(mid){
       <div class="item" style="left:26%;top:13%">${ICON.arrow}<span class="lb">${esc(g.arrowName||m.arrow||'화살')}</span></div>
       ${hasCert(m.grade)?`<div class="frame">${esc(m.grade)}<br>단증</div>`:''}
       <div class="item" style="right:8%;bottom:10%">${ICON.kkakji}<span class="lb">${esc(g.kkakji||'깍지')}</span></div>
-      ${VWALL}<div class="hero">${charSVG(m.char||DEFAULT_CHAR)}</div><div class="sign">${esc(memberJ(m).name)} · ${esc(m.name)}의 방</div>
+      <div class="vcount">TODAY <b>${VV.today}</b><br><span>TOTAL <b>${VV.total}</b></span></div>${VWALL}<div class="hero">${charSVG(m.char||DEFAULT_CHAR)}</div><div class="sign">${esc(memberJ(m).name)} · ${esc(m.name)}의 방</div>
       ${m.status?`<div class="bubble">${esc(m.status)}</div>`:''}
     </div>
 <button type="button" class="fav-btn ${isFav(mid)?'on':''}" id="rmFav" aria-pressed="${isFav(mid)}"><b>${isFav(mid)?'★ 사대 동무':'☆ 사대 동무'}</b><small>자주 함께 사대에 서거나 같이 배운 동기 · 나만 보여요</small></button>
@@ -2189,10 +2206,10 @@ function rosterSorted(list){
 function renderRoomExtras(){
   // 사원 명부
   const R_=$('#roster'); if(R_){ const hj=homeJ(); const all=rosterSorted((S.members||[]).filter(m=>m&&m.name));
-    const so=$('#rosterSort'); if(so){ const cur=rosterSortKey(); so.innerHTML=[['rand','🎲 랜덤'],['name','가나다'],['recent','최근 습사'],['with','🤝 함께 선']].map(([k,t])=>`<button type="button" class="${k===cur?'on':''}" data-rsort="${k}">${t}</button>`).join('')+`<span class="tiny muted">${cur==='with'?'같은 날 · 같은 시간대에 함께 선 횟수 순 · ':''}★ 사대 동무(자주 함께 사대에 서거나 같이 배운 동기)는 맨 앞 · 나만 보여요</span>`;
+    const so=$('#rosterSort'); if(so){ const cur=rosterSortKey(); so.innerHTML=[['rand','🎲 랜덤'],['name','가나다'],['recent','최근 습사'],['with','🧩 함께 선']].map(([k,t])=>`<button type="button" class="${k===cur?'on':''}" data-rsort="${k}">${t}</button>`).join('')+`<span class="tiny muted">${cur==='with'?'같은 날 · 같은 시간대에 함께 선 횟수 순 · ':''}★ 사대 동무(자주 함께 사대에 서거나 같이 배운 동기)는 맨 앞 · 나만 보여요</span>`;
       $$('[data-rsort]',so).forEach(b=>b.onclick=()=>{ lsSet('sadae.rosterSort', b.dataset.rsort); if(b.dataset.rsort==='rand') S.rosterSeed=null; renderRoomExtras(); }); }
     const L=all.filter(m=>memberJ(m).id===hj.id), O=all.filter(m=>memberJ(m).id!==hj.id);
-    const cell=(m,j)=>`<button class="rs ${isFav(m.id)?'fav':''}" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name)}</b><small>${rosterSortKey()==='with'&&S.rosterWith&&S.rosterWith[m.id]?`🤝 함께 ${S.rosterWith[m.id].n}번`:esc(j?memberJ(m).name:(m.grade||'신사'))}</small></button>`;
+    const cell=(m,j)=>`<button class="rs ${isFav(m.id)?'fav':''}" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name)}</b><small>${rosterSortKey()==='with'&&S.rosterWith&&S.rosterWith[m.id]?`🧩 함께 ${S.rosterWith[m.id].n}번`:esc(j?memberJ(m).name:(m.grade||'신사'))}</small></button>`;
     $('#rosterTitle').textContent=hj.name; $('#rosterCount').textContent=L.length?`${L.length}명`:''; const RF=8, open=lsGet('sadae.rosterOpen',false)===true, LV=(open||L.length<=RF)?L:L.slice(0,RF);
     R_.innerHTML = L.length? LV.map(m=>cell(m)).join('') : '<div class="tiny muted">아직 이 정 사원이 없어요. 안내 탭에서 초대 링크를 보내 보세요</div>';
     const rm=$('#rosterMore'); if(rm){ rm.innerHTML = L.length>RF ? `<button type="button" class="rs-more" id="rosterTog" aria-expanded="${open}">${open?'▴ 접기':`▾ 모두 보기 · ${L.length}명`}</button>` : '';
@@ -2426,7 +2443,7 @@ function renderHeader(){
   const ym=t.slice(0,7); const mh=(S.myDays||[]).filter(d=>d.date.startsWith(ym)).reduce((a,d)=>a+(d.rounds||[]).reduce((x,r)=>x+r.filter(y=>y==='H').length,0),0);
   const inRoom = S.tab==='room' && !!S.me;
   $('#hdrCounter').hidden = !inRoom; $('#meChip').hidden = inRoom; $('#syncChip').hidden = inRoom;
-  if(inRoom) $('#hdrCounter').innerHTML = `TODAY <b class="t num">${th}</b><br>MONTH <b class="m num">${mh}</b>`;
+  if(inRoom){ const V=visitStats(S.me.id); $('#hdrCounter').innerHTML = `TODAY <b class="t num">${V.today}</b><br>TOTAL <b class="m num">${V.total}</b>`; $('#hdrCounter').title='내 방에 다녀간 사원 · 오늘 / 지금까지 (하루 한 사람 1번)'; }
   if(typeof renderPlaque==='function') renderPlaque();
   if(S.me){ $('#meAv').innerHTML = charSVG(S.me.char); $('#meName').textContent = S.me.name; }
   else { $('#meAv').innerHTML = charSVG(DEFAULT_CHAR); $('#meName').textContent = '캐릭터 고르기'; }
@@ -2570,25 +2587,48 @@ function renderToday(){
   }
   $('#sceneCount').innerHTML = !list.length ? `오늘 사대` : (list.length!==listAll.length ? `${esc(S.sceneSlot)} <b class="num">${list.length}</b>명 · 오늘 ${listAll.length}명` : `오늘 <b class="num">${list.length}</b>명`);
   $('#scene').classList.toggle('two', list.length>7);
-  // 오늘 나는 — 시간대 한 번 누르면 등록
+  // 오늘 나는 — 시간대 고르고(+한마디) '정 공유'를 눌러야 등록
   const mineEl=$('#attMine'); const mine=S.me?listAll.find(e=>e.id===S.me.id):null;
-  if(!S.me){
+  if(attDraft && (attDraft.day!==t || attDraft.jid!==VJ.id || !S.me || (mine && attDraft.slot===mine.slot && !away))) attDraft=null;
+  const sig=JSON.stringify([S.me&&S.me.id, S.me&&S.me.name, mine&&mine.slot, mine&&mine.note, away&&away.slot, away&&away.jname, VJ.id, attDraft&&attDraft.slot]);
+  if(mineEl.dataset.sig===sig && mineEl.firstElementChild){ /* 그대로 — 적던 한마디·포커스 유지 */ }
+  else if(!S.me){ mineEl.dataset.sig=sig;
     mineEl.innerHTML = `<div class="empty-cta"><div class="ec-t"><b>처음 오셨나요?</b><span class="muted">캐릭터를 고르고 이름을 적으면 사대에 설 수 있어요.</span></div><button class="btn pri block" id="attPickMe">캐릭터 고르기</button>${store.kind==='remote'?'<button class="btn ghost block" id="attLogin" style="margin-top:8px">다른 폰에서 쓰던 캐릭터 불러오기</button>':''}</div>`;
     $('#attPickMe').addEventListener('click', openProfile); const al=$('#attLogin'); if(al) al.addEventListener('click',()=>openLogin(''));
-  } else {
+  } else { mineEl.dataset.sig=sig;
+    const cur = attDraft ? attDraft.slot : (mine&&!away ? mine.slot : null);
+    const noteV = attDraft ? attDraft.note : (mine ? (mine.note||'') : '');
+    const moving = !!(attDraft && (mine||away));
     mineEl.innerHTML = `
       ${needPin()?`<div class="card flat" style="padding:10px 12px;margin-bottom:8px;display:flex;gap:8px;align-items:center;justify-content:space-between"><span class="tiny">비밀번호를 걸어야 습사 등록이 정 사원들에게 보여요</span><button class="btn sm pri" id="attClaim">비밀번호 걸기</button></div>`:''}
-      ${away?`<div class="away-note">지금 <b>${esc(away.jname||'다른 정')}</b>에 ${esc(away.slot)} 시간대로 등록돼 있어요. 아래 시간을 누르면 <b>${esc(VJ.name)}</b> 사대로 옮겨요.</div>`:''}
-      <div id="slotChips">${SLOTS.map(s=>`<button class="chip ${mine&&mine.slot===s?'on':''}" data-slot="${s}">${s}</button>`).join('')}</div>
-      ${mine?`<div class="note-row"><input class="input grow" id="attNote" maxlength="20" placeholder="한마디 (선택) 예: 6시 반쯤" value="${esc(mine.note||'')}"><button class="btn sm ghost" id="attCancel">안 가요</button></div>`:''}`;
+      ${away?`<div class="away-note">지금 <b>${esc(away.jname||'다른 정')}</b>에 ${esc(away.slot)} 시간대로 등록돼 있어요. 시간을 고르고 공유하면 <b>${esc(VJ.name)}</b> 사대로 옮겨요.</div>`:''}
+      <div id="slotChips">${SLOTS.map(s=>`<button class="chip ${cur===s?'on':''} ${attDraft&&attDraft.slot===s?'draft':''}" data-slot="${s}">${s}</button>`).join('')}</div>
+      ${attDraft ? `<div class="note-row"><input class="input grow" id="attNote" maxlength="20" placeholder="한마디 (선택) 예: 6시 반쯤" value="${esc(noteV)}"></div>
+        <div class="share-row"><button class="btn ghost" id="attUndo">취소</button><button class="btn pri grow" id="attShare">🏹 ${moving?'바꿔서 ':''}정 공유</button></div>
+        <p class="tiny muted share-tip">공유를 눌러야 오늘 사대에 내 캐릭터가 서요.</p>`
+      : mine&&!away ? `<div class="note-row"><input class="input grow" id="attNote" maxlength="20" placeholder="한마디 (선택) 예: 6시 반쯤" value="${esc(noteV)}"><button class="btn sm ghost" id="attCancel">안 가요</button></div>`
+      : `<p class="tiny muted share-tip">시간대를 고르면 한마디를 적고 정에 공유할 수 있어요. 고르기만 해선 아직 안 보여요.</p>`}`;
     const acl=$('#attClaim'); if(acl) acl.addEventListener('click',openClaim);
-    $('#slotChips').addEventListener('click', async e=>{ const b=e.target.closest('.chip'); if(!b) return; const note=$('#attNote')?$('#attNote').value.trim():'';
-      const ok = await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:{slot:b.dataset.slot, note, name:S.me.name, char:S.me.char, at:Date.now(), jid:VJ.id, jname:VJ.name}}}));
-      if(ok) toast(`${VJ.name} ${b.dataset.slot} 사대에 섭니다 🏹`); });
-    const cancel=$('#attCancel'); if(cancel) cancel.addEventListener('click', async ()=>{ const ok=await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:null}})); if(ok) toast('오늘 습사 등록을 지웠어요'); });
-    const noteEl=$('#attNote'); if(noteEl) noteEl.addEventListener('change', async ()=>{ await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:{note:noteEl.value.trim()}}})); });
+    $('#slotChips').addEventListener('click', e=>{ const b=e.target.closest('.chip'); if(!b) return; const sl=b.dataset.slot;
+      const keep = attDraft ? attDraft.note : (mine ? (mine.note||'') : '');
+      if(attDraft && attDraft.slot===sl) attDraft=null;            /* 같은 칸 다시 누르면 고르기 취소 */
+      else if(mine && !away && mine.slot===sl) attDraft=null;      /* 이미 공유한 시간대 */
+      else attDraft={day:t, jid:VJ.id, slot:sl, note:keep};
+      renderToday(); const n=$('#attNote'); if(attDraft && n && !mine) n.focus({preventScroll:true}); });
+    const noteEl=$('#attNote');
+    if(attDraft){
+      if(noteEl) noteEl.addEventListener('input', ()=>{ if(attDraft) attDraft.note=noteEl.value; });
+      if(noteEl) noteEl.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); $('#attShare').click(); } });
+      $('#attUndo').addEventListener('click', ()=>{ attDraft=null; renderToday(); });
+      $('#attShare').addEventListener('click', async ev=>{ const d=attDraft; if(!d) return; ev.currentTarget.disabled=true; const note=(noteEl?noteEl.value:d.note||'').trim();
+        const ok = await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:{slot:d.slot, note, name:S.me.name, char:S.me.char, at:Date.now(), jid:VJ.id, jname:VJ.name}}}));
+        if(ok){ attDraft=null; toast(`${VJ.name} ${d.slot} 사대에 섭니다 🏹`); renderToday(); } else { const b=$('#attShare'); if(b) b.disabled=false; } });
+    } else {
+      const cancel=$('#attCancel'); if(cancel) cancel.addEventListener('click', async ()=>{ const ok=await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:null}})); if(ok) toast('오늘 습사 등록을 지웠어요'); });
+      if(noteEl) noteEl.addEventListener('change', async ()=>{ await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:{note:noteEl.value.trim()}}})); });
+    }
   }
-  $('#attHint').textContent = mine ? `${mine.slot}에 갑니다` : away ? `${away.jname||'다른 정'} ${away.slot}` : (S.me && store.kind!=='db' && store.kind!=='remote' ? '이 기기에서만 보여요' : '');
+  $('#attHint').textContent = attDraft ? `${attDraft.slot} · 공유 전` : mine ? `${mine.slot}에 갑니다` : away ? `${away.jname||'다른 정'} ${away.slot}` : (S.me && store.kind!=='db' && store.kind!=='remote' ? '이 기기에서만 보여요' : '');
   // 목록
   $('#attCount').textContent = listAll.length ? `${listAll.length}명` : '';
   $('#attList').innerHTML = listAll.length ? listAll.map(e=>{ const m=memberById(e.id); const c=(m&&m.char)||e.char||DEFAULT_CHAR; const nm=(m&&m.name)||e.name||'사원';
@@ -3060,6 +3100,18 @@ function roomFxHTML(jid, theme){
       ${theme==='forest'?'<div class="rfx rm-pines"></div>':''}${theme==='winter'?'<div class="rm-frost"></div>':''}
       <div class="rm-bird pet-${theme} ${night?'sleep':''}">${pxSVG(ROOM_PET[theme]||PX_SPARROW)}${night?'<i class="rfx zz">z</i>':''}</div>` };
 }
+// ---------- 방문자 수 ----------
+function visitStats(mid){ const E=(((store&&store.docs)||{})['visits/'+mid]||{}).entries||{}; const t=today(); const L=Object.values(E).filter(v=>v&&v.from&&v.date);
+  const seen=new Set(), recent=[]; L.slice().sort((a,b)=>(b.at||0)-(a.at||0)).forEach(v=>{ if(!seen.has(v.from) && memberById(v.from)){ seen.add(v.from); recent.push(v); } });
+  return {today:L.filter(v=>v.date===t).length, total:L.length, recent:recent.slice(0,8)}; }
+async function markVisit(mid){ if(!S.me || !mid || mid===S.me.id || !(store&&store.kind==='remote'&&store.token)) return;
+  const t=today(), key=t+'_'+S.me.id; const E=(((store.docs||{})['visits/'+mid]||{}).entries)||{}; if(E[key]) return;
+  try{ await write(st=>st.merge('visits/'+mid,{entries:{[key]:{from:S.me.id, at:Date.now(), date:t}}})); }catch(e){} }
+function renderVisitRow(room){
+  let vr=$('#visitRow'); if(!vr){ vr=document.createElement('div'); vr.id='visitRow'; vr.className='visit-row'; room.insertAdjacentElement('afterend', vr); }
+  if(!S.me){ vr.hidden=true; return; } const V=visitStats(S.me.id); vr.hidden=false;
+  vr.innerHTML = `<span class="vr-t">👣 최근 다녀간 사원</span>${V.recent.length?V.recent.map(v=>{ const m=memberById(v.from)||{}; return `<button type="button" class="vr-a" data-room="${esc(v.from)}" title="${esc(m.name||'')} · ${+v.date.slice(5,7)}/${+v.date.slice(8,10)}">${charSVG(m.char||DEFAULT_CHAR)}<small>${esc((m.name||'').slice(0,4))}</small></button>`; }).join(''):'<span class="tiny muted">아직 없어요 · 나만 보여요</span>'}`;
+}
 function openRoomTheme(){
   if(!S.me){ openProfile(); return; } const cur=roomThemeOf(memberById(S.me.id)); const ch=(S.me&&S.me.char)||DEFAULT_CHAR;
   const card=([k,t,d])=>{ const F=roomFxHTML(homeJ().id,k); return `<button type="button" class="rt-card ${k===cur?'on':''}" data-rt="${k}"><div class="room th-${k} rt-mini" aria-hidden="true"><div class="floor"></div><div class="win" style="${F.winStyle}">${F.win}<div class="tg"><i></i></div></div><div class="shelf"></div>${F.room}<div class="hero">${charSVG(ch)}</div></div><b>${t}${k===cur?' <small>· 지금</small>':''}</b><small>${d}</small></button>`; };
@@ -3102,6 +3154,7 @@ function renderRoom(){
   // 내 정보
   let since=''; if(me&&me.since){ const d=Math.floor((new Date(t)-new Date(me.since))/86400000); since = d>=0? `D+${d}` : ''; }
   $('#roomInfo').innerHTML = statTiles([[esc((me&&me.grade)||'신사'),'단급'],[esc((me&&me.hand)||'–'),'궁체'],[since||'–',`집궁 ${me&&me.since?fmtShort(me.since):''}`]]);
+  renderVisitRow(room);
   if(me){ const b=document.createElement('button'); b.type='button'; b.className='bg-pill rm-pick'; b.textContent='🎨 방 꾸미기'; b.onclick=e=>{ e.stopPropagation(); openRoomTheme(); }; room.appendChild(b); }
   renderArchive(); renderGrowth(); if(typeof renderRoomExtras==='function') renderRoomExtras();
 }
@@ -3380,6 +3433,8 @@ function growthOf(days, mid){
   const L=days.map(dayBrief).filter(d=>d.date && d.n>0).sort((a,b)=>a.date<b.date?-1:1);
   const g={mid, days:L.length, n:0, h:0, mo:0, maxN:0, best:null, bestDays:0, bestWeeks:0, curWeeks:0, months:{}, bestMonthPct:0, bestMonthPct30:0, comps:0};
   let run=0, prev=null;
+  g.windStrong=0; for(const d0 of days){ if(Array.isArray(d0.winds)) g.windStrong+=d0.winds.filter(x=>x&&+x.l===3).length; }
+  g.seasons={}; for(const d of L){ const y=+d.date.slice(0,4), mo=+d.date.slice(5,7); const sy = mo===12 ? y+1 : y; const se=(mo===12||mo<=2)?'w':mo<=5?'sp':mo<=8?'su':'au'; (g.seasons[sy]=g.seasons[sy]||new Set()).add(se); }
   for(const d of L){ g.n+=d.n; g.h+=d.h; g.mo+=d.mo; g.maxN=Math.max(g.maxN,d.n);
     if(d.n>=3){ const r=d.h/(d.n*5); if(!g.best || r>g.best.r || (r===g.best.r && d.n>g.best.n)) g.best={...d, r}; }
     const x=dNum(d.date); run = (prev!==null && x===prev+1) ? run+1 : 1; prev=x; g.bestDays=Math.max(g.bestDays,run);
@@ -3402,7 +3457,9 @@ const BSETS = [
   {id:'day',   ic:'⚡', t:'하루',     u:'순',      T:[9,12,15,20], v:g=>g.maxN, d:'하루에 쏜 순 (9순 = 승단 심사만큼)'},
   {id:'comp',  ic:'🏆', t:'대회',     u:'회 출전', T:[1,10,30,100], v:g=>g.comps, d:'정 대회에 나간 횟수'},
   {id:'cover', ic:'📰', t:'표지 스타', u:'번',     T:[1,6,12,36], v:g=>coverInfo(g.mid).n, d:'사대 월보 표지(성실왕)에 오른 횟수 · 정별 월보 포함', mag:false},
-  {id:'kind',  ic:'💞', t:'함께',     u:'번',      T:[10,100,300,1000], v:g=>kindCount(g.mid), d:'다른 사원 방명록에 남긴 글 + 보낸 응원', mag:false},
+  {id:'tour',  ic:'🏯', t:'정 순례',  u:'곳',      T:[2,4,6,8], v:g=>tourCount(g.mid), d:'습사 등록한 서로 다른 정 (소속 정 포함 · 8곳 = 서울 8정 순례)', mag:false},
+  {id:'wind',  ic:'🌬', t:'바람 궁사', u:'순',     T:[10,50,100,300], v:g=>g.windStrong||0, d:"바람 '강'일 때 쏜 순 (표 기록 위 바람 칸)"},
+  {id:'kind',  ic:'🧩', t:'함께',     u:'번',      T:[10,100,300,1000], v:g=>kindCount(g.mid), d:'다른 사원 방명록에 남긴 글 + 보낸 응원', mag:false},
 ];
 const setTier = (set, g) => { let k=0; set.T.forEach((x,i)=>{ if(set.v(g,i+1)>=x) k=i+1; }); return k; };
 // 예전 BADGES 자리: 단계마다 한 줄 (월보 '새 배지' · 광장 소식이 그대로 씀)
@@ -3431,6 +3488,15 @@ function kindCount(mid){
     _kindC={at:Date.now(),map,ver}; }
   return _kindC.map[mid]||0;
 }
+// 정 순례: 습사 등록한 서로 다른 정 (소속 정 포함)
+function tourCount(mid){ const D=(store&&store.docs)||{}; const home=memberById(mid)?memberJ(memberById(mid)).id:''; const J=new Set();
+  for(const k in D){ if(!k.startsWith('attendance/')||!D[k]||!D[k].entries) continue; const e=D[k].entries[mid]; if(e&&e.slot) J.add(e.jid||home); }
+  return J.size; }
+// 올해의 표지: 그 해 기록을 담은 호(전체 월보)에서 표지에 가장 많이 오른 사원 — 다음 해 1월호가 나온 뒤
+function yearCoverOf(mid){ const out=[]; try{ coverInfo(mid); const map=_covC.map||{}; const last=magCurYM(); const byY={};
+    for(const [m,L] of Object.entries(map)) for(const c of L){ if(c.scope!=='all') continue; const y=+magRange(c.ym)[1].slice(0,4); (byY[y]=byY[y]||{})[m]=((byY[y]||{})[m]||0)+1; }
+    for(const [y,cnt] of Object.entries(byY)){ if(last < (+y+1)+'-01') continue; const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]); if(top.length && top[0][0]===mid && (top.length<2 || top[0][1]>top[1][1])) out.push({y:+y, n:top[0][1]}); } }catch(e){}
+  return out; }
 // 🎀 리본: 나온 호마다 월보 순위 분야별 1위 (몰기 · 관중률 · 정심 · 다정)
 const RIB_CATS = ['molgi','rate','jeongsim','dajeong'];
 let _ribC={at:0,map:null};
@@ -3456,7 +3522,7 @@ const HIDDEN = [
   {id:'moon',  ic:'🌙', t:'달빛 궁사',  d:'저녁 사대에 선 날 몰기'},
   {id:'dawn',  ic:'🌅', t:'새벽 궁사',  d:'새벽 사대 등록 10번'},
   {id:'combo', ic:'🔥', t:'연속 몰기',  d:'한 날 두 순 연달아 몰기'},
-  {id:'nomad', ic:'🧭', t:'나그네 궁사', d:'다른 정 3곳에서 습사'},
+  {id:'since', ic:'🎂', t:'집궁 기념 습사', d:'활을 잡은 날과 같은 날(월 · 일)에 습사'},
   {id:'anniv', ic:'📅', t:'1년 전 오늘', d:'1년 전 오늘에도 활을 냈어요'},
 ];
 function hiddenOf(mid, days){
@@ -3465,7 +3531,7 @@ function hiddenOf(mid, days){
   if(att.some(([dt,e])=>e.slot==='저녁' && byDate[dt] && byDate[dt].b.mo>0)) got.moon=1;
   if(att.filter(([,e])=>e.slot==='새벽').length>=10) got.dawn=1;
   if((days||[]).some(d=>{ const rs=(d.rounds||[]).filter(Array.isArray).map(r=>hitsOf(r)); return rs.some((h,i)=>i>0&&h===5&&rs[i-1]===5); })) got.combo=1;
-  const home=memberById(mid)?memberJ(memberById(mid)).id:''; if(new Set(att.map(([,e])=>e.jid).filter(j=>j&&j!==home)).size>=3) got.nomad=1;
+  const sm=(memberById(mid)||{}).since; if(/^\d{4}-\d{2}-\d{2}$/.test(sm||'') && Object.keys(byDate).some(dt=>dt.slice(5)===sm.slice(5) && dt>sm)) got.since=1;
   if(Object.keys(byDate).some(dt=>byDate[(+dt.slice(0,4)-1)+dt.slice(4)])) got.anniv=1;
   return got;
 }
@@ -3477,6 +3543,8 @@ function badgeState(mid, days){
   const sets=BSETS.map(set=>{ const k=setTier(set,g); const nx=set.T[k]; return {...set, k, val:set.v(g, Math.min(k+1,set.T.length)), next:nx, max:set.T.length}; });
   const sp=[]; const gu=gradeUp(m); if(gu) sp.push({id:'grade', ic:'🎖', t:'승단', lab:`${gu.to} · ${+gu.date.slice(5,7)}/${+gu.date.slice(8,10)}`, sub:'단급이 오른 날', cls:'red'});
   const P=placesOf(mid); if(P.length){ const b=P[0]; sp.push({id:'place', ic:['','🥇','🥈','🥉'][b.rank], t:'대회 입상', lab:`${['','금','은','동'][b.rank]} · ${b.name}`, sub:`${b.div?b.div+' ':''}${b.rank}위${P.length>1?` 외 ${P.length-1}번`:''}`, cls:'t'+(4-b.rank)}); }
+  const SY=Object.entries(g.seasons||{}).filter(([,v])=>v.size>=4).map(([y])=>+y).sort(); if(SY.length) sp.push({id:'seasons', ic:'🍂', t:'사계절 궁사', lab:`${SY[SY.length-1]}년${SY.length>1?` 외 ${SY.length-1}번`:''}`, sub:'한 해 봄 · 여름 · 가을 · 겨울 모두', cls:'t3'});
+  const YC=yearCoverOf(mid); if(YC.length){ const y=YC[YC.length-1]; sp.push({id:'yearcover', ic:'🏅', t:'올해의 표지', lab:`${y.y}년 · ${y.n}번`, sub:'한 해 표지 최다', cls:'t4'}); }
   if(isBeta(mid, days)) sp.push({id:'beta', ic:'🧪', t:'베타 테스터', lab:'한정 · 9/23~10/3', sub:'다시 받을 수 없어요', cls:'blue'});
   const C=coverInfo(mid); if(C.n){ const L=C.list[C.list.length-1]; sp.push({id:'covermark', ic:'📰', t:'이달의 표지', lab:`${+L.ym.slice(5)}월호${L.scope!=='all'?' · 정별':''}`, sub:'월보 표지 주인공', cls:'paper'}); }
   const H=hiddenOf(mid, days); const hid=HIDDEN.filter(x=>H[x.id]);
@@ -3497,42 +3565,61 @@ function boardHTML(st){
   return `<div class="bb-grid">${st.sets.map(card).join('')}</div><div class="bb-sec">특별 · 한정 · 숨은 배지</div><div class="bb-grid">${sp}${hid}</div>${rib}`;
 }
 // 방에 거는 것: 한지 족자(배지) · 월보 표지 액자 · 선반 트로피
-function wallChoices(st){
-  const L=[]; st.sets.filter(x=>x.k>0).forEach(x=>L.push({key:'set:'+x.id, ic:x.ic, t:x.t, tier:BTIER[x.k], k:x.k}));
-  st.sp.forEach(x=>{ if(x.id!=='covermark') L.push({key:'sp:'+x.id, ic:x.ic, t:x.t, tier:x.lab.split(' · ')[0], k:x.id==='place'?0:3, cls:x.cls}); });
-  st.hidden.forEach(x=>L.push({key:'hd:'+x.id, ic:x.ic, t:x.t, tier:'숨은', k:5}));
-  st.ribbons.forEach((r,i)=>L.push({key:'rb:'+r.ym+':'+r.cat, ic:'🎀', t:r.t, tier:'리본', k:3}));
+function wallChoices(st){   // 걸 수 있는 것: {key, ic, tier, main(세로 이름 · 짧게), sub(가로 설명), k, kind}
+  const L=[];
+  st.sets.filter(x=>x.k>0).forEach(x=>L.push({key:'set:'+x.id, ic:x.ic, tier:BTIER[x.k], main:x.t, sub:`${x.T[x.k-1]}${x.u==='회 출전'?'회':x.u==='주 연속'?'주':x.u}`, k:x.k, kind:'scroll', label:`${x.t} ${BTIER[x.k]}`}));
+  st.sp.forEach(x=>{ if(x.id==='covermark') return;
+    if(x.id==='grade') L.push({key:'sp:grade', ic:x.ic, tier:'승단', main:x.lab.split(' · ')[0], sub:x.lab.split(' · ')[1]||'', k:3, kind:'scroll', label:`승단 ${x.lab.split(' · ')[0]}`});
+    else if(x.id==='place') L.push({key:'sp:place', ic:x.ic, tier:x.lab.split(' · ')[0], main:'대회입상', sub:x.sub.replace(/ 외.*/,''), k:3, kind:'scroll', label:'대회 입상'});
+    else if(x.id==='seasons') L.push({key:'sp:seasons', ic:x.ic, tier:'특별', main:'사계절', sub:x.lab, k:3, kind:'scroll', label:'사계절 궁사'});
+    else if(x.id==='yearcover') L.push({key:'sp:yearcover', ic:x.ic, tier:'올해', main:'올해의표지', sub:x.lab.split(' · ')[0], k:4, kind:'scroll', label:'올해의 표지'});
+    else if(x.id==='beta') L.push({key:'sp:beta', ic:x.ic, tier:'한정', main:'베타', sub:'9/23~10/3', k:4, kind:'scroll', label:'베타 테스터'}); });
+  st.hidden.forEach(x=>L.push({key:'hd:'+x.id, ic:x.ic, tier:'숨은', main:x.t.replace(/\s/g,''), sub:'숨은 배지', k:5, kind:'scroll', label:x.t}));
+  st.ribbons.forEach(r=>{ const [when, what]=[r.t.split(' ')[0], r.t.split(' ').slice(1).join('')]; L.push({key:'rb:'+r.ym+':'+r.cat, ic:'🎀', tier:'리본', main:what, sub:when, k:3, kind:'scroll', label:r.t}); });
+  st.covers.forEach(c=>L.push({key:'cover:'+c.ym+':'+c.scope, ym:c.ym, ic:'📰', tier:'표지', main:`${+c.ym.slice(5)}월호`, sub:c.scope==='all'?'전체 월보':'정별 월보', k:3, kind:'cover', label:`${+c.ym.slice(5)}월호 표지`}));
   return L;
+}
+function wallSlots(m, st){   // 저장된 자리 3칸 (예전 형식 · 처음 기본값 포함)
+  const W=(m&&m.roomWall)||null; const ch=wallChoices(st); const has=k=>k&&ch.some(x=>x.key===k);
+  let S3;
+  if(W && Array.isArray(W.slots)) S3=W.slots.slice(0,3);
+  else { const sc = W&&W.scroll&&W.scroll!=='none' ? W.scroll : null; let cv=null;
+    if(!W || !W.cover){ const c=ch.filter(x=>x.kind==='cover').pop(); cv=c?c.key:null; } else if(W.cover!=='none'){ const c=ch.find(x=>x.ym===W.cover); cv=c?c.key:null; }
+    S3=[sc, cv, null]; }
+  while(S3.length<3) S3.push(null);
+  return S3.map(k=>has(k)?k:null);
 }
 const NUM_KO = n => { const D=['','일','이','삼','사','오','육','칠','팔','구']; if(n>=10000) return n; let s=''; const th=Math.floor(n/1000), h=Math.floor(n%1000/100), t=Math.floor(n%100/10), o=n%10; if(th) s+=(th>1?D[th]:'')+'천'; if(h) s+=(h>1?D[h]:'')+'백'; if(t) s+=(t>1?D[t]:'')+'십'; s+=D[o]; return s||'영'; };
 const PX_TROPHY = ['....yyyy....','...yyyyyy...','.y.yyyyyy.y.','.y.yyyyyy.y.','..yyyyyyyy..','....yyyy....','.....yy.....','.....yy.....','....hhhh....','...hhhhhh...'];
 function wallHTML(m, st){
-  if(!m) return ''; const W=m.roomWall||{}; let h='';
-  const ch=wallChoices(st); const sc = W.scroll && W.scroll!=='none' ? ch.find(x=>x.key===W.scroll) : null;
-  if(sc){ const set=sc.key.startsWith('set:')?BSETS.find(x=>'set:'+x.id===sc.key):null; const name = set ? `${set.t}${set.u==='%'?set.T[sc.k-1]+'%':NUM_KO(set.T[sc.k-1])+set.u.replace('회 출전','회')}` : sc.t;
-    h+=`<div class="wall-jokja bb-tier t${Math.min(sc.k,6)}"><span class="str"></span><div class="hj"><span>${sc.ic}</span><em>${esc(sc.tier)}</em><b>${esc(name)}</b></div></div>`; }
-  const cv = W.cover==='none' ? null : (W.cover ? st.covers.find(x=>x.ym===W.cover) : st.covers[st.covers.length-1]);
-  if(cv) h+=`<div class="wall-cover"><div class="mh">射臺月報</div>${charSVG(m.char||DEFAULT_CHAR)}<small>${+cv.ym.slice(5)}월호 표지</small></div>`;
+  if(!m) return ''; const W=m.roomWall||{}; const ch=wallChoices(st); let h='';
+  wallSlots(m, st).forEach((key,i)=>{ const c=key&&ch.find(x=>x.key===key); if(!c) return;
+    if(c.kind==='cover'){ h+=`<div class="wall-cover w${i}"><div class="mh">射臺月報</div>${charSVG(m.char||DEFAULT_CHAR)}<small>${esc(c.main)}</small></div>`; return; }
+    const n=[...c.main].length; const fs=Math.max(5.5, Math.min(9, 40/Math.max(1,n)));
+    h+=`<div class="wall-jokja w${i} bb-tier t${Math.min(c.k,6)}"><span class="str"></span><div class="hj"><span>${c.ic}</span><em>${esc(c.tier)}</em><b style="font-size:${fs.toFixed(1)}px">${esc(c.main)}</b>${c.sub?`<i>${esc(c.sub)}</i>`:''}</div></div>`; });
   const tp = W.trophy==='none' ? null : (W.trophy ? st.places.find(x=>x.id===W.trophy) : st.places[0]);
   if(tp) h+=`<div class="shelf-trophy r${tp.rank}" title="${esc(tp.name)} ${esc(tp.div)} ${tp.rank}위">${pxSVG(PX_TROPHY)}<i>${tp.rank}</i></div>`;
   return h;
 }
 function openWallPick(){
-  if(!S.me){ openProfile(); return; } const m=memberById(S.me.id)||{}; const st=badgeState(S.me.id, S.myDays||[]); const W={...(m.roomWall||{})};
-  const ch=wallChoices(st);
-  const sh=openSheet(`<h3>🖼 방에 걸기</h3><p class="tiny muted" style="margin:0">받은 배지를 방 벽과 선반에 걸어요. 방 구경 온 사원에게도 보여요.</p>
-    <div class="field"><label>한지 족자 (벽) · 배지 하나</label><div class="wp-grid">${ch.map(x=>`<button type="button" data-ws="${esc(x.key)}">${x.ic}<b>${esc(x.t)}</b><small>${esc(x.tier)}</small></button>`).join('')}<button type="button" data-ws="none">✕<b>걸지 않기</b></button></div>${ch.length?'':'<p class="tiny muted">아직 받은 배지가 없어요</p>'}</div>
-    <div class="field"><label>월보 표지 액자 (벽) · 표지 주인공이 되면 생겨요</label><div class="wp-grid">${st.covers.map(c=>`<button type="button" data-wc="${c.ym}">📰<b>${+c.ym.slice(5)}월호</b><small>${c.scope==='all'?'전체 월보':'정별 월보'}</small></button>`).join('')}<button type="button" data-wc="none">✕<b>걸지 않기</b></button></div></div>
-    <div class="field"><label>선반 트로피 · 대회에서 입상하면 생겨요</label><div class="wp-grid">${st.places.map(p=>`<button type="button" data-wt="${esc(p.id)}">${['','🥇','🥈','🥉'][p.rank]}<b>${esc(p.name)}</b><small>${esc(p.div)} ${p.rank}위</small></button>`).join('')}<button type="button" data-wt="none">✕<b>올리지 않기</b></button></div></div>
+  if(!S.me){ openProfile(); return; } const m=memberById(S.me.id)||{}; const st=badgeState(S.me.id, S.myDays||[]); const ch=wallChoices(st);
+  const slots=wallSlots(m, st); let cur=0; let trophy=(m.roomWall&&m.roomWall.trophy) || (st.places.length?st.places[0].id:'none');
+  const sh=openSheet(`<h3>🖼 방에 걸기</h3><p class="tiny muted" style="margin:0">벽에 서로 다른 배지 · 표지 액자를 3개까지 걸 수 있어요. 자리를 고른 뒤 걸 것을 누르세요. 방 구경 온 사원에게도 보여요.</p>
+    <div class="wp-slots" id="wpSlots"></div>
+    <div class="wp-grid" id="wpGrid"></div>${ch.length?'':'<p class="tiny muted">아직 받은 배지가 없어요</p>'}
+    <div class="field" style="margin-top:10px"><label>선반 트로피 · 대회에서 입상하면 생겨요</label><div class="wp-grid">${st.places.map(p=>`<button type="button" data-wt="${esc(p.id)}">${['','🥇','🥈','🥉'][p.rank]}<b>${esc(p.name)}</b><small>${esc(p.div)} ${p.rank}위</small></button>`).join('')}<button type="button" data-wt="none">✕<b>올리지 않기</b></button></div></div>
     <div class="actions"><button class="btn ghost" id="wpClose" type="button">닫기</button><button class="btn pri" id="wpSave" type="button">이렇게 걸기</button></div>`);
   sh.classList.add('sheet-tall');
-  const curC = W.cover || (st.covers.length?st.covers[st.covers.length-1].ym:'none'), curT = W.trophy || (st.places.length?st.places[0].id:'none');
-  W.scroll=W.scroll||'none'; W.cover=curC; W.trophy=curT;
-  const draw=()=>{ $$('[data-ws]',sh).forEach(b=>b.classList.toggle('on',b.dataset.ws===W.scroll)); $$('[data-wc]',sh).forEach(b=>b.classList.toggle('on',b.dataset.wc===W.cover)); $$('[data-wt]',sh).forEach(b=>b.classList.toggle('on',b.dataset.wt===W.trophy)); };
+  const lab=k=>{ const c=k&&ch.find(x=>x.key===k); return c?`${c.ic} ${esc(c.label)}`:'비어 있음'; };
+  const draw=()=>{ $('#wpSlots',sh).innerHTML=[0,1,2].map(i=>`<button type="button" data-slot="${i}" class="${i===cur?'on':''}"><small>${i+1}번 자리</small><b>${lab(slots[i])}</b></button>`).join('');
+    $('#wpGrid',sh).innerHTML=ch.map(c=>{ const used=slots.findIndex(k=>k===c.key); return `<button type="button" data-wk="${esc(c.key)}" class="${slots[cur]===c.key?'on':''}" ${used>=0&&used!==cur?'disabled':''}>${c.ic}<b>${esc(c.label)}</b><small>${used>=0&&used!==cur?`${used+1}번에 걸림`:esc(c.kind==='cover'?'표지 액자':'족자')}</small></button>`; }).join('')+`<button type="button" data-wk="" class="${slots[cur]?'':'on'}">✕<b>비우기</b><small>${cur+1}번 자리</small></button>`;
+    $$('[data-slot]',sh).forEach(b=>b.onclick=()=>{ cur=+b.dataset.slot; draw(); });
+    $$('[data-wk]',sh).forEach(b=>b.onclick=()=>{ slots[cur]=b.dataset.wk||null; if(cur<2 && slots[cur]) cur=Math.min(2,cur+1); draw(); });
+    $$('[data-wt]',sh).forEach(b=>b.classList.toggle('on',b.dataset.wt===trophy)); };
   draw();
-  $$('[data-ws]',sh).forEach(b=>b.onclick=()=>{ W.scroll=b.dataset.ws; draw(); }); $$('[data-wc]',sh).forEach(b=>b.onclick=()=>{ W.cover=b.dataset.wc; draw(); }); $$('[data-wt]',sh).forEach(b=>b.onclick=()=>{ W.trophy=b.dataset.wt; draw(); });
+  $$('[data-wt]',sh).forEach(b=>b.onclick=()=>{ trophy=b.dataset.wt; draw(); });
   $('#wpClose',sh).onclick=closeSheet;
-  $('#wpSave',sh).onclick=async()=>{ const ok=await write(st2=>st2.merge('members/'+S.me.id,{roomWall:{scroll:W.scroll, cover:W.cover, trophy:W.trophy}, updatedAt:Date.now()})); if(ok){ const mm=memberById(S.me.id); if(mm) mm.roomWall={...W}; closeSheet(); renderRoom(); toast('방에 걸었어요 🖼'); } };
+  $('#wpSave',sh).onclick=async()=>{ const W={slots:slots.map(k=>k||null), trophy}; const ok=await write(st2=>st2.merge('members/'+S.me.id,{roomWall:{slots:W.slots, trophy:W.trophy, scroll:null, cover:null}, updatedAt:Date.now()})); if(ok){ const mm=memberById(S.me.id); if(mm) mm.roomWall=W; closeSheet(); renderRoom(); toast('방에 걸었어요 🖼'); } };
 }
 function monthsBack(k){ const d=new Date(); d.setDate(1); const out=[]; for(let i=k-1;i>=0;i--){ const x=new Date(d.getFullYear(), d.getMonth()-i, 1); out.push(`${x.getFullYear()}-${pad(x.getMonth()+1)}`); } return out; }
 function growthChartHTML(g){
@@ -3681,7 +3768,7 @@ const RK_CATS = [
   {id:'rate', t:'관중률', ic:'📈', d:'이번 달 30순 이상 쏜 사원의 관중률', ok:o=>o.n>=30, v:o=>o.h/(o.n*5)*1e6+o.n, big:o=>[Math.round(o.h/(o.n*5)*100),'%'], sub:o=>`${o.n}순`},
   {id:'molgi', t:'몰기', ic:'🏅', d:'이번 달 5시 5중 몰기 횟수', ok:o=>o.mo>0, v:o=>o.mo*1e6+o.h, big:o=>[o.mo,'번'], sub:o=>`${o.n}순 중`},
   {id:'jeongsim', t:'정심', ic:'🧘', d:'정심정기(正心正己) — 관중률에 순마다 고른 표, 빗나가도 한쪽으로 모이는 표를 더한 점수 (30순 이상)', ok:o=>o.n>=30, v:o=>o.js*1e4+o.n, big:o=>[o.js,'점'], sub:o=>`관중 ${Math.round(o.h/(o.n*5)*100)}% · ${o.n}순`},
-  {id:'dajeong', t:'다정', ic:'💞', d:'다정(多情) — 방명록·응원·광장 한마디를 많이 나눈 사원 (방명록 2점·응원 1점·한마디 1점, 하루 10점까지)', ok:o=>o.dj>0, v:o=>o.dj, big:o=>[o.dj,'점'], sub:o=>'방명록·응원·한마디'},
+  {id:'dajeong', t:'다정', ic:'🍊', d:'다정(多情) — 방명록·응원·광장 한마디를 많이 나눈 사원 (방명록 2점·응원 1점·한마디 1점, 하루 10점까지)', ok:o=>o.dj>0, v:o=>o.dj, big:o=>[o.dj,'점'], sub:o=>'방명록·응원·한마디'},
 ];
 S.rank = {cur:null, prev:null, at:0, busy:false, cat:0, pausedUntil:0};
 const rkYday = () => { const d=new Date(); d.setDate(d.getDate()-1); return dstr(d); };
