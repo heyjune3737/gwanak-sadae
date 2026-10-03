@@ -1138,6 +1138,18 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .jl-box{display:flex;flex-direction:column;gap:4px;border:2px solid var(--ink);background:var(--card2);padding:10px 12px;margin:0 0 8px;font-size:13px}
 .jl-box b{font-size:14px}.jl-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.jl-btns .btn{text-decoration:none}
 .jitem.sure{outline:3px solid var(--red);outline-offset:-3px}
+
+/* 전체 / 정별 월보 */
+.mz-scope{display:grid;grid-template-columns:1fr 1fr;}.mz-scope.three{grid-template-columns:1fr 1fr 1fr}.mz-scope{border:2px solid var(--ink);box-shadow:var(--hard);margin:0 0 12px}
+.mz-scope button{font:inherit;font-size:13.5px;height:42px;background:var(--card);color:var(--ink);border:0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
+.mz-scope button+button{border-left:2px solid var(--ink)}.mz-scope button.on{background:var(--ink);color:var(--card)}.mz-scope button.wait{color:var(--ink3)}
+.mz-jl{display:flex;flex-direction:column;gap:6px}
+.mz-jr{display:flex;align-items:center;gap:8px;border:2px solid #231C16;background:#FFFBF0;padding:7px 8px}
+.mz-jr.me{background:#FFF1C9}
+.mz-jr .pl{flex:none;width:38px;height:44px;display:flex;align-items:center;justify-content:center;background:#5B3A22;border:2px solid #231C16;writing-mode:vertical-rl}.mz-jr .pl b{color:#F2C14E!important;font-size:12px;letter-spacing:.05em}
+.mz-jr .grow b{font-size:14.5px}.mz-jr .grow small{font-size:10.5px}.mz-jr .grow span{display:block;font-size:11.5px;opacity:.85}
+.mz-jgo{flex:none;font-size:11.5px;background:#231C16;color:#F5EFE0!important;border:2px solid #231C16;padding:5px 7px}
+.mz-jprog{flex:none;font-size:10.5px;text-align:right;line-height:1.45}.mz-jprog b{color:#E2463B!important}
 </style>
 
 <div class="app" id="app">
@@ -1618,7 +1630,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.03m';
+const APP_VER = '2026.10.03n';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1741,6 +1753,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-10-03n', date:'10월 3일', title:'📰 우리 정 월보가 따로 나와요', body:'소식 탭 맨 위에서 "🏯 전체 월보"와 "우리 정 월보"를 골라 볼 수 있어요. 우리 정 월보는 가입 사원 10명 이상, 그 호에 표를 기록한 사원 3명 이상인 정에 나오고, 표지 · 숫자 · 축하 · 순위가 우리 정 사원만으로 실려요. 전체 월보 "정 소식"에서는 정마다 월보까지 얼마나 남았는지(가입 ○/10 · 기록 ○/3) 볼 수 있어요. 집계는 소속 정(궁패) 기준이에요. 바람은 월보에서 빼고, 내 표 기록에만 남겨요.'},
   {id:'2026-10-03m', date:'10월 3일', title:'🐻🐹🐧 새 친구 3종이 왔어요 · 곰 · 햄스터 · 펭귄', body:'캐릭터 고르기에 곰 · 햄스터 · 펭귄이 9종씩, 모두 27종 새로 들어왔어요. 이제 고양이 · 강아지 · 오리까지 54종 중에서 고를 수 있어요. 곰은 사대와 광장에서 한 뼘 더 크게, 햄스터는 조금 아담하게 서요. 바꾸려면 위 오른쪽 내 캐릭터를 누르고 동물 탭에서 골라 "이 모습으로 저장"을 누르세요.'},
   {id:'2026-10-03l', date:'10월 3일', title:'🔒 소속 정은 한 달 동안 고정돼요', body:'이제 관악정 밖 다른 정으로도 오늘 사대가 넓어져요. 정마다 사원·순위·월보가 섞이지 않도록, 소속 정(궁패)은 가입한 날(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 고르셨다면 관리자에게 메일(heyjune3737@gmail.com)이나 방명록으로 알려 주시면 바로 고쳐 드려요. 다른 정에 가는 날은 지금처럼 오늘 정 탭 위 📍에서 그 정 사대를 구경하고 습사 등록할 수 있어요.'},
   {id:'2026-10-03h', date:'10월 3일', title:'📰 사대 월보 창간호 · 오늘 사대 이야기', body:'소식 탭 사대 월보 10월 창간호는 베타 테스트 기간(9월 23일 앱을 만든 날 ~ 10월 3일) 동안의 기록을 담았어요. 함께한 사원·사대 등록·표 기록·몰기·방명록·응원으로 베타 11일을 돌아보고, 표지는 베타 성실왕이에요. 지난 호의 9월은 "오늘 사대 이야기"로, 관리자의 변과 지금까지의 연혁을 실었어요. 10월 4일부터의 기록은 11월호에 이어서 쌓여요.'},
@@ -1819,7 +1832,7 @@ function renderInfo(){
     <details class="notice"><summary>표 기록 — 한 발씩</summary><p>위쪽 "✍️ 입력 / 📖 기록 보기"로 화면을 바꿔요. 기록 보기에선 큰 글씨로 순을 보고 ◀ ▶로 날짜를 넘겨요. 입력판은 과녁을 바라본 모양 그대로 9칸이에요: 가운데 관중, 위 넘어감, 아래 코박음(짧음), 옆은 앞남·뒤남, 네 귀퉁이는 앞넘음·뒤넘음·앞짧음·뒤짧음. 좌궁이면 앞·뒤가 좌우로 바뀌어요. 잘못 누르면 "↶ 한 발".</p></details>
     <details class="notice"><summary>🔒 소속 정 · 다른 정 가기</summary><p>소속 정은 내 궁패이자 정별 순위·월보의 기준이라, 가입(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 골랐다면 관리자에게 메일(heyjune3737@gmail.com)이나 관리자 방명록으로 알려 주세요. 다른 정에 가는 날은 오늘 정 탭 위 📍정 이름을 눌러 그 정 사대를 보고, 시간대를 누르면 그 정에 등록돼요. 이건 언제든 자유예요.</p></details>
     <details class="notice"><summary>🍵 차분하게 보기</summary><p>광장 장면 오른쪽 아래 🍵 버튼을 누르세요. "차분하게 보기"를 켜면 순위 자동 넘김, 꽃잎·낙엽·눈 흩날림, 광장 위 소식 띠, 말풍선 효과, 캐릭터 걸음이 한 번에 멈춰요. 하나씩 켜고 끌 수도 있어요. 이 기기에만 저장되고, 폰 설정에서 "동작 줄이기"를 켜 두셨다면 처음부터 차분하게 보여요. 순위 카드는 "접기"로 한 줄만 남길 수 있고, 누르고 있는 동안은 넘어가지 않아요.</p></details>
-    <details class="notice"><summary>📰 사대 월보</summary><p>소식 탭의 월간지예요. 10월 창간호는 베타 테스트 기간(9/23~10/3) 기록, 11월호는 10월 4일부터 쌓여요. 9월은 "오늘 사대 이야기"(관리자의 변 · 연혁)예요. 이번 달 호는 매일 새로 고쳐지고(발행 중), 다음 달 1일에 확정돼요. 표지는 이달 습사한 날이 가장 많은 성실왕, 축하 소식은 몰기 상위 3명 · 새 배지 · 승단(내 방에서 단급을 바꾼 날) · 집궁 100일/1000일/주년 · 이달 처음 기록한 사원이에요. 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고 알림이 가요. "지난 호"에서 예전 달을 다시 볼 수 있어요. 랭킹에서 숨긴 사원은 표지와 순위에서 빠져요.</p></details>
+    <details class="notice"><summary>📰 사대 월보</summary><p>소식 탭의 월간지예요. 10월 창간호는 베타 테스트 기간(9/23~10/3) 기록, 11월호는 10월 4일부터 쌓여요. 9월은 "오늘 사대 이야기"(관리자의 변 · 연혁)예요. 이번 달 호는 매일 새로 고쳐지고(발행 중), 다음 달 1일에 확정돼요. 표지는 이달 습사한 날이 가장 많은 성실왕, 축하 소식은 몰기 상위 3명 · 새 배지 · 승단(내 방에서 단급을 바꾼 날) · 집궁 100일/1000일/주년 · 이달 처음 기록한 사원이에요. 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고 알림이 가요. "지난 호"에서 예전 달을 다시 볼 수 있어요. 랭킹에서 숨긴 사원은 표지와 순위에서 빠져요. 맨 위에서 「🏯 전체 월보」와 「우리 정 월보」를 고를 수 있어요. 우리 정 월보는 가입 사원 10명 이상 + 그 호에 표를 기록한 사원 3명 이상인 정에 나오고, 집계는 소속 정(궁패) 기준이에요.</p></details>
     <details class="notice"><summary>🏆 이달의 순위</summary><p>광장의 순위는 매달 1일 새로 시작해요. 관중률과 정심은 이번 달 30순 이상 쏜 사원만 들어가요. 정심(正心)은 궁도 구계훈 "정심정기"에서 따온 이름으로, 관중률에 순마다 고른 관중(기복이 적음)과 빗나가도 한쪽으로 모이는 표를 더한 점수예요. 다정(多情)은 남의 방명록 2점·응원 1점·광장 한마디 1점이고 하루 10점까지만 세요. 날짜별 표는 그대로 비공개이고 순위 숫자만 보여요. 숨기고 싶으면 "랭킹에서 나 숨기기".</p></details>
     <details class="notice"><summary>🌬 바람 기록</summary><p>표 기록 맨 위 바람 칸에 정 위치의 지금 바람이 자동으로 떠요(날씨 정보 Open-Meteo). 순을 저장하면 그 바람이 순 옆에 작게 남아요(⬇맞바람 ⬆뒷바람 ➡좌→우 ⬅우→좌). 실제와 다르면 바람 칸을 눌러 직접 고르면 오늘 하루 그대로 기록돼요. 정마다 처음 한 번 "과녁 방향"(사대에서 과녁이 있는 쪽)을 정해야 맞바람·좌우가 계산돼요.</p></details>
     <details class="notice"><summary>🔔 알림 — 방명록 · 응원 · @부름</summary><p>누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 <b>@내이름</b>으로 부르면 위쪽 🔔 에 빨간 숫자가 떠요. 🔔 → <b>폰 알림 켜기</b>를 하면 앱을 닫아 둬도 폰 알림으로 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 "↩ 답글"을 누르면 @이름이 자동으로 들어가요.</p></details>
@@ -3320,19 +3333,28 @@ function magAgg(idx, from, to){
   const L=Object.values(by); const tot={people:L.length, days:L.reduce((a,o)=>a+o.days,0), n:L.reduce((a,o)=>a+o.n,0), h:L.reduce((a,o)=>a+o.h,0), mo:L.reduce((a,o)=>a+o.mo,0)};
   return {by, perDay, tot};
 }
-function magData(ym){
-  const c=S.mag.cache[ym]; if(c && Date.now()-c.at<60e3) return c.d;
+const MAG_JMIN = {members:10, rec:3};   // 정별 월보: 가입 10명 이상 + 그 호 표 기록 3명 이상
+const MAG_VS_MIN = 3;                    // 정 대항: 위 기록 조건(3명)을 넘긴 정이 3곳 이상일 때
+const MAG_VS_SHOW = false;               // 정 대항 화면 노출 — 정이 늘면 true 로 (계산·화면 코드는 그대로 둠)
+const magJid = id => { const m=memberById(id); return m ? memberJ(m).id : null; };
+function magData(ym, scope){
+  scope=scope||'all'; const ck=ym+'|'+scope; const c=S.mag.cache[ck]; if(c && Date.now()-c.at<60e3) return c.d;
+  const inS = id => scope==='all' || magJid(id)===scope;
   const T=today(), cur = ym===magCurYM(), [from, end]=magRange(ym), wide = ym===MAG_START, to = cur ? (T<end?T:end) : end;
-  const idx=magIndex(); const A=magAgg(idx, from, to); const P = wide ? magAgg(idx, '9999-01-01', '9999-01-01') : magAgg(idx, ...magRange(ymAdd(ym,-1)));
+  const idx=Object.fromEntries(Object.entries(magIndex()).filter(([id])=>inS(id))); const A=magAgg(idx, from, to); const P = wide ? magAgg(idx, '9999-01-01', '9999-01-01') : magAgg(idx, ...magRange(ymAdd(ym,-1)));
   // 함께한 지표: 사대 등록 · 방명록 · 응원 (기록 외 활동)
   const Dd=(store&&store.docs)||{}; const act={att:0, gb:0, ch:0, attDay:{}}; const dayOf=ms=>dstr(new Date(ms));
   for(const k in Dd){ const x=Dd[k]; if(!x||!x.entries) continue;
-    if(k.startsWith('attendance/')){ const dt=k.slice(11); if(dt<from||dt>to) continue; for(const [tid,e] of Object.entries(x.entries)){ if(!e) continue; if(e.slot){ act.att++; (act.attDay[dt]=act.attDay[dt]||new Set()).add(tid); } for(const [fr,em] of Object.entries(e.reactions||{})) if(em&&fr!==tid) act.ch++; } }
-    else if(k.startsWith('guestbook/')){ for(const v of Object.values(x.entries)) if(v&&v.text&&v.at){ const dt=dayOf(v.at); if(dt>=from&&dt<=to) act.gb++; } } }
-  act.members=(S.members||[]).filter(m=>m&&m.name).length;
+    if(k.startsWith('attendance/')){ const dt=k.slice(11); if(dt<from||dt>to) continue; for(const [tid,e] of Object.entries(x.entries)){ if(!e||!inS(tid)) continue; if(e.slot){ act.att++; (act.attDay[dt]=act.attDay[dt]||new Set()).add(tid); } for(const [fr,em] of Object.entries(e.reactions||{})) if(em&&fr!==tid) act.ch++; } }
+    else if(k.startsWith('guestbook/')){ for(const v of Object.values(x.entries)) if(v&&v.text&&v.at&&inS(v.from)){ const dt=dayOf(v.at); if(dt>=from&&dt<=to) act.gb++; } } }
+  act.members=(S.members||[]).filter(m=>m&&m.name&&inS(m.id)).length;
+  // 정별 현황 (전체 월보에서만): 가입 · 기록 사원 · 습사 · 관중
+  const jst={}; if(scope==='all'){ for(const m of (S.members||[])){ if(!m||!m.name) continue; const j=memberJ(m); const o=jst[j.id]||(jst[j.id]={id:j.id, name:j.name, hanja:j.hanja||j.name, members:0, rec:0, days:0, n:0, h:0, mo:0});
+      o.members++; const a=A.by[m.id]; if(a&&a.n){ o.rec++; o.days+=a.days; o.n+=a.n; o.h+=a.h; o.mo+=a.mo; } }
+    for(const o of Object.values(jst)) o.ok = o.members>=MAG_JMIN.members && o.rec>=MAG_JMIN.rec; }
   const ev=[]; const nm=id=>(memberById(id)||{}).name||'사원';
   // 승단 (단급이 바뀐 날)
-  for(const m of (S.members||[])){ if(!m||!m.name||!m.gradeHist) continue; const ks=Object.keys(m.gradeHist).filter(k=>k>=from&&k<=to).sort(); if(!ks.length) continue;
+  for(const m of (S.members||[])){ if(!m||!m.name||!m.gradeHist||!inS(m.id)) continue; const ks=Object.keys(m.gradeHist).filter(k=>k>=from&&k<=to).sort(); if(!ks.length) continue;
     const g=m.gradeHist[ks[ks.length-1]]||{}; if(!g.to || !hasCert(g.to) || g.to===g.from) continue;
     ev.push({tag:'승단', mid:m.id, t:`${m.name} 사원 · ${hasCert(g.from)?g.from+' → ':''}${g.to}`, p:`${magMD(ks[ks.length-1])} 단급이 ${g.to}(으)로 바뀌었어요. 축하합니다!`, k:'grade'}); }
   // 몰기
@@ -3345,7 +3367,7 @@ function magData(ym){
     const top=fresh[fresh.length-1];
     ev.push({tag:'새 배지', mid:id, t:`${nm(id)} 사원 · ${fresh.slice(-2).map(x=>x.ic+' '+x.t).join(' ')}${fresh.length>2?` 외 ${fresh.length-2}개`:''}`, p:`${top.d}${fresh.length>1?` — 이달 배지 ${fresh.length}개를 새로 받았어요.`:'.'}`, k:'badge'}); }
   // 집궁 기념일 (100일 · 1000일 · n주년) — 이번 달 안의 날
-  for(const m of (S.members||[])){ if(!m||!m.name||!/^\d{4}-\d{2}-\d{2}$/.test(m.since||'')) continue; const s0=new Date(m.since+'T12:00:00');
+  for(const m of (S.members||[])){ if(!m||!m.name||!inS(m.id)||!/^\d{4}-\d{2}-\d{2}$/.test(m.since||'')) continue; const s0=new Date(m.since+'T12:00:00');
     const hits=[]; for(const k of [100,1000]){ const d=new Date(s0); d.setDate(d.getDate()+k); const ds=dstr(d); if(ds>=from&&ds<=end) hits.push([ds,`집궁 ${k}일`]); }
     const yy=+ym.slice(0,4)-s0.getFullYear(); if(yy>=1 && m.since.slice(5,7)===ym.slice(5,7)) hits.push([ym+'-'+m.since.slice(8,10),`집궁 ${yy}주년`]);
     for(const [ds,lb] of hits) ev.push({tag:lb.replace('집궁 ',''), mid:m.id, t:`${m.name} 사원 · ${lb}`, p: ds>T ? `${magMD(ds)}에 ${lb}이 돼요. 미리 축하해요!` : `${magMD(ds)}, 활을 잡은 지 ${lb.replace('집궁 ','')}이 되었어요.`, k:'since', ds}); }
@@ -3360,8 +3382,8 @@ function magData(ym){
   // 표지: 성실왕 (랭킹 숨김 사원 빼고)
   const vis=Object.values(A.by).filter(o=>{ const m=memberById(o.mid); return m && !m.rankHide && (!wide || o.mid!==MAG_FOUNDER); });   // 창간호 표지는 만든 사람 빼고
   const king=vis.sort((a,b)=>(b.days*1000+b.n)-(a.days*1000+a.n))[0]||null;
-  const d={ym, cur, from, to, end, wide, A, P, ev, busy, king, nBadge, nNew, nSince, nGrade, act};
-  S.mag.cache[ym]={at:Date.now(), d}; return d;
+  const d={ym, scope, cur, from, to, end, wide, A, P, ev, busy, king, nBadge, nNew, nSince, nGrade, act, jst};
+  S.mag.cache[ck]={at:Date.now(), d}; return d;
 }
 // 순위·바람: 서버 집계 (3분 보관, 이번 달은 광장 순위와 같이 씀)
 async function magRank(ym){
@@ -3408,7 +3430,11 @@ function renderNews(){
   const el=$('#view-news'); if(!el) return; const T=today(), Tym=magCurYM(); const ym=S.mag.ym||Tym; const Y=+ym.slice(0,4), M=+ym.slice(5);
   if(ym===Tym){ lsSet('sadae.magSeen', Tym); renderNewsDot(); }
   if(ym===MAG_EXTRA){ renderNewsExtra(el, Tym); return; }
-  const d=magData(ym); const A=d.A, tot=A.tot; const RK=S.mag.rk[ym]; if(!RK || (Date.now()-RK.at>180e3)) magRank(ym);
+  const dAll=magData(ym,'all'); const JS=dAll.jst; const myJ=homeJ();
+  let scope = S.mag.scope; if(scope===undefined) scope = (JS[myJ.id]&&JS[myJ.id].ok) ? myJ.id : 'all';
+  if(scope!=='all' && !(JS[scope]&&JS[scope].ok)) scope='all';
+  const d = scope==='all' ? dAll : magData(ym, scope); const SJ = scope==='all' ? null : JS[scope]; const A=d.A, tot=A.tot;
+  const VS = Object.values(JS).filter(o=>o.rec>=MAG_JMIN.rec); const vsOn = MAG_VS_SHOW && VS.length>=MAG_VS_MIN; const RK=S.mag.rk[ym]; if(!RK || (Date.now()-RK.at>180e3)) magRank(ym);
   const rkData = RK ? RK.data : (d.cur && !d.wide && S.rank.cur ? S.rank.cur : null);
   const no=magIssue(ym); const art=(()=>{ const a=(JEONG_ART[homeJ().id]||{}).scene||{}; return a[magSeason(M)]||a.autumn||a.summer||a.spring||''; })();
   const pct=v=>Math.round(v*100); const rate = tot.n ? tot.h/(tot.n*5) : 0, prate = A && d.P.tot.n ? d.P.tot.h/(d.P.tot.n*5) : null;
@@ -3436,7 +3462,7 @@ function renderNews(){
       + (EV.length>6 ? `<button type="button" class="mz-more" id="mzMore">${S.mag.more?'접기':`축하 ${EV.length-6}개 더 보기 ▾`}</button>`:'')
     : `<p class="mz-empty">${d.cur?'이달 축하 소식을 기다리고 있어요. 몰기·새 배지·승단·집궁 기념일이 생기면 여기에 실려요.':'이 달에는 실린 축하 소식이 없어요.'}</p>`;
   // 03 순위
-  const top3 = c => ((rkData&&rkData.members)||[]).filter(o=>c.ok(o)&&memberById(o.mid)).sort((a,b)=>c.v(b)-c.v(a)).slice(0,3);
+  const top3 = c => ((rkData&&rkData.members)||[]).filter(o=>c.ok(o)&&memberById(o.mid)&&(scope==='all'||magJid(o.mid)===scope)).sort((a,b)=>c.v(b)-c.v(a)).slice(0,3);
   const hof = RK_CATS.filter(c=>!d.wide || ['sincere','molgi','dajeong'].includes(c.id)).map(c=>{ const L=top3(c); return `<div class="mz-hofc"><h3><span>${c.ic} ${c.t}</span><small>${c.id==='jeongsim'?'정심정기':c.id==='dajeong'?'다정다감':''}</small></h3>${L.length?`<ol>${L.map((o,i)=>{ const m=memberById(o.mid)||{}; const [b,u]=c.big(o); return `<li data-room="${esc(o.mid)}"><span class="md">${['🥇','🥈','🥉'][i]}</span><span class="nm">${esc(m.name||'사원')}<small>${esc(memberJ(m).name)}</small></span><b class="num">${b}<small>${u}</small></b></li>`; }).join('')}</ol>`:`<p class="mz-empty">${c.id==='rate'||c.id==='jeongsim'?'30순 넘긴 사원이 아직 없어요':'아직 기록이 없어요'}</p>`}</div>`; }).join('');
   // 04 바람
   const W = (rkData && rkData.wind && store.kind==='remote') ? rkData.wind : magWindLocal(d.from, d.to);
@@ -3447,21 +3473,33 @@ function renderNews(){
     const H=wb.H; const third = (H && H.n>=3) ? `<div><b class="num">${pct(H.h/(H.n*5))}%</b><span>맞바람 관중률<br>(바람 기록 전체 ${pct(wh/(wn*5))}%)</span></div>` : `<div><b class="num">${pct(wh/(wn*5))}%</b><span>바람 기록 순 관중률<br>${wn}순</span></div>`;
     windHTML = `<div class="mz-wind"><div><b>${R0.k}</b><span>가장 잦은 바람<br>${esc(R0.l)} ${pct(topR[1].n/wn)}%</span></div><div><b class="num">${g&&g.g!=null?Number(g.g).toFixed(1):'–'}</b><span>가장 센 돌풍(m/s)<br>${g&&g.dt?magMD(g.dt):'기록 없음'}</span></div>${third}</div>
       <div class="mz-wbar">${WREL_ORDER.filter(k=>wb[k]&&wb[k].n).map(k=>`<span style="flex:${wb[k].n}" title="${esc(WREL[k].l)}">${WREL[k].k} ${pct(wb[k].n/wn)}%</span>`).join('')}</div>`; }
+  // 정 소식 (전체 월보) · 정 대항 · 우리 정 (정별 월보)
+  const jl = Object.values(JS).sort((a,b)=>b.members-a.members||b.rec-a.rec);
+  const pctJ = (a,b) => b ? Math.round(a/b*100) : 0;
+  const jeongNewsHTML = jl.length ? `<div class="mz-jl">${jl.map(o=>`<div class="mz-jr ${o.id===myJ.id?'me':''}"><span class="pl"><b>${esc(o.hanja)}</b></span><div class="grow"><b>${esc(o.name)}</b>${o.id===myJ.id?' <small>(우리 정)</small>':''}<span>사원 ${o.members}명 · 표 기록 ${o.rec}명 · 습사 ${o.days}번</span></div>${o.ok?`<button type="button" class="mz-jgo" data-scope="${esc(o.id)}">📰 ${esc(o.name)} 월보 ▸</button>`:`<span class="mz-jprog">월보까지<br>가입 <b>${Math.min(o.members,MAG_JMIN.members)}/${MAG_JMIN.members}</b> · 기록 <b>${Math.min(o.rec,MAG_JMIN.rec)}/${MAG_JMIN.rec}</b></span>`}</div>`).join('')}</div>
+    <p class="mz-tip">가입 사원 ${MAG_JMIN.members}명 + 그 호에 표를 기록한 사원 ${MAG_JMIN.rec}명이 넘으면 그 정의 월보가 따로 나와요</p>` : '<p class="mz-empty">아직 정 소식이 없어요.</p>';
+  const vsCats = [['🙋','참여율','표 기록 사원 ÷ 가입 사원', o=>o.rec/o.members, o=>pctJ(o.rec,o.members)+'%'], ['📅','1인당 습사','습사한 날 ÷ 표 기록 사원', o=>o.days/o.rec, o=>(o.days/o.rec).toFixed(1)+'일'], ['🎯','관중률','정 사원 전체 관중 ÷ 쏜 화살', o=>o.n?o.h/(o.n*5):0, o=>(o.n?Math.round(o.h/(o.n*5)*100):0)+'%']];
+  const vsHTML = vsOn ? `<div class="mz-hof">${vsCats.map(([ic,t,dsc,v,show])=>{ const L=VS.slice().sort((a,b)=>v(b)-v(a)).slice(0,3); return `<div class="mz-hofc"><h3><span>${ic} ${t}</span></h3><ol>${L.map((o,i)=>`<li><span class="md">${['🥇','🥈','🥉'][i]}</span><span class="nm">${esc(o.name)}<small>사원 ${o.members}명</small></span><b class="num">${show(o)}</b></li>`).join('')}</ol><p class="mz-tip" style="margin:0;padding:0 7px 6px">${dsc}</p></div>`; }).join('')}</div><p class="mz-tip">표 기록 사원 ${MAG_JMIN.rec}명이 넘는 정 ${VS.length}곳이 겨뤘어요 · 사원 수가 달라도 공평하게 1인당·비율로 비교해요</p>` : '';
+  const vsRank = (id) => { if(!vsOn) return null; const L=VS.slice().sort((a,b)=>b.rec/b.members-a.rec/a.members); const i=L.findIndex(o=>o.id===id); return i<0?null:i+1; };
+  const ourHTML = SJ ? `<div class="mz-nums"><div class="mz-num red"><b class="num">${SJ.members}</b><span>명 가입 사원</span></div><div class="mz-num"><b class="num">${SJ.rec}</b><span>명이 표를 기록했어요 (참여 ${pctJ(SJ.rec,SJ.members)}%)</span></div><div class="mz-num"><b class="num">${SJ.rec?(SJ.days/SJ.rec).toFixed(1):'–'}</b><span>일 · 1인당 습사</span></div><div class="mz-num"><b class="num">${SJ.n?Math.round(SJ.h/(SJ.n*5)*100)+'%':'–'}</b><span>우리 정 관중률 · ${SJ.n}순</span></div></div>` : '';
+  const other = SJ && scope!==myJ.id;   // 다른 정 월보를 보는 중
+  const scopeBar = `<div class="mz-scope ${other?'three':''}" role="tablist"><button type="button" role="tab" data-scope="all" class="${scope==='all'?'on':''}">🏯 전체 월보</button><button type="button" role="tab" data-scope="${esc(myJ.id)}" class="${scope===myJ.id?'on':''} ${JS[myJ.id]&&JS[myJ.id].ok?'':'wait'}">${esc(myJ.name)} 월보${JS[myJ.id]&&JS[myJ.id].ok?'':' · 준비 중'}</button>${other?`<button type="button" role="tab" data-scope="${esc(SJ.id)}" class="on">${esc(SJ.name)} 월보</button>`:''}</div>`;
   // 지난 호
   const NT = (typeof NOTICES!=='undefined' && NOTICES.length) ? NOTICES[0] : null;
   el.innerHTML = `
   ${ym!==Tym?`<button type="button" class="mz-backbar" data-mag="${Tym}">← 이번 호(${+Tym.slice(5)}월호)로</button>`:''}
+  ${scopeBar}
   <article class="mz">
-    <div class="mz-mast"><div class="t">射臺月報<small>사대 월보</small></div></div>
+    <div class="mz-mast"><div class="t">${SJ?`${esc(SJ.hanja)}月報<small>${esc(SJ.name)} 월보 · 사대 월보 정별판</small>`:'射臺月報<small>사대 월보</small>'}</div></div>
     <div class="mz-meta"><span>${Y}년 ${M}월호 · ${no>0?(no===1?'창간호':'제'+no+'호'):'준비호'}</span><span>${d.wide?(d.cur?`베타 기록 · ${magMD(T)} 현재`:'베타 기록 · 확정'):(d.cur?`${d.from!==ym+'-01'?magMD(d.from)+'부터 · ':''}${magMD(T)} 현재`:`${magMD(d.end)} 마감`)}</span></div>
     <div class="mz-cover" style="${art?`background-image:url(${art})`:''}">
-      <div class="hl"><span class="k">${d.wide?'창간호 표지 · 베타 성실왕':'이달의 표지 · 성실왕'}</span><h1>${king?(d.wide?`베타 ${BD}일 중<br>${king.days}일 사대에 선<br>${esc(km.name)} 사원`:`${phrase}<br>${king.days}일 습사,<br>${esc(km.name)} 사원`):`${M}월호의<br>첫 화살을<br>기다려요`}</h1></div>
+      <div class="hl"><span class="k">${d.wide?'창간호 표지 · '+(SJ?esc(SJ.name)+' ':'')+'베타 성실왕':'이달의 표지 · '+(SJ?esc(SJ.name)+' ':'')+'성실왕'}</span><h1>${king?(d.wide?`베타 ${BD}일 중<br>${king.days}일 사대에 선<br>${esc(km.name)} 사원`:`${phrase}<br>${king.days}일 습사,<br>${esc(km.name)} 사원`):`${M}월호의<br>첫 화살을<br>기다려요`}</h1></div>
       ${king?`<div class="hero" data-room="${esc(king.mid)}">${charSVG(km.char||DEFAULT_CHAR)}</div>`:''}
       <div class="side">${d.wide?`<span>👥 사원 <b>${ac.members}명</b></span><span>🏹 사대 등록 <b>${ac.att}번</b></span><span>📮 방명록·응원 <b>${ac.gb+ac.ch}번</b></span>`:`<span>🎯 이달 몰기 <b>${tot.mo}번</b></span><span>🏅 새 배지 <b>${d.nBadge}개</b></span><span>🎂 집궁 기념 <b>${d.nSince}명</b></span>`}</div>
       <div class="stamp ${d.cur?'':'done'}">${d.cur?'발행 중':'확정'}</div>
     </div>
     ${d.wide?`<div class="mz-beta"><b>🧪 베타 테스트 기간</b><span>${magMD(d.from).replace('월 ','.').replace('일','')} ~ ${magMD(d.end).replace('월 ','.').replace('일','')} · ${BD}일</span><small>앱을 만든 날부터 창간호를 내기 전까지의 기록이에요</small></div>`:''}
-    <div class="mz-toc"><button type="button" data-go="mz1"><b>01</b>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${d.from!==ym+'-01'?M+'월호':M+'월'}`}</button><button type="button" data-go="mz2"><b>02</b>축하합니다</button><button type="button" data-go="mz3"><b>03</b>${d.wide?'창간호 순위':'이달의 순위'}</button><button type="button" data-go="mz4"><b>04</b>이달의 바람</button></div>
+    <div class="mz-toc"><button type="button" data-go="mz1"><b>01</b>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${d.from!==ym+'-01'?M+'월호':M+'월'}`}</button><button type="button" data-go="mz2"><b>02</b>축하합니다</button><button type="button" data-go="mz3"><b>03</b>${d.wide?'창간호 순위':'이달의 순위'}</button><button type="button" data-go="mz4"><b>04</b>${SJ?esc(SJ.name)+' 한눈에':'정 소식'}</button></div>
   </article>
   <article class="mz" id="mz1"><div class="mz-sec"><div class="mz-kick">01 · NUMBERS</div><h2>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${d.from!==ym+'-01'?M+'월호':M+'월'}`}</h2>
     ${d.wide?`<div class="mz-nums"><div class="mz-num red"><b class="num">${ac.members}</b><span>명이 오늘 사대에 함께했어요</span></div><div class="mz-num"><b class="num">${ac.att}</b><span>번 사대에 섰어요 (습사 등록)</span></div><div class="mz-num"><b class="num">${tot.n.toLocaleString()}</b><span>순 표를 남겼어요 · 사원 ${tot.people}명</span></div><div class="mz-num"><b class="num">${tot.mo}</b><span>번 몰기가 나왔어요</span></div><div class="mz-num"><b class="num">${ac.gb}</b><span>개 방명록이 남았어요</span></div><div class="mz-num"><b class="num">${ac.ch}</b><span>번 응원이 오갔어요</span></div></div>`:`<div class="mz-nums"><div class="mz-num red"><b class="num">${tot.days}</b><span>번 활터에 왔어요 (사원 ${tot.people}명)</span></div><div class="mz-num"><b class="num">${(tot.n*5).toLocaleString()}</b><span>시를 쐈어요 · ${tot.n.toLocaleString()}순</span></div><div class="mz-num"><b class="num">${tot.mo}</b><span>번 몰기가 나왔어요</span></div><div class="mz-num"><b class="num">${tot.n?pct(rate)+'%':'–'}</b><span>모두의 관중률${prate!==null&&tot.n?` (지난달 ${pct(prate)}%)`:''}</span></div></div>`}
@@ -3471,12 +3509,17 @@ function renderNews(){
   <article class="mz" id="mz3"><div class="mz-sec"><div class="mz-kick">03 · RANKING</div><h2>${d.wide?'창간호 순위':'이달의 순위'} <small>${d.wide?`(베타 ${BD}일 · 성실 · 몰기 · 다정)`:d.cur?'(지금은 중간 순위)':'(확정)'}</small></h2>
     ${rkData?`<div class="mz-hof">${hof}</div>`:'<p class="mz-empty">순위를 불러오는 중…</p>'}
     <p class="mz-tip">${d.wide?'베타 기간 기록 · ':'관중률·정심은 30순 이상 · '}랭킹에서 숨긴 사원은 빠져요${d.cur&&!d.wide?' · <button type="button" class="linkbtn" data-tab-go="plaza">광장에서 실시간 순위 보기 ▸</button>':''}</p></div></article>
-  <article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · WIND</div><h2>이달의 바람 🌬</h2>${windHTML}</div></article>
+  ${SJ ? `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · OUR JEONG</div><h2>${esc(SJ.name)} 한눈에</h2>${ourHTML}<p class="mz-tip">전체 순위와 다른 정 소식은 🏯 전체 월보에서 볼 수 있어요</p></div></article>`
+    : `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · JEONG NEWS</div><h2>정 소식 🏯</h2>${jeongNewsHTML}</div></article>
+  ${vsOn?`<article class="mz" id="mz5"><div class="mz-sec"><div class="mz-kick">05 · JEONG VS JEONG</div><h2>정 대항 ⚔️</h2>${vsHTML}</div></article>`:''}`}
   <article class="mz"><div class="mz-sec"><div class="mz-kick">BACK ISSUES</div><h2>지난 호</h2>
     ${magBackHTML(ym, Tym)}</div>
     ${NT?`<button type="button" class="mz-note" data-tab-go="info"><span>📢 ${esc(NT.title||'새 공지')}</span><span>안내 ▸</span></button>`:''}</article>`;
   $$('[data-go]',el).forEach(b=>b.onclick=()=>{ const t=$('#'+b.dataset.go); if(t) scrollTo({top:t.getBoundingClientRect().top+scrollY-70, behavior:'smooth'}); });
   $$('[data-mag]',el).forEach(b=>b.onclick=()=>{ S.mag.ym=b.dataset.mag; S.mag.more=false; renderNews(); scrollTo({top:0}); });
+  $$('[data-scope]',el).forEach(b=>b.onclick=()=>{ const sc=b.dataset.scope; const o=JS[sc];
+    if(sc!=='all' && !(o&&o.ok)){ toast(`${o?o.name:myJ.name} 월보는 가입 ${MAG_JMIN.members}명 + 이번 호 표 기록 ${MAG_JMIN.rec}명이 되면 나와요 (지금 ${o?o.members:0}명 · 기록 ${o?o.rec:0}명)`); return; }
+    S.mag.scope=sc; S.mag.more=false; renderNews(); scrollTo({top:0}); });
   $$('[data-tab-go]',el).forEach(b=>b.onclick=()=>setTab(b.dataset.tabGo));
   const mb=$('#mzMore',el); if(mb) mb.onclick=()=>{ S.mag.more=!S.mag.more; renderNews(); };
   $$('[data-clap]',el).forEach(b=>b.onclick=async()=>{ const key=b.dataset.clap, mid=b.dataset.cmid;
