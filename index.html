@@ -351,6 +351,128 @@ td.total{font-family:var(--display);font-size:16px}
 @keyframes rmFly{0%{left:-10%;transform:translateY(0)}25%{transform:translateY(-3px)}50%{transform:translateY(2px)}75%{transform:translateY(-2px)}100%{left:110%;transform:translateY(0)}}
 @keyframes rmTw{0%,100%{opacity:.25}50%{opacity:1}}
 @keyframes rmArrow{0%,82%{left:-14%;opacity:0}84%{opacity:1}92%{left:44%;opacity:1}99%{left:44%;opacity:1}100%{left:44%;opacity:0}}
+/* 방 테마 */
+.room.th-hanok{--wall:#F3EAD3;--floor:#D9B27A;--floor2:#C39A60;--wood:#6B4226;background-image:linear-gradient(#5A361E 0 9px,#7A4B2A 9px 12px,transparent 12px),repeating-linear-gradient(180deg,transparent 0 26px,rgba(160,120,70,.10) 26px 27px),repeating-linear-gradient(90deg,transparent 0 25%,rgba(107,66,38,.0) 25%)!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.room.th-hanok::after{content:'';position:absolute;top:12px;bottom:32%;left:0;width:10px;background:#7A4B2A;box-shadow:inset -2px 0 0 #5A361E;pointer-events:none}
+.room.th-hanok .floor{border-top:7px solid #7A4A2A;background:repeating-linear-gradient(90deg,var(--floor) 0 30px,var(--floor2) 30px 32px)}
+.room.th-hanok .win{border:5px solid #5A361E;background-color:#F4EBD8}
+.room.th-hanok .win::before,.room.th-hanok .win::after{background:#5A361E}
+.room.th-hanok .win .rm-sky::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 22%,#6B4226 22% 24%),repeating-linear-gradient(180deg,transparent 0 30%,#6B4226 30% 32%);opacity:.75}
+.room.th-forest{--wall:#9A6A3B;--floor:#6F4A2C;--floor2:#5C3C22;--wood:#4E3019;background-image:repeating-linear-gradient(180deg,#A3713F 0 13px,#8C5D32 13px 15px,#9A6A3B 15px 28px,#7A4F2A 28px 30px)!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.room.th-forest .floor{border-top:4px solid #3E2614}
+.room.th-forest .win{border:5px solid #4E3019}.room.th-forest .win::before,.room.th-forest .win::after{background:#4E3019}
+.room.th-forest .frame{border-color:#C99A3B}
+.rm-pines{position:absolute;right:8%;top:9%;width:28%;aspect-ratio:1;pointer-events:none;z-index:1;background:linear-gradient(transparent 55%,rgba(30,70,40,.0) 55%),conic-gradient(from 150deg at 18% 62%,transparent 0 60deg,#2E5E38 60deg 120deg,transparent 120deg) ,conic-gradient(from 150deg at 50% 70%,transparent 0 60deg,#244E2E 60deg 120deg,transparent 120deg),conic-gradient(from 150deg at 84% 60%,transparent 0 60deg,#2E5E38 60deg 120deg,transparent 120deg);opacity:.9;clip-path:inset(4px)}
+.room.th-modern{--wall:#F4F3EF;--floor:#E3CBA0;--floor2:#D5B98A;--wood:#2F2F2F;background-image:linear-gradient(180deg,transparent calc(68% - 7px),#FFFFFF calc(68% - 7px))!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.room.th-modern .floor{border-top:3px solid #CFCAC0;background:repeating-linear-gradient(90deg,var(--floor) 0 64px,var(--floor2) 64px 65px)}
+.room.th-modern .win{right:5%;top:7%;width:36%;border:3px solid #2B2B2B;border-radius:0}
+.room.th-modern .win::before,.room.th-modern .win::after{background:#2B2B2B;width:2px}.room.th-modern .win::after{height:2px;width:auto}
+.room.th-modern .frame{border-color:#2F2F2F;border-width:3px}
+.room.th-modern .shelf{height:5px}
+.rm-plant{position:absolute;z-index:1}.rm-plant svg{display:block;width:100%;height:auto}
+/* 캐릭터 · 이름표 · 말풍선은 늘 맨 앞 (바다 · 난간 · 병풍 · 풍경에 가리지 않게) */
+.room .hero{z-index:4}.room .sign,.room .bubble{z-index:5}.room .item{z-index:3}.room .frame{z-index:2}
+/* 바깥 테마 공통: 창 = 나뭇가지에 건 풍경 액자, 초롱 없음 */
+.room.th-glade .rm-lan,.room.th-valley .rm-lan,.room.th-blossom .rm-lan{display:none}
+.room.th-glade .win,.room.th-valley .win,.room.th-blossom .win{border:5px solid #7A5230;box-shadow:2px 3px 0 rgba(0,0,0,.25)}
+.room.th-glade .win::before,.room.th-valley .win::before,.room.th-blossom .win::before,.room.th-glade .win::after,.room.th-valley .win::after,.room.th-blossom .win::after{display:none}
+.room.th-glade .shelf,.room.th-valley .shelf,.room.th-blossom .shelf{background:#7A5230}
+.room.th-glade .win,.room.th-valley .win,.room.th-blossom .win{z-index:2}
+/* 숲속 공터 */
+.room.th-glade{--wall:#CFEBD8;--floor:#86B86B;--floor2:#7AAD5F;--wood:#6B4A2E;background-image:linear-gradient(180deg,#D7EEF7 0 20%,#CFE8D4 20% 40%,transparent 40%)!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.rm-trees{position:absolute;left:0;right:0;top:12%;bottom:32%;z-index:0;background:radial-gradient(circle at 6% 30%,#3E7F4A 0 13%,transparent 13.5%),radial-gradient(circle at 22% 22%,#4E9459 0 12%,transparent 12.5%),radial-gradient(circle at 40% 30%,#3E7F4A 0 11%,transparent 11.5%),radial-gradient(circle at 58% 20%,#4E9459 0 13%,transparent 13.5%),radial-gradient(circle at 76% 28%,#3E7F4A 0 12%,transparent 12.5%),radial-gradient(circle at 94% 22%,#4E9459 0 13%,transparent 13.5%),repeating-linear-gradient(90deg,transparent 0 8%,#6B4A2E 8% 10%,transparent 10% 18%),linear-gradient(180deg,transparent 30%,#5E9A5A 30%)}
+.room.th-glade .floor{border-top:4px solid #5E8F48;background:radial-gradient(circle at 20% 40%,#F6D55C 0 3px,transparent 3.5px),radial-gradient(circle at 70% 70%,#F2A7BE 0 3px,transparent 3.5px),radial-gradient(circle at 45% 80%,#FFFFFF 0 2.5px,transparent 3px),repeating-linear-gradient(90deg,var(--floor) 0 22px,var(--floor2) 22px 24px);background-size:60px 40px,80px 50px,70px 45px,auto}
+.rm-stump{position:absolute;right:20%;bottom:8%;width:42px;z-index:1}.rm-stump svg{display:block;width:100%;height:auto}
+.room .ff{position:absolute;width:4px;height:4px;border-radius:50%;background:#F7F59A;box-shadow:0 0 6px 2px rgba(247,245,154,.8);z-index:3;animation:rmFF 4s ease-in-out infinite;animation-delay:var(--dl)}
+@keyframes rmFF{0%,100%{transform:translate(0,0);opacity:.3}50%{transform:translate(10px,-8px);opacity:1}}
+.rm-bird.pet-glade{top:auto;bottom:8%;width:26px;animation-name:rmHopGl;animation-duration:14s}
+@keyframes rmHopGl{0%{left:66%;transform:scaleX(-1)}15%{left:70%}30%{left:74%}45%,60%{left:78%}61%{transform:scaleX(1)}75%{left:72%;transform:scaleX(1)}90%,100%{left:66%;transform:scaleX(1)}}
+/* 계곡 폭포 */
+.room.th-valley{--wall:#BFD8C8;--floor:#6FB2D1;--floor2:#62A6C6;--wood:#6B4A2E;background-image:linear-gradient(180deg,#DCEFF6 0 18%,#BFD8C8 18%)!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.rm-cliff{position:absolute;left:0;right:0;top:10%;bottom:32%;z-index:0;background:radial-gradient(ellipse at 10% 70%,#8D9A93 0 30%,transparent 31%),radial-gradient(ellipse at 45% 90%,#7E8B84 0 28%,transparent 29%),radial-gradient(ellipse at 85% 80%,#8D9A93 0 32%,transparent 33%),radial-gradient(ellipse at 30% 20%,#4E8A5A 0 14%,transparent 15%),radial-gradient(ellipse at 70% 15%,#5E9A64 0 16%,transparent 17%)}
+.rm-fall{position:absolute;left:20%;width:11%;top:14%;bottom:30%;z-index:1;background:linear-gradient(90deg,#CFEAF5,#FFFFFF 40%,#BFE3F1);overflow:hidden;border-radius:3px}
+.rm-fall .fw{position:absolute;inset:-40px 0 0 0;background:repeating-linear-gradient(180deg,rgba(120,180,210,.5) 0 6px,transparent 6px 16px);animation:rmFall .8s linear infinite}
+@keyframes rmFall{to{transform:translateY(16px)}}
+.room.th-valley .floor{border-top:4px solid #8D9A93;background:radial-gradient(ellipse at 18% 55%,#9AA49E 0 10px,transparent 11px),radial-gradient(ellipse at 52% 70%,#9AA49E 0 12px,transparent 13px),radial-gradient(ellipse at 84% 50%,#9AA49E 0 10px,transparent 11px),linear-gradient(180deg,#7CBEDA,#5FA6C6)}
+.rm-stream{position:absolute;left:0;right:0;bottom:0;height:32%;z-index:0;overflow:hidden;pointer-events:none}
+.rm-stream .wv{position:absolute;left:-20%;right:-20%;top:30%;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.8) 0 12px,transparent 12px 30px);animation:rmWave 5s linear infinite}.rm-stream .wv.b{top:70%;animation-duration:8s}
+.rm-cup.rock{right:22%;bottom:12%}
+.rm-bird.pet-valley{top:auto;bottom:16%;width:26px;animation-name:rmSwim;animation-duration:22s;animation-timing-function:linear}
+@keyframes rmSwim{0%{left:66%;transform:scaleX(1)}45%{left:84%;transform:scaleX(1)}50%{left:84%;transform:scaleX(-1)}95%{left:66%;transform:scaleX(-1)}100%{left:66%;transform:scaleX(1)}}
+.rm-bird.pet-valley svg{animation:none}
+/* 벚꽃 언덕 */
+.room.th-blossom{--wall:#F6E6EE;--floor:#9CCB7A;--floor2:#90BF6E;--wood:#6B4A2E;background-image:linear-gradient(180deg,#D9EEFA 0,#F6E6EE 60%)!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.rm-bloom{position:absolute;top:0;width:34%;height:62%;z-index:0}
+.rm-bloom.l{left:-6%;background:radial-gradient(circle at 40% 30%,#F5B7CB 0 26%,transparent 27%),radial-gradient(circle at 70% 45%,#F2A7BE 0 22%,transparent 23%),radial-gradient(circle at 25% 55%,#F7C6D5 0 20%,transparent 21%),linear-gradient(90deg,transparent 42%,#7A5230 42% 50%,transparent 50%)}
+.rm-bloom.r{right:-6%;left:auto;width:26%;background:radial-gradient(circle at 60% 25%,#F5B7CB 0 28%,transparent 29%),radial-gradient(circle at 30% 45%,#F7C6D5 0 22%,transparent 23%),linear-gradient(90deg,transparent 52%,#7A5230 52% 60%,transparent 60%)}
+.room.th-blossom .floor{border-top:4px solid #7DAE5C;background:radial-gradient(circle at 30% 40%,#F5B7CB 0 2.5px,transparent 3px),radial-gradient(circle at 75% 75%,#FFFFFF 0 2px,transparent 2.5px),repeating-linear-gradient(90deg,var(--floor) 0 26px,var(--floor2) 26px 28px);background-size:50px 34px,64px 40px,auto}
+.rm-mat{position:absolute;left:30%;right:30%;bottom:3%;height:14%;z-index:0;background:repeating-linear-gradient(90deg,#E8D7A8 0 8px,#D9C28A 8px 10px);border:2px solid #B89A5E;transform:perspective(200px) rotateX(30deg)}
+.room .pt{position:absolute;top:-4%;width:5px;height:4px;border-radius:60% 0;background:#F5B7CB;z-index:3;animation:rmPetal var(--d) linear infinite;animation-delay:var(--dl)}
+@keyframes rmPetal{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(30px,280px) rotate(360deg)}}
+.rm-bird.pet-blossom{top:30%;width:18px;animation-name:rmFlutter;animation-duration:12s;animation-timing-function:ease-in-out}
+@keyframes rmFlutter{0%{left:8%;top:34%}25%{left:24%;top:24%}50%{left:36%;top:40%}75%{left:22%;top:46%}100%{left:8%;top:34%}}
+.rm-bird.pet-blossom svg{animation:rmWing .3s steps(2) infinite}@keyframes rmWing{50%{transform:scaleX(.6)}}
+.rm-bird{width:26px}.rm-bird svg{width:26px;height:auto}
+.calm-fx .room .ff,.calm-fx .room .pt,.calm-fx .rm-fall .fw,.calm-fx .rm-stream .wv{display:none}
+.rm-pick{right:6px;left:auto;top:6px;z-index:6}
+.rt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+.rt-card{display:flex;flex-direction:column;align-items:stretch;gap:2px;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line2,var(--ink));padding:5px;cursor:pointer}
+.rt-card.on{border-color:var(--red,#E2463B);box-shadow:0 0 0 2px rgba(226,70,59,.25)}
+.rt-card b{font-size:13px;margin-top:3px}.rt-card b small{font-weight:400;color:var(--red,#E2463B)}.rt-card>small{font-size:10.5px;color:var(--ink3);line-height:1.3}
+.room.rt-mini{height:96px!important;aspect-ratio:auto;border-width:2px;box-shadow:none;pointer-events:none;overflow:hidden}
+.room.rt-mini .hero{width:44px;bottom:3%}.room.rt-mini .hero svg{width:44px;height:53px}
+.room.rt-mini .rm-bird,.room.rt-mini .rm-lan,.room.rt-mini .rm-cup,.room.rt-mini .rm-side,.room.rt-mini .rm-soban,.room.rt-mini .rm-shell,.room.rt-mini .rm-stump{transform:scale(.55);transform-origin:50% 100%}
+.room.rt-mini .rm-plant{transform:scale(.6);transform-origin:0 100%}
+.room.rt-mini .rfx{animation:none!important}
+.room.rt-mini{isolation:isolate;z-index:0}.room.rt-mini .rm-lan{animation:none;transform:scale(.55);transform-origin:50% 0}.room.rt-mini .pt{display:none}.room.rt-mini .rm-bird{animation:none}
+.rm-plant.orchid{left:27%;bottom:20%;width:28px;z-index:2}
+/* 한옥: 일월오봉 병풍 · 장지문 */
+.rm-byeong{position:absolute;left:31%;width:38%;bottom:31%;height:30%;z-index:0;border:3px solid #5A361E;background:#2F6C8E;overflow:hidden;box-shadow:2px 2px 0 rgba(0,0,0,.2)}
+.rm-byeong::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 26%,#F3F1E6 0 7%,transparent 7.5%),radial-gradient(circle at 21% 23%,#2F6C8E 0 6%,transparent 6.5%),conic-gradient(from 150deg at 50% 38%,transparent 0 60deg,#2E7A57 60deg 120deg,transparent 120deg),conic-gradient(from 150deg at 26% 52%,transparent 0 60deg,#3B8C62 60deg 120deg,transparent 120deg),conic-gradient(from 150deg at 74% 52%,transparent 0 60deg,#3B8C62 60deg 120deg,transparent 120deg),linear-gradient(transparent 80%,#7FB5D6 80%)}
+.rm-byeong .sun{position:absolute;left:82%;top:26%;width:26%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,#FFE08A 0 22%,#F5A43A 23% 30%,rgba(245,164,58,0) 31%),repeating-conic-gradient(rgba(243,197,74,.95) 0 9deg,transparent 9deg 30deg);
+  -webkit-mask:radial-gradient(circle,#000 0 62%,transparent 63%);mask:radial-gradient(circle,#000 0 62%,transparent 63%);animation:rmSunSpin 18s linear infinite}
+.rm-byeong .sun::after{content:"";position:absolute;inset:18%;border-radius:50%;box-shadow:0 0 8px 3px rgba(255,200,90,.6)}
+@keyframes rmSunSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.calm-fx .rm-byeong .sun{animation:none}
+.rm-byeong i{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(16.66% - 2px),#5A361E calc(16.66% - 2px) 16.66%)}
+.rm-jangji{position:absolute;left:3%;width:18%;top:38%;bottom:32%;z-index:0;border:3px solid #6B4226;background-color:#F7EFDB;background-image:repeating-linear-gradient(90deg,transparent 0 9px,#8A5A34 9px 10px),repeating-linear-gradient(180deg,transparent 0 9px,#8A5A34 9px 10px)}
+.room.th-hanok .rm-jangji{display:block}
+/* 바닷가 정자 */
+.room.th-sea{--wall:#CFEAF7;--floor:#D4AE78;--floor2:#C29C66;--wood:#8C3B2A;background-image:linear-gradient(90deg,#9E3B2A 0 12px,transparent 12px calc(100% - 12px),#9E3B2A calc(100% - 12px)),linear-gradient(#2F7D6B 0 7px,#C8402F 7px 10px,#E9C45A 10px 12px,#2F7D6B 12px 14px,transparent 14px),linear-gradient(180deg,#D9F0FA 0 30%,#BFE4F4 30% 48%,transparent 48%)!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.rm-sea{position:absolute;left:12px;right:12px;top:48%;bottom:32%;z-index:0;background:linear-gradient(180deg,#7CC3E0 0,#4F9DC2 100%);overflow:hidden}
+.rm-sea .wv{position:absolute;left:-20%;right:-20%;top:25%;height:3px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.85) 0 14px,transparent 14px 34px);animation:rmWave 6s linear infinite}.rm-sea .wv.b{top:65%;animation-duration:9s;opacity:.7}
+@keyframes rmWave{from{transform:translateX(0)}to{transform:translateX(34px)}}
+.rm-rail{position:absolute;left:12px;right:12px;bottom:32%;height:16px;z-index:1;border-top:4px solid #8C3B2A;background:repeating-linear-gradient(90deg,#9E3B2A 0 4px,transparent 4px 18px)}
+.room.th-sea .floor{border-top:4px solid #7A4A2A;background:repeating-linear-gradient(90deg,var(--floor) 0 36px,var(--floor2) 36px 38px)}
+.room.th-sea .win{border:5px solid #8C3B2A}.room.th-sea .win::before,.room.th-sea .win::after{background:#8C3B2A}
+.rm-shell{position:absolute;right:22%;bottom:8%;width:34px;z-index:1}.rm-shell svg{display:block;width:100%;height:auto}
+.rm-bird.pet-sea{top:auto;bottom:calc(32% + 18px);animation-name:rmHopSea;animation-duration:20s}
+@keyframes rmHopSea{0%{left:6%;transform:scaleX(1)}10%{left:12%}20%{left:18%}30%{left:24%}40%,55%{left:28%}56%{transform:scaleX(-1)}66%{left:20%;transform:scaleX(-1)}78%{left:12%;transform:scaleX(-1)}90%,100%{left:6%;transform:scaleX(-1)}}
+/* 겨울 산장 */
+.room.th-winter{--wall:#6E4B32;--floor:#7A5536;--floor2:#68472C;--wood:#3E2716;background-image:repeating-linear-gradient(180deg,#76503A 0 13px,#5E3E2A 13px 15px,#6E4B32 15px 28px,#553624 28px 30px)!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.room.th-winter .floor{border-top:4px solid #3E2716}
+.room.th-winter .win{border:5px solid #3E2716;filter:saturate(.75) brightness(1.05)}.room.th-winter .win::before,.room.th-winter .win::after{background:#3E2716}
+.room.th-winter .win::marker{}
+.rm-frost{position:absolute;right:8%;top:9%;width:28%;aspect-ratio:1;z-index:1;pointer-events:none;background:radial-gradient(circle at 0 0,rgba(255,255,255,.85),rgba(255,255,255,0) 30%),radial-gradient(circle at 100% 0,rgba(255,255,255,.7),rgba(255,255,255,0) 26%),radial-gradient(circle at 0 100%,rgba(255,255,255,.75),rgba(255,255,255,0) 28%),radial-gradient(circle at 100% 100%,rgba(255,255,255,.85),rgba(255,255,255,0) 32%);clip-path:inset(4px)}
+.rm-sky .sn{position:absolute;top:-6%;width:3px;height:3px;background:#fff;border-radius:50%;animation:rmSnow var(--d) linear infinite;animation-delay:var(--dl)}
+@keyframes rmSnow{to{transform:translate(6px,120px)}}
+.rm-rug{position:absolute;left:26%;right:26%;bottom:3%;height:16%;z-index:0;border-radius:50%;background:radial-gradient(ellipse,#B8433A 0 45%,#E7C76A 45% 50%,#9C2F28 50% 70%,transparent 71%)}
+.rm-fire{position:absolute;left:3%;bottom:31%;width:22%;height:30%;z-index:1;background:#8E8A84;border:3px solid #5E5A55;border-bottom:0;box-shadow:inset 0 6px 0 #A9A49D}
+.rm-fire::before{content:"";position:absolute;left:18%;right:18%;bottom:0;height:55%;background:#231B16;border-radius:40% 40% 0 0}
+.rm-fire .fl{position:absolute;left:34%;bottom:4%;width:32%;height:38%;background:radial-gradient(ellipse at 50% 90%,#F3C54A 0 30%,#E8642C 55%,rgba(232,100,44,0) 72%);animation:rmFlame .6s ease-in-out infinite alternate;transform-origin:50% 100%}.rm-fire .fl.b{left:28%;width:44%;height:26%;opacity:.7;animation-duration:.9s}
+@keyframes rmFlame{from{transform:scaleY(.85)}to{transform:scaleY(1.1)}}
+.rm-cup.cocoa svg{width:20px;height:15px}
+.calm-fx .rm-sea .wv,.calm-fx .rm-sky .sn{display:none}
+.rm-jangji{}
+.rm-plant.mon{left:3%;bottom:28%;width:46px}
+.rm-soban{position:absolute;right:21%;bottom:8%;width:42px;z-index:1}.rm-soban svg{display:block;width:100%;height:auto}.rm-soban .sm{position:absolute;left:12px;bottom:18px;width:3px;height:12px;border-left:2px solid rgba(255,255,255,.75);border-radius:50%;opacity:0;animation:rmSteam 3.4s ease-out infinite}
+.rm-side{position:absolute;right:22%;bottom:8%;width:30px;z-index:1}.rm-side svg{display:block;width:100%;height:auto}.rm-side .sm{position:absolute;left:9px;bottom:30px;width:3px;height:12px;border-left:2px solid rgba(120,120,120,.55);border-radius:50%;opacity:0;animation:rmSteam 3.4s ease-out infinite}
+.rm-stove{position:absolute;left:3%;bottom:30%;width:40px;z-index:1}.rm-stove svg{display:block;width:100%;height:auto}
+.rm-stove .fire{position:absolute;left:4px;top:44%;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,rgba(255,150,60,.55),rgba(255,150,60,0) 70%);animation:rmGlow 1.1s ease-in-out infinite}
+.rm-logs{position:absolute;right:20%;bottom:8%;width:46px;z-index:1}.rm-logs svg{display:block;width:100%;height:auto}
+.rm-lan.pend{left:50%}.rm-lan.pend svg{width:26px;height:17px}.rm-lan.pend::before{height:22px;width:1px}
+.room.th-hanok .rm-bird,.room.th-forest .rm-bird,.room.th-modern .rm-bird{}
 .rm-dim{position:absolute;inset:0;pointer-events:none;z-index:0}.rm-dim.dusk{background:rgba(255,140,60,.07)}.rm-dim.night{background:rgba(18,22,52,.22)}
 .room:has(.rm-dim.night) .rm-lan .glow{width:70px;height:70px;background:radial-gradient(circle,rgba(255,206,110,.75),rgba(255,206,110,0) 70%)}
 .rm-light{position:absolute;left:52%;bottom:0;width:34%;height:32%;pointer-events:none;background:linear-gradient(180deg,rgba(255,244,200,.0),rgba(255,236,170,.38));clip-path:polygon(30% 0,78% 0,100% 100%,0 100%);mix-blend-mode:screen;animation:rmSun 40s ease-in-out infinite alternate}
@@ -1718,7 +1840,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04k';
+const APP_VER = '2026.10.04l';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1962,9 +2084,9 @@ function openRoom(mid){
   const g=m.gear||{}; const t=today(); const ym=t.slice(0,7); const st=dayStats(mid, ym);
   let since=''; if(m.since){ const d=Math.floor((new Date(t)-new Date(m.since))/86400000); since = d>=0? `D+${d}` : ''; }
   const slots=[['bow','활',g.bowName||m.bow,[g.bowSize,g.bowLb?g.bowLb+'파운드':'',m.bow].filter(Boolean).join(' · ')],['arrow','화살',g.arrowName||m.arrow,[lenLabel(g.arrowLen),g.arrowWeight?g.arrowWeight+'돈':'',m.arrow].filter(Boolean).join(' · ')],['kkakji','깍지',g.kkakji,g.kkakjiNote],['etc','그 외',g.etc,'']];
-  const draw=()=>{ const s=dayStats(mid, ym); const VFX=roomFxHTML(memberJ(m).id);
+  const draw=()=>{ const s=dayStats(mid, ym); const VTH=roomThemeOf(m); const VFX=roomFxHTML(memberJ(m).id, VTH);
     const sh=openSheet(`
-    <div class="room visit">
+    <div class="room visit th-${VTH}">
       <div class="floor"></div><div class="win" style="${VFX.winStyle}">${VFX.win}<div class="tg"><i></i></div></div><div class="shelf"></div>${VFX.room}
       <div class="item" style="left:8%;top:13%">${ICON.bow}<span class="lb">${esc(g.bowName||m.bow||'활')}</span></div>
       <div class="item" style="left:26%;top:13%">${ICON.arrow}<span class="lb">${esc(g.arrowName||m.arrow||'화살')}</span></div>
@@ -2842,23 +2964,76 @@ const pxSVG = (map, cls) => { const h=map.length, wd=map[0].length; let r=''; ma
 const PX_LANTERN = ['...ss...','..rrrr..','.rrrrrr.','.ryyyyr.','.nyyyyn.','.nnnnnn.','..nnnn..','...yy...','...y.y..'];
 const PX_CLOUD = ['...ff.....','..ffff.ff.','.fffffffff','ffffffffff','.ffffffff.'];
 const PX_CUP = ['.tttttt.','.tttttt..','.tttttttt','.tttttt.t','.tttttt..','..tttt...','sssssssss'];
-function roomFxHTML(jid){
+const ROOM_THEMES = [['basic','🏠 기본','지금 방'],['hanok','🏯 한옥','창호지 벽 · 대청마루 · 문살 창 · 소반 다기 · 난초'],['forest','🌲 숲속 오두막','통나무 벽 · 장작 난로 · 기름 등불 · 솔숲 창'],['modern','🏙 모던','흰 벽 · 큰 통창 · 원목 탁자 · 몬스테라 · 펜던트 조명'],['sea','🌊 바닷가 정자','단청 기둥 · 난간 너머 바다 · 파도 · 조개 · 갈매기'],['winter','❄️ 겨울 산장','벽난로 · 눈 내리는 창 · 러그 · 코코아 · 부엉이'],['glade','🌳 숲속 공터','나무 사이 풀밭 · 그루터기 버섯 · 토끼 · 밤엔 반딧불'],['valley','🏞 계곡 폭포','바위 · 폭포 · 시냇물 · 징검돌 · 오리'],['blossom','🌸 벚꽃 언덕','꽃나무 · 흩날리는 꽃잎 · 돗자리 · 나비']];
+const ROOM_OUT = ['glade','valley','blossom'];   // 바깥 테마: 벽 대신 풍경
+const roomThemeOf = m => { const t=m&&m.roomTheme; return ROOM_THEMES.some(x=>x[0]===t) ? t : 'basic'; };
+Object.assign(PX_COL, {A:'#F2A7BE',F:'#D9534F',L:'#8BC34A',O:'#E0E0E0',u:'#3E6FB0',j:'#B8692E',i:'#A7B0BA',B:'#8A6A4A',E:'#E59A86',S:'#E8D3A2',T:'#6B3E2A',g:'#3E8E41',G:'#5DB760',h:'#5A3B22',p:'#ECE6DA',P:'#D6CDBE',q:'#C77DB5',l:'#2F6B3A',c:'#7FB5A0',C:'#9ACBB7',e:'#8B4A2B',K:'#45403A',x:'#E8642C',m:'#4A6FA5',a:'#C8A06A',z:'#2B2B2B',v:'#F7E7A1'});
+const PX_MONSTERA = ['...gg..gg...','..gGGggGGg..','.gGgGGGGgGg.','.gGGgGGgGGg.','..gGGGGGGg..','...gGgGGg...','....gggg....','.....hh.....','....pppp....','...pPPPPp...','...pPPPPp...','....pppp....'];
+const PX_ORCHID = ['..f.....f.','.fqf...fqf','..f.l.l.f.','...ll.l...','..l..ll...','.l...l.l..','l....l..l.','....ccc...','...cCCCc..','...cCCCc..','....ccc...'];
+const PX_SOBAN = ['....pp..p.....','...pppp.pp....','....pp..pp....','eeeeeeeeeeeeee','.e..........e.','.e..........e.'];
+const PX_STOVE = ['...zz.....','...zz.....','...zz.....','.zzzzzzz..','.zKKKKKz..','.zKxyxKz..','.zKyxyKz..','.zKKKKKz..','.zzzzzzz..','.z.....z..'];
+const PX_LOGS = ['..hhh..hhh..','.haaah.haaah','.hahah.hahah','.haaah.haaah','..hhh.hhh...','....haaah...','....hahah...','....haaah...','.....hhh....'];
+const PX_OILLAMP = ['...zz...','..z..z..','.zzzzzz.','.zvxxvz.','.zvxxvz.','.zzzzzz.','...zz...'];
+const PX_PENDANT = ['...zz...','..zzzz..','.zzzzzz.','zzzzzzzz','...vv...'];
+const PX_SIDE = ['...m.....','..mmmm...','..mmm.m..','..mmmm...','.aaaaaaa.','...a.....','...a.....','..aaa....'];
+const PX_MAGPIE = ['..kk........','.kkkk.......','okkkkkkkkk..','..wwkkuukkkk','..wwwwuuk..k','...www......','....d.d.....'];
+const PX_SQUIRREL = ['.......jjj.','......jjjjj','..jj..jj.jj','.jkjj.jj...','ojjjjjjj...','..jwwjjj...','..jwwjjj...','...j..j....'];
+const PX_BUDGIE = ['...yy.....','..ykyy....','.oyyyy....','..gggGgg..','..gGGgggg.','...gg..gg.','....d.d...'];
+const PX_GULL = ['...ff.......','..fkff......','.yffffffff..','..fffiiiiff.','..fffffii...','....ff......','....y.y.....'];
+const PX_OWL = ['.BB...BB.','.BBBBBBB.','BvkBBBkvB','BBBBoBBBB','.BwwwwwB.','.BwBwBwB.','.BwwwwwB.','..BBBBB..','...d.d...'];
+const PX_SHELL = ['...EEE....','..EfEfE...','.EfEfEfE..','.EEEEEEE..','..E.E.E...','..........','SSSSSSSSSS'];
+const PX_COCOA = ['.TTTTTT.','.TxxxxT..','.TTTTTTTT','.TTTTTT.T','.TTTTTT..','..TTTT...'];
+const PX_RABBIT = ['.f..f.....','.fA.fA....','.ffff.....','fkfff.....','.fffffff..','..ffffffff','..ffffff.f','..f.f..f..'];
+const PX_DUCK = ['...yyy....','..yyyky...','..yyyyyoo.','yyyyyyy...','yyyyyyyy..','.yyyyyy...','iiiiiiiiii'];
+const PX_BFLY = ['AA...AA','AAA.AAA','.AAkAA.','..AkA..','.AA.AA.'];
+const PX_STUMP = ['...FF.......','..FfFF......','...hh..FF...','...hh.FfFF..','.hhhhhhhhh..','.haaaaaaah..','.haBaaBaah..','.haaaaaaah..','hhhhhhhhhhh.'];
+const ROOM_PET = {glade:PX_RABBIT, valley:PX_DUCK, blossom:PX_BFLY, basic:PX_SPARROW, hanok:PX_MAGPIE, forest:PX_SQUIRREL, modern:PX_BUDGIE, sea:PX_GULL, winter:PX_OWL};
+function roomFxHTML(jid, theme){
+  theme = theme || 'basic';
   const A=JEONG_ART[jid]; const pk=pzPick(); const url = A && A.pz ? (A.pz[`${pk.s}_${pk.t}`] || A.pz.summer_day) : '';
   const night=pk.t==='night', dusk=pk.t==='dusk';
-  const sky = night ? Array.from({length:7},(_,i)=>`<i class="st" style="left:${(i*37%90)+4}%;top:${(i*23%40)+4}%;--dl:${-(i*0.7)}s"></i>`).join('')
+  let sky = night ? Array.from({length:7},(_,i)=>`<i class="st" style="left:${(i*37%90)+4}%;top:${(i*23%40)+4}%;--dl:${-(i*0.7)}s"></i>`).join('')
     : `<i class="cl" style="top:6%;--d:40s;--dl:-8s">${pxSVG(PX_CLOUD)}</i><i class="cl s" style="top:20%;--d:56s;--dl:-34s">${pxSVG(PX_CLOUD)}</i><i class="bd" style="top:16%;--d:14s;--dl:-3s"></i><i class="bd" style="top:26%;--d:17s;--dl:-11s"></i>`;
+  if(theme==='winter') sky += Array.from({length:14},(_,i)=>`<i class="sn" style="left:${(i*41%96)+2}%;--d:${5+(i*7%5)}s;--dl:${-(i*1.3)}s"></i>`).join('');
   return { winStyle: url?`background-image:url(${url});background-size:auto 290%;background-position:56% 0`:'', win: `<div class="rfx rm-sky">${sky}<i class="ar"></i></div>`,
     night, room: `<div class="rm-dim ${night?'night':dusk?'dusk':''}"></div><div class="rfx rm-light ${night?'night':dusk?'dusk':''}"></div>
-      <div class="rm-lan">${pxSVG(PX_LANTERN)}<i class="rfx glow"></i></div>
-      <div class="rm-cup">${pxSVG(PX_CUP)}<i class="rfx sm"></i><i class="rfx sm b"></i></div>
-      <div class="rm-bird ${night?'sleep':''}">${pxSVG(PX_SPARROW)}${night?'<i class="rfx zz">z</i>':''}</div>` };
+      ${theme==='hanok'?'<div class="rm-byeong"><b class="sun"></b><i></i></div><div class="rm-jangji"></div>':''}
+      ${theme==='glade'?`<div class="rm-trees"></div>${night?Array.from({length:9},(_,i)=>`<i class="rfx ff" style="left:${(i*37%86)+6}%;top:${(i*29%40)+30}%;--dl:${-(i*0.9)}s"></i>`).join(''):''}`:''}
+      ${theme==='valley'?'<div class="rm-cliff"></div><div class="rm-fall"><i class="rfx fw"></i></div><div class="rm-stream"><i class="rfx wv"></i><i class="rfx wv b"></i></div>':''}
+      ${theme==='blossom'?`<div class="rm-bloom l"></div><div class="rm-bloom r"></div><div class="rm-mat"></div>${Array.from({length:12},(_,i)=>`<i class="rfx pt" style="left:${(i*43%94)+3}%;--d:${7+(i*5%6)}s;--dl:${-(i*1.1)}s"></i>`).join('')}`:''}
+      ${theme==='sea'?'<div class="rm-sea"><i class="rfx wv"></i><i class="rfx wv b"></i></div><div class="rm-rail"></div>':''}
+      ${theme==='winter'?'<div class="rm-rug"></div><div class="rm-fire"><i class="rfx fl"></i><i class="rfx fl b"></i></div>':''}
+      <div class="rm-lan ${theme==='modern'?'pend':''}">${pxSVG(theme==='forest'||theme==='winter'?PX_OILLAMP:theme==='modern'?PX_PENDANT:PX_LANTERN)}<i class="rfx glow"></i></div>
+      ${theme==='hanok' ? `<div class="rm-soban">${pxSVG(PX_SOBAN)}<i class="rfx sm"></i></div><div class="rm-plant orchid">${pxSVG(PX_ORCHID)}</div>`
+       : theme==='forest' ? `<div class="rm-stove">${pxSVG(PX_STOVE)}<i class="rfx fire"></i></div><div class="rm-logs">${pxSVG(PX_LOGS)}</div>`
+       : theme==='glade' ? `<div class="rm-stump">${pxSVG(PX_STUMP)}</div>`
+       : theme==='valley' ? `<div class="rm-cup rock">${pxSVG(PX_CUP)}<i class="rfx sm"></i></div>`
+       : theme==='blossom' ? `<div class="rm-cup">${pxSVG(PX_CUP)}<i class="rfx sm"></i><i class="rfx sm b"></i></div>`
+       : theme==='sea' ? `<div class="rm-shell">${pxSVG(PX_SHELL)}</div>`
+       : theme==='winter' ? `<div class="rm-cup cocoa">${pxSVG(PX_COCOA)}<i class="rfx sm"></i><i class="rfx sm b"></i></div>`
+       : theme==='modern' ? `<div class="rm-side">${pxSVG(PX_SIDE)}<i class="rfx sm"></i></div><div class="rm-plant mon">${pxSVG(PX_MONSTERA)}</div>`
+       : `<div class="rm-cup">${pxSVG(PX_CUP)}<i class="rfx sm"></i><i class="rfx sm b"></i></div>`}
+      ${theme==='forest'?'<div class="rfx rm-pines"></div>':''}${theme==='winter'?'<div class="rm-frost"></div>':''}
+      <div class="rm-bird pet-${theme} ${night?'sleep':''}">${pxSVG(ROOM_PET[theme]||PX_SPARROW)}${night?'<i class="rfx zz">z</i>':''}</div>` };
+}
+function openRoomTheme(){
+  if(!S.me){ openProfile(); return; } const cur=roomThemeOf(memberById(S.me.id)); const ch=(S.me&&S.me.char)||DEFAULT_CHAR;
+  const card=([k,t,d])=>{ const F=roomFxHTML(homeJ().id,k); return `<button type="button" class="rt-card ${k===cur?'on':''}" data-rt="${k}"><div class="room th-${k} rt-mini" aria-hidden="true"><div class="floor"></div><div class="win" style="${F.winStyle}">${F.win}<div class="tg"><i></i></div></div><div class="shelf"></div>${F.room}<div class="hero">${charSVG(ch)}</div></div><b>${t}${k===cur?' <small>· 지금</small>':''}</b><small>${d}</small></button>`; };
+  const sh=openSheet(`<h3>🎨 방 꾸미기</h3><p class="tiny muted" style="margin:0">고른 테마는 방 구경 온 사원에게도 보여요. 움직임은 🍵 차분하게 보기에서 끌 수 있어요.</p>
+    <div class="rt-grid">${ROOM_THEMES.map(card).join('')}</div>
+    <div class="actions"><button class="btn ghost" id="rtClose" type="button">닫기</button></div>`);
+  sh.classList.add('sheet-tall');
+  $('#rtClose',sh).onclick=closeSheet;
+  $$('[data-rt]',sh).forEach(b=>b.onclick=async()=>{ const k=b.dataset.rt; if(k===cur){ closeSheet(); return; }
+    const ok=await write(st=>st.merge('members/'+S.me.id,{roomTheme:k, updatedAt:Date.now()}));
+    if(ok){ const mm=memberById(S.me.id); if(mm) mm.roomTheme=k; closeSheet(); renderRoom(); toast(`${(ROOM_THEMES.find(x=>x[0]===k)||[])[1]||''} 방으로 꾸몄어요`); } });
 }
 function renderRoom(){
   const room=$('#room'); if(!room) return;
   const me=S.me; const g=gearOf(); const t=today();
   const td=S.myDays.find(d=>d.date===t); const todayHits=((td&&td.rounds)||[]).reduce((a,r)=>a+hitsOf(r),0);
   const ym=t.slice(0,7); const monthHits=S.myDays.filter(d=>d.date.startsWith(ym)).reduce((a,d)=>a+(d.rounds||[]).reduce((x,r)=>x+hitsOf(r),0),0);
-  const nm = me? me.name : '???'; const FX=roomFxHTML(homeJ().id);
+  const nm = me? me.name : '???'; const TH=roomThemeOf(me&&memberById(me.id)); const FX=roomFxHTML(homeJ().id, TH); room.className='room th-'+TH;
   room.innerHTML = `
     <div class="floor"></div>
     <div class="counter">TODAY <b class="num">${todayHits}</b> · MONTH <b class="num">${monthHits}</b> <span style="opacity:.7">관중</span></div>
@@ -2883,6 +3058,7 @@ function renderRoom(){
   // 내 정보
   let since=''; if(me&&me.since){ const d=Math.floor((new Date(t)-new Date(me.since))/86400000); since = d>=0? `D+${d}` : ''; }
   $('#roomInfo').innerHTML = statTiles([[esc((me&&me.grade)||'신사'),'단급'],[esc((me&&me.hand)||'–'),'궁체'],[since||'–',`집궁 ${me&&me.since?fmtShort(me.since):''}`]]);
+  if(me){ const b=document.createElement('button'); b.type='button'; b.className='bg-pill rm-pick'; b.textContent='🎨 방 꾸미기'; b.onclick=e=>{ e.stopPropagation(); openRoomTheme(); }; room.appendChild(b); }
   renderArchive(); renderGrowth(); if(typeof renderRoomExtras==='function') renderRoomExtras();
 }
 $('#gearEdit').addEventListener('click', ()=>{ if(!S.me){ openProfile(); return; } openGear(); });
