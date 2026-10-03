@@ -1898,7 +1898,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04q';
+const APP_VER = '2026.10.04r';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3101,8 +3101,8 @@ function roomFxHTML(jid, theme){
       <div class="rm-bird pet-${theme} ${night?'sleep':''}">${pxSVG(ROOM_PET[theme]||PX_SPARROW)}${night?'<i class="rfx zz">z</i>':''}</div>` };
 }
 // ---------- 방문자 수 ----------
-function visitStats(mid){ const E=(((store&&store.docs)||{})['visits/'+mid]||{}).entries||{}; const t=today(); const L=Object.values(E).filter(v=>v&&v.from&&v.date);
-  const seen=new Set(), recent=[]; L.slice().sort((a,b)=>(b.at||0)-(a.at||0)).forEach(v=>{ if(!seen.has(v.from) && memberById(v.from)){ seen.add(v.from); recent.push(v); } });
+function visitStats(mid){ const E=(((store&&store.docs)||{})['visits/'+mid]||{}).entries||{}; const t=today(); const L=Object.values(E).filter(v=>v&&v.date);   /* 개발자 외엔 서버가 날짜만 줌 (SQL 13) */
+  const seen=new Set(), recent=[]; L.filter(v=>v.from && v.from!==(S.me&&S.me.id)).sort((a,b)=>(b.at||0)-(a.at||0)).forEach(v=>{ if(!seen.has(v.from) && memberById(v.from)){ seen.add(v.from); recent.push(v); } });
   return {today:L.filter(v=>v.date===t).length, total:L.length, recent:recent.slice(0,8)}; }
 async function markVisit(mid){ if(!S.me || !mid || mid===S.me.id || !(store&&store.kind==='remote'&&store.token)) return;
   const t=today(), key=t+'_'+S.me.id; const E=(((store.docs||{})['visits/'+mid]||{}).entries)||{}; if(E[key]) return;
