@@ -1129,6 +1129,9 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 /* 동물 탭: 종류가 늘어도 한 줄 */
 .ani-tabs{grid-template-columns:none!important;grid-auto-flow:column;grid-auto-columns:1fr}
 .ani-tabs button{padding:0 2px;white-space:nowrap}
+
+/* 햄스터: 서 있는 자리에서만 0.86배 (얼굴 사진 칸은 그대로) */
+.sd-fig .pixc.small,.pz-ch .pixc.small,.room .hero .pixc.small,.mz-cover .hero .pixc.small,#pkBig .pixc.small{transform:scale(.86);transform-origin:50% 97%}
 </style>
 
 <div class="app" id="app">
@@ -1430,11 +1433,12 @@ const charById = id => CHARS.find(c=>c.id===id) || CHARS[0];
 /* 도트 캐릭터 27종: char 값이 'cat/01' 형식이면 이미지 (옛 값은 아래 SVG 그대로) */
 const ANIMALS = [['cat','고양이'],['dog','강아지'],['duck','오리'],['bear','곰'],['hamster','햄스터']];
 const BIG_KINDS = ['bear'];   // 장면·광장·방·표지에서 조금 더 크게 서는 동물
+const SMALL_KINDS = ['hamster'];   // 조금 더 작게 서는 동물
 const PIX_IDS = ANIMALS.flatMap(([a])=>[1,2,3,4,5,6,7,8,9].map(i=>`${a}/0${i}`));
 const DEFAULT_CHAR = 'cat/01';
 const isPix = c => typeof c==='string' && c.includes('/');
 function charSVG(c, opts={}){
-  if(isPix(c)){ const src=(window.PIX||{})[c]||(window.PIX||{})[DEFAULT_CHAR]; if(src) return `<svg class="pixc${BIG_KINDS.includes(c.split('/')[0])?' big':''}" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="캐릭터"><image href="${src}" width="100" height="120"/></svg>`; c='cat'; }
+  if(isPix(c)){ const src=(window.PIX||{})[c]||(window.PIX||{})[DEFAULT_CHAR]; if(src) return `<svg class="pixc${BIG_KINDS.includes(c.split('/')[0])?' big':SMALL_KINDS.includes(c.split('/')[0])?' small':''}" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="캐릭터"><image href="${src}" width="100" height="120"/></svg>`; c='cat'; }
   c = typeof c==='string' ? charById(c) : c;
   const ink='#2A2620', ef = c.earFill || c.fur;
   let ears='';
@@ -1598,7 +1602,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.03j';
+const APP_VER = '2026.10.03k';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
