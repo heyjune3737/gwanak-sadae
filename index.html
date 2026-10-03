@@ -1681,7 +1681,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04h';
+const APP_VER = '2026.10.04i';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1964,14 +1964,21 @@ function openRoom(mid){
 const favList = () => { const v=lsGet('sadae.favs',[]); return Array.isArray(v)?v:[]; };
 const isFav = id => favList().includes(id);
 function toggleFav(id){ const L=favList(); const i=L.indexOf(id); if(i>=0) L.splice(i,1); else L.push(id); lsSet('sadae.favs', L); return i<0; }
-const rosterSortKey = () => { const k=lsGet('sadae.rosterSort','rand'); return ['rand','name','recent'].includes(k)?k:'rand'; };
+const rosterSortKey = () => { const k=lsGet('sadae.rosterSort','rand'); return ['rand','name','recent','with'].includes(k)?k:'rand'; };
 function rosterLastSeen(){ const D=(store&&store.docs)||{}; const L={};
   for(const k in D){ if(k.startsWith('days/')){ const rest=k.slice(5); const i=rest.lastIndexOf('_'); const id=rest.slice(0,i), dt=rest.slice(i+1); if(/^\d{4}-\d{2}-\d{2}$/.test(dt) && (!L[id]||dt>L[id])) L[id]=dt; }
     else if(k.startsWith('attendance/') && D[k] && D[k].entries){ const dt=k.slice(11); for(const id of Object.keys(D[k].entries)) if(!L[id]||dt>L[id]) L[id]=dt; } }
   return L; }
+// 나와 함께 선 횟수: attendance/{날짜} 에서 같은 날 · 같은 시간대 · 같은 정(다른 정에 간 날은 그 정)
+function rosterWith(){ const D=(store&&store.docs)||{}; const me=S.me&&S.me.id; const W={}; if(!me) return W;
+  const place=(e,id)=>e.jid || (memberById(id)?memberJ(memberById(id)).id:'');
+  for(const k in D){ if(!k.startsWith('attendance/') || !D[k] || !D[k].entries) continue; const dt=k.slice(11); const E=D[k].entries; const mine=E[me]; if(!mine||!mine.slot) continue;
+    const mp=place(mine,me); for(const [id,e] of Object.entries(E)){ if(id===me||!e||!e.slot||e.slot!==mine.slot||place(e,id)!==mp) continue; const o=W[id]||(W[id]={n:0,last:''}); o.n++; if(dt>o.last) o.last=dt; } }
+  return W; }
 function rosterSorted(list){
   const key=rosterSortKey(); let L=list.slice();
   if(key==='name') L.sort((a,b)=>String(a.name).localeCompare(String(b.name),'ko'));
+  else if(key==='with'){ const W=rosterWith(); S.rosterWith=W; L.sort((a,b)=>((W[b.id]||{}).n||0)-((W[a.id]||{}).n||0) || String((W[b.id]||{}).last||'').localeCompare(String((W[a.id]||{}).last||'')) || String(a.name).localeCompare(String(b.name),'ko')); }
   else if(key==='recent'){ const ls=rosterLastSeen(); L.sort((a,b)=>String(ls[b.id]||'').localeCompare(String(ls[a.id]||''))||String(a.name).localeCompare(String(b.name),'ko')); }
   else { if(!S.rosterSeed){ S.rosterSeed={}; } L.forEach(m=>{ if(S.rosterSeed[m.id]===undefined) S.rosterSeed[m.id]=Math.random(); }); L.sort((a,b)=>S.rosterSeed[a.id]-S.rosterSeed[b.id]); }
   const F=favList(); return [...L.filter(m=>F.includes(m.id)), ...L.filter(m=>!F.includes(m.id))];
@@ -1979,10 +1986,10 @@ function rosterSorted(list){
 function renderRoomExtras(){
   // 사원 명부
   const R_=$('#roster'); if(R_){ const hj=homeJ(); const all=rosterSorted((S.members||[]).filter(m=>m&&m.name));
-    const so=$('#rosterSort'); if(so){ const cur=rosterSortKey(); so.innerHTML=[['rand','🎲 랜덤'],['name','가나다'],['recent','최근 습사']].map(([k,t])=>`<button type="button" class="${k===cur?'on':''}" data-rsort="${k}">${t}</button>`).join('')+`<span class="tiny muted">★ 사대 동무(자주 함께 사대에 서거나 같이 배운 동기)는 맨 앞 · 나만 보여요</span>`;
+    const so=$('#rosterSort'); if(so){ const cur=rosterSortKey(); so.innerHTML=[['rand','🎲 랜덤'],['name','가나다'],['recent','최근 습사'],['with','🤝 함께 선']].map(([k,t])=>`<button type="button" class="${k===cur?'on':''}" data-rsort="${k}">${t}</button>`).join('')+`<span class="tiny muted">${cur==='with'?'같은 날 · 같은 시간대에 함께 선 횟수 순 · ':''}★ 사대 동무(자주 함께 사대에 서거나 같이 배운 동기)는 맨 앞 · 나만 보여요</span>`;
       $$('[data-rsort]',so).forEach(b=>b.onclick=()=>{ lsSet('sadae.rosterSort', b.dataset.rsort); if(b.dataset.rsort==='rand') S.rosterSeed=null; renderRoomExtras(); }); }
     const L=all.filter(m=>memberJ(m).id===hj.id), O=all.filter(m=>memberJ(m).id!==hj.id);
-    const cell=(m,j)=>`<button class="rs ${isFav(m.id)?'fav':''}" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name)}</b><small>${esc(j?memberJ(m).name:(m.grade||'신사'))}</small></button>`;
+    const cell=(m,j)=>`<button class="rs ${isFav(m.id)?'fav':''}" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name)}</b><small>${rosterSortKey()==='with'&&S.rosterWith&&S.rosterWith[m.id]?`🤝 함께 ${S.rosterWith[m.id].n}번`:esc(j?memberJ(m).name:(m.grade||'신사'))}</small></button>`;
     $('#rosterTitle').textContent=hj.name; $('#rosterCount').textContent=L.length?`${L.length}명`:''; const RF=8, open=lsGet('sadae.rosterOpen',false)===true, LV=(open||L.length<=RF)?L:L.slice(0,RF);
     R_.innerHTML = L.length? LV.map(m=>cell(m)).join('') : '<div class="tiny muted">아직 이 정 사원이 없어요. 안내 탭에서 초대 링크를 보내 보세요</div>';
     const rm=$('#rosterMore'); if(rm){ rm.innerHTML = L.length>RF ? `<button type="button" class="rs-more" id="rosterTog" aria-expanded="${open}">${open?'▴ 접기':`▾ 모두 보기 · ${L.length}명`}</button>` : '';
