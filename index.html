@@ -50,6 +50,9 @@
 .noti.new{background:color-mix(in srgb,var(--gold) 18%,transparent);box-shadow:inset 4px 0 0 var(--red)}
 .pz-tx.pz-me{background:var(--red-soft,#fde3e0);border-color:var(--red)!important;box-shadow:inset 3px 0 0 var(--red)}
 @media (max-width:440px){.hdr .sync.on{display:none}}@media (max-width:360px){.hdr .sync{display:none}}
+.rs-sort{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 8px}.rs-sort button{font:inherit;font-size:12px;padding:3px 9px;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}.rs-sort button.on{background:var(--ink);color:var(--card)}.rs-sort .tiny{margin-left:auto}
+.rs.fav{position:relative;border-color:var(--gold,#C9A227);box-shadow:inset 0 0 0 1px var(--gold,#C9A227)}.rs.fav::after{content:'★';position:absolute;top:2px;right:4px;font-size:12px;color:var(--gold,#C9A227)}
+.fav-btn{position:absolute;top:8px;left:8px;z-index:3;font:inherit;font-size:12px;padding:3px 8px;background:rgba(255,255,255,.92);color:#2A2233;border:2px solid #2A2233;cursor:pointer}.fav-btn.on{background:#FFE9A8}
 .rs-more{display:block;width:100%;margin-top:8px;padding:7px;font:inherit;font-size:13px;background:var(--card2);color:var(--ink);border:1px dashed var(--line2);cursor:pointer}
 .roster{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.rs{display:flex;flex-direction:column;align-items:center;background:var(--card2);border:1px solid var(--line);padding:6px 2px;font:inherit;color:inherit;cursor:pointer;min-width:0}.rs-ch{width:44px;display:block}.rs b{font-size:12.5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rs small{font-size:10.5px;color:var(--ink3)}
 .sd-fig[data-room],.att .av,.att .who b{cursor:pointer}
@@ -751,6 +754,14 @@ svg.pixc image{image-rendering:auto}
 .badge{border:0;background:var(--indigo);color:var(--indigo-ink);font-family:var(--small);font-size:10px;padding:1px 5px}
 .badge.fun{background:var(--gold);color:var(--gold-ink)}
 .cd-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.gw-card{margin-top:12px}.gw-card .sec-head{flex-wrap:wrap;gap:6px}
+.gw-wrap{display:flex;flex-direction:column;gap:8px}
+.gw-g{border:2px solid var(--ink);background:var(--card2,var(--card));padding:6px 8px}
+.gw-g.g1{border-left:8px solid #D9534F}.gw-g.g2{border-left:8px solid #3B6FB6}.gw-g.g3{border-left:8px solid #C9A227}.gw-g.g0{border-style:dashed}
+.gw-h{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}.gw-h b{font-family:var(--display);font-size:16px}.gw-h small{font-size:11px;color:var(--ink3)}
+.gw-l{display:flex;flex-wrap:wrap;gap:4px}
+.gw-c{display:flex;align-items:center;gap:3px;font:inherit;font-size:12.5px;padding:2px 7px 2px 2px;border:1.5px solid var(--line2,var(--ink));background:var(--card);color:var(--ink);cursor:pointer}.gw-c svg{width:22px;height:26px}
+.gw-t{display:inline-block;font-style:normal;font-size:10px;line-height:1;padding:2px 4px;margin-right:4px;color:#fff;border-radius:2px;vertical-align:1px}.gw-t.g1{background:#D9534F}.gw-t.g2{background:#3B6FB6}.gw-t.g3{background:#B08A12}
 .cd-big{display:flex;flex-direction:column;gap:8px;margin-top:12px}
 .cd-big .btn{min-height:54px;font-size:15px}
 #cdLive{background:var(--red);color:var(--red-ink);border-color:var(--ink);min-height:58px;font-size:16px}
@@ -1278,7 +1289,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
     <!-- ===== 내 방 ===== -->
     <section class="view" id="view-room" hidden>
       <div class="room" id="room"></div>
-      <div class="card" id="rosterCard"><div class="sec-head"><h2>👥 <span id="rosterTitle">우리 정</span> 사원 <small id="rosterCount"></small></h2><span class="tiny muted">누르면 방 구경</span></div><div class="roster" id="roster"></div><div id="rosterMore"></div><div id="rosterOther"></div></div>
+      <div class="card" id="rosterCard"><div class="sec-head"><h2>👥 <span id="rosterTitle">우리 정</span> 사원 <small id="rosterCount"></small></h2><span class="tiny muted">누르면 방 구경</span></div><div class="rs-sort" id="rosterSort"></div><div class="roster" id="roster"></div><div id="rosterMore"></div><div id="rosterOther"></div></div>
       <div class="card" id="growthCard">
         <div class="sec-head"><h2>📈 내 성장</h2><span class="tiny muted" id="growthSub"></span></div>
         <div id="growth"></div>
@@ -1663,7 +1674,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04f';
+const APP_VER = '2026.10.04g';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1916,6 +1927,7 @@ function openRoom(mid){
       ${hasCert(m.grade)?`<div class="frame">${esc(m.grade)}<br>단증</div>`:''}
       <div class="item" style="right:8%;bottom:10%">${ICON.kkakji}<span class="lb">${esc(g.kkakji||'깍지')}</span></div>
       <div class="hero">${charSVG(m.char||DEFAULT_CHAR)}</div><div class="sign">${esc(memberJ(m).name)} · ${esc(m.name)}의 방</div>
+      <button type="button" class="fav-btn ${isFav(mid)?'on':''}" id="rmFav" aria-pressed="${isFav(mid)}">${isFav(mid)?'★ 관심 사원':'☆ 관심 사원'}</button>
       ${m.status?`<div class="bubble">${esc(m.status)}</div>`:''}
     </div>
     <div class="info visit-info">${statTiles([[esc(m.grade||'신사'),'단급'],[esc(m.hand||'–'),'궁체'],[since||'–','집궁']])}</div>
@@ -1933,6 +1945,7 @@ function openRoom(mid){
     <div class="actions"><button class="btn ghost" id="rmClose">닫기</button></div>`);
     sh.classList.add('sheet-tall');
     $('#rmClose',sh).addEventListener('click',closeSheet);
+    const fv=$('#rmFav',sh); if(fv) fv.onclick=()=>{ const on=toggleFav(mid); fv.classList.toggle('on',on); fv.setAttribute('aria-pressed',on); fv.textContent=on?'★ 관심 사원':'☆ 관심 사원'; toast(on?`${m.name} 님을 관심 사원으로 · 명부 맨 앞에 보여요 (나만 보여요)`:'관심 사원에서 뺐어요'); try{ renderRoomExtras(); }catch(e){} };
     bindGuestDel(sh, mid, ()=>{ closeSheet(); draw(); });
     $$('[data-q]',sh).forEach(b=>b.addEventListener('click',()=>{ $('#gbText',sh).value=b.dataset.q; $('#gbText',sh).focus(); }));
     const go=$('#gbGo',sh); if(go) go.addEventListener('click',async()=>{ const tx=$('#gbText',sh).value.trim(); if(!tx){ toast('한마디를 적어 주세요'); return; }
@@ -1940,11 +1953,29 @@ function openRoom(mid){
   };
   draw();
 }
+// ---------- 사원 명부 정렬 · 관심 사원 (이 기기에만 저장 — 상대나 다른 사람에겐 보이지 않음) ----------
+const favList = () => { const v=lsGet('sadae.favs',[]); return Array.isArray(v)?v:[]; };
+const isFav = id => favList().includes(id);
+function toggleFav(id){ const L=favList(); const i=L.indexOf(id); if(i>=0) L.splice(i,1); else L.push(id); lsSet('sadae.favs', L); return i<0; }
+const rosterSortKey = () => { const k=lsGet('sadae.rosterSort','rand'); return ['rand','name','recent'].includes(k)?k:'rand'; };
+function rosterLastSeen(){ const D=(store&&store.docs)||{}; const L={};
+  for(const k in D){ if(k.startsWith('days/')){ const rest=k.slice(5); const i=rest.lastIndexOf('_'); const id=rest.slice(0,i), dt=rest.slice(i+1); if(/^\d{4}-\d{2}-\d{2}$/.test(dt) && (!L[id]||dt>L[id])) L[id]=dt; }
+    else if(k.startsWith('attendance/') && D[k] && D[k].entries){ const dt=k.slice(11); for(const id of Object.keys(D[k].entries)) if(!L[id]||dt>L[id]) L[id]=dt; } }
+  return L; }
+function rosterSorted(list){
+  const key=rosterSortKey(); let L=list.slice();
+  if(key==='name') L.sort((a,b)=>String(a.name).localeCompare(String(b.name),'ko'));
+  else if(key==='recent'){ const ls=rosterLastSeen(); L.sort((a,b)=>String(ls[b.id]||'').localeCompare(String(ls[a.id]||''))||String(a.name).localeCompare(String(b.name),'ko')); }
+  else { if(!S.rosterSeed){ S.rosterSeed={}; } L.forEach(m=>{ if(S.rosterSeed[m.id]===undefined) S.rosterSeed[m.id]=Math.random(); }); L.sort((a,b)=>S.rosterSeed[a.id]-S.rosterSeed[b.id]); }
+  const F=favList(); return [...L.filter(m=>F.includes(m.id)), ...L.filter(m=>!F.includes(m.id))];
+}
 function renderRoomExtras(){
   // 사원 명부
-  const R_=$('#roster'); if(R_){ const hj=homeJ(); const all=(S.members||[]).filter(m=>m&&m.name).slice().sort((a,b)=>String(a.name).localeCompare(String(b.name),'ko'));
+  const R_=$('#roster'); if(R_){ const hj=homeJ(); const all=rosterSorted((S.members||[]).filter(m=>m&&m.name));
+    const so=$('#rosterSort'); if(so){ const cur=rosterSortKey(); so.innerHTML=[['rand','🎲 랜덤'],['name','가나다'],['recent','최근 습사']].map(([k,t])=>`<button type="button" class="${k===cur?'on':''}" data-rsort="${k}">${t}</button>`).join('')+`<span class="tiny muted">★ 관심 사원은 맨 앞 · 나만 보여요</span>`;
+      $$('[data-rsort]',so).forEach(b=>b.onclick=()=>{ lsSet('sadae.rosterSort', b.dataset.rsort); if(b.dataset.rsort==='rand') S.rosterSeed=null; renderRoomExtras(); }); }
     const L=all.filter(m=>memberJ(m).id===hj.id), O=all.filter(m=>memberJ(m).id!==hj.id);
-    const cell=(m,j)=>`<button class="rs" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name)}</b><small>${esc(j?memberJ(m).name:(m.grade||'신사'))}</small></button>`;
+    const cell=(m,j)=>`<button class="rs ${isFav(m.id)?'fav':''}" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name)}</b><small>${esc(j?memberJ(m).name:(m.grade||'신사'))}</small></button>`;
     $('#rosterTitle').textContent=hj.name; $('#rosterCount').textContent=L.length?`${L.length}명`:''; const RF=8, open=lsGet('sadae.rosterOpen',false)===true, LV=(open||L.length<=RF)?L:L.slice(0,RF);
     R_.innerHTML = L.length? LV.map(m=>cell(m)).join('') : '<div class="tiny muted">아직 이 정 사원이 없어요. 안내 탭에서 초대 링크를 보내 보세요</div>';
     const rm=$('#rosterMore'); if(rm){ rm.innerHTML = L.length>RF ? `<button type="button" class="rs-more" id="rosterTog" aria-expanded="${open}">${open?'▴ 접기':`▾ 모두 보기 · ${L.length}명`}</button>` : '';
@@ -2614,6 +2645,29 @@ function openNewComp(){
     if(ok){ closeSheet(); S.openComp=id; renderComp(); toast('대회를 만들었어요'); }
   });
 }
+// ---------- 관(과녁) 그룹 ----------
+const GW_MAX = 3;
+const gwOf = comp => { const g=comp.gwan||{}; return {n:Math.min(+g.n||0, GW_MAX), of:g.of||{}}; };
+const gwNo = (comp, mid) => { const g=gwOf(comp); const v=+g.of[mid]||0; return g.n && v>=1 && v<=g.n ? v : 0; };
+const gwTag = (comp, mid) => { const v=gwNo(comp, mid); return v ? `<i class="gw-t g${v}">${v}관</i>` : ''; };
+function gwanHTML(comp){
+  const g=gwOf(comp), ms=comp.members||[];
+  const btns=`${g.n<GW_MAX?`<button type="button" class="btn sm" id="gwAdd">+ ${g.n+1}관 추가</button>`:''}${g.n?`<button type="button" class="btn sm ghost" id="gwDel">− ${g.n}관 빼기</button>`:''}`;
+  if(!g.n) return `<div class="card gw-card"><div class="sec-head"><h2>🎯 관 편성 <small>과녁별 사대 그룹</small></h2><div class="row" style="gap:6px">${btns}</div></div><p class="tiny muted" style="margin:0">관(과녁)마다 사대 그룹을 나눠 표시해요. "+ 1관 추가"를 누르면 참가 사원이 모두 1관에 들어가고, 2관 · 3관을 하나씩 더한 뒤 이름을 눌러 옮기면 돼요.</p></div>`;
+  const chip=mid=>{ const m=memberById(mid)||{name:'사원'}; return `<button type="button" class="gw-c" data-gw="${esc(mid)}">${charSVG(m.char||DEFAULT_CHAR)}<span>${esc(m.name)}</span></button>`; };
+  const groups=[...Array(g.n).keys()].map(i=>i+1).map(k=>{ const L=ms.filter(id=>gwNo(comp,id)===k); return `<div class="gw-g g${k}"><div class="gw-h"><b>${k}관</b><small>${L.length}명</small></div><div class="gw-l">${L.length?L.map(chip).join(''):'<span class="tiny muted">아직 없어요</span>'}</div></div>`; }).join('');
+  const none=ms.filter(id=>!gwNo(comp,id));
+  return `<div class="card gw-card"><div class="sec-head"><h2>🎯 관 편성 <small>${g.n}관</small></h2><div class="row" style="gap:6px">${btns}</div></div>
+    <div class="gw-wrap">${groups}${none.length?`<div class="gw-g g0"><div class="gw-h"><b>관 미정</b><small>${none.length}명</small></div><div class="gw-l">${none.map(chip).join('')}</div></div>`:''}</div>
+    <p class="tiny muted" style="margin:8px 0 0">이름을 누르면 다음 관으로 옮겨져요 (1관 → 2관 → … → 1관)</p></div>`;
+}
+function bindGwan(comp, root){
+  const g=gwOf(comp), ms=comp.members||[];
+  const save = patch => write(st=>st.merge('comps/'+comp.id, {gwan:patch}));
+  const add=$('#gwAdd',root); if(add) add.onclick=async()=>{ const n=g.n+1; const patch={n}; if(n===1){ patch.of={}; ms.forEach(id=>patch.of[id]=1); } await save(patch); };
+  const del=$('#gwDel',root); if(del) del.onclick=async()=>{ const n=g.n-1; const patch={n, of:{}}; ms.forEach(id=>{ if(gwNo(comp,id)===g.n) patch.of[id]= n?n:null; }); if(!Object.keys(patch.of).length) delete patch.of; await save(patch); };
+  $$('[data-gw]',root).forEach(b=>b.onclick=async()=>{ const id=b.dataset.gw; const cur=gwNo(comp,id); const nx = cur>=g.n ? 1 : cur+1; await save({of:{[id]:nx}}); });
+}
 function renderCompDetail(comp){
   const det=$('#compDetail'); const rows=rankComp(comp); const cols=[...Array(comp.roundCount).keys()];
   const needShoot = rows.some(r=>r.tieWith && r.tieBy==='shootoff-needed' && r.done===comp.roundCount);
@@ -2621,7 +2675,7 @@ function renderCompDetail(comp){
   const small = comp.roundCount<=3;
   const gridHTML = `<div class="sgrid" style="grid-template-columns:minmax(0,118px) 52px repeat(${comp.roundCount},minmax(0,1fr))${showShoot?' 40px':''}">
       <span class="hd l">사원</span><span class="hd">합계</span>${cols.map(i=>`<span class="hd">${i+1}순</span>`).join('')}${showShoot?'<span class="hd">비교</span>':''}
-      ${rows.map(r=>{ const isMe=S.me&&S.me.id===r.id; return `<div class="nm ${isMe?'me':''}"><span class="rk ${r.rank===1?'g':r.rank===2?'s':r.rank===3?'b':''}">${r.rank}</span><span class="av">${charSVG(r.member.char||DEFAULT_CHAR)}</span><span class="nmt">${esc(r.member.name)}${r.tieWith&&r.tieBy==='shootoff-needed'&&r.done===comp.roundCount?'<span class="tie">재사</span>':''}</span></div>
+      ${rows.map(r=>{ const isMe=S.me&&S.me.id===r.id; return `<div class="nm ${isMe?'me':''}"><span class="rk ${r.rank===1?'g':r.rank===2?'s':r.rank===3?'b':''}">${r.rank}</span><span class="av">${charSVG(r.member.char||DEFAULT_CHAR)}</span><span class="nmt">${gwTag(comp, r.id)}${esc(r.member.name)}${r.tieWith&&r.tieBy==='shootoff-needed'&&r.done===comp.roundCount?'<span class="tie">재사</span>':''}</span></div>
         <span class="tot num">${r.total}</span>
         ${cols.map(i=>{ const rd=r.rounds[i]; const h=rHits(rd); const part=rd&&!rDone(rd); return `<button class="cell ${rd?(h===5?'m':''):'empty'} ${part?'cur':''}" data-cell="${r.id}:${i}" aria-label="${esc(r.member.name)} ${i+1}순">${rd?(part?h+'·':h):'–'}</button>`; }).join('')}
         ${showShoot?`<button class="cell ${r.shootoff===null?'empty':''}" data-shoot="${r.id}">${r.shootoff===null?'–':r.shootoff}</button>`:''}`; }).join('')}
@@ -2629,7 +2683,7 @@ function renderCompDetail(comp){
   det.innerHTML = `<div class="cd-top"><button class="btn sm" id="cdBack">← 대회</button><span class="grow"><b style="font-size:15px">${esc(comp.name)}</b><span class="badge ${comp.kind==='friendly'?'fun':''}">${comp.kind==='friendly'?'친선':'정식'}</span><br><span class="tiny">${fmtK(comp.date)} · ${comp.roundCount}순 ${comp.roundCount*5}시 · ${rows.length}명</span></span><button class="btn sm ghost" id="cdDel" style="color:var(--red)">삭제</button></div>
     <div class="card">
     ${small ? gridHTML : `<div class="grid-wrap"><table class="score"><thead><tr><th class="name">사원</th><th class="tot">합계</th>${cols.map(i=>`<th>${i+1}순</th>`).join('')}${(comp.rules||[]).includes('shootoff')?'<th>비교</th>':''}</tr></thead><tbody>
-      ${rows.map(r=>`<tr><td class="name"><span class="r ${r.rank===1?'g':r.rank===2?'s':r.rank===3?'b':''}">${r.rank}</span>${esc(r.member.name)}${r.tieWith&&r.tieBy==='shootoff-needed'&&r.done===comp.roundCount?'<span class="tie">재사</span>':''}</td>
+      ${rows.map(r=>`<tr><td class="name"><span class="r ${r.rank===1?'g':r.rank===2?'s':r.rank===3?'b':''}">${r.rank}</span>${gwTag(comp, r.id)}${esc(r.member.name)}${r.tieWith&&r.tieBy==='shootoff-needed'&&r.done===comp.roundCount?'<span class="tie">재사</span>':''}</td>
         <td class="total num">${r.total}<span class="tiny">/${comp.roundCount*5}</span>${comp.roundCount===9&&r.done===9&&gradeFor(r.total)?`<span class="grade">${gradeFor(r.total)}</span>`:''}</td>
         ${cols.map(i=>{ const rd=r.rounds[i]; const h=rHits(rd); const part=rd&&!rDone(rd); return `<td><button class="cell ${rd?(h===5?'m':''):'empty'} ${part?'cur':''}" data-cell="${r.id}:${i}" aria-label="${esc(r.member.name)} ${i+1}순">${rd?(part?h+'<span class="tiny">·</span>':h):'–'}</button></td>`; }).join('')}
         ${(comp.rules||[]).includes('shootoff')?`<td><button class="cell ${r.shootoff===null?'empty':''}" data-shoot="${r.id}">${r.shootoff===null?'–':r.shootoff}</button></td>`:''}
@@ -2639,9 +2693,10 @@ function renderCompDetail(comp){
     ${comp.roundCount===9?`<p class="tiny" style="margin:6px 0 0">승급·입승단 기준(9순 45시): 1급 22중 · 초단 24중 · 2단 26 · 3단 28 · 4단 30 · 5단 31 · 6단 33 · 7단 35 · 8단 37 · 9단 39중 (만 70세 이상 1급 18중·초단 20중)</p>`:''}
     <div id="cdConfirm"></div>
   </div>
+  ${gwanHTML(comp)}
   <div class="cd-big"><button class="btn" id="cdLive">🏹 사대 기록 (한 발씩 中/不)</button><button class="btn" id="cdExport">엑셀로 받기</button></div>`;
   $('#cdBack').addEventListener('click',()=>{ S.openComp=null; renderComp(); });
-  $('#cdLive').addEventListener('click',()=>openLive(comp.id));
+  $('#cdLive').addEventListener('click',()=>openLive(comp.id)); bindGwan(comp, det);
   $('#cdExport').addEventListener('click',()=>exportComp(comp));
   $('#cdDel').addEventListener('click',()=>{ $('#cdConfirm').innerHTML=`<div class="confirm" style="margin-top:12px"><span class="grow">이 대회를 지울까요? 점수도 함께 사라져요.</span><button class="btn sm" id="cdNo">취소</button><button class="btn sm red" id="cdYes">지우기</button></div>`; $('#cdNo').addEventListener('click',()=>$('#cdConfirm').innerHTML=''); $('#cdYes').addEventListener('click',async()=>{ const ok=await write(st=>st.del('comps/'+comp.id)); if(ok){ S.openComp=null; renderComp(); toast('대회를 지웠어요'); } }); });
   $$('[data-cell]',det).forEach(b=>b.addEventListener('click',()=>{ const [mid,i]=b.dataset.cell.split(':'); openCellEdit(comp, mid, +i); }));
@@ -2945,9 +3000,9 @@ $('#expMine').addEventListener('click',()=>{ if(!S.me){ openProfile(); return; }
 $('#expAll').addEventListener('click',async()=>{ let rows=[]; try{ if(store.kind==='db'){ const snap=await store.db.collection('days').orderBy('date','desc').limit(1000).get(); rows=snap.docs.map(d=>({id:d.id,...d.data()})); } else { rows=store._run({col:'days'}); } }catch(e){ console.warn(e); } rows=rows.filter(d=>d.rounds&&d.rounds.length); if(!rows.length){ toast('정 전체 기록이 아직 없어요'); return; } exportCSV(`${(S.jeong&&S.jeong.name)||'정'}_표기록_전체_${today()}.csv`, dayRows(rows,true)); });
 function exportComp(comp){
   const rows=rankComp(comp); const cols=[...Array(comp.roundCount).keys()];
-  const head=['순위','사원','활','화살',...cols.map(i=>`${i+1}순`),'합계',...((comp.rules||[]).includes('shootoff')?['비교전']:[])];
+  const head=['순위','사원','관','활','화살',...cols.map(i=>`${i+1}순`),'합계',...((comp.rules||[]).includes('shootoff')?['비교전']:[])];
   const out=[[comp.name, fmtK(comp.date), `${comp.roundCount}순 ${comp.roundCount*5}시`, `동점규칙: ${(comp.rules||[]).map(r=>ruleById(r)?ruleById(r).name:r).join(' → ')}`],[],head];
-  rows.forEach(r=>out.push([r.rank, r.member.name, r.member.bow||'', r.member.arrow||'', ...r.rounds.map(x=>x?rHits(x):''), r.total, ...((comp.rules||[]).includes('shootoff')?[r.shootoff==null?'':r.shootoff]:[])]));
+  rows.forEach(r=>out.push([r.rank, r.member.name, gwNo(comp,r.id)?gwNo(comp,r.id)+'관':'', r.member.bow||'', r.member.arrow||'', ...r.rounds.map(x=>x?rHits(x):''), r.total, ...((comp.rules||[]).includes('shootoff')?[r.shootoff==null?'':r.shootoff]:[])]));
   out.push([]); out.push(['시별 기록']); out.push(['사원',...cols.flatMap(i=>[1,2,3,4,5].map(k=>`${i+1}순${k}시`))]);
   rows.forEach(r=>out.push([r.member.name, ...r.rounds.flatMap(x=> x? x.map(v=>v===true?'中':v===false?'不':'') : ['','','','',''])]));
   exportCSV(`${comp.name}_${comp.date}.csv`, out);
@@ -2978,7 +3033,7 @@ function openLive(compId){
     const comp=S.comps.find(c=>c.id===compId); if(!comp){ closeSheet(); return; }
     const pos=liveCursor(comp); const ms=comp.members||[];
     const body = pos ? (()=>{ const m=memberById(ms[pos.mi])||{name:'사원',char:'rabbit'}; const e=entryOf(comp,ms[pos.mi]); const cur=(e.rounds[pos.r]||[]).slice(0,pos.k);
-      return `<div class="prog">${pos.r+1}순 ${pos.k+1}시 · 사대 ${pos.mi+1}번<b>${esc(m.name)}</b></div>
+      return `<div class="prog">${pos.r+1}순 ${pos.k+1}시 · 사대 ${pos.mi+1}번${gwNo(comp,ms[pos.mi])?` · <span class="gw-t g${gwNo(comp,ms[pos.mi])}">${gwNo(comp,ms[pos.mi])}관</span>`:''}<b>${esc(m.name)}</b></div>
         <div class="who">${charSVG(m.char)}<span>${esc([m.bow,m.arrow].filter(Boolean).join('·'))}</span></div>
         <div class="strip">${cur.map(v=>`<span class="dot ${v===true?'H':''}">${v===true?'中':v===false?'不':''}</span>`).join('')}<span class="tiny" style="align-self:center">이번 순 ${rHits(cur)}중</span></div>
         <div class="hitbtns"><button class="h" data-hit="1">中</button><button class="m" data-hit="0">不</button></div>`; })()
