@@ -1898,7 +1898,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04p';
+const APP_VER = '2026.10.04q';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3107,10 +3107,12 @@ function visitStats(mid){ const E=(((store&&store.docs)||{})['visits/'+mid]||{})
 async function markVisit(mid){ if(!S.me || !mid || mid===S.me.id || !(store&&store.kind==='remote'&&store.token)) return;
   const t=today(), key=t+'_'+S.me.id; const E=(((store.docs||{})['visits/'+mid]||{}).entries)||{}; if(E[key]) return;
   try{ await write(st=>st.merge('visits/'+mid,{entries:{[key]:{from:S.me.id, at:Date.now(), date:t}}})); }catch(e){} }
+const DEV_MIDS=['1o1aty249a'];   /* 개발자(준호) — 기능 점검용 화면만 */
+const isDevNow = () => !!(typeof store==='object' && store && store.who && DEV_MIDS.includes(store.who.mid));
 function renderVisitRow(room){
   let vr=$('#visitRow'); if(!vr){ vr=document.createElement('div'); vr.id='visitRow'; vr.className='visit-row'; room.insertAdjacentElement('afterend', vr); }
-  if(!S.me){ vr.hidden=true; return; } const V=visitStats(S.me.id); vr.hidden=false;
-  vr.innerHTML = `<span class="vr-t">👣 최근 다녀간 사원</span>${V.recent.length?V.recent.map(v=>{ const m=memberById(v.from)||{}; return `<button type="button" class="vr-a" data-room="${esc(v.from)}" title="${esc(m.name||'')} · ${+v.date.slice(5,7)}/${+v.date.slice(8,10)}">${charSVG(m.char||DEFAULT_CHAR)}<small>${esc((m.name||'').slice(0,4))}</small></button>`; }).join(''):'<span class="tiny muted">아직 없어요 · 나만 보여요</span>'}`;
+  if(!S.me || !isDevNow()){ vr.hidden=true; vr.innerHTML=''; return; } const V=visitStats(S.me.id); vr.hidden=false;
+  vr.innerHTML = `<span class="vr-t">👣 최근 다녀간 사원 <small class="tiny muted">(개발자만)</small></span>${V.recent.length?V.recent.map(v=>{ const m=memberById(v.from)||{}; return `<button type="button" class="vr-a" data-room="${esc(v.from)}" title="${esc(m.name||'')} · ${+v.date.slice(5,7)}/${+v.date.slice(8,10)}">${charSVG(m.char||DEFAULT_CHAR)}<small>${esc((m.name||'').slice(0,4))}</small></button>`; }).join(''):'<span class="tiny muted">아직 없어요 · 나만 보여요</span>'}`;
 }
 function openRoomTheme(){
   if(!S.me){ openProfile(); return; } const cur=roomThemeOf(memberById(S.me.id)); const ch=(S.me&&S.me.char)||DEFAULT_CHAR;
