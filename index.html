@@ -1911,7 +1911,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04v';
+const APP_VER = '2026.10.04w';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4193,6 +4193,7 @@ function renderNews(){
     b.disabled=false; if(ok){ toast(`${(memberById(mid)||{}).name||''} 님께 축하 박수를 보냈어요 👏`); renderNews(); } });
 }
 
+setInterval(()=>{ try{ if(S.tab==='plaza' && S.plazaSeed && S.plazaSeed !== today()+'_'+Math.floor(new Date().getHours()/3)) renderPlaza(); }catch(e){} }, 60000);
 function renderPlaza(){
   const box=$('#plazaCrowd'); if(!box) return; applyPlazaArt(); renderRank(); refreshRank(); renderTicker();
   { const pz=$('#plaza'); let cp=$('#pzCalm'); if(pz && !cp){ cp=document.createElement('button'); cp.type='button'; cp.id='pzCalm'; cp.className='bg-pill pz-calm'; cp.addEventListener('click',e=>{ e.stopPropagation(); openCalm(); }); pz.appendChild(cp); } applyCalm(); }
@@ -4207,12 +4208,13 @@ function renderPlaza(){
     $$('[data-pf]',PF).forEach(b=>b.onclick=()=>{ const v=b.dataset.pf; if(v==='list'){ openPlazaList(); return; } S.plazaMine = v==='mine'; renderPlaza(); renderRank(); }); }
   const score=m=>(S.me&&m.id===S.me.id?1e15:0)+(lastMsg[m.id]?lastMsg[m.id].at:0)+(attBy[m.id]?1e12:0)+(m.updatedAt||0)/1e3;
   const shown=mem.slice().sort((a,b)=>score(b)-score(a)).slice(0,42); const more=mem.length-shown.length;
-  // 자리: 사람 수에 맞춘 모눈 + 사람마다 고정된 흔들림 (다시 그려도 같은 자리). 한 줄 최대 6명, 줄이 늘면 광장이 세로로 커짐
+  // 자리: 사람 수에 맞춘 모눈 + 흔들림. 날짜 · 3시간 단위로 섞임(같은 시간대엔 다시 그려도 같은 자리). 한 줄 최대 6명, 줄이 늘면 광장이 세로로 커짐
+  const pzSeed = t + '_' + Math.floor(new Date().getHours()/3); S.plazaSeed = pzSeed;
   const n=shown.length, cols=Math.min(6, Math.max(3, Math.ceil(Math.sqrt(n*1.5)))), rows=Math.max(1, Math.ceil(n/cols));
   const PZ=$('#plaza'); if(PZ){ const W=PZ.clientWidth||360; const imgH = PZ.classList.contains('art') ? W*(+PZ.dataset.ratio||0.95) : 380; const top0 = PZ.classList.contains('art') ? Math.round(imgH*0.40) : 118;
     const H = Math.max(380, Math.min(720, top0 + rows*74 + 70)); PZ.style.height = H+'px'; box.style.top = top0+'px'; box.style.bottom = '54px'; }
-  const order=shown.slice().sort((a,b)=>hashN(a.id,997)-hashN(b.id,997));
-  const POS={}; order.forEach((m,i)=>{ const r=Math.floor(i/cols), c=i%cols; const jx=(hashN(m.id+'x',100)/100-.5)*0.3, jy=(hashN(m.id+'y',100)/100-.5)*0.3;
+  const order=shown.slice().sort((a,b)=>hashN(a.id+pzSeed,9973)-hashN(b.id+pzSeed,9973));
+  const POS={}; order.forEach((m,i)=>{ const r=Math.floor(i/cols), c=i%cols; const jx=(hashN(m.id+pzSeed+'x',100)/100-.5)*0.3, jy=(hashN(m.id+pzSeed+'y',100)/100-.5)*0.3;
     POS[m.id]={x:Math.min(92, Math.max(6, ((c+.5+jx+(r%2?.35:0))/cols)*100)), y:rows===1?70:Math.min(100, Math.max(14, 12+((r+.5+jy*.7)/rows)*88))}; });
   // 말풍선: 최근 3시간 안에 말한 사람 중, 서로 겹치지 않게 최대 3명
   const bubbleOf=new Set(), bubLv={}; let newestBub=null;
