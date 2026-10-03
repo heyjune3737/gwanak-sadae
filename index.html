@@ -1132,6 +1132,12 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 
 /* 햄스터: 서 있는 자리에서만 0.86배 (얼굴 사진 칸은 그대로) */
 .sd-fig .pixc.small,.pz-ch .pixc.small,.room .hero .pixc.small,.mz-cover .hero .pixc.small,#pkBig .pixc.small{transform:scale(.86);transform-origin:50% 97%}
+
+/* 소속 정 잠금 */
+.jl-note{display:block;margin-top:6px;font-size:12px;line-height:1.5;color:var(--ink2);background:var(--card2);border:1px dashed var(--line2);padding:6px 8px}
+.jl-box{display:flex;flex-direction:column;gap:4px;border:2px solid var(--ink);background:var(--card2);padding:10px 12px;margin:0 0 8px;font-size:13px}
+.jl-box b{font-size:14px}.jl-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.jl-btns .btn{text-decoration:none}
+.jitem.sure{outline:3px solid var(--red);outline-offset:-3px}
 </style>
 
 <div class="app" id="app">
@@ -1588,6 +1594,7 @@ class RemoteStore extends LocalStore{
     finally{ this.flushing=false; renderSync(); }
     if(dropped){ const m=dropped.message||'';
       if(/gate:/.test(m)){ this.refresh(); return; } if(/register first/.test(m)){ const had=!!this.auth; this.setAuth(null); renderAll(); if(had){ toast('이 기기 로그인이 풀렸어요. 내 캐릭터를 다시 불러와 주세요'); setTimeout(()=>openLogin(S.me&&S.me.name),300); } else { toast('비밀번호를 걸면 정 사원들에게 저장돼요. 등록 후 다시 눌러 주세요'); setTimeout(()=>S.me?openClaim():openProfile(),300); } }
+      else if(/jeong_locked/.test(m)){ toast('소속 정은 가입(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요'); this.refresh().then(()=>{ const d=memberDoc(this.auth&&this.auth.mid); if(d){ setMe(meFromDoc(d)); renderAll(); } }); return; }
       else if(/name taken/.test(m)) toast('정에 같은 이름이 있어 이름은 바꾸지 못했어요');
       else if(/too many|plaza full/.test(m)) toast('오늘 광장 한마디가 가득 찼어요. 내일 다시 써 주세요');
       else toast('내 것이 아닌 기록이라 저장하지 않았어요');
@@ -1602,7 +1609,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.03k';
+const APP_VER = '2026.10.03l';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1725,6 +1732,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-10-03l', date:'10월 3일', title:'🔒 소속 정은 한 달 동안 고정돼요', body:'이제 관악정 밖 다른 정으로도 오늘 사대가 넓어져요. 정마다 사원·순위·월보가 섞이지 않도록, 소속 정(궁패)은 가입한 날(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 고르셨다면 관리자에게 메일(heyjune3737@gmail.com)이나 방명록으로 알려 주시면 바로 고쳐 드려요. 다른 정에 가는 날은 지금처럼 오늘 정 탭 위 📍에서 그 정 사대를 구경하고 습사 등록할 수 있어요.'},
   {id:'2026-10-03h', date:'10월 3일', title:'📰 사대 월보 창간호 · 오늘 사대 이야기', body:'소식 탭 사대 월보 10월 창간호는 베타 테스트 기간(9월 23일 앱을 만든 날 ~ 10월 3일) 동안의 기록을 담았어요. 함께한 사원·사대 등록·표 기록·몰기·방명록·응원으로 베타 11일을 돌아보고, 표지는 베타 성실왕이에요. 지난 호의 9월은 "오늘 사대 이야기"로, 관리자의 변과 지금까지의 연혁을 실었어요. 10월 4일부터의 기록은 11월호에 이어서 쌓여요.'},
   {id:'2026-10-03g', date:'10월 3일', title:'🍵 차분하게 보기 · 광장 한마디가 위로', body:'광장이 산만하다는 의견을 반영했어요. ① 광장 한마디를 장면 바로 아래로 올렸고, 한 쪽에 15개씩 보이며 넘치면 페이지 번호로 넘겨요. ② 이달의 순위는 "접기"로 한 줄만 남길 수 있고, 카드를 누르고 있으면 넘어가지 않아요(인스타그램 스토리처럼). ‹ › 로 직접 넘길 수도 있어요. ③ 광장 장면 오른쪽 아래 🍵 버튼 → "차분하게 보기"를 켜면 순위 자동 넘김·흩날림·소식 띠·말풍선 효과·캐릭터 걸음이 모두 멈춰요. 하나씩 고를 수도 있어요. ④ 오늘 정 사대에 사람이 많으면 2층(앞줄 7·뒷줄 7)으로 서고, 더 많으면 "+N명 모두 보기"가 떠요. ⑤ 소식 탭 지난 호에 9월 호외가 실렸어요. ⑥ 공지사항은 최근 5개만 보이고, 지난 공지는 달마다 폴더로 접어 뒀어요.'},
   {id:'2026-10-03f', date:'10월 3일', title:'📰 소식 탭 · 사대 월보 창간', body:'하단에 "소식" 칸이 생겼어요. 매달 한 호씩 나오는 월간지 "사대 월보(射臺月報)"에서 이달의 성실왕 표지, 숫자로 보는 한 달, 축하 소식(몰기·새 배지·승단·집궁 기념일·새 사원), 이달의 순위, 이달의 바람을 볼 수 있어요. 이번 달 호는 "발행 중"으로 매일 새로 고쳐지고, 다음 달 1일에 확정돼 지난 호로 넘어가요. 축하 소식 옆 👏를 누르면 그 사원 방명록에 축하 한 줄이 남아요. 광장 맨 위 띠를 눌러도 월보로 가요. 내 방에서 단급을 바꾸면 승단 소식으로 실려요.'},
@@ -1799,6 +1807,7 @@ function renderInfo(){
     <details class="notice"><summary>오늘 정 — 습사 등록</summary><p>시간대(새벽~저녁)를 누르면 사대에 내 캐릭터가 서요. 사대에는 <b>내 소속 정</b> 사원만 보여요. 다른 정에 가는 날은 위의 📍정 이름을 눌러 그 정을 고르고 시간대를 누르세요. 다른 사원 이름 옆 ＋로 이모지 응원, 안 가게 되면 "안 가요".</p></details>
     <details class="notice"><summary>광장 — 모든 정 사원과 한마디</summary><p>가입한 사원 모두가 광장에 모여요. 캐릭터를 누르면 그 사원의 방에 놀러 가고, 아래에서 한마디(하루 30개까지)를 남길 수 있어요. 오늘 몰기·새 배지 소식도 여기 떠요.</p></details>
     <details class="notice"><summary>표 기록 — 한 발씩</summary><p>위쪽 "✍️ 입력 / 📖 기록 보기"로 화면을 바꿔요. 기록 보기에선 큰 글씨로 순을 보고 ◀ ▶로 날짜를 넘겨요. 입력판은 과녁을 바라본 모양 그대로 9칸이에요: 가운데 관중, 위 넘어감, 아래 코박음(짧음), 옆은 앞남·뒤남, 네 귀퉁이는 앞넘음·뒤넘음·앞짧음·뒤짧음. 좌궁이면 앞·뒤가 좌우로 바뀌어요. 잘못 누르면 "↶ 한 발".</p></details>
+    <details class="notice"><summary>🔒 소속 정 · 다른 정 가기</summary><p>소속 정은 내 궁패이자 정별 순위·월보의 기준이라, 가입(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 골랐다면 관리자에게 메일(heyjune3737@gmail.com)이나 관리자 방명록으로 알려 주세요. 다른 정에 가는 날은 오늘 정 탭 위 📍정 이름을 눌러 그 정 사대를 보고, 시간대를 누르면 그 정에 등록돼요. 이건 언제든 자유예요.</p></details>
     <details class="notice"><summary>🍵 차분하게 보기</summary><p>광장 장면 오른쪽 아래 🍵 버튼을 누르세요. "차분하게 보기"를 켜면 순위 자동 넘김, 꽃잎·낙엽·눈 흩날림, 광장 위 소식 띠, 말풍선 효과, 캐릭터 걸음이 한 번에 멈춰요. 하나씩 켜고 끌 수도 있어요. 이 기기에만 저장되고, 폰 설정에서 "동작 줄이기"를 켜 두셨다면 처음부터 차분하게 보여요. 순위 카드는 "접기"로 한 줄만 남길 수 있고, 누르고 있는 동안은 넘어가지 않아요.</p></details>
     <details class="notice"><summary>📰 사대 월보</summary><p>소식 탭의 월간지예요. 10월 창간호는 베타 테스트 기간(9/23~10/3) 기록, 11월호는 10월 4일부터 쌓여요. 9월은 "오늘 사대 이야기"(관리자의 변 · 연혁)예요. 이번 달 호는 매일 새로 고쳐지고(발행 중), 다음 달 1일에 확정돼요. 표지는 이달 습사한 날이 가장 많은 성실왕, 축하 소식은 몰기 상위 3명 · 새 배지 · 승단(내 방에서 단급을 바꾼 날) · 집궁 100일/1000일/주년 · 이달 처음 기록한 사원이에요. 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고 알림이 가요. "지난 호"에서 예전 달을 다시 볼 수 있어요. 랭킹에서 숨긴 사원은 표지와 순위에서 빠져요.</p></details>
     <details class="notice"><summary>🏆 이달의 순위</summary><p>광장의 순위는 매달 1일 새로 시작해요. 관중률과 정심은 이번 달 30순 이상 쏜 사원만 들어가요. 정심(正心)은 궁도 구계훈 "정심정기"에서 따온 이름으로, 관중률에 순마다 고른 관중(기복이 적음)과 빗나가도 한쪽으로 모이는 표를 더한 점수예요. 다정(多情)은 남의 방명록 2점·응원 1점·광장 한마디 1점이고 하루 10점까지만 세요. 날짜별 표는 그대로 비공개이고 순위 숫자만 보여요. 숨기고 싶으면 "랭킹에서 나 숨기기".</p></details>
@@ -2046,7 +2055,11 @@ async function openAdmin(){
     if(a==='reset_ok') return act(mid,'reset_ok',`${nm} 님 새 비밀번호를 승인했어요`);
     if(a==='reset_no') return act(mid,'reset_no',`${nm} 님 비밀번호 요청을 거절했어요`);
     if(a==='delete'){ if(b.dataset.sure){ return act(mid,'delete',`${nm} 님을 삭제했어요`); } b.dataset.sure=1; b.textContent='정말 삭제?'; b.classList.add('red'); return; }
-    if(a==='more'){ const m=L.find(x=>x.mid===mid); b.parentElement.innerHTML=`<button class="btn sm ghost" data-act="reset">비번 초기화</button><button class="btn sm ghost" data-act="${m.admin?'unadmin':'mkadmin'}">${m.admin?'관리자 해제':'관리자 지정'}</button><button class="btn sm ghost" data-act="block">차단</button><button class="btn sm ghost" data-act="delete">삭제</button>`; return; }
+    if(a==='more'){ const m=L.find(x=>x.mid===mid); b.parentElement.innerHTML=`<button class="btn sm ghost" data-act="jeong">정 바꾸기</button><button class="btn sm ghost" data-act="reset">비번 초기화</button><button class="btn sm ghost" data-act="${m.admin?'unadmin':'mkadmin'}">${m.admin?'관리자 해제':'관리자 지정'}</button><button class="btn sm ghost" data-act="block">차단</button><button class="btn sm ghost" data-act="delete">삭제</button>`; return; }
+    if(a==='jeong'){ const m=L.find(x=>x.mid===mid)||{}; const js=openSheet(`<h3>${esc(nm)} 님 소속 정 바꾸기</h3><p class="muted" style="margin:0 0 8px">지금: <b>${esc(m.jeong||'없음')}</b> · 바꾸면 그날부터 다시 30일 동안 본인은 못 바꿔요</p><div class="jlist">${JEONGS.map(j=>`<button class="jitem" type="button" data-aj="${j.id}"><span class="grow"><b>${esc(j.name)}</b></span></button>`).join('')}</div><div class="actions"><button class="btn ghost" id="ajClose" type="button">닫기</button></div>`);
+      $('#ajClose',js).onclick=()=>{ closeSheet(); openAdmin(); };
+      $$('[data-aj]',js).forEach(x=>x.onclick=async()=>{ const j=jBrief(JEONGS.find(q=>q.id===x.dataset.aj)); const r2=await pinRpc('sadae_admin_set_jeong',{p_token:store.token,p_mid:mid,p_jeong:j});
+        if(r2.error){ toast(r2.error==='not_admin'?'관리자만 할 수 있어요':'바꾸지 못했어요'); return; } toast(`${nm} 님 소속 정을 ${j.name}(으)로 바꿨어요`); closeSheet(); await store.refresh(); openAdmin(); }); return; }
     if(a==='reset') return act(mid,'reset_pin','');
     if(a==='mkadmin') return act(mid,'admin',`${nm} 님을 관리자로 지정했어요`);
     if(a==='unadmin') return act(mid,'unadmin',`${nm} 님 관리자를 해제했어요`);
@@ -2142,7 +2155,7 @@ function openProfile(){
     <div class="field"><label for="pfName">활터에서 부르는 이름</label><input class="input" id="pfName" maxlength="10" placeholder="예: 홍길동" value="${esc(me.name)}" autocomplete="off"></div>
     ${needPin()?`<div class="field"><label for="pfPin">비밀번호 4자리 <span class="tiny muted">· 다른 폰에서 불러올 때 써요</span></label>${pinInput('pfPin')}</div>`:''}
     ${others.length && !S.me ? `<div><div class="muted" style="margin-bottom:6px;font-size:12px">${store.kind==='remote'?'이미 등록한 사원이라면 이름을 누르고 비밀번호를 넣으세요':'이미 등록한 사원이라면 이름을 골라 이어서 쓰세요'}</div><div class="chips">${others.map(m=>`<button class="chip" data-pick="${m.id}">${esc(m.name)}</button>`).join('')}</div></div>` : ''}
-    ${!S.me?`<div class="field"><label for="pfJeong">소속 정</label><select class="input" id="pfJeong">${jeongChoices().map(j=>`<option value="${esc(j.id)}" ${homeJ().id===j.id?'selected':''}>${esc(j.name)}</option>`).join('')}</select></div>`:''}
+    ${!S.me?`<div class="field"><label for="pfJeong">소속 정</label><select class="input" id="pfJeong">${jeongChoices().map(j=>`<option value="${esc(j.id)}" ${homeJ().id===j.id?'selected':''}>${esc(j.name)}</option>`).join('')}</select><span class="jl-note">🔒 소속 정은 가입 후 <b>한 달 동안 바꿀 수 없어요.</b> 잘못 골랐다면 관리자에게 메일이나 방명록으로 알려 주세요. 다른 정 사대 구경·등록은 언제든 자유예요.</span></div>`:''}
     <div class="pk-note">활·궁체·단급은 나중에 '내 방'에서 채워요</div>
     <div class="actions"><button class="btn ghost" id="pfCancel">닫기</button><button class="btn pk-start" id="pfSave">${S.me?'이 모습으로 저장':'이 모습으로 시작 ▸'}</button></div>
   `);
@@ -2802,9 +2815,35 @@ function renderPlaque(){
   else { p.className='plaque none'; p.innerHTML='<span class="hj">정 선택</span>'; }
 }
 $('#brandBtn').addEventListener('click', openJeong);
-function openJeong(){
+const JEONG_LOCK_DAYS = 30;
+const JL_MAIL = 'heyjune3737@gmail.com';   // 웹앱 안내 탭 의견 메일과 같은 주소
+async function jeongLock(){
+  if(!(S.me && store.kind==='remote' && store.token)) return null;
+  try{ const {data,error}=await store.client.rpc('sadae_jeong_lock',{p_space:store.space,p_token:store.token}); if(error||!data||data.error) return null; return data; }catch(e){ return null; }
+}
+function openJeongLocked(lk){
+  const hj=homeJ(); const until=new Date(lk.until); const md=`${until.getMonth()+1}월 ${until.getDate()}일`;
+  const mail=`mailto:${JL_MAIL}?subject=${encodeURIComponent('[오늘 사대] 소속 정 변경 요청')}&body=${encodeURIComponent(`이름: ${S.me?S.me.name:''}\n지금 소속 정: ${hj.name}\n바꿀 정: \n사유: `)}`;
+  const sh=openSheet(`<h3>🔒 소속 정은 한 달 동안 고정돼요</h3>
+    <p class="muted" style="margin:0 0 10px">지금 <b>${esc(hj.name)}</b> 사원이에요. 소속 정은 가입(또는 바꾼 날)부터 ${JEONG_LOCK_DAYS}일 동안 바꿀 수 없어요. <b>${md}</b>부터 바꿀 수 있어요.</p>
+    <div class="jl-box"><b>잘못 고르셨나요?</b><span>관리자에게 알려 주시면 바로 고쳐 드려요.</span>
+      <div class="jl-btns">${typeof openRoom==='function'?`<button class="btn sm pri" id="jlGb" type="button">📮 관리자 방명록에 남기기</button>`:''}<a class="btn sm ghost" href="${mail}">✉️ 메일 보내기</a></div>
+      <span class="tiny muted">${JL_MAIL}</span></div>
+    <div class="jl-box"><b>다른 정에 가는 날은요?</b><span>오늘 정 탭 위 📍에서 언제든 다른 정 사대를 구경하고, 그 정에 습사 등록할 수 있어요.</span>
+      <div class="jl-btns"><button class="btn sm ghost" id="jlView" type="button">📍 다른 정 사대 보기</button></div></div>
+    <div class="actions"><button class="btn ghost" id="jlClose" type="button">닫기</button></div>`);
+  $('#jlClose',sh).onclick=closeSheet;
+  $('#jlView',sh).onclick=()=>{ closeSheet(); setTab('today'); setTimeout(openJeongView,150); };
+  const gb=$('#jlGb',sh); if(gb) gb.onclick=()=>{ closeSheet(); const f=(typeof magFounder==='function'&&magFounder())||null; if(f) openRoom(f.id); else toast('관리자 방을 찾지 못했어요. 메일로 보내 주세요'); };
+}
+async function openJeong(){
+  const lk = await jeongLock();
+  if(lk && lk.locked) return openJeongLocked(lk);
+  return openJeongPick(lk);
+}
+function openJeongPick(lk){
   const hj=homeJ(); const cur=hj.id; const isCustom=!JEONGS.some(j=>j.id===cur);
-  const sh=openSheet(`<h3>내 소속 정(亭)</h3><p class="muted" style="margin:0">고르면 위에 내 궁패로 걸리고, <b>오늘 사대</b>도 이 정 사원들로 보여요. 다른 정에 가는 날은 오늘 탭 위의 📍정 이름을 눌러 바꿔 등록하면 돼요.</p>
+  const sh=openSheet(`<h3>내 소속 정(亭)</h3><p class="muted" style="margin:0">고르면 위에 내 궁패로 걸리고, <b>오늘 사대</b>도 이 정 사원들로 보여요. 다른 정에 가는 날은 오늘 탭 위의 📍정 이름을 눌러 바꿔 등록하면 돼요.</p>${lk&&!lk.admin&&S.me?`<p class="jl-note">🔒 소속 정을 바꾸면 그날부터 ${JEONG_LOCK_DAYS}일 동안 다시 바꿀 수 없어요.</p>`:''}
     <div class="jlist">${JEONGS.map(j=>`<button class="jitem ${cur===j.id?'on':''}" data-j="${j.id}"><span class="plaque"><span class="hj">${j.hanja||j.name}</span>${j.hanja?`<span class="kr">${j.name}</span>`:''}</span><span class="grow"><b>${j.name}</b><br><span class="tiny">${j.addr||j.note||''}</span></span></button>`).join('')}
       <div class="jitem ${isCustom?'on':''}" style="flex-wrap:wrap"><span class="grow"><b>직접 입력</b><br><span class="tiny">목록에 없는 정</span></span><div class="row" style="flex-basis:100%"><input class="input grow" id="jName" maxlength="10" placeholder="정 이름 (예: 황학정)" value="${esc(isCustom?hj.name:'')}"><input class="input" id="jHanja" maxlength="6" placeholder="한자 (黃鶴亭)" style="max-width:130px" value="${esc(isCustom?(hj.hanja||''):'')}"><button class="btn sm pri" id="jCustom">걸기</button></div></div>
     </div>
@@ -2813,8 +2852,14 @@ function openJeong(){
     <div class="actions"><button class="btn ghost" id="jClose">닫기</button></div>`);
   [['#jAdmin',openAdmin],['#jPin',openPinChange],['#jOut',logoutHere],['#jClaim',openClaim],['#jIn',()=>openLogin('')]].forEach(([id,f])=>{ const b=$(id,sh); if(b) b.addEventListener('click',f); });
   const jc=$('#jCopy',sh); if(jc) jc.addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(inviteLink()); toast('링크를 복사했어요. 단톡방에 붙여 넣으세요'); }catch(e){ const r=document.createRange(); r.selectNodeContents($('#jLink',sh)); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast('길게 눌러 복사하세요'); } });
-  const save=async(j)=>{ j=jBrief(j); S.viewJ=null; closeSheet();
-    if(S.me){ setMe({...S.me, jeong:j}); await write(st=>st.merge('members/'+S.me.id,{jeong:j, updatedAt:Date.now()})); } else { lsSet('sadae.inviteJ', j); renderAll(); }
+  const save=async(j)=>{ j=jBrief(j);
+    const warn = lk && !lk.admin && S.me && S.me.jeong && S.me.jeong.id && S.me.jeong.id!==j.id;
+    if(warn && !save.sure){ save.sure=j.id; toast(`${j.name}(으)로 바꾸면 ${JEONG_LOCK_DAYS}일 동안 다시 못 바꿔요. 한 번 더 누르면 바꿔요`); $$('[data-j]',sh).forEach(b=>b.classList.toggle('sure', b.dataset.j===j.id)); return; }
+    if(warn && save.sure!==j.id){ save.sure=j.id; toast(`${j.name}(으)로 바꾸려면 한 번 더 눌러 주세요`); $$('[data-j]',sh).forEach(b=>b.classList.toggle('sure', b.dataset.j===j.id)); return; }
+    S.viewJ=null; closeSheet();
+    if(S.me){ const prev=S.me.jeong; const ok=await write(st=>st.merge('members/'+S.me.id,{jeong:j, updatedAt:Date.now()}));
+      if(ok===false){ toast('소속 정을 바꾸지 못했어요. 한 달이 지나야 바꿀 수 있어요'); return; } setMe({...S.me, jeong:j}); }
+    else { lsSet('sadae.inviteJ', j); renderAll(); }
     toast(`🏹 ${j.name} 궁패를 걸었어요`); };
   $$('[data-j]',sh).forEach(b=>b.addEventListener('click',()=>save(JEONGS.find(j=>j.id===b.dataset.j))));
   $('#jCustom',sh).addEventListener('click',()=>{ const name=$('#jName',sh).value.trim(); if(!name){ toast('정 이름을 적어주세요'); return; } save({id:'c:'+name, name, hanja:$('#jHanja',sh).value.trim()||name}); });
