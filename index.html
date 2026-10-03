@@ -1372,6 +1372,8 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 
 /* 캐릭터별 크기 (강아지 견종): 소형 0.92 · 대형 1.06 — 서 있는 자리에서만 */
 .pixc.sz-l{overflow:visible}
+.pixc.sz-xl{overflow:visible}
+.sd-fig .pixc.sz-xl,.pz-ch .pixc.sz-xl,.room .hero .pixc.sz-xl,.mz-cover .hero .pixc.sz-xl,#pkBig .pixc.sz-xl{transform:scale(1.2);transform-origin:50% 97%}
 .sd-fig .pixc.sz-s,.pz-ch .pixc.sz-s,.room .hero .pixc.sz-s,.mz-cover .hero .pixc.sz-s,#pkBig .pixc.sz-s{transform:scale(.92);transform-origin:50% 97%}
 .sd-fig .pixc.sz-l,.pz-ch .pixc.sz-l,.room .hero .pixc.sz-l,.mz-cover .hero .pixc.sz-l,#pkBig .pixc.sz-l{transform:scale(1.06);transform-origin:50% 97%}
 /* 햄스터: 서 있는 자리에서만 0.86배 (얼굴 사진 칸은 그대로) */
@@ -1733,7 +1735,7 @@ const PIX_SIZE = {
   'cat/06':'s','cat/11':'s','cat/14':'s',                                         // 삼색 두건 · 까만 아기 고양이 · 나뭇잎 두건
   'cat/02':'l','cat/09':'l','cat/12':'l','cat/15':'l',                             // 갈색 두건 · 갈색 장모 · 하얀 무사 · 삿갓 고양이
 };
-const pixSzCls = c => { const z=PIX_SIZE[c]; if(z) return ' sz-'+z; const a=c.split('/')[0]; return BIG_KINDS.includes(a)?' big':SMALL_KINDS.includes(a)?' small':''; };
+const pixSzCls = c => { const z=PIX_SIZE[c]; if(z) return ' sz-'+z; const a=c.split('/')[0]; if(a==='dev') return ' sz-xl'; return BIG_KINDS.includes(a)?' big':SMALL_KINDS.includes(a)?' small':''; };
 const PIX_COUNT = {cat:15, dog:15, duck:9, bear:9, hamster:9, penguin:9, dev:9};   /* dev = 개발자 전용 (ANIMALS 엔 없음) */
 const DEV_ANI = ['dev','🔧 개발자'];
 const pickAnimals = () => (typeof isDevNow==='function' && isDevNow()) ? [...ANIMALS, DEV_ANI] : ANIMALS;   // 동물별 종 수 (새 시트를 넣으면 숫자만 올림)
@@ -1909,7 +1911,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04t';
+const APP_VER = '2026.10.04v';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2067,7 +2069,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-10-04m', date:'10월 4일', title:'🏅 배지가 새로워졌어요 · 방에 걸기', body:'🎯 단계형 배지\n같은 종류의 배지를 한 칸으로 모아 동 → 은 → 금 → 옥으로 올라가요. 몰기 · 관중률은 실력 칸이라 그 위로 명궁 · 신궁까지 있어요. 칸마다 다음 단계까지 얼마 남았는지 막대로 보여요. 그동안 받은 배지는 새 단계로 그대로 옮겨졌어요. 🏯 정 순례(다른 정 습사) · 🌬 바람 궁사(바람 ‘강’일 때 쏜 순) 칸도 생겼어요.\n\n🎖 특별 · 한정 · 숨은 배지\n승단, 대회 입상(부별 1~3위), 이달의 표지(월보 표지 주인공), 🍂 사계절 궁사(한 해 사계절 모두 습사), 🏅 올해의 표지, 그리고 베타 기간(9/23~10/3)에 함께한 분만 받는 🧪 베타 테스터 배지가 있어요. 조건이 숨겨진 배지도 몇 개 있으니 찾아보세요. 월보 분야별 1위는 🎀 리본으로 남아요.\n\n🖼 방에 걸기\n내 방 배지 칸의 "🖼 방에 걸기"에서 서로 다른 배지 족자 · 월보 표지 액자를 벽에 3개까지 걸 수 있어요. 대회에서 입상하면 선반 트로피가 생겨요. 방 구경 온 사원에게도 보여요.\n\n👣 내 방 방문자\n내 방 위 TODAY · TOTAL은 내 방에 다녀간 사원 수예요(하루 한 사람 1번). 방 아래 ‘최근 다녀간 사원’은 나만 보여요.'},
   {id:'2026-10-04c', date:'10월 4일', title:'🐶🐱 강아지 · 고양이 6종씩 · 월보는 매달 1일에', body:'🐶 강아지 6종\n베레모 푸들 · 헤드폰 보더콜리 · 별망토 치와와 · 모자 쓴 달마시안 · 비옷 골든 · 탐정 바셋이 왔어요. 이제 강아지는 15종이에요.\n\n🐱 고양이 6종\n한복 삼색이 · 까만 아기 고양이 · 하얀 무사 · 오드아이 장모 · 나뭇잎 두건 · 삿갓 고양이가 왔어요. 고양이도 15종이에요.\n\n📏 크기가 조금씩 달라요\n사대·광장·내 방에서 강아지와 고양이가 덩치에 따라 조금 작게(0.92배) 또는 조금 크게(1.06배) 서요. 새 친구에는 고르기 화면에 NEW 표시가 붙어요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n📰 사대 월보는 매달 1일에\n월보는 매달 1일에 지난달 기록을 담아 완성된 채로 나와요. 지금은 10월 창간호(베타 9/23~10/3)가 최신호이고, 11월호(10/4~10/31 기록)는 11월 1일에 나와요. 이번 달 실시간 순위는 광장 순위 카드에서 볼 수 있어요.'},
   {id:'2026-10-03n', date:'10월 3일', title:'🎉 10월 3일 업데이트 모음 · 사대 월보 · 광장 · 새 친구 · 알림', body:'📰 사대 월보\n하단 "소식" 칸에 월간지 「사대 월보(射臺月報)」가 생겼어요. 10월 창간호는 베타 기간(9/23~10/3)의 기록, 9월은 관리자의 변과 연혁을 담은 "오늘 사대 이야기"예요. 앞으로는 매달 1일에 지난달 기록으로 한 호씩 나와요. 축하 소식 옆 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고, 내 방에서 단급을 바꾸면 승단 소식으로 실려요. 가입 10명 + 그 호 기록 3명이 넘는 정은 "우리 정 월보"도 따로 나와요.\n\n🏯 광장\n배경이 계절(봄·여름·가을·겨울)과 시간(낮·해질녘·밤)에 따라 바뀌고, 🖼 로 직접 골라 볼 수 있어요. 한마디는 장면 바로 아래에서 15개씩 페이지로 넘겨요. 🏆 이달의 순위(성실·관중·관중률·몰기·정심·다정)는 접어 둘 수 있고, 누르고 있으면 멈춰요. 순위에 나오기 싫으면 "랭킹에서 나 숨기기"를 누르세요. 움직임이 부담스러우면 🍵 "차분하게 보기"로 끌 수 있어요.\n\n🐻🐹🐧 새 친구\n곰 · 햄스터 · 펭귄이 9종씩 들어왔어요. 곰은 한 뼘 크게, 햄스터는 아담하게 서요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n🏹 오늘 정 사대\n사람이 많으면 2층 사대(앞줄 7 · 뒷줄 7)로 서고, 위의 시간대(새벽~저녁)를 눌러 그 시간대 사람만 볼 수 있어요.\n\n🔔 알림\n누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 @내이름 으로 부르면 위쪽 🔔 에 표시돼요. 🔔 → "폰 알림 켜기"를 하면 앱을 닫아 둬도 폰으로 알림이 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 ↩ 답글로 @이름을 쉽게 넣을 수 있어요.'},
-  {id:'2026-10-03l', date:'10월 3일', title:'🔒 소속 정은 한 달 동안 고정돼요', body:'이제 관악정 밖 다른 정으로도 오늘 사대가 넓어져요. 정마다 사원·순위·월보가 섞이지 않도록, 소속 정(궁패)은 가입한 날(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 고르셨다면 관리자에게 메일(heyjune3737@gmail.com)이나 방명록으로 알려 주시면 바로 고쳐 드려요. 다른 정에 가는 날은 지금처럼 오늘 정 탭 위 📍에서 그 정 사대를 구경하고 습사 등록할 수 있어요.'},
+  {id:'2026-10-03l', date:'10월 3일', title:'🔒 소속 정은 한 달 동안 고정돼요', body:'이제 관악정 밖 다른 정으로도 오늘 사대가 넓어져요. 정마다 사원·순위·월보가 섞이지 않도록, 소속 정(궁패)은 가입한 날(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 고르셨다면 관리자에게 메일(heysadae3737@gmail.com)이나 방명록으로 알려 주시면 바로 고쳐 드려요. 다른 정에 가는 날은 지금처럼 오늘 정 탭 위 📍에서 그 정 사대를 구경하고 습사 등록할 수 있어요.'},
   {id:'2026-10-03a', date:'10월 3일', title:'✍️ 표 기록 · 내 방 고친 점', body:'🌬 바람 기록\n표 기록 맨 위에 그날의 바람(맞바람·뒷바람·좌→우·우→좌 + 약·중·강)이 자동으로 뜨고, 순을 저장하면 함께 남아요. 눌러서 직접 고칠 수도 있어요. 처음엔 바람 칸 → "과녁 방향"을 한 번 정해 주세요(폰 나침반으로도 잴 수 있어요). 바람은 내 기록에만 남고 월보에는 실리지 않아요.\n\n🎯 낙점 그림\n기록 보기에서 "이 날 · 이번 달 · 100일 · 전체"로 볼 수 있어요.\n\n📄 엑셀(CSV)\n내 방의 내려받기에 순마다 바람이 함께 들어가요.\n\n🙋 프로필\n단급에 무급·무단을 넣었고, 집궁일은 고르지 않아도 되며 "지우기"로 지울 수 있어요. 활 세기는 호 대신 파운드로 적어요(예전 숫자는 그대로).'},
   {id:'2026-09-24c', date:'9월 24일', title:'앱으로 설치하세요 📱', body:'① 카톡방 공지의 링크로 접속 → 크롬으로 열기  ② 크롬 ⋮ → 홈 화면에 추가 → 설치. 바탕화면의 오늘 사대 아이콘으로 들어오면 앱처럼 쓸 수 있어요.'},
   {id:'2026-09-24b', date:'9월 24일', title:'가입 승인제 · 안내 탭이 생겼어요', body:'링크를 받은 분은 가입 신청 후 관리자 승인이 나면 쓸 수 있어요. 이 안내 탭에서 앱 설치 방법, 이용법, 로그아웃을 찾을 수 있어요.'},
@@ -2080,7 +2082,7 @@ const IS_IOS=/iPhone|iPad|iPod/i.test(ua), IS_AND=/Android/i.test(ua), IS_KAKAO=
 const IS_STANDALONE = matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
 window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); window.__bip=e; if(S.tab==='info') renderInfo(); });
 // 베타 안내 (가입 화면 · 환영 안내 · 안내 탭)
-const ADMIN_MAIL='heyjune3737@gmail.com';
+const ADMIN_MAIL='heysadae3737@gmail.com';
 function betaHTML(compact){ return `<div class="beta-box"><span class="beta-ch">${charSVG('duck/01')}</span><div class="beta-tx">
   <b>🏹 지금은 베타 테스트 중이에요</b><br>편하게 써 보시고, 즐겁게 활 내시기 바랍니다 😊${compact?'':'<br>오류나 기능 개선 의견은 언제든 감사히 받을게요 🙏'}<br>
   <a href="mailto:${ADMIN_MAIL}?subject=${encodeURIComponent('[오늘 사대] 의견')}">✉️ ${ADMIN_MAIL}</a></div></div>`; }
@@ -2137,7 +2139,7 @@ function renderInfo(){
     <details class="notice"><summary>오늘 정 — 습사 등록</summary><p>시간대(새벽~저녁)를 누르면 사대에 내 캐릭터가 서요. 사대에는 <b>내 소속 정</b> 사원만 보여요. 다른 정에 가는 날은 위의 📍정 이름을 눌러 그 정을 고르고 시간대를 누르세요. 다른 사원 이름 옆 ＋로 이모지 응원, 안 가게 되면 "안 가요".</p></details>
     <details class="notice"><summary>광장 — 모든 정 사원과 한마디</summary><p>가입한 사원 모두가 광장에 모여요. 캐릭터를 누르면 그 사원의 방에 놀러 가고, 아래에서 한마디(하루 30개까지)를 남길 수 있어요. 오늘 몰기·새 배지 소식도 여기 떠요.</p></details>
     <details class="notice"><summary>표 기록 — 한 발씩</summary><p>위쪽 "✍️ 입력 / 📖 기록 보기"로 화면을 바꿔요. 기록 보기에선 큰 글씨로 순을 보고 ◀ ▶로 날짜를 넘겨요. 입력판은 과녁을 바라본 모양 그대로 9칸이에요: 가운데 관중, 위 넘어감, 아래 코박음(짧음), 옆은 앞남·뒤남, 네 귀퉁이는 앞넘음·뒤넘음·앞짧음·뒤짧음. 좌궁이면 앞·뒤가 좌우로 바뀌어요. 잘못 누르면 "↶ 한 발".</p></details>
-    <details class="notice"><summary>🔒 소속 정 · 다른 정 가기</summary><p>소속 정은 내 궁패이자 정별 순위·월보의 기준이라, 가입(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 골랐다면 관리자에게 메일(heyjune3737@gmail.com)이나 관리자 방명록으로 알려 주세요. 다른 정에 가는 날은 오늘 정 탭 위 📍정 이름을 눌러 그 정 사대를 보고, 시간대를 누르면 그 정에 등록돼요. 이건 언제든 자유예요.</p></details>
+    <details class="notice"><summary>🔒 소속 정 · 다른 정 가기</summary><p>소속 정은 내 궁패이자 정별 순위·월보의 기준이라, 가입(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 골랐다면 관리자에게 메일(heysadae3737@gmail.com)이나 관리자 방명록으로 알려 주세요. 다른 정에 가는 날은 오늘 정 탭 위 📍정 이름을 눌러 그 정 사대를 보고, 시간대를 누르면 그 정에 등록돼요. 이건 언제든 자유예요.</p></details>
     <details class="notice"><summary>🍵 차분하게 보기</summary><p>광장 장면 오른쪽 아래 🍵 버튼을 누르세요. "차분하게 보기"를 켜면 순위 자동 넘김, 꽃잎·낙엽·눈 흩날림, 광장 위 소식 띠, 말풍선 효과, 캐릭터 걸음이 한 번에 멈춰요. 하나씩 켜고 끌 수도 있어요. 이 기기에만 저장되고, 폰 설정에서 "동작 줄이기"를 켜 두셨다면 처음부터 차분하게 보여요. 순위 카드는 "접기"로 한 줄만 남길 수 있고, 누르고 있는 동안은 넘어가지 않아요.</p></details>
     <details class="notice"><summary>🏅 배지 · 방에 걸기</summary><p>내 방 → 🏅 배지에서 볼 수 있어요. 같은 종류는 한 칸에 모여 동 · 은 · 금 · 옥으로 올라가고, 실력 칸(몰기 · 관중률)만 명궁 · 신궁까지 있어요. 관중률 금부터는 그 달 30순 이상 쏜 달만 세요. 칸을 누르면 단계별 기준이 보여요. 특별 배지는 승단 · 대회 입상(부별 1~3위) · 이달의 표지 · 베타 테스터(한정)이고, 조건을 숨긴 배지도 있어요. 월보 분야별 1위는 🎀 리본으로 남아요. "🖼 방에 걸기"에서 배지 하나를 한지 족자로 걸고, 표지 액자 · 대회 트로피를 고르거나 내릴 수 있어요. 방 구경 온 사원에게도 보여요.</p></details>
     <details class="notice"><summary>📰 사대 월보</summary><p>소식 탭의 월간지예요. 매달 1일에 지난달 기록을 담아 한 호씩 나와요. 10월 창간호는 베타 테스트 기간(9/23~10/3) 기록, 11월호(11월 1일 발행)는 10월 4일~31일 기록이에요. 다음 호가 나오기 전까지는 최신호를 보여 주고, 이번 달 실시간 순위는 광장 순위 카드에서 볼 수 있어요. 9월은 "오늘 사대 이야기"(관리자의 변 · 연혁)예요. 표지는 그 달 습사한 날이 가장 많은 성실왕, 축하 소식은 몰기 상위 3명 · 새 배지 · 승단(내 방에서 단급을 바꾼 날) · 집궁 100일/1000일/주년 · 그 달 처음 기록한 사원이에요. 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고 알림이 가요. "지난 호"에서 예전 달을 다시 볼 수 있어요. 랭킹에서 숨긴 사원은 표지와 순위에서 빠져요. 맨 위에서 「🏯 전체 월보」와 「우리 정 월보」를 고를 수 있어요. 우리 정 월보는 가입 사원 10명 이상 + 그 호에 표를 기록한 사원 3명 이상인 정에 나오고, 집계는 소속 정(궁패) 기준이에요.</p></details>
@@ -3338,7 +3340,7 @@ function renderPlaque(){
 }
 $('#brandBtn').addEventListener('click', openJeong);
 const JEONG_LOCK_DAYS = 30;
-const JL_MAIL = 'heyjune3737@gmail.com';   // 웹앱 안내 탭 의견 메일과 같은 주소
+const JL_MAIL = 'heysadae3737@gmail.com';   // 웹앱 안내 탭 의견 메일과 같은 주소
 async function jeongLock(){
   if(!(S.me && store.kind==='remote' && store.token)) return null;
   try{ const {data,error}=await store.client.rpc('sadae_jeong_lock',{p_space:store.space,p_token:store.token}); if(error||!data||data.error) return null; return data; }catch(e){ return null; }
