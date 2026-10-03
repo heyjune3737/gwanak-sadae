@@ -1102,6 +1102,26 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .mz-bow{display:flex;flex-direction:column;align-items:center;width:100%;margin-top:10px;background:#E2463B;border:2px solid #231C16;box-shadow:3px 3px 0 #231C16;padding:9px}
 .mz-bow *{color:#fff!important}.mz-bow b{font-size:16px}.mz-bow small{font-size:11.5px}
 .mz-bow.on{background:#F2C14E}.mz-bow.on *{color:#231C16!important}
+
+/* 9월 특별판 */
+.mz{word-break:keep-all;overflow-wrap:anywhere}
+.mz-letter p{font-size:13.5px;line-height:1.85;margin:0 0 10px}
+.mz-poem{text-align:center;font-size:14.5px!important;line-height:1.9!important;padding:6px 0;margin:14px 0!important}
+.mz-cheer{text-align:center;font-family:var(--display);font-size:19px!important;line-height:1.4!important;padding:8px 0;border-top:1px dashed #231C16;border-bottom:1px dashed #231C16;margin:0 0 10px!important}
+.mz-cheer small{font-family:inherit;font-size:12px}
+.mz-sign{display:flex;align-items:center;justify-content:flex-end;gap:8px;font-size:12px;text-align:right}
+.mz-sign .av{width:46px;height:46px;border:2px solid #231C16;background:#EAE2CD;overflow:hidden;cursor:pointer}.mz-sign .av svg,.mz-sign .av img{width:100%;height:100%;transform:scale(1.6) translateY(14%)}
+.mz-sign b{font-size:15px}
+.mz-hist{list-style:none;margin:0;padding:0;position:relative}
+.mz-hist:before{content:"";position:absolute;left:69px;top:6px;bottom:6px;border-left:2px solid #231C16}
+.mz-hist li{display:flex;gap:8px;align-items:flex-start;padding:5px 0;position:relative}
+.mz-hist .d{flex:none;width:54px;white-space:nowrap;font-size:11px;text-align:right;padding-top:5px;font-weight:700}
+.mz-hist .ic{flex:none;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#FFFBF0;border:2px solid #231C16;font-size:14px;position:relative;z-index:1}
+.mz-hist b{font-size:14px}.mz-hist p{margin:1px 0 0;font-size:12px;line-height:1.5}
+.mz-hist li.next .ic{background:#E2463B}.mz-hist li.next .d{color:#E2463B!important}
+
+.mz-beta{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;padding:8px 12px;background:#231C16;color:#F5EFE0!important;border-bottom:2px solid #231C16}
+.mz-beta *{color:#F5EFE0!important}.mz-beta b{font-size:13px}.mz-beta span{font-family:var(--display);font-size:15px;color:#F2C14E!important}.mz-beta small{flex-basis:100%;font-size:11px;opacity:.8}
 </style>
 
 <div class="app" id="app">
@@ -1552,7 +1572,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.03g';
+const APP_VER = '2026.10.03h';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -1675,6 +1695,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-10-03h', date:'10월 3일', title:'📰 사대 월보 창간호 · 오늘 사대 이야기', body:'소식 탭 사대 월보 10월 창간호는 베타 테스트 기간(9월 23일 앱을 만든 날 ~ 10월 3일) 동안의 기록을 담았어요. 함께한 사원·사대 등록·표 기록·몰기·방명록·응원으로 베타 11일을 돌아보고, 표지는 베타 성실왕이에요. 지난 호의 9월은 "오늘 사대 이야기"로, 관리자의 변과 지금까지의 연혁을 실었어요. 10월 4일부터의 기록은 11월호에 이어서 쌓여요.'},
   {id:'2026-10-03g', date:'10월 3일', title:'🍵 차분하게 보기 · 광장 한마디가 위로', body:'광장이 산만하다는 의견을 반영했어요. ① 광장 한마디를 장면 바로 아래로 올렸고, 한 쪽에 15개씩 보이며 넘치면 페이지 번호로 넘겨요. ② 이달의 순위는 "접기"로 한 줄만 남길 수 있고, 카드를 누르고 있으면 넘어가지 않아요(인스타그램 스토리처럼). ‹ › 로 직접 넘길 수도 있어요. ③ 광장 장면 오른쪽 아래 🍵 버튼 → "차분하게 보기"를 켜면 순위 자동 넘김·흩날림·소식 띠·말풍선 효과·캐릭터 걸음이 모두 멈춰요. 하나씩 고를 수도 있어요. ④ 오늘 정 사대에 사람이 많으면 2층(앞줄 7·뒷줄 7)으로 서고, 더 많으면 "+N명 모두 보기"가 떠요. ⑤ 소식 탭 지난 호에 9월 호외가 실렸어요. ⑥ 공지사항은 최근 5개만 보이고, 지난 공지는 달마다 폴더로 접어 뒀어요.'},
   {id:'2026-10-03f', date:'10월 3일', title:'📰 소식 탭 · 사대 월보 창간', body:'하단에 "소식" 칸이 생겼어요. 매달 한 호씩 나오는 월간지 "사대 월보(射臺月報)"에서 이달의 성실왕 표지, 숫자로 보는 한 달, 축하 소식(몰기·새 배지·승단·집궁 기념일·새 사원), 이달의 순위, 이달의 바람을 볼 수 있어요. 이번 달 호는 "발행 중"으로 매일 새로 고쳐지고, 다음 달 1일에 확정돼 지난 호로 넘어가요. 축하 소식 옆 👏를 누르면 그 사원 방명록에 축하 한 줄이 남아요. 광장 맨 위 띠를 눌러도 월보로 가요. 내 방에서 단급을 바꾸면 승단 소식으로 실려요.'},
   {id:'2026-10-03e', date:'10월 3일', title:'🏆 광장에 이달의 순위가 생겼어요', body:'광장에서 이번 달 순위를 실시간으로 볼 수 있어요. 📅 성실(습사한 날) · 🎯 관중(맞힌 화살) · 📈 관중률(30순 이상) · 🏅 몰기 · 🧘 정심(관중률에 고른 표를 더한 점수, 30순 이상) · 💞 다정(방명록·응원·한마디를 많이 나눈 사원) 여섯 가지가 5초마다 넘어가며 다섯 명씩 보여요. 어제보다 오르내린 것도 ▲▼로 표시돼요. 순위에 나오고 싶지 않으면 순위 아래 "랭킹에서 나 숨기기"를 누르세요.'},
@@ -1749,7 +1770,7 @@ function renderInfo(){
     <details class="notice"><summary>광장 — 모든 정 사원과 한마디</summary><p>가입한 사원 모두가 광장에 모여요. 캐릭터를 누르면 그 사원의 방에 놀러 가고, 아래에서 한마디(하루 30개까지)를 남길 수 있어요. 오늘 몰기·새 배지 소식도 여기 떠요.</p></details>
     <details class="notice"><summary>표 기록 — 한 발씩</summary><p>위쪽 "✍️ 입력 / 📖 기록 보기"로 화면을 바꿔요. 기록 보기에선 큰 글씨로 순을 보고 ◀ ▶로 날짜를 넘겨요. 입력판은 과녁을 바라본 모양 그대로 9칸이에요: 가운데 관중, 위 넘어감, 아래 코박음(짧음), 옆은 앞남·뒤남, 네 귀퉁이는 앞넘음·뒤넘음·앞짧음·뒤짧음. 좌궁이면 앞·뒤가 좌우로 바뀌어요. 잘못 누르면 "↶ 한 발".</p></details>
     <details class="notice"><summary>🍵 차분하게 보기</summary><p>광장 장면 오른쪽 아래 🍵 버튼을 누르세요. "차분하게 보기"를 켜면 순위 자동 넘김, 꽃잎·낙엽·눈 흩날림, 광장 위 소식 띠, 말풍선 효과, 캐릭터 걸음이 한 번에 멈춰요. 하나씩 켜고 끌 수도 있어요. 이 기기에만 저장되고, 폰 설정에서 "동작 줄이기"를 켜 두셨다면 처음부터 차분하게 보여요. 순위 카드는 "접기"로 한 줄만 남길 수 있고, 누르고 있는 동안은 넘어가지 않아요.</p></details>
-    <details class="notice"><summary>📰 사대 월보</summary><p>소식 탭의 월간지예요. 이번 달 호는 매일 새로 고쳐지고(발행 중), 다음 달 1일에 확정돼요. 표지는 이달 습사한 날이 가장 많은 성실왕, 축하 소식은 몰기 상위 3명 · 새 배지 · 승단(내 방에서 단급을 바꾼 날) · 집궁 100일/1000일/주년 · 이달 처음 기록한 사원이에요. 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고 알림이 가요. "지난 호"에서 예전 달을 다시 볼 수 있어요. 랭킹에서 숨긴 사원은 표지와 순위에서 빠져요.</p></details>
+    <details class="notice"><summary>📰 사대 월보</summary><p>소식 탭의 월간지예요. 10월 창간호는 베타 테스트 기간(9/23~10/3) 기록, 11월호는 10월 4일부터 쌓여요. 9월은 "오늘 사대 이야기"(관리자의 변 · 연혁)예요. 이번 달 호는 매일 새로 고쳐지고(발행 중), 다음 달 1일에 확정돼요. 표지는 이달 습사한 날이 가장 많은 성실왕, 축하 소식은 몰기 상위 3명 · 새 배지 · 승단(내 방에서 단급을 바꾼 날) · 집궁 100일/1000일/주년 · 이달 처음 기록한 사원이에요. 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고 알림이 가요. "지난 호"에서 예전 달을 다시 볼 수 있어요. 랭킹에서 숨긴 사원은 표지와 순위에서 빠져요.</p></details>
     <details class="notice"><summary>🏆 이달의 순위</summary><p>광장의 순위는 매달 1일 새로 시작해요. 관중률과 정심은 이번 달 30순 이상 쏜 사원만 들어가요. 정심(正心)은 궁도 구계훈 "정심정기"에서 따온 이름으로, 관중률에 순마다 고른 관중(기복이 적음)과 빗나가도 한쪽으로 모이는 표를 더한 점수예요. 다정(多情)은 남의 방명록 2점·응원 1점·광장 한마디 1점이고 하루 10점까지만 세요. 날짜별 표는 그대로 비공개이고 순위 숫자만 보여요. 숨기고 싶으면 "랭킹에서 나 숨기기".</p></details>
     <details class="notice"><summary>🌬 바람 기록</summary><p>표 기록 맨 위 바람 칸에 정 위치의 지금 바람이 자동으로 떠요(날씨 정보 Open-Meteo). 순을 저장하면 그 바람이 순 옆에 작게 남아요(⬇맞바람 ⬆뒷바람 ➡좌→우 ⬅우→좌). 실제와 다르면 바람 칸을 눌러 직접 고르면 오늘 하루 그대로 기록돼요. 정마다 처음 한 번 "과녁 방향"(사대에서 과녁이 있는 쪽)을 정해야 맞바람·좌우가 계산돼요.</p></details>
     <details class="notice"><summary>🔔 알림 — 방명록 · 응원 · @부름</summary><p>누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 <b>@내이름</b>으로 부르면 위쪽 🔔 에 빨간 숫자가 떠요. 🔔 → <b>폰 알림 켜기</b>를 하면 앱을 닫아 둬도 폰 알림으로 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 "↩ 답글"을 누르면 @이름이 자동으로 들어가요.</p></details>
@@ -3150,32 +3171,52 @@ S.mag = {ym:null, rk:{}, busy:{}, cache:{}, more:false};
 const ymAdd = (ym,k) => { let [y,m]=ym.split('-').map(Number); m+=k; while(m<1){m+=12;y--;} while(m>12){m-=12;y++;} return y+'-'+String(m).padStart(2,'0'); };
 const ymLast = ym => { const [y,m]=ym.split('-').map(Number); return ym+'-'+String(new Date(y,m,0).getDate()).padStart(2,'0'); };
 const magSeason = m => (m===12||m<=2)?'winter':(m<=5)?'spring':(m<=8)?'summer':'autumn';
-const MAG_EXTRA = '2026-09';            // 창간 준비 호외 (관리자 창간 비화)
+const MAG_EXTRA = '2026-09';            // 9월 = 오늘 사대 이야기 (관리자의 변 · 연혁)
+const MAG_FOUNDER = '1o1aty249a';      // 만든 사람(관리자 준호) — 창간호 표지에서는 빠짐
+const MAG_BETA = '2026-09-23';         // 오늘 사대 첫 화살 (베타 시작)
+const magFounder = () => memberById(MAG_FOUNDER) || (S.members||[]).find(m=>m&&m.name==='준호') || null;
+const MAG_HISTORY = [
+  ['2026<br>여름','🏹','관악정에서 첫 활을 내다','사대에 처음 섰던 그 순간에서 오늘 사대가 시작됐어요.'],
+  ['9월 23일','📱','오늘 사대 앱 문을 열다','표 기록 · 오늘 정 · 대회 점수를 담았어요. 이날부터 10월 3일까지가 베타 테스트 기간이에요.'],
+  ['9월 24일','🔑','가입 승인제 · 안내 탭','우리 사원만 들어오도록 승인제로. 공지와 이용법을 한곳에.'],
+  ['9월 26일','🏠','내 방 · 방명록','사원끼리 방을 구경하고 방명록을 남겨요.'],
+  ['9월 29일','🏯','광장 · 서울 8정 · 9방향 표','모든 정 사원이 모이는 광장, 정마다 다른 배경, 화살이 빗나간 방향까지.'],
+  ['10월 3일','📰','알림 · 바람 · 순위 · 사대 월보','폰 알림, 그날의 바람 기록, 이달의 순위, 그리고 이 월보가 창간됐어요.'],
+];
 function magExtraHTML(){
-  const hero = (isAdminNow() && S.me && (memberById(S.me.id)||S.me)) || (S.members||[]).find(m=>m&&m.name==='준호') || null;
-  const nm = hero ? hero.name : '준호'; const art=((JEONG_ART[homeJ().id]||{}).scene||{}).autumn||'';
-  const key = hero ? `${MAG_EXTRA}|bow|${hero.id}` : ''; const c = hero ? clapsOf(key, hero.id) : {n:0,mine:false};
-  return `<article class="mz mz-x">
-    <div class="mz-mast"><div class="t">射臺月報<small>사대 월보 · 號外</small></div></div>
-    <div class="mz-meta"><span>2026년 9월 · 호외(號外)</span><span>창간 준비호 · 9월 30일 마감</span></div>
+  const f=magFounder(); const nm=f?f.name:'준호'; const art=(()=>{ const a=(JEONG_ART[homeJ().id]||{}).scene||{}; return a.summer||a.autumn||''; })();
+  const key = f ? `${MAG_EXTRA}|cheer|${f.id}` : ''; const c = f ? clapsOf(key, f.id) : {n:0,mine:false};
+  const nMem=(S.members||[]).filter(m=>m&&m.name).length;
+  return `<article class="mz">
+    <div class="mz-mast"><div class="t">射臺月報<small>사대 월보 · 특별판</small></div></div>
+    <div class="mz-meta"><span>2026년 9월 · 오늘 사대 이야기</span><span>창간 전야</span></div>
     <div class="mz-cover" style="${art?`background-image:url(${art})`:''}">
-      <div class="hl"><span class="k">號外 · 창간 비화</span><h1>활 쏘다가<br>앱까지 쏘아 올린<br>사나이, ${esc(nm)}</h1></div>
-      ${hero?`<div class="hero" data-room="${esc(hero.id)}">${charSVG(hero.char||DEFAULT_CHAR)}</div>`:''}
-      <div class="side"><span>💰 사용료 <b>0원</b></span><span>📵 광고 <b>0개</b></span><span>🧑‍💻 만든 사람 <b>1명</b></span></div>
-      <div class="stamp x">號外</div>
+      <div class="hl"><span class="k">특별판 · 창간 이야기</span><h1>2026년 여름,<br>관악정에서<br>첫 활을 내다</h1></div>
+      ${f?`<div class="hero" data-room="${esc(f.id)}">${charSVG(f.char||DEFAULT_CHAR)}</div>`:''}
+      <div class="side"><span>🧑‍💻 만든 사람 <b>${esc(nm)}</b></span><span>👥 사원 <b>${nMem}명</b></span><span>📱 앱 시작 <b>9/23</b></span></div>
+      <div class="stamp done">창간 전야</div>
     </div>
   </article>
-  <article class="mz"><div class="mz-sec"><div class="mz-kick">EXCLUSIVE · 단독 인터뷰</div><h2>그는 왜 만들었나</h2>
-    <div class="mz-qa">
-      <p><b>Q.</b> 왜 만드셨습니까?</p><p><b>A.</b> "종이 기록지는 바람에 날아가고, 내 관중률은 기억에서 날아갔소."</p>
-      <p><b>Q.</b> 왜 공짜입니까?</p><p><b>A.</b> "활터 인심은 원래 공짜요. 광고는 과녁에나 붙이시오."</p>
-      <p><b>Q.</b> 앞으로의 꿈은?</p><p><b>A.</b> "서울 8정 사원이 모두 오늘 사대에 서는 것. …그리고 내 몰기."</p>
+  <article class="mz"><div class="mz-sec"><div class="mz-kick">FROM THE MAKER · 관리자의 변</div><h2>「오늘 사대」를 만들며</h2>
+    <div class="mz-letter">
+      <p>2026년 여름, 관악정에서 처음 활을 배웠습니다.<br>사대에 처음 섰던 그 순간을 지금도 기억합니다.</p>
+      <p>좋은 사람들과 나란히 서서 활을 내는 즐거움,<br>하루하루의 일상 속에서 국궁을 배워 가는 마음가짐과 기쁨.<br>그 순간들이 좋아서, 이 작은 앱을 만듭니다.</p>
+      <p>아직 부족한 부분이 많을 거예요.<br>너른 마음으로 봐 주시고,<br>그저 즐겁게, 좋은 사람들과 함께<br>활을 내 주시면 좋겠습니다.</p>
+      <p class="mz-poem">그 모든 오늘이 계절을 건너<br>사대에 선 모두에게<br>좋은 마음으로 닿기를.</p>
+      <p class="mz-cheer">관악정, 화이팅! 🏹</p>
+      <div class="mz-sign">${f?`<span class="av" data-room="${esc(f.id)}">${charSVG(f.char||DEFAULT_CHAR)}</span>`:''}<span>— 오늘 사대 관리자 <b>${esc(nm)}</b> 올림</span></div>
     </div></div></article>
-  <article class="mz"><div class="mz-sec"><div class="mz-kick">MEME · 사원들 사이에 도는 말</div><h2>${esc(nm)} 대감 3대 어록</h2>
-    <ol class="mz-meme"><li>"기록은 사원이 하고, 밤샘은 ${esc(nm)}가 한다."</li><li>"버그는 ${esc(nm)}를 피해 가지 못한다. (가끔 ${esc(nm)}가 버그를 만든다)"</li><li>"오늘도 무료, 내일도 무료. 성은이 망극하옵니다."</li></ol>
-    ${hero?`<button type="button" class="mz-bow ${c.mine?'on':''}" id="mzBow"><b>🙇 큰절 올리기</b><small>${c.n?`지금까지 큰절 ${c.n}번`:'첫 큰절의 주인공이 되어 보세요'}</small></button>`:''}
-    <p class="mz-tip">※ 본 호외는 90% 과장, 10% 진심입니다. 진심 부분: 고맙습니다. 인터뷰는 상상으로 지어냈어요.</p></div></article>`;
+  <article class="mz"><div class="mz-sec"><div class="mz-kick">HISTORY · 연혁</div><h2>오늘 사대가 걸어온 길</h2>
+    <ol class="mz-hist">${MAG_HISTORY.map(([d,ic,t,p])=>`<li><span class="d">${d}</span><span class="ic">${ic}</span><div><b>${t}</b><p>${p}</p></div></li>`).join('')}
+      <li class="next"><span class="d">다음</span><span class="ic">✨</span><div><b>사원 여러분의 한마디로</b><p>광장이나 방명록에 남겨 주신 의견이 다음 연혁이 됩니다.</p></div></li></ol>
+    ${f?`<button type="button" class="mz-bow ${c.mine?'on':''}" id="mzBow"><b>📮 관리자에게 응원 한마디</b><small>${c.n?`지금까지 응원 ${c.n}번`:'방명록에 "고마워요, 관악정 화이팅!"이 남아요'}</small></button>`:''}
+  </div></article>`;
 }
+const MAG_BETA_END = '2026-10-03';     // 베타 테스트 마지막 날 (창간호 발간 전)
+const magRange = ym => ym===MAG_START ? [MAG_BETA, MAG_BETA_END] : ym===ymAdd(MAG_START,1) ? ['2026-10-04', ymLast(ym)] : [ym+'-01', ymLast(ym)];
+const magFrom = ym => magRange(ym)[0];
+const magCurYM = () => { const T=today(); if(T>=MAG_BETA && T<=MAG_BETA_END) return MAG_START; if(T.slice(0,7)===MAG_START) return ymAdd(MAG_START,1); return T.slice(0,7); };   // 오늘이 들어 있는 호
+const magBetaDays = () => dNum(MAG_BETA_END)-dNum(MAG_BETA)+1;
 const magIssue = ym => (+ym.slice(0,4)-2026)*12 + (+ym.slice(5)) - 9;   // 2026-10 → 제1호
 const magDow = s => '일월화수목금토'[new Date(s+'T12:00:00').getDay()];
 const magMD = s => `${+s.slice(5,7)}월 ${+s.slice(8,10)}일`;
@@ -3196,20 +3237,26 @@ function magAgg(idx, from, to){
 }
 function magData(ym){
   const c=S.mag.cache[ym]; if(c && Date.now()-c.at<60e3) return c.d;
-  const T=today(), cur = ym===T.slice(0,7), from=ym+'-01', end=ymLast(ym), to = cur ? T : end;
-  const idx=magIndex(); const A=magAgg(idx, from, to); const P=magAgg(idx, ymAdd(ym,-1)+'-01', ymLast(ymAdd(ym,-1)));
+  const T=today(), cur = ym===magCurYM(), [from, end]=magRange(ym), wide = ym===MAG_START, to = cur ? (T<end?T:end) : end;
+  const idx=magIndex(); const A=magAgg(idx, from, to); const P = wide ? magAgg(idx, '9999-01-01', '9999-01-01') : magAgg(idx, ...magRange(ymAdd(ym,-1)));
+  // 함께한 지표: 사대 등록 · 방명록 · 응원 (기록 외 활동)
+  const Dd=(store&&store.docs)||{}; const act={att:0, gb:0, ch:0, attDay:{}}; const dayOf=ms=>dstr(new Date(ms));
+  for(const k in Dd){ const x=Dd[k]; if(!x||!x.entries) continue;
+    if(k.startsWith('attendance/')){ const dt=k.slice(11); if(dt<from||dt>to) continue; for(const [tid,e] of Object.entries(x.entries)){ if(!e) continue; if(e.slot){ act.att++; (act.attDay[dt]=act.attDay[dt]||new Set()).add(tid); } for(const [fr,em] of Object.entries(e.reactions||{})) if(em&&fr!==tid) act.ch++; } }
+    else if(k.startsWith('guestbook/')){ for(const v of Object.values(x.entries)) if(v&&v.text&&v.at){ const dt=dayOf(v.at); if(dt>=from&&dt<=to) act.gb++; } } }
+  act.members=(S.members||[]).filter(m=>m&&m.name).length;
   const ev=[]; const nm=id=>(memberById(id)||{}).name||'사원';
   // 승단 (단급이 바뀐 날)
   for(const m of (S.members||[])){ if(!m||!m.name||!m.gradeHist) continue; const ks=Object.keys(m.gradeHist).filter(k=>k>=from&&k<=to).sort(); if(!ks.length) continue;
     const g=m.gradeHist[ks[ks.length-1]]||{}; if(!g.to || !hasCert(g.to) || g.to===g.from) continue;
     ev.push({tag:'승단', mid:m.id, t:`${m.name} 사원 · ${hasCert(g.from)?g.from+' → ':''}${g.to}`, p:`${magMD(ks[ks.length-1])} 단급이 ${g.to}(으)로 바뀌었어요. 축하합니다!`, k:'grade'}); }
   // 몰기
-  Object.values(A.by).filter(o=>o.mo>0).sort((a,b)=>b.mo-a.mo||b.h-a.h).slice(0,3).forEach((o,i)=>ev.push({tag:'몰기', mid:o.mid, t:`${nm(o.mid)} 사원 · 몰기 ${o.mo}번`, p: i===0 ? `이달 가장 많이 5시 5중! ${o.n}순 중 ${o.mo}번이에요.` : `${o.n}순 중 ${o.mo}번 5시 5중을 냈어요.`, k:'molgi'}));
+  Object.values(A.by).filter(o=>o.mo>0).sort((a,b)=>b.mo-a.mo||b.h-a.h).slice(0,3).forEach((o,i)=>ev.push({tag:'몰기', mid:o.mid, t:`${nm(o.mid)} 사원 · 몰기 ${o.mo}번`, p: i===0 ? `${wide?'베타 기간':'이달'} 가장 많이 5시 5중! ${o.n}순 중 ${o.mo}번이에요.` : `${o.n}순 중 ${o.mo}번 5시 5중을 냈어요.`, k:'molgi'}));
   // 새 배지
   let nBadge=0;
   for(const [id,days] of Object.entries(idx)){ if(!memberById(id)) continue; const inM=days.some(d=>d.date>=from&&d.date<=to&&dayBrief(d).n); if(!inM) continue;
     const before=growthOf(days.filter(d=>d.date<from), id), now=growthOf(days.filter(d=>d.date<=to), id);
-    const fresh=BADGES.filter(x=>x.id!=='comp' && x.v(now)>=x.goal && x.v(before)<x.goal); if(!fresh.length) continue; nBadge+=fresh.length;
+    const fresh=BADGES.filter(x=>x.id!=='comp' && !(wide && x.id==='first') && x.v(now)>=x.goal && x.v(before)<x.goal); if(!fresh.length) continue; nBadge+=fresh.length;
     const top=fresh[fresh.length-1];
     ev.push({tag:'새 배지', mid:id, t:`${nm(id)} 사원 · ${fresh.slice(-2).map(x=>x.ic+' '+x.t).join(' ')}${fresh.length>2?` 외 ${fresh.length-2}개`:''}`, p:`${top.d}${fresh.length>1?` — 이달 배지 ${fresh.length}개를 새로 받았어요.`:'.'}`, k:'badge'}); }
   // 집궁 기념일 (100일 · 1000일 · n주년) — 이번 달 안의 날
@@ -3220,24 +3267,25 @@ function magData(ym){
   // 새 사원 (첫 기록이 이번 달)
   let nNew=0;
   for(const [id,days] of Object.entries(idx)){ if(!memberById(id)) continue; const L=days.filter(d=>dayBrief(d).n).map(d=>d.date).sort(); if(!L.length || L[0]<from || L[0]>to) continue; nNew++;
-    ev.push({tag:'새 사원', mid:id, t:`${nm(id)} 사원 · 첫 습사`, p:`${magMD(L[0])} 처음 표를 기록했어요. 반갑게 맞아 주세요!`, k:'new'}); }
+    ev.push(wide ? {tag:'베타 사원', mid:id, t:`${nm(id)} 사원 · 첫 표 ${magMD(L[0])}`, p:'베타 때부터 함께해 주셔서 고마워요!', k:'new'} : {tag:'새 사원', mid:id, t:`${nm(id)} 사원 · 첫 습사`, p:`${magMD(L[0])} 처음 표를 기록했어요. 반갑게 맞아 주세요!`, k:'new'}); }
   const nSince=ev.filter(e=>e.k==='since').length, nGrade=ev.filter(e=>e.k==='grade').length;
   // 가장 붐빈 날
-  let busy=null; for(const [dt,set] of Object.entries(A.perDay)) if(!busy || set.size>busy[1] || (set.size===busy[1]&&dt>busy[0])) busy=[dt,set.size];
+  const pd={}; for(const [dt,set] of [...Object.entries(A.perDay), ...Object.entries(act.attDay)]){ const u=pd[dt]||(pd[dt]=new Set()); set.forEach(x=>u.add(x)); }
+  let busy=null; for(const [dt,set] of Object.entries(pd)) if(!busy || set.size>busy[1] || (set.size===busy[1]&&dt>busy[0])) busy=[dt,set.size];
   // 표지: 성실왕 (랭킹 숨김 사원 빼고)
-  const vis=Object.values(A.by).filter(o=>{ const m=memberById(o.mid); return m && !m.rankHide; });
+  const vis=Object.values(A.by).filter(o=>{ const m=memberById(o.mid); return m && !m.rankHide && (!wide || o.mid!==MAG_FOUNDER); });   // 창간호 표지는 만든 사람 빼고
   const king=vis.sort((a,b)=>(b.days*1000+b.n)-(a.days*1000+a.n))[0]||null;
-  const d={ym, cur, from, to, end, A, P, ev, busy, king, nBadge, nNew, nSince, nGrade};
+  const d={ym, cur, from, to, end, wide, A, P, ev, busy, king, nBadge, nNew, nSince, nGrade, act};
   S.mag.cache[ym]={at:Date.now(), d}; return d;
 }
 // 순위·바람: 서버 집계 (3분 보관, 이번 달은 광장 순위와 같이 씀)
 async function magRank(ym){
-  const T=today(), cur=ym===T.slice(0,7); const c=S.mag.rk[ym];
+  const T=today(), cur=ym===magCurYM(); const c=S.mag.rk[ym]; const [rf,re]=magRange(ym);
   if(c && !c.local && (Date.now()-c.at < (cur?180e3:3600e3))) return;
   if(S.mag.busy[ym]) return; S.mag.busy[ym]=true;
-  try{ const data=await rankFetch(ym+'-01', cur?T:ymLast(ym)); S.mag.rk[ym]={data, at:Date.now(), local:!(data&&data.from)}; }
+  try{ const data=await rankFetch(rf, cur&&T<re?T:re); S.mag.rk[ym]={data, at:Date.now(), local:!(data&&data.from)}; }
   finally{ S.mag.busy[ym]=false; }
-  if(S.tab==='news' && (S.mag.ym||T.slice(0,7))===ym) renderNews();
+  if(S.tab==='news' && (S.mag.ym||magCurYM())===ym) renderNews();
 }
 // 이 기기 기록으로 바람 요약 (서버가 없을 때)
 function magWindLocal(from, to){
@@ -3249,42 +3297,49 @@ function magWindLocal(from, to){
 // 👏 축하 박수 = 그 사원 방명록에 한 줄 (알림도 같이 감)
 const clapKey = (ym,e) => `${ym}|${e.k}|${e.mid}`;
 function clapsOf(key, mid){ const g=((store.docs||{})['guestbook/'+mid]||{}).entries||{}; const L=Object.values(g).filter(v=>v&&v.clap===key); return {n:L.length, mine: !!(S.me && L.some(v=>v.from===S.me.id))}; }
-function renderNewsDot(){ const el=$('#newsDot'); if(el) el.hidden = lsGet('sadae.magSeen','')===today().slice(0,7) || S.tab==='news'; }
+function renderNewsDot(){ const el=$('#newsDot'); if(el) el.hidden = lsGet('sadae.magSeen','')===magCurYM() || S.tab==='news'; }
 function renderTicker(){
-  const el=$('#pzTicker'); if(!el) return; if(S.calm && !S.calm.ticker){ el.hidden=true; return; } const ym=today().slice(0,7), M=+ym.slice(5); let d; try{ d=magData(ym); }catch(e){ el.hidden=true; return; }
-  const bits=[]; if(d.A.tot.mo) bits.push(`이달 몰기 ${d.A.tot.mo}번`); if(d.nGrade) bits.push(`승단 ${d.nGrade}명`); if(d.nBadge) bits.push(`새 배지 ${d.nBadge}개`); if(d.nSince) bits.push(`집궁 기념 ${d.nSince}명`); if(d.nNew) bits.push(`새 사원 ${d.nNew}명`);
-  el.innerHTML = `<b>📰 ${M}월호</b><span>${bits.length ? bits.join(' · ')+' — 축하해요!' : `사대 월보 ${M}월호 발행 중`}</span><i>▸</i>`; el.hidden=false;
+  const el=$('#pzTicker'); if(!el) return; if(S.calm && !S.calm.ticker){ el.hidden=true; return; } const ym=magCurYM(), M=+ym.slice(5); let d; try{ d=magData(ym); }catch(e){ el.hidden=true; return; }
+  const bits=[]; if(d.wide){ bits.push(`창간호 · 베타 ${magBetaDays()}일의 기록`); if(d.act.members) bits.push(`사원 ${d.act.members}명`); } if(d.A.tot.mo) bits.push(`${d.wide?'베타':'이번 호'} 몰기 ${d.A.tot.mo}번`); if(d.nGrade) bits.push(`승단 ${d.nGrade}명`); if(d.nBadge) bits.push(`새 배지 ${d.nBadge}개`); if(d.nSince) bits.push(`집궁 기념 ${d.nSince}명`); if(d.nNew) bits.push(`새 사원 ${d.nNew}명`);
+  el.innerHTML = `<b>📰 ${M}월호</b><span>${bits.length ? bits.join(' · ')+(d.wide?'':' — 축하해요!') : `사대 월보 ${M}월호 발행 중`}</span><i>▸</i>`; el.hidden=false;
   el.onclick = ()=>{ S.mag.ym=ym; setTab('news'); };
 }
 function magBackHTML(ym, Tym){
   const first = (()=>{ let mn=Tym; for(const days of Object.values(magIndex())) for(const x of days) if(x.date.slice(0,7)<mn) mn=x.date.slice(0,7); return mn<MAG_EXTRA?mn:MAG_EXTRA; })();
   const issues=[]; for(let k=Tym; k>=first && issues.length<12; k=ymAdd(k,-1)) issues.push(k);
-  return `<div class="mz-back">${issues.map(k=>{ const n=magIssue(k); return `<button type="button" data-mag="${k}" class="${k===ym?'on':''}"><small>${k.slice(0,4)}</small><b>${+k.slice(5)}월</b><span>${k===Tym?'발행 중':k===MAG_EXTRA?'호외':n>0?(n===1?'창간호':'제'+n+'호'):'준비호'}</span></button>`; }).join('')}</div>`;
+  return `<div class="mz-back">${issues.map(k=>{ const n=magIssue(k); return `<button type="button" data-mag="${k}" class="${k===ym?'on':''}"><small>${k.slice(0,4)}</small><b>${+k.slice(5)}월</b><span>${k===Tym?'발행 중':k===MAG_EXTRA?'창간 이야기':n>0?(n===1?'창간호':'제'+n+'호'):'준비호'}</span></button>`; }).join('')}</div>`;
 }
 function renderNewsExtra(el, Tym){
   el.innerHTML = `<button type="button" class="mz-backbar" data-mag="${Tym}">← 이번 호(${+Tym.slice(5)}월호)로</button>${magExtraHTML()}
     <article class="mz"><div class="mz-sec"><div class="mz-kick">BACK ISSUES</div><h2>지난 호</h2>${magBackHTML(MAG_EXTRA, Tym)}</div></article>`;
   $$('[data-mag]',el).forEach(b=>b.onclick=()=>{ S.mag.ym=b.dataset.mag; S.mag.more=false; renderNews(); scrollTo({top:0}); });
-  const bw=$('#mzBow',el); if(bw) bw.onclick=async()=>{ const hero=(isAdminNow()&&S.me&&(memberById(S.me.id)||S.me))||(S.members||[]).find(m=>m&&m.name==='준호'); if(!hero) return;
-    if(!S.me){ toast('캐릭터를 먼저 골라 주세요'); return; } if(hero.id===S.me.id){ toast('대감께서는 절을 받으시기만 하면 됩니다 🙇'); return; }
-    const key=`${MAG_EXTRA}|bow|${hero.id}`; if(clapsOf(key,hero.id).mine){ toast('이미 큰절을 올렸어요 🙇'); return; }
-    bw.disabled=true; const ok=await write(st=>st.merge('guestbook/'+hero.id,{entries:{[uid()]:{from:S.me.id, text:'🙇 사대 월보 호외 보고 큰절 올립니다. 성은이 망극하옵니다!', at:Date.now(), clap:key}}}));
-    bw.disabled=false; if(ok){ toast('큰절을 올렸어요 🙇 방명록에 남았어요'); renderNews(); } };
+  const bw=$('#mzBow',el); if(bw) bw.onclick=async()=>{ const f=magFounder(); if(!f) return;
+    if(!S.me){ toast('캐릭터를 먼저 골라 주세요'); return; } if(f.id===S.me.id){ toast('응원은 사원들이 보내 줄 거예요 🙂'); return; }
+    const key=`${MAG_EXTRA}|cheer|${f.id}`; if(clapsOf(key,f.id).mine){ toast('이미 응원을 보냈어요 📮'); return; }
+    bw.disabled=true; const ok=await write(st=>st.merge('guestbook/'+f.id,{entries:{[uid()]:{from:S.me.id, text:'📮 오늘 사대 고마워요! 관악정 화이팅! 🏹', at:Date.now(), clap:key}}}));
+    bw.disabled=false; if(ok){ toast('관리자 방명록에 응원을 남겼어요 📮'); renderNews(); } };
 }
 function renderNews(){
-  const el=$('#view-news'); if(!el) return; const T=today(), Tym=T.slice(0,7); const ym=S.mag.ym||Tym; const Y=+ym.slice(0,4), M=+ym.slice(5);
+  const el=$('#view-news'); if(!el) return; const T=today(), Tym=magCurYM(); const ym=S.mag.ym||Tym; const Y=+ym.slice(0,4), M=+ym.slice(5);
   if(ym===Tym){ lsSet('sadae.magSeen', Tym); renderNewsDot(); }
   if(ym===MAG_EXTRA){ renderNewsExtra(el, Tym); return; }
   const d=magData(ym); const A=d.A, tot=A.tot; const RK=S.mag.rk[ym]; if(!RK || (Date.now()-RK.at>180e3)) magRank(ym);
-  const rkData = RK ? RK.data : (d.cur && S.rank.cur ? S.rank.cur : null);
+  const rkData = RK ? RK.data : (d.cur && !d.wide && S.rank.cur ? S.rank.cur : null);
   const no=magIssue(ym); const art=(()=>{ const a=(JEONG_ART[homeJ().id]||{}).scene||{}; return a[magSeason(M)]||a.autumn||a.summer||a.spring||''; })();
   const pct=v=>Math.round(v*100); const rate = tot.n ? tot.h/(tot.n*5) : 0, prate = A && d.P.tot.n ? d.P.tot.h/(d.P.tot.n*5) : null;
   const phrase={spring:'봄바람 속', summer:'한여름 볕 아래', autumn:'가을 바람 속', winter:'겨울 찬바람에도'}[magSeason(M)];
   const king=d.king, km=king&&memberById(king.mid);
   // 01 숫자 — 글
-  let para='';
-  if(tot.n){ para = `${M}월 ${d.cur?'오늘까지':'한 달 동안'} 사원 ${tot.people}명이 ${tot.days}번 활터에 나와 ${tot.n.toLocaleString()}순을 냈어요. `;
-    para += prate===null ? `이달 관중률은 ${pct(rate)}%예요. ` : (pct(rate)===pct(prate) ? `관중률은 ${pct(rate)}%로 지난달과 같아요. ` : `관중률은 ${pct(rate)}%로 지난달보다 ${Math.abs(pct(rate)-pct(prate))}%p ${rate>prate?'올랐':'내렸'}어요. `);
+  let para=''; const ac=d.act, BD=magBetaDays(), per = d.from!==ym+'-01' ? `${magMD(d.from)}부터` : `${M}월`;
+  if(d.wide){ const bits=[];
+    para = `베타 테스트 ${BD}일(${magMD(d.from)} ~ ${magMD(d.end)}) 동안 사원 ${ac.members}명이 오늘 사대에 함께했어요. `;
+    if(ac.att) bits.push(`사대 등록 ${ac.att}번`); if(tot.n) bits.push(`표 기록 ${tot.n.toLocaleString()}순(${(tot.n*5).toLocaleString()}시)`);
+    if(bits.length) para += `${bits.join(', ')}이 쌓였${tot.mo?`고, 몰기도 ${tot.mo}번 나왔`:''}어요. `;
+    if(ac.gb||ac.ch) para += `방명록 ${ac.gb}개${ac.ch?`와 응원 ${ac.ch}번`:''}이 오가며 서로의 활을 북돋았어요. `;
+    if(d.busy && d.busy[1]>1) para += `가장 붐빈 날은 ${magMD(d.busy[0])} ${magDow(d.busy[0])}요일(${d.busy[1]}명)이었어요. `;
+    para += '오늘 사대의 첫 기록을 함께 남겨 주신 사원 여러분, 고맙습니다.'; }
+  else if(tot.n){ para = `${per} ${d.cur?'오늘까지':'한 달 동안'} 사원 ${tot.people}명이 ${tot.days}번 활터에 나와 ${tot.n.toLocaleString()}순을 냈어요. `;
+    para += prate===null ? `관중률은 ${pct(rate)}%예요. ` : (pct(rate)===pct(prate) ? `관중률은 ${pct(rate)}%로 지난달과 같아요. ` : `관중률은 ${pct(rate)}%로 지난달보다 ${Math.abs(pct(rate)-pct(prate))}%p ${rate>prate?'올랐':'내렸'}어요. `);
     if(d.busy && d.busy[1]>1) para += `가장 붐빈 날은 ${magMD(d.busy[0])} ${magDow(d.busy[0])}요일(${d.busy[1]}명)이었어요. `;
     if(d.nNew) para += `새로 표를 기록한 사원도 ${d.nNew}명 있어요.`; }
   else para = d.cur ? '아직 이달 기록이 없어요. 표를 기록하면 월보가 하나씩 채워져요.' : '이 달에는 남은 기록이 없어요.';
@@ -3297,7 +3352,7 @@ function renderNews(){
     : `<p class="mz-empty">${d.cur?'이달 축하 소식을 기다리고 있어요. 몰기·새 배지·승단·집궁 기념일이 생기면 여기에 실려요.':'이 달에는 실린 축하 소식이 없어요.'}</p>`;
   // 03 순위
   const top3 = c => ((rkData&&rkData.members)||[]).filter(o=>c.ok(o)&&memberById(o.mid)).sort((a,b)=>c.v(b)-c.v(a)).slice(0,3);
-  const hof = RK_CATS.map(c=>{ const L=top3(c); return `<div class="mz-hofc"><h3><span>${c.ic} ${c.t}</span><small>${c.id==='jeongsim'?'정심정기':c.id==='dajeong'?'다정다감':''}</small></h3>${L.length?`<ol>${L.map((o,i)=>{ const m=memberById(o.mid)||{}; const [b,u]=c.big(o); return `<li data-room="${esc(o.mid)}"><span class="md">${['🥇','🥈','🥉'][i]}</span><span class="nm">${esc(m.name||'사원')}<small>${esc(memberJ(m).name)}</small></span><b class="num">${b}<small>${u}</small></b></li>`; }).join('')}</ol>`:`<p class="mz-empty">${c.id==='rate'||c.id==='jeongsim'?'30순 넘긴 사원이 아직 없어요':'아직 기록이 없어요'}</p>`}</div>`; }).join('');
+  const hof = RK_CATS.filter(c=>!d.wide || ['sincere','molgi','dajeong'].includes(c.id)).map(c=>{ const L=top3(c); return `<div class="mz-hofc"><h3><span>${c.ic} ${c.t}</span><small>${c.id==='jeongsim'?'정심정기':c.id==='dajeong'?'다정다감':''}</small></h3>${L.length?`<ol>${L.map((o,i)=>{ const m=memberById(o.mid)||{}; const [b,u]=c.big(o); return `<li data-room="${esc(o.mid)}"><span class="md">${['🥇','🥈','🥉'][i]}</span><span class="nm">${esc(m.name||'사원')}<small>${esc(memberJ(m).name)}</small></span><b class="num">${b}<small>${u}</small></b></li>`; }).join('')}</ol>`:`<p class="mz-empty">${c.id==='rate'||c.id==='jeongsim'?'30순 넘긴 사원이 아직 없어요':'아직 기록이 없어요'}</p>`}</div>`; }).join('');
   // 04 바람
   const W = (rkData && rkData.wind && store.kind==='remote') ? rkData.wind : magWindLocal(d.from, d.to);
   const wb=W.by||{}; const wn=Object.values(wb).reduce((a,o)=>a+(o.n||0),0); const wh=Object.values(wb).reduce((a,o)=>a+(o.h||0),0);
@@ -3313,23 +3368,24 @@ function renderNews(){
   ${ym!==Tym?`<button type="button" class="mz-backbar" data-mag="${Tym}">← 이번 호(${+Tym.slice(5)}월호)로</button>`:''}
   <article class="mz">
     <div class="mz-mast"><div class="t">射臺月報<small>사대 월보</small></div></div>
-    <div class="mz-meta"><span>${Y}년 ${M}월호 · ${no>0?(no===1?'창간호':'제'+no+'호'):'준비호'}</span><span>${d.cur?`${magMD(T)} 현재`:`${M}월 ${+d.end.slice(8)}일 마감`}</span></div>
+    <div class="mz-meta"><span>${Y}년 ${M}월호 · ${no>0?(no===1?'창간호':'제'+no+'호'):'준비호'}</span><span>${d.wide?(d.cur?`베타 기록 · ${magMD(T)} 현재`:'베타 기록 · 확정'):(d.cur?`${d.from!==ym+'-01'?magMD(d.from)+'부터 · ':''}${magMD(T)} 현재`:`${magMD(d.end)} 마감`)}</span></div>
     <div class="mz-cover" style="${art?`background-image:url(${art})`:''}">
-      <div class="hl"><span class="k">이달의 표지 · 성실왕</span><h1>${king?`${phrase}<br>${king.days}일 습사,<br>${esc(km.name)} 사원`:`${M}월의<br>첫 화살을<br>기다려요`}</h1></div>
+      <div class="hl"><span class="k">${d.wide?'창간호 표지 · 베타 성실왕':'이달의 표지 · 성실왕'}</span><h1>${king?(d.wide?`베타 ${BD}일 중<br>${king.days}일 사대에 선<br>${esc(km.name)} 사원`:`${phrase}<br>${king.days}일 습사,<br>${esc(km.name)} 사원`):`${M}월호의<br>첫 화살을<br>기다려요`}</h1></div>
       ${king?`<div class="hero" data-room="${esc(king.mid)}">${charSVG(km.char||DEFAULT_CHAR)}</div>`:''}
-      <div class="side"><span>🎯 이달 몰기 <b>${tot.mo}번</b></span><span>🏅 새 배지 <b>${d.nBadge}개</b></span><span>🎂 집궁 기념 <b>${d.nSince}명</b></span></div>
+      <div class="side">${d.wide?`<span>👥 사원 <b>${ac.members}명</b></span><span>🏹 사대 등록 <b>${ac.att}번</b></span><span>📮 방명록·응원 <b>${ac.gb+ac.ch}번</b></span>`:`<span>🎯 이달 몰기 <b>${tot.mo}번</b></span><span>🏅 새 배지 <b>${d.nBadge}개</b></span><span>🎂 집궁 기념 <b>${d.nSince}명</b></span>`}</div>
       <div class="stamp ${d.cur?'':'done'}">${d.cur?'발행 중':'확정'}</div>
     </div>
-    <div class="mz-toc"><button type="button" data-go="mz1"><b>01</b>숫자로 보는 ${M}월</button><button type="button" data-go="mz2"><b>02</b>축하합니다</button><button type="button" data-go="mz3"><b>03</b>이달의 순위</button><button type="button" data-go="mz4"><b>04</b>이달의 바람</button></div>
+    ${d.wide?`<div class="mz-beta"><b>🧪 베타 테스트 기간</b><span>${magMD(d.from).replace('월 ','.').replace('일','')} ~ ${magMD(d.end).replace('월 ','.').replace('일','')} · ${BD}일</span><small>앱을 만든 날부터 창간호를 내기 전까지의 기록이에요</small></div>`:''}
+    <div class="mz-toc"><button type="button" data-go="mz1"><b>01</b>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${d.from!==ym+'-01'?M+'월호':M+'월'}`}</button><button type="button" data-go="mz2"><b>02</b>축하합니다</button><button type="button" data-go="mz3"><b>03</b>${d.wide?'창간호 순위':'이달의 순위'}</button><button type="button" data-go="mz4"><b>04</b>이달의 바람</button></div>
   </article>
-  <article class="mz" id="mz1"><div class="mz-sec"><div class="mz-kick">01 · NUMBERS</div><h2>숫자로 보는 ${M}월</h2>
-    <div class="mz-nums"><div class="mz-num red"><b class="num">${tot.days}</b><span>번 활터에 왔어요 (사원 ${tot.people}명)</span></div><div class="mz-num"><b class="num">${(tot.n*5).toLocaleString()}</b><span>시를 쐈어요 · ${tot.n.toLocaleString()}순</span></div><div class="mz-num"><b class="num">${tot.mo}</b><span>번 몰기가 나왔어요</span></div><div class="mz-num"><b class="num">${tot.n?pct(rate)+'%':'–'}</b><span>모두의 관중률${prate!==null&&tot.n?` (지난달 ${pct(prate)}%)`:''}</span></div></div>
+  <article class="mz" id="mz1"><div class="mz-sec"><div class="mz-kick">01 · NUMBERS</div><h2>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${d.from!==ym+'-01'?M+'월호':M+'월'}`}</h2>
+    ${d.wide?`<div class="mz-nums"><div class="mz-num red"><b class="num">${ac.members}</b><span>명이 오늘 사대에 함께했어요</span></div><div class="mz-num"><b class="num">${ac.att}</b><span>번 사대에 섰어요 (습사 등록)</span></div><div class="mz-num"><b class="num">${tot.n.toLocaleString()}</b><span>순 표를 남겼어요 · 사원 ${tot.people}명</span></div><div class="mz-num"><b class="num">${tot.mo}</b><span>번 몰기가 나왔어요</span></div><div class="mz-num"><b class="num">${ac.gb}</b><span>개 방명록이 남았어요</span></div><div class="mz-num"><b class="num">${ac.ch}</b><span>번 응원이 오갔어요</span></div></div>`:`<div class="mz-nums"><div class="mz-num red"><b class="num">${tot.days}</b><span>번 활터에 왔어요 (사원 ${tot.people}명)</span></div><div class="mz-num"><b class="num">${(tot.n*5).toLocaleString()}</b><span>시를 쐈어요 · ${tot.n.toLocaleString()}순</span></div><div class="mz-num"><b class="num">${tot.mo}</b><span>번 몰기가 나왔어요</span></div><div class="mz-num"><b class="num">${tot.n?pct(rate)+'%':'–'}</b><span>모두의 관중률${prate!==null&&tot.n?` (지난달 ${pct(prate)}%)`:''}</span></div></div>`}
     <p class="mz-p">${esc(para)}</p></div></article>
   <article class="mz" id="mz2"><div class="mz-sec"><div class="mz-kick">02 · CONGRATULATIONS</div><h2>축하합니다 🎉</h2>
     <div class="mz-cg">${cgHTML}</div>${EV.length?'<p class="mz-tip">👏를 누르면 그 사원 방명록에 축하 한 줄이 남아요</p>':''}</div></article>
-  <article class="mz" id="mz3"><div class="mz-sec"><div class="mz-kick">03 · RANKING</div><h2>이달의 순위 <small>${d.cur?'(매달 1일 확정 · 지금은 중간 순위)':'(확정)'}</small></h2>
+  <article class="mz" id="mz3"><div class="mz-sec"><div class="mz-kick">03 · RANKING</div><h2>${d.wide?'창간호 순위':'이달의 순위'} <small>${d.wide?`(베타 ${BD}일 · 성실 · 몰기 · 다정)`:d.cur?'(지금은 중간 순위)':'(확정)'}</small></h2>
     ${rkData?`<div class="mz-hof">${hof}</div>`:'<p class="mz-empty">순위를 불러오는 중…</p>'}
-    <p class="mz-tip">관중률·정심은 30순 이상 · 랭킹에서 숨긴 사원은 빠져요${d.cur?' · <button type="button" class="linkbtn" data-tab-go="plaza">광장에서 실시간 순위 보기 ▸</button>':''}</p></div></article>
+    <p class="mz-tip">${d.wide?'베타 기간 기록 · ':'관중률·정심은 30순 이상 · '}랭킹에서 숨긴 사원은 빠져요${d.cur&&!d.wide?' · <button type="button" class="linkbtn" data-tab-go="plaza">광장에서 실시간 순위 보기 ▸</button>':''}</p></div></article>
   <article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · WIND</div><h2>이달의 바람 🌬</h2>${windHTML}</div></article>
   <article class="mz"><div class="mz-sec"><div class="mz-kick">BACK ISSUES</div><h2>지난 호</h2>
     ${magBackHTML(ym, Tym)}</div>
