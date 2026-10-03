@@ -1681,7 +1681,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04i';
+const APP_VER = '2026.10.04j';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3707,13 +3707,15 @@ function renderPlaza(){
     $('#pzText').addEventListener('keydown',e=>{ if(e.key==='Enter' && !e.isComposing){ e.preventDefault(); send($('#pzText').value); } });
   }
   // 대화
-  const all=[...msgs.map(m=>({...m,day:t})), ...plazaMsgs(S.plazaY).sort((a,b)=>(b.at||0)-(a.at||0)).map(m=>({...m,day:yday()}))].slice(0,90);
+  const PZ_DAYS=7, older=[]; for(let k=2;k<PZ_DAYS;k++){ const d0=new Date(t+'T12:00:00'); d0.setDate(d0.getDate()-k); const ds=dstr(d0); older.push(...plazaMsgs(((store&&store.docs)||{})['plaza/'+ds]).sort((a,b)=>(b.at||0)-(a.at||0)).map(m=>({...m,day:ds}))); }
+  const all=[...msgs.map(m=>({...m,day:t})), ...plazaMsgs(S.plazaY).sort((a,b)=>(b.at||0)-(a.at||0)).map(m=>({...m,day:yday()})), ...older].slice(0,105);
+  const pzDayLabel = d => d===t ? '오늘' : d===yday() ? '어제' : `${+d.slice(5,7)}월 ${+d.slice(8,10)}일 (${'일월화수목금토'[new Date(d+'T12:00:00').getDay()]})`;
   const C=$('#plazaChat'); let lastDay=''; const PER=15, pages=Math.max(1,Math.ceil(all.length/PER)); if(!S.pzPage||S.pzPage>pages) S.pzPage=1;
-  C.innerHTML = all.length ? all.map((m,i)=>{ const mm=memberById(m.from)||{}; const pg=Math.floor(i/PER)+1; let head=''; if(m.day!==lastDay || i%PER===0){ lastDay=m.day; head=`<div class="pz-day">${m.day===t?'오늘':'어제'}</div>`; }
+  C.innerHTML = all.length ? all.map((m,i)=>{ const mm=memberById(m.from)||{}; const pg=Math.floor(i/PER)+1; let head=''; if(m.day!==lastDay || i%PER===0){ lastDay=m.day; head=`<div class="pz-day">${pzDayLabel(m.day)}</div>`; }
       const pre=`<div class="pz-item" data-pg="${pg}" ${pg!==S.pzPage?'hidden':''}>`;
       const can=S.me&&(m.from===S.me.id||isAdminNow());
       return `${pre}${head}<div class="pz-msg ${S.me&&m.from===S.me.id?'mine':''}"><span class="pz-av" data-room="${esc(m.from)}">${charSVG(mm.char||DEFAULT_CHAR)}</span><div class="grow"><div class="pz-who"><b data-room="${esc(m.from)}">${esc(mm.name||'사원')}</b> <span class="tiny muted">${esc(memberJ(mm).name)} · ${hhmm(m.at)}</span>${S.me&&m.from!==S.me.id&&mm.name?`<button class="linkbtn tiny" type="button" data-pzat="${esc(mm.name)}">↩ 답글</button>`:''}${can?`<button class="linkbtn tiny" data-pzdel="${esc(m.id)}" data-pzday="${m.day}">지우기</button>`:''}</div><div class="pz-tx ${S.me&&S.me.name&&m.from!==S.me.id&&mentionRe(S.me.name).test(m.text||'')?'pz-me':''}">${esc(m.text)}</div></div></div></div>`; }).join('')
-      + (pages>1 ? `<div class="pz-pager" role="navigation" aria-label="한마디 페이지"><button type="button" data-pzpg="prev" aria-label="이전 페이지">‹</button>${Array.from({length:pages},(_,k)=>`<button type="button" data-pzpg="${k+1}" class="${k+1===S.pzPage?'on':''}">${k+1}</button>`).join('')}<button type="button" data-pzpg="next" aria-label="다음 페이지">›</button></div><div class="pz-pgnote tiny muted">어제·오늘 한마디 ${all.length}개 · 한 쪽에 ${PER}개</div>` : '')
+      + (pages>1 ? `<div class="pz-pager" role="navigation" aria-label="한마디 페이지"><button type="button" data-pzpg="prev" aria-label="이전 페이지">‹</button>${Array.from({length:pages},(_,k)=>`<button type="button" data-pzpg="${k+1}" class="${k+1===S.pzPage?'on':''}">${k+1}</button>`).join('')}<button type="button" data-pzpg="next" aria-label="다음 페이지">›</button></div><div class="pz-pgnote tiny muted">최근 7일 한마디 ${all.length}개 · 한 쪽에 ${PER}개</div>` : '')
     : '<div class="muted">아직 조용해요. 첫 인사를 남겨 보세요 👋</div>';
   $$('[data-pzpg]',C).forEach(b=>b.addEventListener('click',()=>{ const v=b.dataset.pzpg; const n = v==='prev'?S.pzPage-1 : v==='next'?S.pzPage+1 : +v; if(n<1||n>pages||n===S.pzPage) return; S.pzPage=n;
     $$('.pz-item',C).forEach(x=>x.hidden = +x.dataset.pg!==n); $$('[data-pzpg]',C).forEach(x=>x.classList.toggle('on', x.dataset.pzpg===String(n)));
