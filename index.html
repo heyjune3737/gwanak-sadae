@@ -873,6 +873,7 @@ svg.pixc image{image-rendering:auto}
 .sd-fig.me .tag{background:#E2463B;color:#FFFFFF}
 .sd-fig.ghost{opacity:.4;animation:none}
 .sd-fig .rx{position:absolute;top:-10px;right:0;font-size:10px;background:#FFFFFF;color:#2A2233;border:2px solid #2A2233;padding:0 2px;white-space:nowrap;z-index:2}
+.tbd{margin:6px 0 0;padding:0 0 0 18px;line-height:1.6}.tbd li{margin:0}
 /* 화살표 그림 (글꼴 대신 · 8방향 같은 굵기) */
 svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:visible}
 /* 표 기록 · 하루 표 (F안) */
@@ -1384,6 +1385,8 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .rk{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
 .rk-tog{flex:none;font:inherit;font-size:11.5px;background:var(--card);color:var(--ink);border:2px solid var(--ink);padding:1px 7px;cursor:pointer}
 .rk-auto{margin-left:auto}
+.rk-pp{margin-left:auto;flex:none;font:inherit;font-size:12px;line-height:1.3;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);padding:3px 9px;cursor:pointer}
+.rk-pp[aria-pressed="true"]{background:var(--ink);color:var(--card)}
 .rk-prog i{transition:width .1s linear}.rk.hold .rk-prog i{background:var(--ink3)}
 .rk-dr{display:flex;align-items:flex-start;gap:6px;margin:0 0 6px}.rk-dr .rk-desc{flex:1;margin:0}
 .rk-nav{flex:none;width:30px;height:30px;font:inherit;font-size:18px;line-height:1;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer}
@@ -1550,7 +1553,8 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
       <div class="card">
         <div class="sec-head"><h2>오늘</h2><span class="today-r"><span id="todaySum" class="num"></span><button class="btn sm" id="cardToday" type="button" hidden>📸 기록 카드</button></span></div>
         <div class="rounds" id="todayRounds"></div>
-        <button class="btn sm ghost block" id="todayBig" type="button" style="margin-top:8px" hidden>📖 오늘 기록 크게 보기</button>
+        <button class="btn sm ghost block" id="todayBig" type="button" style="margin-top:8px" hidden>📖 오늘 기록 크게 보기 · 분석</button>
+        <ul class="tbd tiny muted" id="todayBigDesc" hidden><li>표를 크게</li><li>9순 단 기준 · 승단 사다리</li><li>짚을 점 — 교본 반구제기 조언</li><li>🎯 목표를 정하면 페이스 그래프 · 맞춤 분석</li></ul>
       </div>
       </div>
 
@@ -1985,7 +1989,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04ze';
+const APP_VER = '2026.10.04zf';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2145,7 +2149,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
   {id:'2026-10-04zd', date:'10월 4일', title:'🎯 표 기록에 단 도전 목표 · 분석 · 배지 새 단장', body:'🎯 표 기록 — 단 도전 목표\n입력 화면 바람 칸 아래 ‘🎯 목표’를 누르면 1급(22중) · 초단(24중) ~ 9단(39중) 중 도전 목표를 정할 수 있어요(9순 45시, 협회 승급 · 입승단 기준 · 70세 이상 기준도 있어요). ‘내 기본 목표’는 바꾸기 전까지, ‘오늘만’은 오늘 하루만 적용돼요. 누르지 않으면 지금처럼 목표 없이 연습이에요. 쏘는 동안 ‘지금 17중 · 남은 3순에 9중 · 순당 3.0중’처럼 남은 필요 시수가 떠요.\n\n📖 기록 보기 — 표와 분석\n순마다 1~5시 · 중 · 그 순 관중률 · 누적이 한 줄에 보이고, 몰기는 금색, 0중은 빗금이에요. 9순을 채우면 ‘9순 28중 · 3단 기준 도달’처럼 알려 줘요. 목표를 정한 날은 표 아래에 합격 시수 판정 · 누적 페이스 그래프 · 최근 9순 10번 기록 · 맞춤 분석이, 목표 없는 날은 승단 사다리와 ‘짚을 점’(다음 단 도전 권유 · 많이 빗나간 방향의 교본 반구제기 발췌)이 나와요. 분석은 눌러서 펼쳐 보세요. 지난 기록은 그대로예요.\n\n🏆 순위 기준\n관중률 순위는 이번 달 5순 이상, 정심은 20순 이상이면 들어가요. 정심은 궁도 구계훈 ‘정심정기(正心正己)’의 뜻에 맞게, 기복 없이 고르게 맞히고 빗나가도 바른 궁체가 보이는 사원이 앞에 서도록 다듬었어요.\n\n🔄 새 기능이 안 보이면\n앱(또는 인터넷 창)을 완전히 닫았다가 다시 열어 주세요. 폰에서는 최근 앱 목록에서 위로 밀어 닫은 뒤 다시 열면 돼요. 안내 탭 맨 아래 버전이 ‘2026.10.04zd’ 이상이면 최신이에요.\n\n─ 아래는 같은 날 바뀐 배지 이야기예요 ─\n\n🎯 단계형 배지\n같은 종류의 배지를 한 칸으로 모아 동 → 은 → 금 → 옥으로 올라가요. 몰기 · 관중률은 실력 칸이라 그 위로 명궁 · 신궁까지 있어요. 칸마다 다음 단계까지 얼마 남았는지 막대로 보여요. 그동안 받은 배지는 새 단계로 그대로 옮겨졌어요. 🏯 정 순례(다른 정 습사) · 🌬 바람 궁사(바람 ‘강’일 때 쏜 순) 칸도 생겼어요.\n\n🎖 특별 · 한정 · 숨은 배지\n승단, 대회 입상(부별 1~3위), 이달의 표지(월보 표지 주인공), 🍂 사계절 궁사(한 해 사계절 모두 습사), 🏅 올해의 표지, 그리고 베타 기간(9/23~10/3)에 함께한 분만 받는 🧪 베타 테스터 배지가 있어요. 조건이 숨겨진 배지도 몇 개 있으니 찾아보세요. 월보 분야별 1위는 🎀 리본으로 남아요.\n\n🖼 방에 걸기\n내 방 배지 칸의 "🖼 방에 걸기"에서 서로 다른 배지 족자 · 월보 표지 액자를 벽에 3개까지 걸 수 있어요. 대회에서 입상하면 선반 트로피가 생겨요. 방 구경 온 사원에게도 보여요.\n\n👣 내 방 방문자\n내 방 위 TODAY · TOTAL은 내 방에 다녀간 사원 수예요(하루 한 사람 1번). 방 아래 ‘최근 다녀간 사원’은 나만 보여요.'},
   {id:'2026-10-04c', date:'10월 4일', title:'🐶🐱 강아지 · 고양이 6종씩 · 월보는 매달 1일에', body:'🐶 강아지 6종\n베레모 푸들 · 헤드폰 보더콜리 · 별망토 치와와 · 모자 쓴 달마시안 · 비옷 골든 · 탐정 바셋이 왔어요. 이제 강아지는 15종이에요.\n\n🐱 고양이 6종\n한복 삼색이 · 까만 아기 고양이 · 하얀 무사 · 오드아이 장모 · 나뭇잎 두건 · 삿갓 고양이가 왔어요. 고양이도 15종이에요.\n\n📏 크기가 조금씩 달라요\n사대·광장·내 방에서 강아지와 고양이가 덩치에 따라 조금 작게(0.92배) 또는 조금 크게(1.06배) 서요. 새 친구에는 고르기 화면에 NEW 표시가 붙어요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n📰 사대 월보는 매달 1일에\n월보는 매달 1일에 지난달 기록을 담아 완성된 채로 나와요. 지금은 10월 창간호(베타 9/23~10/3)가 최신호이고, 11월호(10/4~10/31 기록)는 11월 1일에 나와요. 이번 달 실시간 순위는 광장 순위 카드에서 볼 수 있어요.'},
-  {id:'2026-10-03n', date:'10월 3일', title:'🎉 10월 3일 업데이트 모음 · 사대 월보 · 광장 · 새 친구 · 알림', body:'📰 사대 월보\n하단 "소식" 칸에 월간지 「사대 월보(射臺月報)」가 생겼어요. 10월 창간호는 베타 기간(9/23~10/3)의 기록, 9월은 관리자의 변과 연혁을 담은 "오늘 사대 이야기"예요. 앞으로는 매달 1일에 지난달 기록으로 한 호씩 나와요. 축하 소식 옆 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고, 내 방에서 단급을 바꾸면 승단 소식으로 실려요. 가입 10명 + 그 호 기록 3명이 넘는 정은 "우리 정 월보"도 따로 나와요.\n\n🏯 광장\n배경이 계절(봄·여름·가을·겨울)과 시간(낮·해질녘·밤)에 따라 바뀌고, 🖼 로 직접 골라 볼 수 있어요. 한마디는 장면 바로 아래에서 15개씩 페이지로 넘겨요. 🏆 이달의 순위(성실·관중·관중률·몰기·정심·다정)는 접어 둘 수 있고, 누르고 있으면 멈춰요. 순위에 나오기 싫으면 "랭킹에서 나 숨기기"를 누르세요. 움직임이 부담스러우면 🍵 "차분하게 보기"로 끌 수 있어요.\n\n🐻🐹🐧 새 친구\n곰 · 햄스터 · 펭귄이 9종씩 들어왔어요. 곰은 한 뼘 크게, 햄스터는 아담하게 서요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n🏹 오늘 정 사대\n사람이 많으면 2층 사대(앞줄 7 · 뒷줄 7)로 서고, 위의 시간대(새벽~저녁)를 눌러 그 시간대 사람만 볼 수 있어요.\n\n🔔 알림\n누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 @내이름 으로 부르면 위쪽 🔔 에 표시돼요. 🔔 → "폰 알림 켜기"를 하면 앱을 닫아 둬도 폰으로 알림이 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 ↩ 답글로 @이름을 쉽게 넣을 수 있어요.'},
+  {id:'2026-10-03n', date:'10월 3일', title:'🎉 10월 3일 업데이트 모음 · 사대 월보 · 광장 · 새 친구 · 알림', body:'📰 사대 월보\n하단 "소식" 칸에 월간지 「사대 월보(射臺月報)」가 생겼어요. 10월 창간호는 베타 기간(9/23~10/3)의 기록, 9월은 관리자의 변과 연혁을 담은 "오늘 사대 이야기"예요. 앞으로는 매달 1일에 지난달 기록으로 한 호씩 나와요. 축하 소식 옆 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고, 내 방에서 단급을 바꾸면 승단 소식으로 실려요. 가입 10명 + 그 호 기록 3명이 넘는 정은 "우리 정 월보"도 따로 나와요.\n\n🏯 광장\n배경이 계절(봄·여름·가을·겨울)과 시간(낮·해질녘·밤)에 따라 바뀌고, 🖼 로 직접 골라 볼 수 있어요. 한마디는 장면 바로 아래에서 15개씩 페이지로 넘겨요. 🏆 이달의 순위(성실·관중·관중률·몰기·정심·다정)는 접어 둘 수 있고, ⏸ 버튼으로 멈출 수 있어요. 순위에 나오기 싫으면 "랭킹에서 나 숨기기"를 누르세요. 움직임이 부담스러우면 🍵 "차분하게 보기"로 끌 수 있어요.\n\n🐻🐹🐧 새 친구\n곰 · 햄스터 · 펭귄이 9종씩 들어왔어요. 곰은 한 뼘 크게, 햄스터는 아담하게 서요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n🏹 오늘 정 사대\n사람이 많으면 2층 사대(앞줄 7 · 뒷줄 7)로 서고, 위의 시간대(새벽~저녁)를 눌러 그 시간대 사람만 볼 수 있어요.\n\n🔔 알림\n누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 @내이름 으로 부르면 위쪽 🔔 에 표시돼요. 🔔 → "폰 알림 켜기"를 하면 앱을 닫아 둬도 폰으로 알림이 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 ↩ 답글로 @이름을 쉽게 넣을 수 있어요.'},
   {id:'2026-10-03l', date:'10월 3일', title:'🔒 소속 정은 한 달 동안 고정돼요', body:'이제 관악정 밖 다른 정으로도 오늘 사대가 넓어져요. 정마다 사원·순위·월보가 섞이지 않도록, 소속 정(궁패)은 가입한 날(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 고르셨다면 관리자에게 메일(heysadae3737@gmail.com)이나 방명록으로 알려 주시면 바로 고쳐 드려요. 다른 정에 가는 날은 지금처럼 오늘 정 탭 위 📍에서 그 정 사대를 구경하고 습사 등록할 수 있어요.'},
   {id:'2026-10-03a', date:'10월 3일', title:'✍️ 표 기록 · 내 방 고친 점', body:'🌬 바람 기록\n표 기록 맨 위에 그날의 바람(맞바람·뒷바람·좌→우·우→좌 + 약·중·강)이 자동으로 뜨고, 순을 저장하면 함께 남아요. 눌러서 직접 고칠 수도 있어요. 처음엔 바람 칸 → "과녁 방향"을 한 번 정해 주세요(폰 나침반으로도 잴 수 있어요). 바람은 내 기록에만 남고 월보에는 실리지 않아요.\n\n🎯 낙점 그림\n기록 보기에서 "이 날 · 이번 달 · 100일 · 전체"로 볼 수 있어요.\n\n📄 엑셀(CSV)\n내 방의 내려받기에 순마다 바람이 함께 들어가요.\n\n🙋 프로필\n단급에 무급·무단을 넣었고, 집궁일은 고르지 않아도 되며 "지우기"로 지울 수 있어요. 활 세기는 호 대신 파운드로 적어요(예전 숫자는 그대로).'},
   {id:'2026-09-24c', date:'9월 24일', title:'앱으로 설치하세요 📱', body:'① 카톡방 공지의 링크로 접속 → 크롬으로 열기  ② 크롬 ⋮ → 홈 화면에 추가 → 설치. 바탕화면의 오늘 사대 아이콘으로 들어오면 앱처럼 쓸 수 있어요.'},
@@ -2925,7 +2929,7 @@ function renderRecord(){
   for(let d=1; d<=dim; d++){ const ds=`${ym}-${pad(d)}`; const dd=byDate[ds]; let cls=''; if(dd && dd.rounds && dd.rounds.length){ const h=dd.rounds.reduce((a,r)=>a+hitsOf(r),0)/(dd.rounds.length*5); cls = h<0.3?'l1':h<0.6?'l2':'l3'; } cal+= (dd&&dd.rounds&&dd.rounds.length) ? `<button type="button" class="d ${cls} ${ds===t?'today':''} ${S.recView==='view'&&S.viewDate===ds?'sel':''}" data-cal="${ds}" title="${ds} · ${dd.rounds.length}순">${d}</button>` : `<div class="d ${ds===t?'today':''}" title="${ds}">${d}</div>`; }
   $('#monthCal').innerHTML=cal;
   $$('#monthCal [data-cal]').forEach(b=>b.addEventListener('click',()=>{ openDayView(b.dataset.cal); }));
-  $('#todayBig').hidden = !rounds.length;
+  $('#todayBig').hidden = !rounds.length; { const dd=$('#todayBigDesc'); if(dd) dd.hidden = !rounds.length; }
   if(S.recView==='view') renderDayView();
   renderTips(missAgg(miss));
 }
@@ -4064,8 +4068,8 @@ function openCalm(){
   bind();
 }
 /* ---- 순위 카드: 접기 · 누르고 있으면 멈춤(스토리처럼) · ‹ › 넘기기 · 안 보이면 쉼 ---- */
-S.rank.fold=!!lsGet('sadae.rkFold',false); S.rank.el=0; S.rank.hold=false; S.rank.vis=true; S.rank.long=false;
-const rkStatus = () => !S.calm.rank ? '자동 넘김 꺼짐' : S.rank.hold ? '⏸ 멈춤' : Date.now()<S.rank.pausedUntil ? '⏸ 잠깐 멈춤' : '누르고 있으면 멈춰요';
+S.rank.fold=!!lsGet('sadae.rkFold',false); S.rank.el=0; S.rank.stop=!!lsGet('sadae.rkStop',false); S.rank.vis=true;
+const rkPP = () => !S.calm.rank ? '<span class="tiny muted rk-auto">자동 넘김 꺼짐</span>' : `<button type="button" class="rk-pp" id="rkPP" aria-pressed="${S.rank.stop}">${S.rank.stop?'▶ 넘기기':'⏸ 멈춤'}</button>`;
 function rkGo(d){ S.rank.cat=(S.rank.cat+d+RK_CATS.length)%RK_CATS.length; S.rank.el=0; S.rank.pausedUntil=Date.now()+30e3; renderRank(); }
 function renderRank(){
   const el=$('#rkCard'); if(!el) return; const c=RK_CATS[S.rank.cat]; const M=Number(today().slice(5,7));
@@ -4073,14 +4077,9 @@ function renderRank(){
   const L=rankList(S.rank.cur, c), PL=rankList(S.rank.prev, c); const pPos={}; PL.forEach((o,i)=>pPos[o.mid]=i);
   const prog=`<div class="rk-prog"><i style="width:${Math.min(100,S.rank.el/50)}%"></i></div>`;
   if(!el.dataset.hb){ el.dataset.hb='1';
-    const down=e=>{ if(e.target.closest('button')) return; S.rank.hold=true; S.rank.long=false; el.classList.add('hold'); clearTimeout(S.rank.lt); S.rank.lt=setTimeout(()=>{ S.rank.long=true; },350); const a=$('.rk-auto',el); if(a) a.textContent=rkStatus(); };
-    const up=()=>{ if(!S.rank.hold) return; S.rank.hold=false; el.classList.remove('hold'); clearTimeout(S.rank.lt); const a=$('.rk-auto',el); if(a) a.textContent=rkStatus(); };
-    el.addEventListener('pointerdown',down); ['pointerup','pointercancel','pointerleave'].forEach(t=>el.addEventListener(t,up));
-    el.addEventListener('click',e=>{ if(S.rank.long){ S.rank.long=false; e.preventDefault(); e.stopPropagation(); } },true);   // 길게 누른 뒤엔 방 열기 안 함
-    el.addEventListener('contextmenu',e=>{ if(S.rank.hold||S.rank.long) e.preventDefault(); });
     try{ new IntersectionObserver(es=>{ S.rank.vis=es[es.length-1].isIntersecting; },{threshold:.25}).observe(el); }catch(e){}
   }
-  el.classList.toggle('fold', S.rank.fold);
+  el.classList.toggle('fold', S.rank.fold); el.classList.toggle('hold', !!S.rank.stop);
   if(S.rank.fold){
     const o=L[0], m=o&&memberById(o.mid); const [bb,uu]=o?c.big(o):['',''];
     el.innerHTML = `<button type="button" class="rk-line" id="rkUnfold" aria-expanded="false"><span class="rk-live"><i></i>LIVE</span><b class="rk-lt">🏆 ${M}월</b><span class="rk-one">${c.ic} ${c.t} · ${o?`1위 <b>${esc(m.name||'사원')}</b> ${bb}${uu}`:(S.rank.cur?'아직 없음':'불러오는 중')}</span><span class="rk-tog">펼치기 ▾</span></button>${prog}`;
@@ -4090,7 +4089,7 @@ function renderRank(){
   const row=(o,i,mine)=>{ const m=memberById(o.mid)||{}; const [b,u]=c.big(o); const was=pPos[o.mid]; const d = was===undefined ? null : was-i;
     return `<div class="rk-row ${i===0&&!mine?'top1':''} ${mine?'rk-me':''}" data-room="${esc(o.mid)}"><span class="rk-n">${mine||i>2?(i+1):['🥇','🥈','🥉'][i]}</span><span class="rk-av">${charSVG(m.char||DEFAULT_CHAR)}</span><span class="rk-nm"><b>${esc(m.name||'사원')}${S.me&&o.mid===S.me.id?' <small>(나)</small>':''}</b><small>${esc(memberJ(m).name)}</small></span><span class="rk-v"><b class="num">${b}<small>${u}</small></b><small>${esc(c.sub(o))}</small></span><span class="rk-ch ${d>0?'up':d<0?'dn':''}">${d===null?(PL.length?'NEW':''):d>0?'▲'+d:d<0?'▼'+(-d):'–'}</span></div>`; };
   const myI = S.me ? L.findIndex(o=>o.mid===S.me.id) : -1;
-  el.innerHTML = `<div class="rk-h"><h2>🏆 ${M}월 순위</h2><span class="rk-live"><i></i>LIVE</span><span class="tiny muted rk-auto">${rkStatus()}</span><button type="button" class="rk-tog" id="rkFold" aria-expanded="true">접기 ▴</button></div>
+  el.innerHTML = `<div class="rk-h"><h2>🏆 ${M}월 순위</h2><span class="rk-live"><i></i>LIVE</span>${rkPP()}<button type="button" class="rk-tog" id="rkFold" aria-expanded="true">접기 ▴</button></div>
     <div class="rk-tabs">${RK_CATS.map((x,i)=>`<button type="button" data-rk="${i}" class="${i===S.rank.cat?'on':''}">${x.ic} ${x.t}</button>`).join('')}</div>
     ${prog}
     <div class="rk-dr"><button type="button" class="rk-nav" data-rknav="-1" aria-label="이전 순위">‹</button><p class="rk-desc">${c.ic} ${esc(c.d)}</p><button type="button" class="rk-nav" data-rknav="1" aria-label="다음 순위">›</button></div>
@@ -4099,10 +4098,11 @@ function renderRank(){
   $$('[data-rk]',el).forEach(b=>b.onclick=()=>{ S.rank.cat=+b.dataset.rk; S.rank.el=0; S.rank.pausedUntil=Date.now()+30e3; renderRank(); });
   $$('[data-rknav]',el).forEach(b=>b.onclick=()=>rkGo(+b.dataset.rknav));
   $('#rkFold',el).onclick=()=>{ S.rank.fold=true; lsSet('sadae.rkFold',true); renderRank(); };
+  const pp=$('#rkPP',el); if(pp) pp.onclick=()=>{ S.rank.stop=!S.rank.stop; lsSet('sadae.rkStop',S.rank.stop); if(!S.rank.stop) S.rank.pausedUntil=0; renderRank(); };
   const hb=$('#rkHide',el); if(hb) hb.onclick=async()=>{ const v=!hidden; const ok=await write(st=>st.merge('members/'+S.me.id,{rankHide:v, updatedAt:Date.now()})); if(ok){ toast(v?'랭킹에서 나를 숨겼어요. 다른 사원에게 내 순위가 안 보여요':'랭킹에 다시 보여요'); setTimeout(()=>refreshRank(true),800); } };
 }
 // 0.1초마다 시간을 쌓아 5초가 되면 다음 순위 — 누르고 있거나, 화면에 안 보이거나, 한마디를 쓰는 중이면 멈춤
-setInterval(()=>{ if(S.tab!=='plaza' || document.hidden || !S.rank.cur || !S.calm.rank || S.rank.hold || !S.rank.vis || Date.now()<S.rank.pausedUntil) return;
+setInterval(()=>{ if(S.tab!=='plaza' || document.hidden || !S.rank.cur || !S.calm.rank || S.rank.stop || !S.rank.vis || Date.now()<S.rank.pausedUntil) return;
   const ae=document.activeElement; if(ae && ae.id==='pzText') return;
   S.rank.el+=100; if(S.rank.el>=5000){ S.rank.el=0; S.rank.cat=(S.rank.cat+1)%RK_CATS.length; renderRank(); }
   else { const i=document.querySelector('#rkCard .rk-prog i'); if(i) i.style.width=(S.rank.el/50)+'%'; } }, 100);
