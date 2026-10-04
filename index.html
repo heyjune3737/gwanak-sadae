@@ -873,6 +873,8 @@ svg.pixc image{image-rendering:auto}
 .sd-fig.me .tag{background:#E2463B;color:#FFFFFF}
 .sd-fig.ghost{opacity:.4;animation:none}
 .sd-fig .rx{position:absolute;top:-10px;right:0;font-size:10px;background:#FFFFFF;color:#2A2233;border:2px solid #2A2233;padding:0 2px;white-space:nowrap;z-index:2}
+/* 화살표 그림 (글꼴 대신 · 8방향 같은 굵기) */
+svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:visible}
 /* 표 기록 · 하루 표 (F안) */
 .rt{border:2px solid var(--ink);background:var(--card);margin:6px 0 4px;box-shadow:4px 4px 0 var(--ink)}
 .rt-h,.rt-r{display:grid;grid-template-columns:42px repeat(5,minmax(0,1fr)) 42px 58px;align-items:center}
@@ -880,6 +882,7 @@ svg.pixc image{image-rendering:auto}
 .rt-r{padding:8px 3px;border-bottom:1px solid var(--line2);min-height:58px}
 .rt-r:last-of-type{border-bottom:0}
 .rt-r.molgi{background:var(--gold-soft)}
+.rt-r.hit{background:rgba(226,70,59,.10)}
 .rt-r.zero{background:repeating-linear-gradient(135deg,var(--card) 0 6px,var(--card2) 6px 8px)}
 .rt-n{text-align:center;font-size:12.5px;font-weight:700;line-height:1.15}
 .rt-n .wchip{display:block;margin:3px auto 0;width:max-content;background:var(--wind-bg);border:1px solid var(--wind-bd);color:var(--wind-ink);font-size:10px}
@@ -893,6 +896,10 @@ svg.pixc image{image-rendering:auto}
 .rt-c small{color:var(--ink3);font-size:10.5px;margin-left:2px}
 .rt-c i{display:block;height:5px;background:var(--card2);margin-top:4px;border:1px solid var(--ink)}.rt-c i b{display:block;height:100%;background:var(--ink)}
 .rt-f{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink2);padding:7px 8px;border-top:2px solid var(--ink)}
+.rt-del .rt-h,.rt-del .rt-r{grid-template-columns:38px repeat(5,minmax(0,1fr)) 38px 52px 24px}
+.rt-x{width:22px;height:30px;padding:0;border:0;background:transparent;color:var(--ink3);font:inherit;font-size:14px;cursor:pointer}
+#todayRounds .rt{margin:4px 0 2px}
+.rt-c{white-space:nowrap}.rt-del .rt-c{font-size:11px;padding-right:2px}.rt-del .rt-c small{font-size:9.5px;margin-left:1px}
 .dtag-w{text-align:center;margin:-4px 0 8px}.dtag{display:inline-block;font-size:11.5px;background:var(--gold-soft);border:1.5px solid var(--ink);padding:1px 7px}
 /* 승단 사다리 · 목표 · 조언 */
 .ladder,.goalp,.adv{border:2px solid var(--ink);background:var(--card);margin:14px 0 6px;box-shadow:4px 4px 0 var(--ink)}
@@ -1763,7 +1770,9 @@ const RES = {
 // 좌궁은 앞·뒤 방향이 반대 (앞남 = 줌손 앞쪽 = 좌궁이면 과녁 왼쪽)
 const resSide = k => { const isL = S && S.me && S.me.hand==='좌궁'; if(k[0]==='F') return isL?'l':'r'; if(k[0]==='B') return isL?'r':'l'; return ''; };
 const resArea = k => { if(k==='H') return 'h'; if(k==='X') return 'x'; const v = k.includes('O')?'u' : (k==='S'||k.endsWith('S'))?'d' : ''; const sd=resSide(k); return v&&sd ? v+sd : (v||sd); };
-const glyph = k => { if(!RES[k]) return '?'; const a=resArea(k); return ({h:RES.H.k, x:'?', u:'↑', d:'↓', l:'←', r:'→', ul:'↖', ur:'↗', dl:'↙', dr:'↘'})[a] || RES[k].k; };
+const ARROW_DEG = {u:0, ur:45, r:90, dr:135, d:180, dl:225, l:270, ul:315};
+const arrowSVG = deg => `<svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><g transform="rotate(${deg} 12 12)${deg%90?' translate(12 12) scale(1.18) translate(-12 -12)':''}" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 20.5V5"/><path d="M5.5 11.5L12 5l6.5 6.5"/></g></svg>`;
+const glyph = k => { if(!RES[k]) return '?'; const a=resArea(k); if(ARROW_DEG[a]!=null) return arrowSVG(ARROW_DEG[a]); return ({h:RES.H.k, x:'?'})[a] || RES[k].k; };
 const RES_ORDER = ['H','F','B','S','O','FO','BO','FS','BS','X'];
 const MISS_KEYS = ['F','B','S','O','FO','BO','FS','BS','X'];
 const rc = k => (k==='H'||k==='X' ? k+' ' : '') + 'r-'+k;   // 클래스 이름 (BS·FO 같은 코드가 다른 스타일과 겹치지 않게)
@@ -1976,7 +1985,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04zd';
+const APP_VER = '2026.10.04ze';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2134,7 +2143,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
-  {id:'2026-10-04zd', date:'10월 4일', title:'🎯 표 기록에 단 도전 목표 · 분석 · 배지 새 단장', body:'🎯 표 기록 — 단 도전 목표\n입력 화면 바람 칸 아래 ‘🎯 목표’를 누르면 1급(22중) · 초단(24중) ~ 9단(39중) 중 도전 목표를 정할 수 있어요(9순 45시, 협회 승급 · 입승단 기준 · 70세 이상 기준도 있어요). ‘내 기본 목표’는 바꾸기 전까지, ‘오늘만’은 오늘 하루만 적용돼요. 누르지 않으면 지금처럼 목표 없이 연습이에요. 쏘는 동안 ‘지금 17중 · 남은 3순에 9중 · 순당 3.0중’처럼 남은 필요 시수가 떠요.\n\n📖 기록 보기 — 표와 분석\n순마다 1~5시 · 중 · 그 순 관중률 · 누적이 한 줄에 보이고, 몰기는 금색, 0중은 빗금이에요. 9순을 채우면 ‘9순 28중 · 3단 기준 도달’처럼 알려 줘요. 목표를 정한 날은 표 아래에 합격 시수 판정 · 누적 페이스 그래프 · 최근 9순 10번 기록 · 맞춤 분석이, 목표 없는 날은 승단 사다리와 ‘짚을 점’(다음 단 도전 권유 · 많이 빗나간 방향의 교본 반구제기 발췌)이 나와요. 분석은 눌러서 펼쳐 보세요. 지난 기록은 그대로예요.\n\n🏆 순위 기준 · 정심 점수\n관중률 순위는 이번 달 5순 이상, 정심은 20순 이상이면 들어가요. 정심은 관중률 50 + 고름 30(가장 못 쏜 순도 몇 중인지) + 낙점 20(빗나간 방향 — 교본 반구제기에 따라 넘음 < 앞 < 짧음 < 뒤 < 불 순으로 감점)으로 새로 매겨요.\n\n🔄 새 기능이 안 보이면\n앱(또는 인터넷 창)을 완전히 닫았다가 다시 열어 주세요. 폰에서는 최근 앱 목록에서 위로 밀어 닫은 뒤 다시 열면 돼요. 안내 탭 맨 아래 버전이 ‘2026.10.04zd’ 이상이면 최신이에요.\n\n─ 아래는 같은 날 바뀐 배지 이야기예요 ─\n\n🎯 단계형 배지\n같은 종류의 배지를 한 칸으로 모아 동 → 은 → 금 → 옥으로 올라가요. 몰기 · 관중률은 실력 칸이라 그 위로 명궁 · 신궁까지 있어요. 칸마다 다음 단계까지 얼마 남았는지 막대로 보여요. 그동안 받은 배지는 새 단계로 그대로 옮겨졌어요. 🏯 정 순례(다른 정 습사) · 🌬 바람 궁사(바람 ‘강’일 때 쏜 순) 칸도 생겼어요.\n\n🎖 특별 · 한정 · 숨은 배지\n승단, 대회 입상(부별 1~3위), 이달의 표지(월보 표지 주인공), 🍂 사계절 궁사(한 해 사계절 모두 습사), 🏅 올해의 표지, 그리고 베타 기간(9/23~10/3)에 함께한 분만 받는 🧪 베타 테스터 배지가 있어요. 조건이 숨겨진 배지도 몇 개 있으니 찾아보세요. 월보 분야별 1위는 🎀 리본으로 남아요.\n\n🖼 방에 걸기\n내 방 배지 칸의 "🖼 방에 걸기"에서 서로 다른 배지 족자 · 월보 표지 액자를 벽에 3개까지 걸 수 있어요. 대회에서 입상하면 선반 트로피가 생겨요. 방 구경 온 사원에게도 보여요.\n\n👣 내 방 방문자\n내 방 위 TODAY · TOTAL은 내 방에 다녀간 사원 수예요(하루 한 사람 1번). 방 아래 ‘최근 다녀간 사원’은 나만 보여요.'},
+  {id:'2026-10-04zd', date:'10월 4일', title:'🎯 표 기록에 단 도전 목표 · 분석 · 배지 새 단장', body:'🎯 표 기록 — 단 도전 목표\n입력 화면 바람 칸 아래 ‘🎯 목표’를 누르면 1급(22중) · 초단(24중) ~ 9단(39중) 중 도전 목표를 정할 수 있어요(9순 45시, 협회 승급 · 입승단 기준 · 70세 이상 기준도 있어요). ‘내 기본 목표’는 바꾸기 전까지, ‘오늘만’은 오늘 하루만 적용돼요. 누르지 않으면 지금처럼 목표 없이 연습이에요. 쏘는 동안 ‘지금 17중 · 남은 3순에 9중 · 순당 3.0중’처럼 남은 필요 시수가 떠요.\n\n📖 기록 보기 — 표와 분석\n순마다 1~5시 · 중 · 그 순 관중률 · 누적이 한 줄에 보이고, 몰기는 금색, 0중은 빗금이에요. 9순을 채우면 ‘9순 28중 · 3단 기준 도달’처럼 알려 줘요. 목표를 정한 날은 표 아래에 합격 시수 판정 · 누적 페이스 그래프 · 최근 9순 10번 기록 · 맞춤 분석이, 목표 없는 날은 승단 사다리와 ‘짚을 점’(다음 단 도전 권유 · 많이 빗나간 방향의 교본 반구제기 발췌)이 나와요. 분석은 눌러서 펼쳐 보세요. 지난 기록은 그대로예요.\n\n🏆 순위 기준\n관중률 순위는 이번 달 5순 이상, 정심은 20순 이상이면 들어가요. 정심은 궁도 구계훈 ‘정심정기(正心正己)’의 뜻에 맞게, 기복 없이 고르게 맞히고 빗나가도 바른 궁체가 보이는 사원이 앞에 서도록 다듬었어요.\n\n🔄 새 기능이 안 보이면\n앱(또는 인터넷 창)을 완전히 닫았다가 다시 열어 주세요. 폰에서는 최근 앱 목록에서 위로 밀어 닫은 뒤 다시 열면 돼요. 안내 탭 맨 아래 버전이 ‘2026.10.04zd’ 이상이면 최신이에요.\n\n─ 아래는 같은 날 바뀐 배지 이야기예요 ─\n\n🎯 단계형 배지\n같은 종류의 배지를 한 칸으로 모아 동 → 은 → 금 → 옥으로 올라가요. 몰기 · 관중률은 실력 칸이라 그 위로 명궁 · 신궁까지 있어요. 칸마다 다음 단계까지 얼마 남았는지 막대로 보여요. 그동안 받은 배지는 새 단계로 그대로 옮겨졌어요. 🏯 정 순례(다른 정 습사) · 🌬 바람 궁사(바람 ‘강’일 때 쏜 순) 칸도 생겼어요.\n\n🎖 특별 · 한정 · 숨은 배지\n승단, 대회 입상(부별 1~3위), 이달의 표지(월보 표지 주인공), 🍂 사계절 궁사(한 해 사계절 모두 습사), 🏅 올해의 표지, 그리고 베타 기간(9/23~10/3)에 함께한 분만 받는 🧪 베타 테스터 배지가 있어요. 조건이 숨겨진 배지도 몇 개 있으니 찾아보세요. 월보 분야별 1위는 🎀 리본으로 남아요.\n\n🖼 방에 걸기\n내 방 배지 칸의 "🖼 방에 걸기"에서 서로 다른 배지 족자 · 월보 표지 액자를 벽에 3개까지 걸 수 있어요. 대회에서 입상하면 선반 트로피가 생겨요. 방 구경 온 사원에게도 보여요.\n\n👣 내 방 방문자\n내 방 위 TODAY · TOTAL은 내 방에 다녀간 사원 수예요(하루 한 사람 1번). 방 아래 ‘최근 다녀간 사원’은 나만 보여요.'},
   {id:'2026-10-04c', date:'10월 4일', title:'🐶🐱 강아지 · 고양이 6종씩 · 월보는 매달 1일에', body:'🐶 강아지 6종\n베레모 푸들 · 헤드폰 보더콜리 · 별망토 치와와 · 모자 쓴 달마시안 · 비옷 골든 · 탐정 바셋이 왔어요. 이제 강아지는 15종이에요.\n\n🐱 고양이 6종\n한복 삼색이 · 까만 아기 고양이 · 하얀 무사 · 오드아이 장모 · 나뭇잎 두건 · 삿갓 고양이가 왔어요. 고양이도 15종이에요.\n\n📏 크기가 조금씩 달라요\n사대·광장·내 방에서 강아지와 고양이가 덩치에 따라 조금 작게(0.92배) 또는 조금 크게(1.06배) 서요. 새 친구에는 고르기 화면에 NEW 표시가 붙어요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n📰 사대 월보는 매달 1일에\n월보는 매달 1일에 지난달 기록을 담아 완성된 채로 나와요. 지금은 10월 창간호(베타 9/23~10/3)가 최신호이고, 11월호(10/4~10/31 기록)는 11월 1일에 나와요. 이번 달 실시간 순위는 광장 순위 카드에서 볼 수 있어요.'},
   {id:'2026-10-03n', date:'10월 3일', title:'🎉 10월 3일 업데이트 모음 · 사대 월보 · 광장 · 새 친구 · 알림', body:'📰 사대 월보\n하단 "소식" 칸에 월간지 「사대 월보(射臺月報)」가 생겼어요. 10월 창간호는 베타 기간(9/23~10/3)의 기록, 9월은 관리자의 변과 연혁을 담은 "오늘 사대 이야기"예요. 앞으로는 매달 1일에 지난달 기록으로 한 호씩 나와요. 축하 소식 옆 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고, 내 방에서 단급을 바꾸면 승단 소식으로 실려요. 가입 10명 + 그 호 기록 3명이 넘는 정은 "우리 정 월보"도 따로 나와요.\n\n🏯 광장\n배경이 계절(봄·여름·가을·겨울)과 시간(낮·해질녘·밤)에 따라 바뀌고, 🖼 로 직접 골라 볼 수 있어요. 한마디는 장면 바로 아래에서 15개씩 페이지로 넘겨요. 🏆 이달의 순위(성실·관중·관중률·몰기·정심·다정)는 접어 둘 수 있고, 누르고 있으면 멈춰요. 순위에 나오기 싫으면 "랭킹에서 나 숨기기"를 누르세요. 움직임이 부담스러우면 🍵 "차분하게 보기"로 끌 수 있어요.\n\n🐻🐹🐧 새 친구\n곰 · 햄스터 · 펭귄이 9종씩 들어왔어요. 곰은 한 뼘 크게, 햄스터는 아담하게 서요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n🏹 오늘 정 사대\n사람이 많으면 2층 사대(앞줄 7 · 뒷줄 7)로 서고, 위의 시간대(새벽~저녁)를 눌러 그 시간대 사람만 볼 수 있어요.\n\n🔔 알림\n누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 @내이름 으로 부르면 위쪽 🔔 에 표시돼요. 🔔 → "폰 알림 켜기"를 하면 앱을 닫아 둬도 폰으로 알림이 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 ↩ 답글로 @이름을 쉽게 넣을 수 있어요.'},
   {id:'2026-10-03l', date:'10월 3일', title:'🔒 소속 정은 한 달 동안 고정돼요', body:'이제 관악정 밖 다른 정으로도 오늘 사대가 넓어져요. 정마다 사원·순위·월보가 섞이지 않도록, 소속 정(궁패)은 가입한 날(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 고르셨다면 관리자에게 메일(heysadae3737@gmail.com)이나 방명록으로 알려 주시면 바로 고쳐 드려요. 다른 정에 가는 날은 지금처럼 오늘 정 탭 위 📍에서 그 정 사대를 구경하고 습사 등록할 수 있어요.'},
@@ -2211,7 +2220,7 @@ function renderInfo(){
     <details class="notice"><summary>🍵 차분하게 보기</summary><p>광장 장면 오른쪽 아래 🍵 버튼을 누르세요. "차분하게 보기"를 켜면 순위 자동 넘김, 꽃잎·낙엽·눈 흩날림, 광장 위 소식 띠, 말풍선 효과, 캐릭터 걸음이 한 번에 멈춰요. 하나씩 켜고 끌 수도 있어요. 이 기기에만 저장되고, 폰 설정에서 "동작 줄이기"를 켜 두셨다면 처음부터 차분하게 보여요. 순위 카드는 "접기"로 한 줄만 남길 수 있고, 누르고 있는 동안은 넘어가지 않아요.</p></details>
     <details class="notice"><summary>🏅 배지 · 방에 걸기</summary><p>내 방 → 🏅 배지에서 볼 수 있어요. 같은 종류는 한 칸에 모여 동 · 은 · 금 · 옥으로 올라가고, 실력 칸(몰기 · 관중률)만 명궁 · 신궁까지 있어요. 관중률 금부터는 그 달 30순 이상 쏜 달만 세요. 칸을 누르면 단계별 기준이 보여요. 특별 배지는 승단 · 대회 입상(부별 1~3위) · 이달의 표지 · 베타 테스터(한정)이고, 조건을 숨긴 배지도 있어요. 월보 분야별 1위는 🎀 리본으로 남아요. "🖼 방에 걸기"에서 배지 하나를 한지 족자로 걸고, 표지 액자 · 대회 트로피를 고르거나 내릴 수 있어요. 방 구경 온 사원에게도 보여요.</p></details>
     <details class="notice"><summary>📰 사대 월보</summary><p>소식 탭의 월간지예요. 매달 1일에 지난달 기록을 담아 한 호씩 나와요. 10월 창간호는 베타 테스트 기간(9/23~10/3) 기록, 11월호(11월 1일 발행)는 10월 4일~31일 기록이에요. 다음 호가 나오기 전까지는 최신호를 보여 주고, 이번 달 실시간 순위는 광장 순위 카드에서 볼 수 있어요. 9월은 "오늘 사대 이야기"(관리자의 변 · 연혁)예요. 표지는 그 달 습사한 날이 가장 많은 성실왕, 축하 소식은 몰기 상위 3명 · 새 배지 · 승단(내 방에서 단급을 바꾼 날) · 집궁 100일/1000일/주년 · 그 달 처음 기록한 사원이에요. 👏를 누르면 그 사원 방명록에 축하 한 줄이 남고 알림이 가요. "지난 호"에서 예전 달을 다시 볼 수 있어요. 랭킹에서 숨긴 사원은 표지와 순위에서 빠져요. 맨 위에서 「🏯 전체 월보」와 「우리 정 월보」를 고를 수 있어요. 우리 정 월보는 가입 사원 10명 이상 + 그 호에 표를 기록한 사원 3명 이상인 정에 나오고, 집계는 소속 정(궁패) 기준이에요.</p></details>
-    <details class="notice"><summary>🏆 이달의 순위</summary><p>광장의 순위는 매달 1일 새로 시작해요. 관중률은 이번 달 5순 이상, 정심은 20순 이상 쏜 사원만 들어가요. 정심(正心)은 궁도 구계훈 "정심정기"에서 따온 이름으로, 100점 만점으로 관중률 50점 + 고름 30점(가장 못 쏜 순 20%가 평균 몇 중인지 — 평균이 높고 기복이 적을수록) + 낙점 20점(빗나간 화살의 방향 — 교본 반구제기에 따라 넘음이 가장 가볍고 앞 · 짧음(코박음) · 뒤 순으로 무거우며, 시를 잃어버린 불(기타)이 가장 무거워요)이에요. 다정(多情)은 남의 방명록 2점·응원 1점·광장 한마디 1점이고 하루 10점까지만 세요. 날짜별 표는 그대로 비공개이고 순위 숫자만 보여요. 숨기고 싶으면 "랭킹에서 나 숨기기".</p></details>
+    <details class="notice"><summary>🏆 이달의 순위</summary><p>광장의 순위는 매달 1일 새로 시작해요. 관중률은 이번 달 5순 이상, 정심은 20순 이상 쏜 사원만 들어가요. 정심(正心)은 궁도 구계훈 "정심정기(正心正己)"에서 따온 이름으로, 마음과 몸가짐을 바르게 해 기복 없이 고르게 맞히고 빗나가도 바른 궁체가 보이는 사원을 기려요. 다정(多情)은 방명록 · 응원 · 광장 한마디로 사원들과 정을 많이 나눈 사원이에요. 날짜별 표는 그대로 비공개이고 순위 숫자만 보여요. 숨기고 싶으면 "랭킹에서 나 숨기기".</p></details>
     <details class="notice"><summary>🌬 바람 기록</summary><p>표 기록 맨 위 바람 칸에 정 위치의 지금 바람이 자동으로 떠요(날씨 정보 Open-Meteo). 순을 저장하면 그 바람이 순 옆에 작게 남아요(⬇맞바람 ⬆뒷바람 ➡좌→우 ⬅우→좌). 실제와 다르면 바람 칸을 눌러 직접 고르면 오늘 하루 그대로 기록돼요. 정마다 처음 한 번 "과녁 방향"(사대에서 과녁이 있는 쪽)을 정해야 맞바람·좌우가 계산돼요.</p></details>
     <details class="notice"><summary>🔔 알림 — 방명록 · 응원 · @부름</summary><p>누가 내 방명록을 남기거나, 습사 등록에 응원을 보내거나, 광장에서 <b>@내이름</b>으로 부르면 위쪽 🔔 에 빨간 숫자가 떠요. 🔔 → <b>폰 알림 켜기</b>를 하면 앱을 닫아 둬도 폰 알림으로 와요(아이폰은 홈 화면에 추가한 앱에서만). 광장 글의 "↩ 답글"을 누르면 @이름이 자동으로 들어가요.</p></details>
     <details class="notice"><summary>내 방 — 장비 · 기록 보관함</summary><p>활·화살·궁체·단급을 적고, 지난 표 기록을 날짜별로 보고 엑셀로 받을 수 있어요.</p></details>
@@ -2896,7 +2905,7 @@ function renderRecord(){
   $('#todaySum').innerHTML = ta ? `${th}/${ta}시 · <b>${Math.round(th/ta*100)}%</b> · 몰기 ${tm}` : '';
   $('#cardToday').hidden = !rounds.length;
   const tws=(td&&td.winds)||[];
-  $('#todayRounds').innerHTML = rounds.length ? rounds.map((r,i)=>`<div class="rnd"><span class="n">${i+1}순${windChip(tws[i])}</span><div class="dots">${r.map(x=>`<span class="dot ${rc(x)}">${glyph(x)}</span>`).join('')}</div>${hitsOf(r)===5?'<span class="molgi">몰기</span>':''}<span class="sum num">${hitsOf(r)}중</span><button class="btn sm ghost" data-del="${i}" aria-label="${i+1}순 삭제">✕</button></div>`).reverse().join('')
+  $('#todayRounds').innerHTML = rounds.length ? roundTableHTML(rounds, tws, {del:true})
     : `<div class="muted">${S.me?'오늘 낸 순이 아직 없어요. 위에서 5시를 채우고 저장해 보세요.':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>`;
   $$('#todayRounds [data-del]').forEach(b=>b.addEventListener('click', ()=>confirmDelRound(+b.dataset.del)));
   // 이번 달
@@ -2947,6 +2956,13 @@ const RULES = [
 ];
 const GRADES = [[39,'9단'],[37,'8단'],[35,'7단'],[33,'6단'],[31,'5단'],[30,'4단'],[28,'3단'],[26,'2단'],[24,'초단'],[22,'1급']]; // 9순 45시 기준, 대한궁도협회 승급·입승단 심사규정(2021.4.14) 제6조
 const gradeFor = t => { const g=GRADES.find(([n])=>t>=n); return g?g[1]:null; };
+/* ---------- 순 기록 표 (시지표) — 기록 보기 · 입력 화면 오늘 칸 ---------- */
+function roundTableHTML(rs, winds, o={}){
+  const del=!!o.del; let ch=0; const tot=rs.reduce((a,r)=>a+hitsOf(r),0);
+  return `<div class="rt ${del?'rt-del':''}"><div class="rt-h"><span>순</span><span>1시</span><span>2시</span><span>3시</span><span>4시</span><span>5시</span><span>중</span><span>누적</span>${del?'<span></span>':''}</div>${rs.map((r,k)=>{ const n=hitsOf(r); ch+=n; const pc=Math.round(ch/((k+1)*5)*100);
+    return `<div class="rt-r ${n===5?'molgi':''} ${n===0?'zero':''} ${n>0&&n<5?'hit':''} ${n===4?'s4':''}"><span class="rt-n">${k+1}순${windChip((winds||[])[k])}</span>${r.map(x=>`<span class="rt-d ${x==='H'?'H':''}">${x==='H'?'中':glyph(x)}</span>`).join('')}<span class="rt-s num">${n}<em>${n*20}%</em></span><span class="rt-c num">${ch}<small>· ${pc}%</small><i><b style="width:${pc}%"></b></i></span>${del?`<button type="button" class="rt-x" data-del="${k}" aria-label="${k+1}순 지우기">✕</button>`:''}</div>`; }).join('')}
+    <div class="rt-f"><span>中 관중 · 화살표 = 빗나간 방향</span><span>평균 ${rs.length?(tot/rs.length).toFixed(1):0}중</span></div></div>`;
+}
 /* ---------- 단 도전 목표 (9순 45시 · 협회 규정 GRADES) ---------- */
 const GOALS = [...GRADES].reverse().map(([n,g])=>({g, n})).concat([{g:'1급·70세', n:18},{g:'초단·70세', n:20}]);
 const goalOf = g => GOALS.find(x=>x.g===g) || null;
@@ -3983,8 +3999,8 @@ const RK_CATS = [
   {id:'hits', t:'관중', ic:'🎯', d:'이번 달 맞힌 화살 수', ok:o=>o.h>0, v:o=>o.h*1000-o.n, big:o=>[o.h,'시'], sub:o=>`${o.n*5}시 중`},
   {id:'rate', t:'관중률', ic:'📈', d:'이번 달 5순 이상 쏜 사원의 관중률', ok:o=>o.n>=5, v:o=>o.h/(o.n*5)*1e6+o.n, big:o=>[Math.round(o.h/(o.n*5)*100),'%'], sub:o=>`${o.n}순`},
   {id:'molgi', t:'몰기', ic:'🏅', d:'이번 달 5시 5중 몰기 횟수', ok:o=>o.mo>0, v:o=>o.mo*1e6+o.h, big:o=>[o.mo,'번'], sub:o=>`${o.n}순 중`},
-  {id:'jeongsim', t:'정심', ic:'🧘', d:'정심정기(正心正己) — 관중률 50 + 고름 30(못 쏜 순도 몇 중) + 낙점 20(빗나간 방향: 넘음 < 앞 < 짧음 < 뒤 < 불) · 20순 이상', ok:o=>o.n>=20, v:o=>o.js*1e4+o.n, big:o=>[o.js,'점'], sub:o=>`관중 ${Math.round(o.h/(o.n*5)*100)}% · ${o.n}순`},
-  {id:'dajeong', t:'다정', ic:'🍊', d:'다정(多情) — 방명록·응원·광장 한마디를 많이 나눈 사원 (방명록 2점·응원 1점·한마디 1점, 하루 10점까지)', ok:o=>o.dj>0, v:o=>o.dj, big:o=>[o.dj,'점'], sub:o=>'방명록·응원·한마디'},
+  {id:'jeongsim', t:'정심', ic:'🧘', d:'정심정기(正心正己) — 마음을 바르게, 몸가짐을 바르게. 기복 없이 고르게 맞히고, 빗나가도 바른 궁체가 보이는 사원 (20순 이상)', ok:o=>o.n>=20, v:o=>o.js*1e4+o.n, big:o=>[o.js,'점'], sub:o=>`관중 ${Math.round(o.h/(o.n*5)*100)}% · ${o.n}순`},
+  {id:'dajeong', t:'다정', ic:'🍊', d:'다정(多情) — 방명록 · 응원 · 광장 한마디로 사원들과 정을 많이 나눈 사원', ok:o=>o.dj>0, v:o=>o.dj, big:o=>[o.dj,'점'], sub:o=>'방명록·응원·한마디'},
 ];
 S.rank = {cur:null, prev:null, at:0, busy:false, cat:0, pausedUntil:0};
 const rkYday = () => { const d=new Date(); d.setDate(d.getDate()-1); return dstr(d); };
@@ -4472,9 +4488,7 @@ function renderDayView(){
   $('#dBody').innerHTML = !rs.length ? `<div class="muted" style="padding:18px 0;text-align:center">${S.me?'이 날은 기록이 없어요. ◀ ▶ 로 기록한 날을 넘겨 보세요.':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>` : `
     <div class="dsum"><div class="dsum-big num">${h}<small>/${a}시</small></div><div class="dsum-side"><b class="num">${Math.round(h/a*100)}%</b><span>${rs.length}순${mo?` · 🎯 몰기 ${mo}`:''}</span></div></div>
     ${rs.length>=9?`<div class="dtag-w"><span class="dtag">9순 ${nineOf(rs)}중${gradeFor(nineOf(rs))?` · ${gradeFor(nineOf(rs))} 기준 도달`:''}</span></div>`:''}
-    <div class="rt"><div class="rt-h"><span>순</span><span>1시</span><span>2시</span><span>3시</span><span>4시</span><span>5시</span><span>중</span><span>누적</span></div>${(()=>{ let ch=0; return rs.map((r,k)=>{ const n=hitsOf(r); ch+=n; const pc=Math.round(ch/((k+1)*5)*100);
-      return `<div class="rt-r ${n===5?'molgi':''} ${n===0?'zero':''} ${n===4?'s4':''}"><span class="rt-n">${k+1}순${windChip(((d&&d.winds)||[])[k])}</span>${r.map(x=>`<span class="rt-d ${x==='H'?'H':''}">${x==='H'?'中':glyph(x)}</span>`).join('')}<span class="rt-s num">${n}<em>${n*20}%</em></span><span class="rt-c num">${ch}<small>· ${pc}%</small><i><b style="width:${pc}%"></b></i></span></div>`; }).join(''); })()}
-      <div class="rt-f"><span>中 관중 · 화살표 = 빗나간 방향</span><span>평균 ${(h/rs.length).toFixed(1)}중</span></div></div>
+    ${roundTableHTML(rs, (d&&d.winds)||[])}
     ${S.me?dayBottomHTML(d, rs):''}
     <div class="drow"><button type="button" class="btn sm" id="dCard">📸 기록 카드</button>${S.viewDate===today()?'<button type="button" class="btn sm ghost" id="dMore">✍️ 이어서 입력</button>':''}</div>`;
   bindDayBottom();
@@ -4491,7 +4505,7 @@ function renderDayView(){
 }
 // 과녁 그림 위에 한 발씩 점 찍기 (같은 방향끼리 모임)
 function targetMapSVG(arrows){
-  const W=300,H=270; const T={x:110,y:60,w:80,h:110};
+  const W=300,H=270,PAD=16; const T={x:110,y:60,w:80,h:110};
   const ZN = { h:{x:T.x+10,y:T.y+26,w:T.w-20,h:T.h-36}, u:{x:T.x-6,y:12,w:T.w+12,h:36}, d:{x:T.x-6,y:T.y+T.h+10,w:T.w+12,h:34},
     l:{x:16,y:T.y+14,w:70,h:T.h-28}, r:{x:T.x+T.w+14,y:T.y+14,w:70,h:T.h-28},
     ul:{x:16,y:12,w:70,h:36}, ur:{x:T.x+T.w+14,y:12,w:70,h:36}, dl:{x:16,y:T.y+T.h+10,w:70,h:34}, dr:{x:T.x+T.w+14,y:T.y+T.h+10,w:70,h:34},
@@ -4505,10 +4519,10 @@ function targetMapSVG(arrows){
   const rnd = n => { let h=2166136261^n; h=Math.imul(h^(h>>>15),2246822507); h=Math.imul(h^(h>>>13),3266489909); return ((h^(h>>>16))>>>0)/4294967296; };
   arrows.forEach((k,i)=>{ const z=zone(k); const j=pos[k]=(pos[k]||0)+1; const x=z.x+6+rnd(i*7+j)*(z.w-12), y=z.y+6+rnd(i*13+j*3+1)*(z.h-12);
     dots += k==='H' ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.5" fill="#E2463B" stroke="#2A2233" stroke-width="1.5"/>` : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#FFFFFF" stroke="#2A2233" stroke-width="1.5"/>`; });
-  const lab=(k,x,y,anchor)=> cnt[k] ? `<text x="${x}" y="${y}" text-anchor="${anchor||'middle'}" class="ml">${RES[k].l} ${big?Math.round(cnt[k]/NALL*100)+'%':cnt[k]}</text>` : '';
+  const lab=(k,x,y,anchor)=> cnt[k] ? `<text x="${x}" y="${y}" text-anchor="${anchor||'middle'}" class="ml">${RES[k].l} ${big?Math.round(cnt[k]/NALL*100)+'%':`${cnt[k]} · ${Math.round(cnt[k]/NALL*100)}%`}</text>` : '';
   const n=NALL, h=cnt.H||0;
-  return `<svg class="tmap" viewBox="0 0 ${W} ${H}" role="img" aria-label="낙점 그림: ${n}시 중 관중 ${h}">
-    <rect x="0" y="0" width="${W}" height="${H}" fill="var(--card2)"/>
+  return `<svg class="tmap" viewBox="0 0 ${W} ${H+PAD}" role="img" aria-label="낙점 그림: ${n}시 중 관중 ${h}">
+    <rect x="0" y="0" width="${W}" height="${H+PAD}" fill="var(--card2)"/><g transform="translate(0 ${PAD})">
     <rect x="0" y="${T.y+T.h-4}" width="${W}" height="${H-(T.y+T.h-4)}" fill="#BFD9A0" opacity=".55"/>
     <rect x="${T.x}" y="${T.y}" width="${T.w}" height="${T.h}" fill="#F6F2E8" stroke="#2A2233" stroke-width="3"/>
     <rect x="${T.x}" y="${T.y}" width="${T.w}" height="18" fill="#2A2233"/>
@@ -4516,8 +4530,8 @@ function targetMapSVG(arrows){
     ${dots}
     ${['O','S','F','B','FO','BO','FS','BS','X'].map(k=>{ const z=ZN[resArea(k)]; const a=resArea(k); const ax = a.endsWith('l')||a==='x' ? 'start' : a.endsWith('r') ? 'end' : 'middle';
       const x = ax==='start' ? z.x : ax==='end' ? z.x+z.w : z.x+z.w/2; const y = a[0]==='u' ? 10 : (a[0]==='d' ? z.y+z.h+12 : a==='x' ? z.y+z.h : z.y-4); return lab(k,x,y,ax); }).join('')}
-    ${h?`<text x="${W/2}" y="${T.y+14}" text-anchor="middle" class="mlh">관중 ${big?Math.round(h/NALL*100)+'%':h}</text>`:''}
-  </svg><div class="mlegend num">${n?`${n}시 중 관중 ${h} · ${Math.round(h/n*100)}%`:''}</div>`;
+    ${h?`<text x="${W/2}" y="${T.y+14}" text-anchor="middle" class="mlh">관중 ${big?Math.round(h/NALL*100)+'%':`${h} · ${Math.round(h/NALL*100)}%`}</text>`:''}
+  </g></svg><div class="mlegend num">${n?`${n}시 중 관중 ${h} · ${Math.round(h/n*100)}%`:''}</div>`;
 }
 // 순 저장 직후: 큰 카드 잠깐
 function showRoundPop(arr, n, dayHits){
