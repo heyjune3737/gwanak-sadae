@@ -1917,7 +1917,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04za';
+const APP_VER = '2026.10.04zb';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2017,12 +2017,12 @@ function openClaim(){
   const sh=openSheet(`<h3>내 캐릭터에 비밀번호 걸기</h3><p class="muted" style="margin:0">이제 캐릭터마다 비밀번호 4자리가 있어요. 정하면 다른 폰에서도 이 캐릭터와 기록을 불러올 수 있고, 다른 사람이 내 기록을 고칠 수 없어요.</p>
     <div class="row" style="align-items:center;gap:12px"><span style="width:64px;display:inline-block">${charSVG(S.me.char)}</span><b style="font-size:18px">${esc(S.me.name)}</b></div>
     <div class="field"><label for="clPin">비밀번호 정하기</label>${pinInput('clPin')}</div>
-    <div class="field"><label for="clReal">실명 <span class="tiny muted">· 관리자만 봐요 (정 명단 확인용) · 화면엔 안 나와요</span></label><input class="input" id="clReal" maxlength="20" placeholder="예: 홍길동" autocomplete="name"></div>
+    <div class="field"><label for="clReal">실명</label><input class="input" id="clReal" maxlength="20" placeholder="예: 홍길동" autocomplete="name"><span class="tiny muted" style="display:block;margin-top:4px">부정 가입 방지와 정 소속 확인을 위해, 실명은 관리자가 가입 승인 때만 확인해요. 다른 사원에게는 보이지 않아요.</span></div>
     <div class="actions"><button class="btn ghost" id="clOther">다른 캐릭터 불러오기</button><button class="btn pri" id="clGo">비밀번호 걸기</button></div>`);
   onlyDigits($('#clPin',sh)); setTimeout(()=>$('#clPin',sh).focus(),120);
   $('#clOther',sh).addEventListener('click',()=>openLogin(''));
   $('#clGo',sh).addEventListener('click',async()=>{ const pin=$('#clPin',sh).value; if(!/^\d{4}$/.test(pin)){ toast('비밀번호 숫자 4자리를 넣어 주세요'); return; }
-    const real=($('#clReal',sh).value||'').trim(); if(real.length<2){ $('#clReal',sh).focus(); toast('실명을 적어 주세요 (관리자만 봐요)'); return; }
+    const real=($('#clReal',sh).value||'').trim(); if(real.length<2){ $('#clReal',sh).focus(); toast('실명을 적어 주세요 (가입 승인 확인용)'); return; }
     const st=await registerMe(S.me, pin, real); if(st){ closeSheet(); toast(st==='active'?'비밀번호를 걸었어요. 잊지 마세요!':'가입 신청했어요. 관리자 승인 후 쓸 수 있어요'); } });
 }
 function openPinChange(){
@@ -2528,7 +2528,7 @@ function openProfile(){
     <div class="pk-stage"><div class="who"><span id="pkBig"></span><span class="pk-tag" id="pkTag"></span></div></div>
     <div class="pk-grid" id="pkGrid"></div>
     <div class="field"><label for="pfName">활터에서 부르는 이름</label><input class="input" id="pfName" maxlength="10" placeholder="예: 홍길동" value="${esc(me.name)}" autocomplete="off"></div>
-    ${needPin()?`<div class="field"><label for="pfPin">비밀번호 4자리 <span class="tiny muted">· 다른 폰에서 불러올 때 써요</span></label>${pinInput('pfPin')}</div><div class="field"><label for="pfReal">실명 <span class="tiny muted">· 관리자만 봐요 (정 명단 확인용) · 화면엔 안 나와요</span></label><input class="input" id="pfReal" maxlength="20" placeholder="예: 홍길동" autocomplete="name"></div>`:''}
+    ${needPin()?`<div class="field"><label for="pfPin">비밀번호 4자리 <span class="tiny muted">· 다른 폰에서 불러올 때 써요</span></label>${pinInput('pfPin')}</div><div class="field"><label for="pfReal">실명</label><input class="input" id="pfReal" maxlength="20" placeholder="예: 홍길동" autocomplete="name"><span class="tiny muted" style="display:block;margin-top:4px">부정 가입 방지와 정 소속 확인을 위해, 실명은 관리자가 가입 승인 때만 확인해요. 다른 사원에게는 보이지 않아요.</span></div>`:''}
     ${others.length && !S.me ? `<div><div class="muted" style="margin-bottom:6px;font-size:12px">${store.kind==='remote'?'이미 등록한 사원이라면 이름을 누르고 비밀번호를 넣으세요':'이미 등록한 사원이라면 이름을 골라 이어서 쓰세요'}</div><div class="chips">${others.map(m=>`<button class="chip" data-pick="${m.id}">${esc(m.name)}</button>`).join('')}</div></div>` : ''}
     ${!S.me?`<div class="field"><label for="pfJeong">소속 정</label><select class="input" id="pfJeong">${jeongChoices().map(j=>`<option value="${esc(j.id)}" ${homeJ().id===j.id?'selected':''}>${esc(j.name)}</option>`).join('')}</select><span class="jl-note">🔒 소속 정은 가입 후 <b>한 달 동안 바꿀 수 없어요.</b> 잘못 골랐다면 관리자에게 메일이나 방명록으로 알려 주세요. 다른 정 사대 구경·등록은 언제든 자유예요.</span></div>`:''}
     <div class="pk-note">활·궁체·단급은 나중에 '내 방'에서 채워요</div>
@@ -2549,7 +2549,7 @@ function openProfile(){
     const isNew=!S.me; const pj=$('#pfJeong',sh); const pickJ = pj ? jBrief(jeongChoices().find(j=>j.id===pj.value)||homeJ()) : null;
     const m={ bow:'개량궁', arrow:'카본시', hand:'우궁', grade:'신사', ...(S.me||{}), ...(pickJ?{jeong:pickJ}:{}), id:(S.me&&S.me.id)||uid(), name, char:pick };
     if(needPin()){ const pin=($('#pfPin',sh)||{}).value||''; if(!/^\d{4}$/.test(pin)){ const f=$('#pfPin',sh); f&&f.focus(); toast('비밀번호 숫자 4자리를 정해 주세요'); return; }
-      const real=(($('#pfReal',sh)||{}).value||'').trim(); if(real.length<2){ const f=$('#pfReal',sh); f&&f.focus(); toast('실명을 적어 주세요 (관리자만 봐요)'); return; }
+      const real=(($('#pfReal',sh)||{}).value||'').trim(); if(real.length<2){ const f=$('#pfReal',sh); f&&f.focus(); toast('실명을 적어 주세요 (가입 승인 확인용)'); return; }
       const bt=$('#pfSave',sh); bt.disabled=true; const ok=await registerMe(m, pin, real); bt.disabled=false; if(!ok) return;
       setMe(m); closeSheet(); renderGate(); toast(ok==='active'?`${name} 님, 사대에 오신 걸 환영해요. 비밀번호는 꼭 기억해 두세요`:'가입 신청했어요. 관리자 승인을 기다려 주세요'); return; }
     setMe(m);
