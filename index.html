@@ -2019,7 +2019,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.04zg';
+const APP_VER = '2026.10.04zh';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3001,7 +3001,7 @@ function roundTableHTML(rs, winds, o={}){
 const REST_SOUNDS = [['gaya','🪕 가야금 한 가락'],['daegeum','🎋 대금 가락'],['janggu','🥁 장구 장단'],['samul','🎊 사물 한 장단'],['pyeon','🔔 편경'],['jing','🪘 징'],['buk','🪘 북 세 번'],['beep','📟 신호음'],['vib','📳 진동만']];
 const restDev = () => { try{ return isDevNow(); }catch(e){ return false; } };   // 개발자만 먼저 시험
 const REST_SERVER = false;                                                      // 서버 폰 알림(2차) 보류
-function restCfg(){ const v=lsGet('sadae.rest',null)||{}; return {min:Math.min(30,Math.max(1,+v.min||8)), auto:!!v.auto, sound:REST_SOUNDS.some(x=>x[0]===v.sound)?v.sound:'gaya', wake:!!v.wake}; }
+function restCfg(){ const v=lsGet('sadae.rest',null)||{}; return {min:Math.min(30,Math.max(1,+v.min||8)), auto:!!v.auto, sound:REST_SOUNDS.some(x=>x[0]===v.sound)?v.sound:'pyeon', wake:!!v.wake, rep:v.rep==='once'?'once':'until'}; }
 function restCfgSet(p){ lsSet('sadae.rest',{...restCfg(), ...p}); }
 let restRun = lsGet('sadae.restRun', null);        // {end, start, min, srv, push, done?}
 const restSave = () => lsSet('sadae.restRun', restRun);
@@ -3051,6 +3051,11 @@ function synthRest(kind, sr){
   return out;
 }
 const restBufCache={};
+const REST_LEN = {gaya:3.2, daegeum:3.4, janggu:3.0, samul:3.4, pyeon:3.0, jing:4.4, buk:2.4, beep:2.0, vib:2.5};
+let restRepT=null;
+function restRepStop(){ if(restRepT){ clearInterval(restRepT); restRepT=null; } }
+function restRepStart(){ restRepStop(); const C=restCfg(); if(C.rep!=='until') return; const gap=((REST_LEN[C.sound]||3)+1.5)*1000;
+  restRepT=setInterval(()=>{ if(!restRun || !restRun.done || Date.now()-restRun.done>60e3 || S.round.some(Boolean)){ restRepStop(); return; } playRest(restCfg().sound); }, gap); }
 function playRest(kind){
   if(kind==='vib' || !kind){ try{ navigator.vibrate&&navigator.vibrate([500,200,500,200,500]); }catch(e){} return; }
   try{ navigator.vibrate&&navigator.vibrate([400,150,400]); }catch(e){}
@@ -3066,18 +3071,18 @@ let wakeLock=null;
 async function wakeOn(){ try{ if(restCfg().wake && navigator.wakeLock && !wakeLock && document.visibilityState==='visible'){ wakeLock=await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release',()=>{ wakeLock=null; }); } }catch(e){} }
 function wakeOff(){ try{ if(wakeLock) wakeLock.release(); }catch(e){} wakeLock=null; }
 async function startRest(min){
-  audioOn(); min=Math.min(30,Math.max(1,+min||restCfg().min)); restCfgSet({min});
+  audioOn(); restRepStop(); min=Math.min(30,Math.max(1,+min||restCfg().min)); restCfgSet({min});
   restRun={start:Date.now(), end:Date.now()+min*60e3, min, srv:false, push:false}; restSave(); renderRest(); wakeOn();
   const r=await restServer(min*60); if(r && r.ok && restRun){ restRun.srv=true; restRun.push=!!r.push; restSave(); renderRest(); }
 }
-function stopRest(silent){ const had=restRun && !restRun.done; restRun=null; restSave(); wakeOff(); if(had) restServer(-1); renderRest(); if(!silent) toast('휴식 타이머를 껐어요'); }
-function finishRest(){ if(!restRun || restRun.done) return; restRun.done=Date.now(); restRun.srv=false; restSave(); wakeOff(); playRest(restCfg().sound); renderRest(); }
+function stopRest(silent){ restRepStop(); const had=restRun && !restRun.done; restRun=null; restSave(); wakeOff(); if(had) restServer(-1); renderRest(); if(!silent) toast('휴식 타이머를 껐어요'); }
+function finishRest(){ if(!restRun || restRun.done) return; restRun.done=Date.now(); restRun.srv=false; restSave(); wakeOff(); playRest(restCfg().sound); restRepStart(); renderRest(); }
 function restOfferVisible(){ if(!S.me || restRun || !restDev()) return false; const d=(S.myDays||[]).find(x=>x.date===today()); return !!(d && (d.rounds||[]).length) && !S.round.some(Boolean); }
 function renderRest(){
   const el=$('#restBar'), chip=$('#restChip'); if(!el) return; const C=restCfg();
   if(!restDev()){ el.hidden=true; if(chip) chip.hidden=true; return; }
-  if(restRun && restRun.done && (Date.now()-restRun.done>120e3 || S.round.some(Boolean))){ restRun=null; restSave(); }
-  if(restRun && restRun.done){ el.hidden=false; el.className='restbar done'; el.innerHTML=`<b>🏹 휴식 끝 · 사대로 나오세요</b><small>${restRun.min}분 쉬었어요 · 눌러서 닫기</small>`; el.onclick=()=>{ restRun=null; restSave(); renderRest(); }; }
+  if(restRun && restRun.done && (Date.now()-restRun.done>120e3 || S.round.some(Boolean))){ restRun=null; restSave(); restRepStop(); }
+  if(restRun && restRun.done){ el.hidden=false; el.className='restbar done'; el.innerHTML=`<b>🏹 휴식 끝 · 사대로 나오세요</b><small>${restRun.min}분 쉬었어요 · ${restRepT?'눌러서 소리 끄기':'눌러서 닫기'}</small>`; el.onclick=()=>{ restRepStop(); restRun=null; restSave(); renderRest(); }; }
   else if(restRun){ const left=restLeft(), pct=Math.min(100,100*(Date.now()-restRun.start)/(restRun.end-restRun.start));
     const SN=(REST_SOUNDS.find(x=>x[0]===C.sound)||REST_SOUNDS[0])[1];
     const sub = restRun.push ? `끝나면 ${SN} · 화면이 꺼져도 폰 알림` : `끝나면 ${SN}${C.wake?'':' · 화면이 꺼지면 소리가 안 날 수 있어요'}`;
@@ -3096,7 +3101,8 @@ function openRestSheet(){
   const sh=openSheet(`<h3>⏱ 휴식 타이머</h3><p class="muted" style="margin:0;font-size:12.5px">한 순 쏘고 쉬는 시간을 재요. 이 기기에 저장돼요.</p>
     <div class="rs-sec"><h4>쉬는 시간</h4><div class="rs-min" id="rsMin"></div></div>
     <div class="rs-sec"><h4>시작</h4><label class="rs-tg"><input type="checkbox" id="rsAuto" ${C.auto?'checked':''}><span><b>순 저장하면 저절로 시작</b><small>끄면 저장 뒤 '⏱ 쉬기'에서 시간을 눌러 시작해요</small></span></label></div>
-    <div class="rs-sec"><h4>끝날 때 소리</h4><div class="rs-snd" id="rsSnd"></div></div>
+    <div class="rs-sec"><h4>끝날 때 소리</h4><div class="rs-snd" id="rsSnd"></div>
+      <div class="rs-min" style="margin-top:8px" id="rsRep"></div></div>
     <div class="rs-sec"><label class="rs-tg"><input type="checkbox" id="rsWake" ${C.wake?'checked':''}><span><b>쉬는 동안 화면 켜 두기</b><small>화면이 안 꺼져서 고른 소리로 알려요. 배터리를 조금 더 써요</small></span></label>
       <p class="tiny muted" style="margin:2px 0 0" id="rsPush"></p></div>
     <div class="actions"><button class="btn ghost" id="rsClose">닫기</button><button class="btn pri" id="rsOk">저장</button></div>`);
@@ -3104,11 +3110,13 @@ function openRestSheet(){
     $$('[data-m]',sh).forEach(b=>b.onclick=()=>{ pick.min=+b.dataset.m; drawMin(); }); $('#rsCustom',sh).oninput=e=>{ const v=Math.round(+e.target.value); if(v>=1&&v<=30){ pick.min=v; $$('[data-m]',sh).forEach(b=>b.classList.remove('on')); } }; };
   const drawSnd=()=>{ $('#rsSnd',sh).innerHTML=REST_SOUNDS.map(([k,t])=>`<label class="${pick.sound===k?'on':''}"><input type="radio" name="rss" value="${k}" ${pick.sound===k?'checked':''}><span>${t}</span><button type="button" class="pv" data-pv="${k}">▶</button></label>`).join('');
     $$('[name=rss]',sh).forEach(r=>r.onchange=()=>{ pick.sound=r.value; drawSnd(); }); $$('[data-pv]',sh).forEach(b=>b.onclick=e=>{ e.preventDefault(); e.stopPropagation(); playRest(b.dataset.pv); }); };
-  drawMin(); drawSnd();
+  const drawRep=()=>{ $('#rsRep',sh).innerHTML=[['until','누를 때까지 반복 (최대 1분)'],['once','한 번만']].map(([k,t])=>`<button type="button" data-rep="${k}" class="${pick.rep===k?'on':''}">${t}</button>`).join('');
+    $$('[data-rep]',sh).forEach(b=>b.onclick=()=>{ pick.rep=b.dataset.rep; drawRep(); }); };
+  drawMin(); drawSnd(); drawRep();
   const pushOn = typeof pushFlag==='function' && pushFlag();
   $('#rsPush',sh).innerHTML = REST_SERVER ? (pushOn ? '📲 화면이 꺼져 있으면 폰 알림으로 알려 드려요 (폰 기본 알림음)' : '📲 🔔 알림에서 <b>폰 알림</b>을 켜면 화면이 꺼져 있어도 알려 드려요') : '화면이 꺼지면 폰이 앱을 멈춰서 소리가 안 날 수 있어요. 사대 옆에 폰을 두실 땐 위의 \'화면 켜 두기\'를 켜 주세요. <b>(개발자 시험 중)</b>';
   $('#rsClose',sh).onclick=closeSheet;
-  $('#rsOk',sh).onclick=()=>{ restCfgSet({min:pick.min, auto:$('#rsAuto',sh).checked, sound:pick.sound, wake:$('#rsWake',sh).checked}); closeSheet(); renderRest(); toast(`쉬는 시간 ${pick.min}분${$('#rsAuto',sh).checked?' · 순 저장하면 저절로 시작':''}`); };
+  $('#rsOk',sh).onclick=()=>{ restCfgSet({min:pick.min, auto:$('#rsAuto',sh).checked, sound:pick.sound, wake:$('#rsWake',sh).checked, rep:pick.rep}); closeSheet(); renderRest(); toast(`쉬는 시간 ${pick.min}분${$('#rsAuto',sh).checked?' · 순 저장하면 저절로 시작':''}`); };
 }
 setInterval(()=>{ if(!restRun || restRun.done) return; const left=restLeft();
   if(left<=8000 && restRun.srv && document.visibilityState==='visible'){ restRun.srv=false; restSave(); restServer(-1); }   // 앱이 직접 울림 → 서버 알림 취소
