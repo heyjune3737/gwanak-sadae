@@ -758,6 +758,10 @@ table.score td{padding:5px 3px}
 :root[data-theme="dark"] .room .win{background:linear-gradient(#26343C 0 55%,#3F5A38 55% 100%)}
 @media (prefers-reduced-motion:reduce){.scene .fig,#saveRound.molgi,.live .hitbtns button.pressed{animation:none}.res,.tab .fo{transition:none}}
 
+/* 바람 세기 색 (2c) */
+:root{--ws1-bg:#E3F1F8;--ws1-fg:#1D3557;--ws2-bg:#8CC3E3;--ws2-fg:#10243D;--ws3-bg:#1D3557;--ws3-fg:#FFFFFF}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--ws1-bg:#1F3646;--ws1-fg:#B5DAF2;--ws2-bg:#3D6F8F;--ws2-fg:#F1F8FD;--ws3-bg:#B5DAF2;--ws3-fg:#10243D} }
+:root[data-theme="dark"]{--ws1-bg:#1F3646;--ws1-fg:#B5DAF2;--ws2-bg:#3D6F8F;--ws2-fg:#F1F8FD;--ws3-bg:#B5DAF2;--ws3-fg:#10243D}
 /* ===================== 5a · 도트 미니홈피 (디자인 최종안) ===================== */
 :root{
   --bg:#DCEBF0; --card:#FFFFFF; --card2:#EEF4F6; --ink:#2A2233; --ink2:#5C5566; --ink3:#8E889A;
@@ -926,6 +930,8 @@ svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:
 .rt-r.hit{background:rgba(226,70,59,.10)}
 .rt-r.zero{background:repeating-linear-gradient(135deg,var(--card) 0 6px,var(--card2) 6px 8px)}
 .rt-n{text-align:center;font-size:12.5px;font-weight:700;line-height:1.15}
+.rt-w{display:flex;align-items:center;gap:8px;min-height:32px;padding:0 10px;background:var(--card);border-top:1.5px dashed var(--line2);border-bottom:1px solid var(--line2);font-size:13px;white-space:nowrap}
+.rt-wd{color:var(--ink2);overflow:hidden;text-overflow:ellipsis}.rt-wx{margin-left:auto;flex:none;color:var(--ink)}
 .rt-n .wchip{display:block;margin:3px auto 0;width:max-content;background:var(--wind-bg);border:1px solid var(--wind-bd);color:var(--wind-ink);font-size:10px}
 .rt-d{width:calc(100% - 6px);max-width:40px;height:40px;margin:auto;display:flex;align-items:center;justify-content:center;border:2px dashed var(--line2);background:var(--card);color:var(--ink);font-size:19px;font-weight:800}
 .rt-d.H{border:2px solid var(--ink);background:var(--red);color:#fff;font-size:14px;font-weight:700}
@@ -1284,7 +1290,16 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .gb .grow>div{white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere}
 .gb .gb-hide{color:var(--ink2);font-style:italic}
 .gb-secret{display:flex;align-items:center;gap:4px;font-size:12.5px;white-space:nowrap;cursor:pointer}
-.windbar{display:flex;align-items:center;gap:8px;width:100%;margin:0 0 10px;padding:8px 10px;background:var(--wind-bg);border:2px solid var(--wind-bd);box-shadow:3px 3px 0 var(--wind-bd);font:inherit;color:var(--wind-ink);cursor:pointer;text-align:left}
+.windbar{display:flex;flex-direction:column;gap:8px;width:100%;margin:0 0 10px;padding:10px;background:var(--card);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.windbar:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.wb-row{display:flex;gap:8px;width:100%}
+.wb-wind{flex:1;min-width:0;border:2px solid var(--ink);padding:8px 10px;display:flex;flex-direction:column;gap:3px}
+.wb-wind b{font-family:var(--display);font-size:20px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wb-wind small{font-size:13px!important;color:inherit!important;opacity:.85}
+.wb-wx{flex:none;width:84px;border:2px solid var(--ink);padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.wb-wx i{font-style:normal;font-size:22px;line-height:1}.wb-wx b{font-family:var(--display);font-size:15px!important;text-align:center}
+.wb-foot{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:28px;font-size:13px;color:var(--ink3)}.wb-foot .wb-go{font-family:var(--display);font-size:14px!important;font-weight:700;color:var(--ink)!important;text-decoration:none!important}
+.wsp{display:inline-block;border:1.5px solid var(--ink);padding:2px 7px;font-family:var(--display);font-size:13px;font-weight:700;white-space:nowrap}
+.ws1{background:var(--ws1-bg);color:var(--ws1-fg)}.ws2{background:var(--ws2-bg);color:var(--ws2-fg)}.ws3{background:var(--ws3-bg);color:var(--ws3-fg)}
+.rt-f .wsp{padding:1px 7px;font-size:12px}
 .windbar .wb-ic{font-size:20px}.windbar b{display:block;font-size:14px}.windbar small{display:block;font-size:11.5px;color:var(--wind-ink2)}.windbar .wb-go{font-size:12px;color:var(--wind-go);font-weight:700;text-decoration:underline;white-space:nowrap}
 .wpick{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.wpick button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;background:var(--card);color:var(--ink);border:2px solid var(--ink);font:inherit;cursor:pointer}
 .wpick button b{font-size:20px;line-height:1}.wpick button span{font-size:11px}.wpick button.on,.wlv button.on,.wcomp button.on{background:var(--ink);color:var(--card)}
@@ -1338,6 +1353,27 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .rk-ch{width:30px;font-size:10.5px;text-align:center;color:var(--ink3)}.rk-ch.up{color:#2E8B57}.rk-ch.dn{color:var(--red)}
 .rk-row.top1{background:linear-gradient(90deg,color-mix(in srgb,var(--gold,#F2C14E) 35%,transparent),transparent)}
 .rk-me{margin-top:6px;background:var(--red-soft,#fde3e0);border:2px solid var(--red)}
+.mr-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:10px}.mr-h h2{margin:0;font-family:var(--display);font-size:20px;white-space:nowrap}
+.mr-tabs{display:flex;border:2px solid var(--ink)}.mr-tabs button{font:inherit;font-family:var(--display);font-size:14px;padding:7px 9px;border:0;background:transparent;color:var(--ink);cursor:pointer;white-space:nowrap}.mr-tabs button.on{background:var(--ink);color:var(--card)}
+.mr-row{padding:11px 0 10px;border-top:1.5px dashed var(--line2);display:flex;flex-direction:column;gap:7px}
+.mr-top{display:grid;grid-template-columns:100px 88px minmax(0,1fr);align-items:center}
+.mr-c{font-size:17px;font-weight:700;white-space:nowrap}
+.mr-rk{display:flex;align-items:baseline;gap:2px;color:var(--ink)}.mr-rk em{font-style:normal;font-size:18px;align-self:center}.mr-rk b{font-family:var(--display);font-size:26px;line-height:1}.mr-rk small{font-family:var(--display);font-size:14px;font-weight:700}
+.mr-rk.top{color:var(--red)}.mr-rk.none{color:var(--ink3)}
+.mr-v{display:flex;align-items:baseline;justify-content:flex-end;gap:2px}.mr-v b{font-family:var(--display);font-size:26px;line-height:1}.mr-v small{font-size:14px;color:var(--ink2)}
+.mr-bot{display:flex;align-items:center;gap:8px}
+.mr-cells{display:flex;gap:2px;flex:none}.mr-cells i{width:9px;height:12px;box-sizing:border-box;border:1.5px solid var(--line2)}
+.mr-cells i.on{border-color:var(--ink);background:var(--ink2)}.mr-cells.gold i.on{background:var(--gold)}.mr-cells.red i.on{background:var(--red)}.mr-cells.gray i.on{background:var(--ink3)}.mr-cells i.dash{border-style:dashed;border-color:var(--ink3)}
+.mr-d{font-size:14px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mr-d.first{color:var(--red);font-weight:700}
+.mr-t{margin-left:auto;font-size:13px;color:var(--ink3);white-space:nowrap}
+.mr-foot{border-top:1.5px dashed var(--line2);padding-top:10px;margin:0;font-size:13px;color:var(--ink3)}
+.ms-list{display:flex;flex-direction:column;gap:10px}
+.ms-card{display:grid;grid-template-columns:52px repeat(4,minmax(0,1fr)) 12px;align-items:center;row-gap:6px;width:100%;font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:9px 10px 8px 12px;cursor:pointer;text-align:center}
+.ms-card:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.ms-m{display:flex;flex-direction:column;line-height:1.1;text-align:left}.ms-m b{font-family:var(--display);font-size:18px}.ms-m small{font-size:12px;color:var(--ink3)}
+.ms-c{display:flex;flex-direction:column;align-items:center}.ms-c b{font-family:var(--display);font-size:16px;font-weight:400}.ms-c b.strong{font-weight:700}.ms-c small{font-size:12px;color:var(--ink3)}.ms-c.top b{color:var(--red)}
+.ms-go{font-family:var(--display);font-size:16px;color:var(--ink3)}
+.ms-best{grid-column:1/-1;border-top:1.5px dashed var(--line2);padding-top:5px;font-size:13px;color:var(--ink2);text-align:left}
 .rk-more{display:block;width:100%;margin:6px 0 2px;padding:7px 0;font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:transparent;border:1.5px dashed var(--ink3);cursor:pointer}
 .rk-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;font-size:11px;color:var(--ink3)}
 
@@ -1603,6 +1639,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
       </div>
 
       <div id="recView" hidden>
+      <div class="card" id="myRankCard"></div>
       <div class="card" id="dayCard">
         <div class="dnav"><button type="button" class="btn sm" id="dPrev" aria-label="이전 날">◀</button><div class="dnav-t"><b id="dTitle"></b><span id="dSub"></span></div><button type="button" class="btn sm" id="dNext" aria-label="다음 날">▶</button></div>
         <div id="dBody"></div>
@@ -1611,6 +1648,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
         <div class="sec-head"><h2>🎯 낙점 그림</h2><div class="mapseg" id="mapSeg"><button type="button" data-mr="day" class="on">이 날</button><button type="button" data-mr="month">이번 달</button><button type="button" data-mr="d100">100일</button><button type="button" data-mr="all">전체</button></div></div>
         <div id="mapBody"></div>
       </div>
+      <div class="card" id="monthSumCard"></div>
 
       <div class="card">
         <div class="sec-head"><h2>이번 달 <small id="monthLabel"></small></h2></div>
@@ -2033,7 +2071,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.06a';
+const APP_VER = '2026.10.06b';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2891,8 +2929,8 @@ $('#saveRound').addEventListener('click', async ()=>{
   const arr=[0,1,2,3,4].map(i=>S.round[i]); if(arr.some(x=>!x)) return;
   const t=today(), p=`days/${S.me.id}_${t}`;
   const cur = (await store.get(p)) || {memberId:S.me.id, date:t, rounds:[]};
-  const n0=(cur.rounds||[]).length; const cw=currentWind();
-  if(cw && cw.r){ const ws=(cur.winds||[]).slice(0,n0); while(ws.length<n0) ws.push(null); ws.push({r:cw.r, l:cw.l||0, src:cw.src, ...(cw.ms!=null?{ms:cw.ms,deg:cw.deg,g:cw.g}:{})}); cur.winds=ws; }
+  const n0=(cur.rounds||[]).length; { const jw=S.windNow[windJid()]; if(!jw || jw.err || Date.now()-(jw.at||0)>15*60e3){ try{ await Promise.race([fetchWind(windJid(), true), new Promise(r=>setTimeout(r,2500))]); }catch(e){} } } const cw=currentWind();
+  if(cw && (cw.r || cw.ms!=null)){ const ws=(cur.winds||[]).slice(0,n0); while(ws.length<n0) ws.push(null); ws.push({...(cw.r?{r:cw.r, l:cw.l||0}:{}), src:'a', ...(cw.ms!=null?{ms:cw.ms,deg:cw.deg,g:cw.g}:{}), ...(cw.wc!=null?{wc:cw.wc}:{}), ...(cw.t!=null?{t:cw.t}:{}), ...(cw.p!=null?{p:cw.p}:{})}); cur.winds=ws; }
   else if(cur.winds){ const ws=cur.winds.slice(0,n0); while(ws.length<n0) ws.push(null); ws.push(null); cur.winds=ws; }
   cur.rounds=[...(cur.rounds||[]), arr]; cur.updatedAt=Date.now();
   { const G=currentGoal(), v=goalStore(); if(G) cur.goal={g:G.g, n:G.n}; else if(cur.goal && v.day && v.day.date===t && !v.day.g) cur.goal=null; }
@@ -2930,9 +2968,9 @@ async function fetchWind(jid, force){
 }
 async function fetchWind0(jid, geo, c){
   try{
-    const u=`https://api.open-meteo.com/v1/forecast?latitude=${geo[0]}&longitude=${geo[1]}&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=ms&timezone=Asia%2FSeoul`;
+    const u=`https://api.open-meteo.com/v1/forecast?latitude=${geo[0]}&longitude=${geo[1]}&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m,precipitation&wind_speed_unit=ms&timezone=Asia%2FSeoul`;
     const r=await fetch(u); const j=await r.json(); const cu=j&&j.current; if(!cu || typeof cu.wind_speed_10m!=='number') throw new Error('no data');
-    const w={at:Date.now(), ms:+cu.wind_speed_10m.toFixed(1), deg:Math.round(cu.wind_direction_10m), g:+(cu.wind_gusts_10m||0).toFixed(1)};
+    const w={at:Date.now(), ms:+cu.wind_speed_10m.toFixed(1), deg:Math.round(cu.wind_direction_10m), g:+(cu.wind_gusts_10m||0).toFixed(1), ...(typeof cu.weather_code==='number'?{wc:cu.weather_code}:{}), ...(typeof cu.temperature_2m==='number'?{t:Math.round(cu.temperature_2m)}:{}), ...(typeof cu.precipitation==='number'?{p:+cu.precipitation.toFixed(1)}:{})};
     S.windNow[jid]=w; lsSet('sadae.wind.'+jid, w); return w;
   }catch(e){ S.windNow[jid] = c && !c.err ? c : {err:true, at:Date.now()}; return S.windNow[jid].err?null:S.windNow[jid]; }
 }
@@ -2940,22 +2978,25 @@ async function fetchWind0(jid, geo, c){
 function windManual(){ const m=lsGet('sadae.windman', null); return (m && m.date===today() && WREL[m.r]) ? m : null; }
 function currentWind(){
   const jid=windJid(), w=S.windNow[jid], b=bearingOf(jid), man=windManual();
-  const auto = (w && !w.err) ? {ms:w.ms, deg:w.deg, g:w.g, l:wLevel(w.ms), r: wLevel(w.ms)===0?'0' : (b!=null? wRelOf(w.deg,b) : null)} : null;
-  if(man) return {r:man.r, l:man.r==='0'?0:man.l, src:'m', ...(auto?{ms:auto.ms,deg:auto.deg,g:auto.g}:{})};
-  if(auto) return {...auto, src:'a'};
+  const auto = (w && !w.err) ? {ms:w.ms, deg:w.deg, g:w.g, l:wLevel(w.ms), r: wLevel(w.ms)===0?'0' : (b!=null? wRelOf(w.deg,b) : null), ...(w.wc!=null?{wc:w.wc}:{}), ...(w.t!=null?{t:w.t}:{}), ...(w.p!=null?{p:w.p}:{})} : null;
+  if(auto) return {...auto, src:'a'};   // 2026-10-06 손으로 고르기 없앰 — 늘 자동
   return null;
 }
+const WX = c => c==null ? null : c===0 ? ['☀️','맑음'] : c<=2 ? ['🌤','구름 조금'] : c===3 ? ['☁️','흐림'] : c<=48 ? ['🌫','안개'] : c<=57 ? ['🌦','이슬비'] : c<=67 ? ['🌧','비'] : c<=77 ? ['❄️','눈'] : c<=82 ? ['🌧','소나기'] : c<=86 ? ['🌨','눈발'] : ['⛈','뇌우'];
+const wxLabel = w => { const x=w&&WX(w.wc); return x ? `${x[0]} ${x[1]}${w.t!=null?` ${w.t}℃`:''}` : (w&&w.t!=null?`${w.t}℃`:''); };
+const WSV = w => !w ? 1 : (w.r==='0' ? 1 : Math.max(1, Math.min(3, +w.l || (w.ms!=null ? Math.max(1,wLevel(w.ms)) : 1))));
+const windChipB = w => !w ? '' : `<span class="wsp ws${WSV(w)}">${w.r ? (w.r==='0' ? '· 바람 없음' : `${WREL[w.r].k} ${WREL[w.r].l} ${WLV[WSV(w)]}`) : `🌬 ${WLV[WSV(w)]}`}</span>`;
+const windDetail = w => !w || w.ms==null ? '' : `${w.deg!=null?compassOf(w.deg)+'풍 ':''}${w.ms}m/s${w.g>w.ms+1?` · 돌풍 ${w.g}`:''}`;
+const windLine = w => { if(!w) return ''; const a=[]; if(w.r) a.push(`${WREL[w.r].k} ${windLabel(w)}`); if(w.ms!=null) a.push(`${w.deg!=null?compassOf(w.deg)+'풍 ':''}${w.ms}m/s${w.g>w.ms+1?` · 돌풍 ${w.g}`:''}`); const x=wxLabel(w); return (a.length?'🌬 '+a.join(' · '):'') + (x?(a.length?'  ':'')+x:''); };
 const windLabel = w => !w || !w.r ? '' : (w.r==='0' ? '바람 없음' : `${WREL[w.r].l} ${WLV[w.l]||''}`.trim());
 const windChip = w => !w || !w.r ? '' : `<span class="wchip w-${w.r}" title="${esc(windLabel(w))}${w.ms!=null?` · ${w.ms}m/s`:''}">${WREL[w.r].k}${w.r==='0'?'':WLV[w.l]||''}</span>`;
 function renderWindBar(){
   const el=$('#windBar'); if(!el) return; const jid=windJid(); const w=S.windNow[jid]; const cw=currentWind(); const b=bearingOf(jid);
-  const raw = w && !w.err ? `${compassOf(w.deg)}풍 ${w.ms}m/s${w.g>w.ms+1?` · 돌풍 ${w.g}`:''}` : '';
-  let main, sub;
-  if(cw && cw.r){ main=`${WREL[cw.r].k} ${windLabel(cw)}`; sub = cw.src==='m' ? `직접 고름${raw?' · 지금 '+raw:''}` : raw; }
-  else if(w && !w.err && b==null){ main=raw; sub='과녁 방향을 정하면 좌→우처럼 보여요'; }
+  let main, sub, wx='';
+  if(cw && (cw.r || cw.ms!=null)){ main = cw.r ? (cw.r==='0' ? '· 바람 없음' : `${WREL[cw.r].k} ${WREL[cw.r].l} · ${WLV[WSV(cw)]}`) : `🌬 ${WLV[WSV(cw)]} 바람`; sub=windDetail(cw) + (b==null&&!cw.r?' · 과녁 방향은 관리자가 정해요':''); const x=WX(cw.wc); wx = x||cw.t!=null ? `<span class="wb-wx"><i>${x?x[0]:'🌡'}</i><b>${x?x[1]+' ':''}${cw.t!=null?cw.t+'℃':''}</b></span>` : ''; }
   else if(w===undefined){ main='바람 불러오는 중…'; sub=''; }
-  else { main='바람 기록하기'; sub='눌러서 방향·세기를 골라요'; }
-  el.innerHTML = `<span class="wb-ic">🌬</span><span class="grow"><b>${esc(main)}</b>${sub?`<small>${esc(sub)}</small>`:''}</span><span class="wb-go">바꾸기</span>`;
+  else { main='바람 정보를 못 받았어요'; sub='잠시 뒤 다시 받아요'; }
+  el.innerHTML = `<span class="wb-row"><span class="wb-wind ws${cw?WSV(cw):1}"><b>${esc(main)}</b>${sub?`<small>${esc(sub)}</small>`:''}</span>${wx}</span><span class="wb-foot"><span>순 저장 때 자동 기록</span><span class="wb-go">자세히 ›</span></span>`;
 }
 async function refreshWind(force){ const jid=windJid(); if(!JEONG_GEO[jid]){ S.windNow[jid]={err:true}; renderWindBar(); return; } renderWindBar(); await fetchWind(jid, force); renderWindBar(); }
 $('#windBar').addEventListener('click', openWindSheet);
@@ -2964,23 +3005,15 @@ function openWindSheet(){
   let pr=cw.r||null, pl=cw.l||1;
   const by = S.windSet&&S.windSet.by&&S.windSet.by[jid]; const byName = by ? ((memberById(by)||{}).name||'사원') : '';
   const sh=openSheet(`<h3>🌬 지금 바람</h3>
-    <div class="card flat" style="padding:10px 12px">${w && !w.err ? `<b>${esc(jn)} · ${compassOf(w.deg)}풍 ${w.ms}m/s</b>${w.g?` <span class="tiny muted">(돌풍 ${w.g}m/s)</span>`:''}<br><span class="tiny muted">${new Date(w.at).toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit'})} 기준 · 날씨 정보 Open-Meteo.com</span>` : `<span class="tiny muted">${JEONG_GEO[jid]?'날씨 정보를 불러오지 못했어요. 아래에서 직접 골라 주세요.':'이 정은 위치 정보가 없어 직접 골라 주세요.'}</span>`}</div>
-    <div class="field"><label>사대에서 과녁을 바라볼 때</label><div class="wpick">${WREL_ORDER.map(k=>`<button type="button" data-wr="${k}" class="${pr===k?'on':''}"><b>${WREL[k].k}</b><span>${WREL[k].l}</span></button>`).join('')}</div></div>
-    <div class="field" id="wLvF"><label>세기</label><div class="wlv">${[1,2,3].map(l=>`<button type="button" data-wl="${l}" class="${pl===l?'on':''}">${WLV[l]}</button>`).join('')}</div><span class="tiny muted">약 ~3m/s · 중 ~6m/s · 강 6m/s 넘게</span></div>
-    <div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn pri grow" id="wSave" type="button">이 바람으로 기록</button>${windManual()?'<button class="btn ghost" id="wAuto" type="button">자동으로</button>':''}</div>
-    <details class="notice" ${b==null?'open':''}><summary>🎯 ${esc(jn)} 과녁 방향 ${b!=null?`<span class="tiny muted">· ${compassOf(b)}쪽 (${b}°)${byName?' · '+esc(byName)+' 님이 정함':''}</span>`:'<span class="tiny" style="color:var(--red)">· 아직 안 정함</span>'}</summary>
+    <div class="card flat" style="padding:10px 12px">${w && !w.err ? `<b>${esc(jn)} · ${esc(windLine(cw.ms!=null?cw:w))}</b><br><span class="tiny muted">${new Date(w.at).toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit'})} 기준 · 날씨 정보 Open-Meteo.com</span>` : `<span class="tiny muted">${JEONG_GEO[jid]?'날씨 정보를 불러오지 못했어요. 잠시 뒤 다시 받아요.':'이 정은 위치 정보가 없어 바람을 자동으로 받을 수 없어요.'}</span>`}</div>
+    <p class="tiny muted" style="margin:8px 2px 0">순을 저장할 때 이 바람 · 날씨가 그 순에 자동으로 남아요. 같은 정 · 같은 시각이면 모두 같은 값이에요. (세기: 약 ~3m/s · 중 ~6m/s · 강 6m/s 넘게)</p>
+    <details class="notice" ${b==null&&isAdminNow()?'open':''} ${isAdminNow()?'':'hidden'}><summary>🎯 ${esc(jn)} 과녁 방향 ${b!=null?`<span class="tiny muted">· ${compassOf(b)}쪽 (${b}°)${byName?' · '+esc(byName)+' 님이 정함':''}</span>`:'<span class="tiny" style="color:var(--red)">· 아직 안 정함</span>'}</summary>
       <p class="tiny" style="margin:6px 0">사대에서 과녁이 어느 쪽에 있나요? 한 번만 정하면 정 사원 모두에게 맞바람·좌→우처럼 자동으로 보여요.</p>
       <div class="wcomp">${COMPASS.map((c,i)=>`<button type="button" data-wb="${i*45}" class="${b===i*45?'on':''}">${c}</button>`).join('')}</div>
       <button class="btn sm ghost" id="wCompass" type="button" style="margin-top:8px">📱 폰 나침반으로 재기</button><div class="tiny muted" id="wCompassOut"></div></details>
     <div class="actions"><button class="btn ghost" id="wClose">닫기</button></div>`);
-  const paint=()=>{ $$('[data-wr]',sh).forEach(x=>x.classList.toggle('on',x.dataset.wr===pr)); $$('[data-wl]',sh).forEach(x=>x.classList.toggle('on',+x.dataset.wl===pl)); $('#wLvF',sh).hidden = pr==='0'; };
-  paint();
-  $$('[data-wr]',sh).forEach(x=>x.onclick=()=>{ pr=x.dataset.wr; paint(); });
-  $$('[data-wl]',sh).forEach(x=>x.onclick=()=>{ pl=+x.dataset.wl; paint(); });
   $('#wClose',sh).onclick=closeSheet;
-  $('#wSave',sh).onclick=()=>{ if(!pr){ toast('바람 방향을 골라 주세요'); return; } lsSet('sadae.windman',{date:today(), r:pr, l:pr==='0'?0:pl}); closeSheet(); renderWindBar(); toast('다음 순부터 이 바람으로 기록해요'); };
-  const wa=$('#wAuto',sh); if(wa) wa.onclick=()=>{ lsSet('sadae.windman',null); closeSheet(); renderWindBar(); };
-  const setB=async deg=>{ deg=Math.round(((deg%360)+360)%360); const ok=await write(st=>st.merge('settings/wind',{bearing:{[jid]:deg}, by:{[jid]:S.me?S.me.id:''}})); if(ok){ toast(`${jn} 과녁 방향을 ${compassOf(deg)}쪽으로 정했어요`); closeSheet(); renderWindBar(); } };
+  const setB=async deg=>{ if(!isAdminNow()){ toast('과녁 방향은 관리자가 정해요'); return; } deg=Math.round(((deg%360)+360)%360); const ok=await write(st=>st.merge('settings/wind',{bearing:{[jid]:deg}, by:{[jid]:S.me?S.me.id:''}})); if(ok){ toast(`${jn} 과녁 방향을 ${compassOf(deg)}쪽으로 정했어요`); closeSheet(); renderWindBar(); } };
   $$('[data-wb]',sh).forEach(x=>x.onclick=()=>setB(+x.dataset.wb));
   $('#wCompass',sh).onclick=async()=>{ const out=$('#wCompassOut',sh);
     try{ if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){ const p=await DeviceOrientationEvent.requestPermission(); if(p!=='granted'){ out.textContent='나침반 권한이 필요해요'; return; } } }catch(e){}
@@ -3061,8 +3094,8 @@ const gradeFor = t => { const g=GRADES.find(([n])=>t>=n); return g?g[1]:null; };
 function roundTableHTML(rs, winds, o={}){
   const del=!!o.del; let ch=0; const tot=rs.reduce((a,r)=>a+hitsOf(r),0);
   return `<div class="rt ${del?'rt-del':''}"><div class="rt-h"><span>순</span><span>1시</span><span>2시</span><span>3시</span><span>4시</span><span>5시</span><span>중</span><span>누적</span>${del?'<span></span>':''}</div>${rs.map((r,k)=>{ const n=hitsOf(r); ch+=n; const pc=Math.round(ch/((k+1)*5)*100);
-    return `<div class="rt-r ${n===5?'molgi':''} ${n===0?'zero':''} ${n>0&&n<5?'hit':''} ${n===4?'s4':''}"><span class="rt-n">${k+1}순${windChip((winds||[])[k])}</span>${r.map(x=>`<span class="rt-d ${x==='H'?'H':''}">${x==='H'?'中':glyph(x)}</span>`).join('')}<span class="rt-s num">${n}<em>${n*20}%</em></span><span class="rt-c num">${ch}<small>· ${pc}%</small><i><b style="width:${pc}%"></b></i></span>${del?`<button type="button" class="rt-x" data-del="${k}" aria-label="${k+1}순 지우기">✕</button>`:''}</div>`; }).join('')}
-    <div class="rt-f"><span>中 관중 · 화살표 = 빗나간 방향</span><span>평균 ${rs.length?(tot/rs.length).toFixed(1):0}중</span></div></div>`;
+    return `<div class="rt-r ${n===5?'molgi':''} ${n===0?'zero':''} ${n>0&&n<5?'hit':''} ${n===4?'s4':''}"><span class="rt-n">${k+1}순${windLine((winds||[])[k])?'':windChip((winds||[])[k])}</span>${r.map(x=>`<span class="rt-d ${x==='H'?'H':''}">${x==='H'?'中':glyph(x)}</span>`).join('')}<span class="rt-s num">${n}<em>${n*20}%</em></span><span class="rt-c num">${ch}<small>· ${pc}%</small><i><b style="width:${pc}%"></b></i></span>${del?`<button type="button" class="rt-x" data-del="${k}" aria-label="${k+1}순 지우기">✕</button>`:''}</div>${windLine((winds||[])[k])?`<div class="rt-w">${windChipB((winds||[])[k])}<span class="rt-wd">${esc(windDetail((winds||[])[k]))}</span><span class="rt-wx">${esc(wxLabel((winds||[])[k]))}</span></div>`:''}`; }).join('')}
+    <div class="rt-f"><span>${(winds||[]).some(w=>w&&(w.r||w.ms!=null))?'바람 세기 <span class="wsp ws1">약</span> <span class="wsp ws2">중</span> <span class="wsp ws3">강</span>':'中 관중 · 화살표 = 빗나간 방향'}</span><span>평균 ${rs.length?(tot/rs.length).toFixed(1):0}중</span></div></div>`;
 }
 /* ---------- ⏱ 휴식 타이머 ---------- */
 const REST_SOUNDS = [['gaya','🪕 가야금 한 가락'],['daegeum','🎋 대금 가락'],['janggu','🥁 장구 장단'],['samul','🎊 사물 한 장단'],['pyeon','🔔 편경'],['jing','🪘 징'],['buk','🪘 북 세 번'],['beep','📟 신호음'],['vib','📳 진동만']];
@@ -4724,7 +4757,52 @@ $('#dPrev').addEventListener('click',()=>shiftDay(-1)); $('#dNext').addEventList
   el.addEventListener('touchend',e=>{ if(x0===null) return; const t=e.changedTouches[0]; const dx=t.clientX-x0, dy=t.clientY-y0; x0=null; if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.5) shiftDay(dx<0?1:-1); },{passive:true}); })();
 $$('#mapSeg [data-mr]').forEach(b=>b.addEventListener('click',()=>{ S.mapRange=b.dataset.mr; $$('#mapSeg [data-mr]').forEach(x=>x.classList.toggle('on',x===b)); renderDayView(); }));
 const bigDots = r => `<div class="bdots">${r.map(x=>`<span class="bdot ${rc(x)}">${x==='H'?'中':glyph(x)}</span>`).join('')}</div>`;
+S.myrk = {per:lsGet('sadae.myrkPer','month'), data:{}, at:{}, busy:{}};
+const myrkRange = per => { const t=today(); if(per==='week') return [hubFrom(), t]; if(per==='prev'){ const p=ymAdd(t.slice(0,7),-1); return [p+'-01', ymLast(p)]; } return [t.slice(0,7)+'-01', t]; };
+async function myrkLoad(per){ if(S.myrk.busy[per] || (S.myrk.data[per] && Date.now()-(S.myrk.at[per]||0)<10*60e3)) return; S.myrk.busy[per]=true;
+  try{ const [f,t]=myrkRange(per); const d=await rankFetch(f,t); S.myrk.data[per]=d; S.myrk.at[per]=Date.now(); }catch(e){} S.myrk.busy[per]=false; if(S.tab==='record' && S.recView==='view') renderMyRank(); }
+const MYRK_NEED = {rate:[5,'순'], jeongsim:[20,'순']};
+function renderMyRank(){
+  const el=$('#myRankCard'); if(!el) return; if(!S.me){ el.hidden=true; return; } el.hidden=false;
+  const per=S.myrk.per; const data=S.myrk.data[per]; myrkLoad(per);
+  const me=memberById(S.me.id)||{}; const hidden=!!me.rankHide; const [f,t]=myrkRange(per);
+  let mine=data&&(data.members||[]).find(o=>o.mid===S.me.id); if(!mine && data){ try{ mine=(rankLocal(f,t).members||[]).find(o=>o.mid===S.me.id); }catch(e){} }
+  const cells=(fill,cls,dash)=>`<span class="mr-cells ${cls}">${Array.from({length:10},(_,k)=>`<i class="${k<fill?'on':dash?'dash':''}"></i>`).join('')}</span>`;
+  const rows = !data ? '<div class="tiny muted" style="padding:10px 0">순위를 불러오는 중…</div>' : RK_CATS.map(c=>{
+    const L=(data.members||[]).filter(o=>c.ok(o)&&memberById(o.mid)).sort((a,b)=>c.v(b)-c.v(a)); const i=mine?L.findIndex(o=>o.mid===S.me.id):-1;
+    let rk='—', medal='', rc='none', val='', unit='', desc='', dcls='', bar=cells(0,'',false);
+    if(mine && c.ok(mine)){ const [b,u]=c.big(mine); val=b; unit=u;
+      if(hidden || i<0){ desc='순위에는 안 들어가요'; }
+      else { rk=String(i+1); medal=i<3?['🥇','🥈','🥉'][i]:''; rc=i<3?'top':'';
+        if(i===0){ desc=L.length>1?'1위예요!':'혼자 1위예요'; dcls='first'; bar=cells(10,'gold',false); }
+        else { const [pb,pu]=c.big(L[i-1]); const gap=Math.max(0,+(pb-b).toFixed(1)); desc = gap>0 ? `${i}위까지 ${gap}${pu}` : `${i}위와 같아요`;
+          bar=cells(Math.max(1,Math.min(9,Math.round(pb>0?b/pb*10:5))), i<3?'red':'ink', false); } } }
+    else if(mine && MYRK_NEED[c.id]){ const [need,u]=MYRK_NEED[c.id]; val=mine.n; unit=u; desc=`${need}${u}부터 순위 · ${need-mine.n}${u} 더`; bar=cells(Math.round(mine.n/need*10),'gray',true); }
+    else { desc = c.id==='dajeong' ? '방명록 · 응원으로 정을 나눠 보세요' : '아직 기록이 없어요'; }
+    return `<div class="mr-row"><div class="mr-top"><span class="mr-c">${c.ic} ${c.t}</span><span class="mr-rk ${rc}">${medal?`<em>${medal}</em>`:''}<b>${rk}</b>${rk!=='—'?'<small>위</small>':''}</span><span class="mr-v">${val!==''?`<b>${val}</b><small>${unit}</small>`:''}</span></div>
+      <div class="mr-bot">${bar}<span class="mr-d ${dcls}">${desc}</span><span class="mr-t">/ ${L.length}명</span></div></div>`; }).join('');
+  const lab={month:`${+today().slice(5,7)}월`, week:'최근 7일', prev:`${+ymAdd(today().slice(0,7),-1).slice(5)}월`};
+  el.innerHTML=`<div class="mr-h"><h2>📊 내 순위</h2><div class="mr-tabs" role="tablist">${['month','week','prev'].map(k=>`<button type="button" data-myrk="${k}" class="${per===k?'on':''}" aria-selected="${per===k}">${lab[k]}</button>`).join('')}</div></div>
+    ${rows}<p class="mr-foot">${hidden?'🙈 랭킹 숨김 중 — 내 값만 보여요':'광장 순위와 같은 계산 · 나만 보는 화면'}</p>`;
+  $$('[data-myrk]',el).forEach(b=>b.onclick=()=>{ S.myrk.per=b.dataset.myrk; lsSet('sadae.myrkPer',S.myrk.per); renderMyRank(); });
+}
+function renderMonthSum(){
+  const el=$('#monthSumCard'); if(!el) return; const by={};
+  for(const d of (S.myDays||[])){ const rs=(d.rounds||[]).filter(Array.isArray); if(!rs.length||!d.date) continue; const ym=d.date.slice(0,7); const o=by[ym]||(by[ym]={ym,days:0,n:0,h:0,mo:0,best:null,last:d.date});
+    const h=rs.reduce((a,r)=>a+hitsOf(r),0); o.days++; o.n+=rs.length; o.h+=h; o.mo+=rs.filter(r=>hitsOf(r)===5).length; if(d.date>o.last) o.last=d.date;
+    const rate=h/(rs.length*5); if(rs.length>=2 && (!o.best || rate>o.best.rate)) o.best={date:d.date, rate, n:rs.length}; }
+  const L=Object.values(by).sort((a,b)=>b.ym.localeCompare(a.ym)).slice(0,12); if(!L.length){ el.hidden=true; return; } el.hidden=false;
+  const pc=o=>Math.round(o.h/(o.n*5)*100); const mx=Math.max(...L.map(pc));
+  el.innerHTML=`<div class="mr-h"><h2>📅 월별 요약</h2><span class="tiny muted">누르면 그 달 기록으로</span></div>
+    <div class="ms-list">${L.map(o=>`<button type="button" class="ms-card" data-msd="${o.last}">
+      <span class="ms-m"><b>${+o.ym.slice(5)}월</b><small>${o.ym.slice(0,4)}</small></span>
+      <span class="ms-c"><b>${o.days}일</b><small>습사</small></span><span class="ms-c"><b>${o.n}</b><small>순</small></span>
+      <span class="ms-c ${pc(o)===mx&&L.length>1?'top':''}"><b class="strong">${pc(o)}%</b><small>관중률</small></span><span class="ms-c"><b>${o.mo}</b><small>몰기</small></span><span class="ms-go">›</span>
+      <span class="ms-best">가장 잘한 날 · ${o.best?`${+o.best.date.slice(5,7)}.${+o.best.date.slice(8)} · ${Math.round(o.best.rate*100)}%`:'—'}</span></button>`).join('')}</div>`;
+  $$('[data-msd]',el).forEach(b=>b.onclick=()=>{ S.viewDate=b.dataset.msd; renderRecord(); window.scrollTo({top:0,behavior:'smooth'}); });
+}
 function renderDayView(){
+  try{ renderMyRank(); renderMonthSum(); }catch(e){ console.warn('myrank', e); }
   const L=recDays(); if(!S.viewDate) S.viewDate = L.includes(today()) ? today() : (L[L.length-1]||today());
   const d=(S.myDays||[]).find(x=>x.date===S.viewDate); const rs=((d&&d.rounds)||[]).filter(Array.isArray);
   const [Y,M,D]=S.viewDate.split('-').map(Number); const wd=WD[new Date(Y,M-1,D).getDay()];
