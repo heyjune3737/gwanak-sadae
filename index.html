@@ -2032,7 +2032,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.05h';
+const APP_VER = '2026.10.05i';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2736,6 +2736,18 @@ function hubHot(){   // 최근 7일 받은 관심: 방명록 · 습사 등록 �
     else if(p.startsWith('plaza/') && p.slice(6)>=sinceDay){ for(const v of Object.values(d.entries)){ if(!v||!v.text||v.from===HUB_BOT||(v.at||0)<since) continue; for(const m of mem) if(m.id!==v.from && mentionRe(m.name).test(v.text)) add(m.id,'at'); } } }
   let best=null; for(const [id,o] of Object.entries(cnt)){ const sc=o.gb*2+o.ch+o.at; if(!best||sc>best.sc) best={id,sc,...o}; } return best; }
 function hubMine(){ const f=hubFrom(); let n=0,h=0,mo=0; for(const d of (S.myDays||[])) if(d&&d.date>=f) for(const r of (d.rounds||[])) if(Array.isArray(r)){ n++; const x=hitsOf(r); h+=x; if(x===5) mo++; } return {n,h,mo}; }
+S.hub.news={at:0, L:null};
+function hubNews(){   // 최근 7일: 숨은 배지 발견 → 새 배지 (사람마다 한 줄, 가장 최근 배지)
+  if(S.hub.news.L && Date.now()-S.hub.news.at<10*60e3) return S.hub.news.L;
+  const f=hubFrom(); const cut=(()=>{ const d=new Date(f+'T12:00:00'); d.setDate(d.getDate()-1); return dstr(d); })();
+  const mem=(S.members||[]).filter(m=>m&&m.name&&m.id!==HUB_BOT&&!m.rankHide); const Hd=[], Nw=[];
+  for(const m of mem){ const days=(S.me&&m.id===S.me.id)?(S.myDays||[]):allDaysOf(m.id); const old=days.filter(d=>d.date<f);
+    try{ const h0=hiddenOf(m.id, old, cut), h1=hiddenOf(m.id, days); const hx=HIDDEN.filter(x=>h1[x.id]&&!h0[x.id]); if(hx.length){ Hd.push({mid:m.id, x:hx[hx.length-1], n:hx.length, hid:true}); continue; } }catch(e){}
+    if(!days.some(d=>d.date>=f)) continue;
+    const g0=growthOf(old, m.id), g1=growthOf(days, m.id); const fr=BADGES.filter(x=>x.mag!==false && x.set!=='comp' && x.v(g1)>=x.goal && x.v(g0)<x.goal);
+    if(fr.length) Nw.push({mid:m.id, x:fr[fr.length-1], n:fr.length}); }
+  S.hub.news={at:Date.now(), L:[...Hd, ...Nw]}; return S.hub.news.L; }
+const hubNewsPick = L => L.length ? L[Math.floor(Date.now()/(12*3600e3)) % L.length] : null;   // 12시간마다 다음 사람
 function hubMag(){ try{ const ym=magCurYM(), M=+ym.slice(5), d=magData(ym); const bits=[]; if(d.wide){ bits.push(`창간호 · 베타 ${magBetaDays()}일의 기록`); } else { if(d.A.tot.mo) bits.push(`몰기 ${d.A.tot.mo}번`); if(d.nGrade) bits.push(`승단 ${d.nGrade}명`); if(d.nNew) bits.push(`새 사원 ${d.nNew}명`); }
   return {ym, t:`<b>${M}월호</b>${bits.length?' · '+esc(bits.slice(0,2).join(' · ')):' 가 나왔어요'}`}; }catch(e){ return null; } }
 function renderHub(){
@@ -2746,17 +2758,19 @@ function renderHub(){
     if(!R7) return `<span class="none">${c.ic} ${c.t}<em>불러오는 중</em></span>`; if(!o) return `<span class="none">${c.ic} ${c.t}<em>아직 없음</em></span>`;
     const [b,u]=c.big(o); return `<span>${c.ic} ${c.t} <b>${b}${u}</b><em>${esc(m.name)}</em></span>`; }).join('');
   const my=hubMine(); const myT = my.n ? `최근 7일 <b>${my.n}순</b> · 관중률 <b>${Math.round(my.h/(my.n*5)*100)}%</b>${my.mo?` · 몰기 ${my.mo}번`:''}` : '이번 주 첫 순을 남겨 보세요 — 🎯 단 도전 목표 · ⏱ 휴식 타이머도 있어요';
-  const mg=hubMag(); const hot=hubHot(); const hm=hot&&memberById(hot.id);
+  const mg=hubMag(); const hot=hubHot(); const hm=hot&&memberById(hot.id); let NL=[]; try{ NL=hubNews(); }catch(e){} const nw=hubNewsPick(NL); const nm=nw&&memberById(nw.mid);
   el.innerHTML = `<h2>🧭 오늘 사대 둘러보기</h2>
     <button type="button" class="hub-row" data-hub="rank"><span class="hub-h">🏆 이번 주 순위 <small>최근 7일 · 부문별 1위</small><span class="go">순위 전체 ›</span></span><span class="hub-rk">${cats}</span></button>
     <button type="button" class="hub-row" data-hub="rec"><span class="hub-h">✍️ 내 기록<span class="go">표 기록 ›</span></span><span class="hub-v">${myT}</span></button>
     ${mg?`<button type="button" class="hub-row" data-hub="mag"><span class="hub-h">📰 사대 월보<span class="go">월보 보기 ›</span></span><span class="hub-v">${mg.t}</span></button>`:''}
-    <button type="button" class="hub-row" data-hub="hot" ${hm?'':'disabled'}><span class="hub-h">🔥 이번 주 하태하태 사원<span class="go">${hm?'방 구경 ›':''}</span></span><span class="hub-v">${hm?`<b>${esc(hm.name)}</b> 님 · ${[hot.gb?`방명록 ${hot.gb}`:'',hot.ch?`응원 ${hot.ch}`:'',hot.at?`광장에서 불림 ${hot.at}`:''].filter(Boolean).join(' · ')}`:'아직 없어요 — 방명록 · 응원으로 정을 나눠 보세요'}</span></button>`;
+    <button type="button" class="hub-row" data-hub="hot" ${hm?'':'disabled'}><span class="hub-h">🔥 이번 주 하태하태 사원<span class="go">${hm?'방 구경 ›':''}</span></span><span class="hub-v">${hm?`<b>${esc(hm.name)}</b> 님 · ${[hot.gb?`방명록 ${hot.gb}`:'',hot.ch?`응원 ${hot.ch}`:'',hot.at?`광장에서 불림 ${hot.at}`:''].filter(Boolean).join(' · ')}`:'아직 없어요 — 방명록 · 응원으로 정을 나눠 보세요'}</span></button>
+    ${nm?`<button type="button" class="hub-row" data-hub="news"><span class="hub-h">🎉 오늘 소식 <small>${NL.length>1?`${NL.indexOf(nw)+1}/${NL.length} · 12시간마다 바뀜`:'최근 7일'}</small><span class="go">방 구경 ›</span></span><span class="hub-v">${nw.hid?`<b>${esc(nm.name)}</b> 님이 숨은 배지를 발견했어요! · ${nw.x.ic} ${esc(nw.x.t)}`:`<b>${esc(nm.name)}</b> 님 새 배지 · ${nw.x.ic} ${esc(nw.x.t)}${nw.n>1?` 외 ${nw.n-1}개`:''}`}</span></button>`:''}`;
   $$('[data-hub]',el).forEach(b=>b.onclick=()=>{ const k=b.dataset.hub;
     if(k==='rank'){ setTab('plaza'); S.rank.fold=false; try{ lsSet('sadae.rkFold',false); }catch(e){} setTimeout(()=>{ renderRank(); const c=$('#rkCard'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); },150); }
     else if(k==='rec'){ setTab('record'); setRecView(my.n?'view':'input'); }
     else if(k==='mag'){ if(mg) S.mag.ym=mg.ym; setTab('news'); }
-    else if(k==='hot' && hm){ openRoom(hm.id); } });
+    else if(k==='hot' && hm){ openRoom(hm.id); }
+    else if(k==='news' && nm){ openRoom(nm.id); } });
 }
 function renderToday(){
   const t=today(); const allAtt=attEntries(); const VJ=viewJ(); const listAll=allAtt.filter(e=>entryJid(e)===VJ.id);
@@ -3950,7 +3964,7 @@ const RIB_CATS = ['molgi','rate','jeongsim','dajeong'];
 let _ribC={at:0,map:null};
 function ribbonsOf(mid){
   if(!_ribC.map || _ribC.ver!==bVer() || Date.now()-_ribC.at>60e3){ const map={}; const ver=bVer();
-    try{ const last=magCurYM(); for(let ym=MAG_START; ym<=last; ym=ymAdd(ym,1)){ if(magLive(ym)) continue; const [f,t]=magRange(ym); const L=(rankLocal(f,t).members||[]);
+    try{ const last=magCurYM(); for(let ym=MAG_START; ym<=last; ym=ymAdd(ym,1)){ if(magLive(ym)) continue; const [f,t]=magRange(ym); const fz=magPublished(ym)&&magSnapGet(magSnapKey(ym,'rk')); const L=((fz?fz.d:rankLocal(f,t)).members||[]);
         for(const cid of RIB_CATS){ const c=RK_CATS.find(x=>x.id===cid); if(!c) continue; const top=L.filter(c.ok).sort((a,b)=>c.v(b)-c.v(a))[0]; if(top) (map[top.mid]=map[top.mid]||[]).push({ym, cat:cid, ic:c.ic, t:`${ym===MAG_START?'창간호':(+t.slice(5,7))+'월'} ${c.t}왕`}); } } }
     catch(e){ console.warn('ribbon',e); }
     _ribC={at:Date.now(),map,ver}; }
@@ -3973,8 +3987,8 @@ const HIDDEN = [
   {id:'since', ic:'🎂', t:'집궁 기념 습사', d:'활을 잡은 날과 같은 날(월 · 일)에 습사'},
   {id:'anniv', ic:'📅', t:'1년 전 오늘', d:'1년 전 오늘에도 활을 냈어요'},
 ];
-function hiddenOf(mid, days){
-  const D=(store&&store.docs)||{}; const got={}; const att=[]; for(const k in D){ if(k.startsWith('attendance/') && D[k] && D[k].entries && D[k].entries[mid]) att.push([k.slice(11), D[k].entries[mid]]); }
+function hiddenOf(mid, days, upto){
+  const D=(store&&store.docs)||{}; const got={}; const att=[]; for(const k in D){ if(k.startsWith('attendance/') && (!upto || k.slice(11)<=upto) && D[k] && D[k].entries && D[k].entries[mid]) att.push([k.slice(11), D[k].entries[mid]]); }
   const byDate={}; (days||[]).forEach(d=>{ const b=dayBrief(d); if(b.n) byDate[d.date]={b, d}; });
   if(att.some(([dt,e])=>e.slot==='저녁' && byDate[dt] && byDate[dt].b.mo>0)) got.moon=1;
   if(att.filter(([,e])=>e.slot==='새벽').length>=10) got.dawn=1;
@@ -4403,8 +4417,21 @@ const MAG_VS_SHOW = false;               // 정 대항 화면 노출 — 정이 
 const magJid = id => { const m=memberById(id); return m ? memberJ(m).id : null; };
 // 그 호 기간 끝(to)까지 가입한 사원인지 — joinedAt(서버가 붙임, SQL 20). 값이 없으면(옛 기기 캐시) 센다 · 사대지기 봇은 빼기
 const magJoinedBy = (m, to) => !!m && m.id!==HUB_BOT && (!m.joinedAt || dstr(new Date(+m.joinedAt)) <= to);
+// ---- 발간된 호 굳히기 (스냅숏) ----
+const magPublished = ym => ym>=MAG_START && ym<=magCurYM() && !magLive(ym);
+const magSnapKey = (ym, scope) => `${ym}_${scope}`;
+const magSnapGet = key => { const x=((store&&store.docs)||{})['magsnap/'+key]; return x && x.d ? x : null; };
+const magSnapEnc = o => JSON.parse(JSON.stringify(o, (k,v)=> v instanceof Set ? {__set:[...v]} : v));
+const magSnapDec = o => JSON.parse(JSON.stringify(o), (k,v)=> v && typeof v==='object' && Array.isArray(v.__set) ? new Set(v.__set) : v);
+S.magSnapTry = S.magSnapTry || {};
+async function magSnapPut(key, d){
+  if(S.magSnapTry[key] || !store || store.kind!=='remote' || !store.token || store.gate) return; S.magSnapTry[key]=1;
+  try{ const {data,error}=await store.client.rpc('sadae_magsnap_put',{p_space:store.space, p_token:store.token, p_key:key, p_data:{d}});
+    if(!error && data && data.ok && store.docs && !store.docs['magsnap/'+key]) store.docs['magsnap/'+key]={d}; }catch(e){}
+}
 function magData(ym, scope){
   scope=scope||'all'; const ck=ym+'|'+scope; const c=S.mag.cache[ck]; if(c && Date.now()-c.at<60e3) return c.d;
+  if(magPublished(ym)){ const sn=magSnapGet(magSnapKey(ym,scope)); if(sn){ const d=magSnapDec(sn.d); d.frozen=true; S.mag.cache[ck]={at:Date.now(), d}; return d; } }
   const inS = id => scope==='all' || magJid(id)===scope;
   const T=today(), cur = magLive(ym), [from, end]=magRange(ym), wide = ym===MAG_START, to = cur ? (T<end?T:end) : end;
   const idx=Object.fromEntries(Object.entries(magIndex()).filter(([id])=>inS(id))); const A=magAgg(idx, from, to); const P = wide ? magAgg(idx, '9999-01-01', '9999-01-01') : magAgg(idx, ...magRange(ymAdd(ym,-1)));
@@ -4449,14 +4476,17 @@ function magData(ym, scope){
   const vis=Object.values(A.by).filter(o=>{ const m=memberById(o.mid); return m && !m.rankHide && (!wide || o.mid!==MAG_FOUNDER); });   // 창간호 표지는 만든 사람 빼고
   const king=vis.sort((a,b)=>(b.days*1000+b.n)-(a.days*1000+a.n))[0]||null;
   const d={ym, scope, cur, from, to, end, wide, A, P, ev, busy, king, nBadge, nNew, nSince, nGrade, act, jst};
+  if(magPublished(ym)) magSnapPut(magSnapKey(ym,scope), magSnapEnc(d));   // 발간된 호 = 처음 계산한 숫자를 서버에 한 번만 저장
   S.mag.cache[ck]={at:Date.now(), d}; return d;
 }
 // 순위·바람: 서버 집계 (3분 보관, 이번 달은 광장 순위와 같이 씀)
 async function magRank(ym){
   const T=today(), cur=magLive(ym); const c=S.mag.rk[ym]; const [rf,re]=magRange(ym);
+  if(c && c.frozen) return;
+  if(magPublished(ym)){ const sn=magSnapGet(magSnapKey(ym,'rk')); if(sn){ S.mag.rk[ym]={data:sn.d, at:Date.now(), local:false, frozen:true}; if(S.tab==='news' && (S.mag.ym||magCurYM())===ym) renderNews(); return; } }
   if(c && !c.local && (Date.now()-c.at < (cur?180e3:3600e3))) return;
   if(S.mag.busy[ym]) return; S.mag.busy[ym]=true;
-  try{ const data=await rankFetch(rf, cur&&T<re?T:re); S.mag.rk[ym]={data, at:Date.now(), local:!(data&&data.from)}; }
+  try{ const data=await rankFetch(rf, cur&&T<re?T:re); S.mag.rk[ym]={data, at:Date.now(), local:!(data&&data.from)}; if(magPublished(ym) && data && data.from) magSnapPut(magSnapKey(ym,'rk'), data); }
   finally{ S.mag.busy[ym]=false; }
   if(S.tab==='news' && (S.mag.ym||magCurYM())===ym) renderNews();
 }
@@ -4501,7 +4531,7 @@ function renderNews(){
   let scope = S.mag.scope; if(scope===undefined) scope = (JS[myJ.id]&&JS[myJ.id].ok) ? myJ.id : 'all';
   if(scope!=='all' && !(JS[scope]&&JS[scope].ok)) scope='all';
   const d = scope==='all' ? dAll : magData(ym, scope); const SJ = scope==='all' ? null : JS[scope]; const A=d.A, tot=A.tot;
-  const VS = Object.values(JS).filter(o=>o.rec>=MAG_JMIN.rec); const vsOn = MAG_VS_SHOW && VS.length>=MAG_VS_MIN; const RK=S.mag.rk[ym]; if(!RK || (Date.now()-RK.at>180e3)) magRank(ym);
+  const VS = Object.values(JS).filter(o=>o.rec>=MAG_JMIN.rec); const vsOn = MAG_VS_SHOW && VS.length>=MAG_VS_MIN; const RK=S.mag.rk[ym]; if(!RK || (!RK.frozen && Date.now()-RK.at>180e3)) magRank(ym);
   const rkData = RK ? RK.data : (d.cur && !d.wide && S.rank.cur ? S.rank.cur : null);
   const DM=+d.end.slice(5,7), NX=+magNextYM().slice(5);   // DM = 이 호가 담은 기록의 달
   const no=magIssue(ym); const art=(()=>{ const a=(JEONG_ART[homeJ().id]||{}).scene||{}; return a[magSeason(DM)]||a.autumn||a.summer||a.spring||''; })();
