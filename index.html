@@ -904,7 +904,7 @@ svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:
 .restbar.done{padding:10px;text-align:center;background:var(--gold-soft);animation:restfl 1s ease 4}
 .restbar.done b{font-size:16px}.restbar.done small{display:block;font-size:11.5px;color:var(--ink2);margin-top:2px}
 @keyframes restfl{50%{background:var(--gold)}}
-.restchip{position:fixed;right:10px;top:calc(72px + env(safe-area-inset-top,0px));z-index:7;font:inherit;font-size:13px;font-weight:700;border:2px solid var(--ink);background:var(--wind-bg);color:#1E3A52;padding:5px 10px;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
+.restchip{position:fixed;right:10px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:7;font:inherit;font-size:13px;font-weight:700;border:2px solid var(--ink);background:var(--wind-bg);color:#1E3A52;padding:5px 10px;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
 .restchip.done{background:var(--gold)}
 .rs-sec{border-top:1px solid var(--line2);padding-top:10px}.rs-sec h4{margin:0 0 6px;font-size:13px}
 .rs-min{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
@@ -1338,6 +1338,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .rk-ch{width:30px;font-size:10.5px;text-align:center;color:var(--ink3)}.rk-ch.up{color:#2E8B57}.rk-ch.dn{color:var(--red)}
 .rk-row.top1{background:linear-gradient(90deg,color-mix(in srgb,var(--gold,#F2C14E) 35%,transparent),transparent)}
 .rk-me{margin-top:6px;background:var(--red-soft,#fde3e0);border:2px solid var(--red)}
+.rk-more{display:block;width:100%;margin:6px 0 2px;padding:7px 0;font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:transparent;border:1.5px dashed var(--ink3);cursor:pointer}
 .rk-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;font-size:11px;color:var(--ink3)}
 
 /* 소식 탭 · 사대 월보 */
@@ -2032,7 +2033,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.05j';
+const APP_VER = '2026.10.06a';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3419,7 +3420,7 @@ function renderCompDetail(comp){
         ${cols.map(i=>{ const rd=r.rounds[i]; const h=rHits(rd); const part=rd&&!rDone(rd); return `<button class="cell ${rd?(h===5?'m':''):'empty'} ${part?'cur':''}" data-cell="${r.id}:${i}" aria-label="${esc(r.member.name)} ${i+1}순">${rd?(part?h+'·':h):'–'}</button>`; }).join('')}
         ${showShoot?`<button class="cell ${r.shootoff===null?'empty':''}" data-shoot="${r.id}">${r.shootoff===null?'–':r.shootoff}</button>`:''}`; }).join('')}
     </div>`;
-  det.innerHTML = `<div class="cd-top"><button class="btn sm" id="cdBack">← 대회</button><span class="grow"><b style="font-size:15px">${esc(comp.name)}</b><span class="badge ${comp.kind==='friendly'?'fun':''}">${comp.kind==='friendly'?'친선':'정식'}</span><br><span class="tiny">${fmtK(comp.date)} · ${comp.roundCount}순 ${comp.roundCount*5}시 · ${rows.length}명</span></span><button class="btn sm ghost" id="cdDel" style="color:var(--red)">삭제</button></div>
+  det.innerHTML = `<div class="cd-top"><button class="btn sm" id="cdBack">← 대회</button><span class="grow"><b style="font-size:15px">${esc(comp.name)}</b><span class="badge ${comp.kind==='friendly'?'fun':''}">${comp.kind==='friendly'?'친선':'정식'}</span><br><span class="tiny">${fmtK(comp.date)} · ${comp.roundCount}순 ${comp.roundCount*5}시 · ${rows.length}명</span></span><button class="btn sm ghost" id="cdDel" style="color:var(--red)">대회 취소</button></div><div id="cdConfirm"></div>
     <div class="card">
     <div class="dv-tabs" role="tablist">${[['all','전체'],...DIVS].map(([k,t])=>{ const n=k==='all'?(comp.members||[]).length:(comp.members||[]).filter(id=>divOf(comp,id)===k).length; return `<button type="button" role="tab" data-dvtab="${k}" class="${DV===k?'on':''}">${t} <small>${n}</small></button>`; }).join('')}</div>
     ${!rows.length?'<p class="tiny muted" style="margin:6px 0">이 부에는 아직 사원이 없어요.</p>':''}
@@ -3432,7 +3433,6 @@ function renderCompDetail(comp){
     </tbody></table></div>`}
     <p class="tiny" style="margin:10px 0 0">동점 규칙: ${(comp.rules||[]).length ? comp.rules.map((r,i)=>`${i+1}. ${ruleById(r)?ruleById(r).name:r}`).join(' → ') : '없음 (관중 수만)'} · 금색 = 몰기 · 칸을 누르면 5시 수정${needShoot?' · 동점자는 비교 칸에 한 순 더 쏜 관중 수를 적어주세요':''}</p>
     ${comp.roundCount===9?`<p class="tiny" style="margin:6px 0 0">승급·입승단 기준(9순 45시): 1급 22중 · 초단 24중 · 2단 26 · 3단 28 · 4단 30 · 5단 31 · 6단 33 · 7단 35 · 8단 37 · 9단 39중 (만 70세 이상 1급 18중·초단 20중)</p>`:''}
-    <div id="cdConfirm"></div>
   </div>
   ${divHTML(comp)}
   ${gwanHTML(comp)}
@@ -3440,7 +3440,7 @@ function renderCompDetail(comp){
   $('#cdBack').addEventListener('click',()=>{ S.openComp=null; renderComp(); });
   $('#cdLive').addEventListener('click',()=>openLive(comp.id)); bindGwan(comp, det); bindDiv(comp, det);
   $('#cdExport').addEventListener('click',()=>exportComp(comp));
-  $('#cdDel').addEventListener('click',()=>{ $('#cdConfirm').innerHTML=`<div class="confirm" style="margin-top:12px"><span class="grow">이 대회를 지울까요? 점수도 함께 사라져요.</span><button class="btn sm" id="cdNo">취소</button><button class="btn sm red" id="cdYes">지우기</button></div>`; $('#cdNo').addEventListener('click',()=>$('#cdConfirm').innerHTML=''); $('#cdYes').addEventListener('click',async()=>{ const ok=await write(st=>st.del('comps/'+comp.id)); if(ok){ S.openComp=null; renderComp(); toast('대회를 지웠어요'); } }); });
+  $('#cdDel').addEventListener('click',()=>{ $('#cdConfirm').innerHTML=`<div class="confirm" style="margin:10px 0 4px"><span class="grow">이 대회를 취소할까요? 대회와 점수가 함께 지워져요.</span><button class="btn sm" id="cdNo">그대로 두기</button><button class="btn sm red" id="cdYes">대회 취소하기</button></div>`; try{ $('#cdConfirm').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){} $('#cdNo').addEventListener('click',()=>$('#cdConfirm').innerHTML=''); $('#cdYes').addEventListener('click',async()=>{ const ok=await write(st=>st.del('comps/'+comp.id)); if(ok){ S.openComp=null; renderComp(); toast('대회를 취소했어요'); } }); });
   $$('[data-cell]',det).forEach(b=>b.addEventListener('click',()=>{ const [mid,i]=b.dataset.cell.split(':'); openCellEdit(comp, mid, +i); }));
   $$('[data-shoot]',det).forEach(b=>b.addEventListener('click',()=>openShootoff(comp, b.dataset.shoot)));
 }
@@ -4232,7 +4232,7 @@ const RK_CATS = [
   {id:'jeongsim', t:'정심', ic:'🧘', d:'정심정기(正心正己) — 마음을 바르게, 몸가짐을 바르게. 기복 없이 고르게 맞히고, 빗나가도 바른 궁체가 보이는 사원 (20순 이상)', ok:o=>o.n>=20, v:o=>o.js*1e4+o.n, big:o=>[o.js,'점'], sub:o=>`관중 ${Math.round(o.h/(o.n*5)*100)}% · ${o.n}순`},
   {id:'dajeong', t:'다정', ic:'🍊', d:'다정(多情) — 방명록 · 응원 · 광장 한마디로 사원들과 정을 많이 나눈 사원', ok:o=>o.dj>0, v:o=>o.dj, big:o=>[o.dj,'점'], sub:o=>'방명록·응원·한마디'},
 ];
-S.rank = {cur:null, prev:null, at:0, busy:false, cat:0, pausedUntil:0};
+S.rank = {cur:null, prev:null, at:0, busy:false, cat:0, pausedUntil:0, more:false};
 const rkYday = () => { const d=new Date(); d.setDate(d.getDate()-1); return dstr(d); };
 // 이 기기에 있는 기록으로 계산 (아티팩트·서버 오류 때)
 // 정심 점수 (서버 SQL 17 과 같은 식): 관중률 50 + 고름 30(가장 못 쏜 순 20%의 평균 중) + 낙점 20(빗나간 방향 감점: 넘음 .5 · 앞 1 · 짧음 1.5 · 뒤 2 · 불 3)
@@ -4319,16 +4319,17 @@ function renderRank(){
     <div class="rk-tabs">${RK_CATS.map((x,i)=>`<button type="button" data-rk="${i}" class="${i===S.rank.cat?'on':''}">${x.ic} ${x.t}</button>`).join('')}</div>
     ${prog}
     <div class="rk-dr"><button type="button" class="rk-nav" data-rknav="-1" aria-label="이전 순위">‹</button><p class="rk-desc">${c.ic} ${esc(c.d)}</p><button type="button" class="rk-nav" data-rknav="1" aria-label="다음 순위">›</button></div>
-    ${!S.rank.cur ? '<div class="tiny muted" style="padding:10px 0">순위를 불러오는 중…</div>' : L.length ? L.slice(0,5).map((o,i)=>row(o,i)).join('') + (myI>=5?row(L[myI],myI,true):'') : `<div class="tiny muted" style="padding:10px 0">${c.id==='rate'||c.id==='jeongsim'?'이번 달 '+(c.id==='rate'?'5순':'20순')+'을 넘긴 사원이 아직 없어요':'아직 이번 달 기록이 없어요'}</div>`}
+    ${!S.rank.cur ? '<div class="tiny muted" style="padding:10px 0">순위를 불러오는 중…</div>' : L.length ? L.slice(0,S.rank.more?10:5).map((o,i)=>row(o,i)).join('') + (myI>=(S.rank.more?10:5)?row(L[myI],myI,true):'') + (L.length>5?`<button type="button" class="rk-more" id="rkMore" aria-expanded="${S.rank.more}">${S.rank.more?'5위까지만 ▴':`더 보기 · 10위까지 (${Math.min(10,L.length)}명) ▾`}</button>`:'') : `<div class="tiny muted" style="padding:10px 0">${c.id==='rate'||c.id==='jeongsim'?'이번 달 '+(c.id==='rate'?'5순':'20순')+'을 넘긴 사원이 아직 없어요':'아직 이번 달 기록이 없어요'}</div>`}
     <div class="rk-foot"><span>${M}월 1일 ~ 오늘 · 매달 1일 새로 시작${S.plazaMine?` · ${esc(homeJ().name)}만`:''}</span>${S.me&&store.kind==='remote'&&store.token?`<button type="button" class="linkbtn tiny" id="rkHide">${hidden?'숨김 중 · 다시 보이기':'랭킹에서 나 숨기기'}</button>`:''}</div>`;
   $$('[data-rk]',el).forEach(b=>b.onclick=()=>{ S.rank.cat=+b.dataset.rk; S.rank.el=0; S.rank.pausedUntil=Date.now()+30e3; renderRank(); });
   $$('[data-rknav]',el).forEach(b=>b.onclick=()=>rkGo(+b.dataset.rknav));
   $('#rkFold',el).onclick=()=>{ S.rank.fold=true; lsSet('sadae.rkFold',true); renderRank(); };
+  const mb=$('#rkMore',el); if(mb) mb.onclick=()=>{ S.rank.more=!S.rank.more; S.rank.el=0; renderRank(); };
   const pp=$('#rkPP',el); if(pp) pp.onclick=()=>{ S.rank.stop=!S.rank.stop; lsSet('sadae.rkStop',S.rank.stop); if(!S.rank.stop) S.rank.pausedUntil=0; renderRank(); };
   const hb=$('#rkHide',el); if(hb) hb.onclick=async()=>{ const v=!hidden; const ok=await write(st=>st.merge('members/'+S.me.id,{rankHide:v, updatedAt:Date.now()})); if(ok){ toast(v?'랭킹에서 나를 숨겼어요. 다른 사원에게 내 순위가 안 보여요':'랭킹에 다시 보여요'); setTimeout(()=>refreshRank(true),800); } };
 }
 // 0.1초마다 시간을 쌓아 5초가 되면 다음 순위 — 누르고 있거나, 화면에 안 보이거나, 한마디를 쓰는 중이면 멈춤
-setInterval(()=>{ if(S.tab!=='plaza' || document.hidden || !S.rank.cur || !S.calm.rank || S.rank.stop || !S.rank.vis || Date.now()<S.rank.pausedUntil) return;
+setInterval(()=>{ if(S.tab!=='plaza' || document.hidden || !S.rank.cur || !S.calm.rank || S.rank.stop || S.rank.more || !S.rank.vis || Date.now()<S.rank.pausedUntil) return;
   const ae=document.activeElement; if(ae && ae.id==='pzText') return;
   S.rank.el+=100; if(S.rank.el>=5000){ S.rank.el=0; S.rank.cat=(S.rank.cat+1)%RK_CATS.length; renderRank(); }
   else { const i=document.querySelector('#rkCard .rk-prog i'); if(i) i.style.width=(S.rank.el/50)+'%'; } }, 100);
