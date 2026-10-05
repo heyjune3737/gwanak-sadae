@@ -874,6 +874,17 @@ svg.pixc image{image-rendering:auto}
 .sd-fig.ghost{opacity:.4;animation:none}
 .sd-fig .rx{position:absolute;top:-10px;right:0;font-size:10px;background:#FFFFFF;color:#2A2233;border:2px solid #2A2233;padding:0 2px;white-space:nowrap;z-index:2}
 .tbd{margin:6px 0 0;padding:0 0 0 18px;line-height:1.6}.tbd li{margin:0}
+/* 🧭 오늘 사대 둘러보기 */
+.hub{padding:12px 12px 6px;background:color-mix(in srgb,var(--gold-soft) 55%,var(--card))}.hub h2{margin:0 0 6px}
+.hub-row{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:transparent;border:0;border-top:1.5px dashed var(--ink3);padding:10px 2px;cursor:pointer}
+.hub-row:first-of-type{border-top:0}
+.hub-h{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700}.hub-h small{font-weight:400;color:var(--ink);opacity:.8;font-size:11.5px}
+.hub-h .go{margin-left:auto;font-weight:700;font-size:12px;color:var(--ink);background:var(--card);border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink);padding:2px 8px;white-space:nowrap}
+.hub-v{font-size:13px;color:var(--ink);margin-top:4px;line-height:1.45}.hub-v b{color:var(--red);font-weight:700}
+.hub-rk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:6px}
+.hub-rk span{display:block;border:1.5px solid var(--ink);background:var(--card);padding:3px 5px;font-size:11.5px;line-height:1.3;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.hub-rk span em{font-style:normal;color:var(--ink);display:block;font-size:11px;font-weight:600}.hub-rk span b{font-size:12.5px;color:var(--red)}
+.hub-rk span.none{color:var(--ink);opacity:.75;border-style:dashed;background:transparent}
 /* 화살표 그림 (글꼴 대신 · 8방향 같은 굵기) */
 svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:visible}
 /* ⏱ 휴식 타이머 */
@@ -1540,6 +1551,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
         <div class="sec-head"><h2>오늘 오는 사원 <small id="attCount"></small></h2></div>
         <div class="att-list" id="attList"></div>
       </div>
+      <div class="card hub" id="hubCard" hidden></div>
     </section>
 
     <!-- ===== 광장 ===== -->
@@ -2020,7 +2032,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.05b';
+const APP_VER = '2026.10.05c';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2708,6 +2720,44 @@ function openJeongView(){
   $$('[data-vj]',sh).forEach(b=>b.addEventListener('click',()=>{ const j=L.find(x=>x.id===b.dataset.vj); S.viewJ = (!j || j.id===hj.id) ? null : j; closeSheet(); renderToday(); }));
 }
 $('#jBar').addEventListener('click', openJeongView);
+/* ---------- 🧭 오늘 사대 둘러보기 (오늘 정 아래) ---------- */
+const HUB_BOT = 'x7xw85chpu';   // 사대지기 봇 — 하태하태 계산에서 뺌
+S.hub = {rank:null, at:0, busy:false};
+const hubFrom = () => { const d=new Date(); d.setDate(d.getDate()-6); return dstr(d); };
+async function hubRankRefresh(){ if(S.hub.busy || (S.hub.rank && Date.now()-S.hub.at<10*60e3)) return; S.hub.busy=true;
+  try{ S.hub.rank = await rankFetch(hubFrom(), today()); S.hub.at = S.hub.rank && !S.hub.rank.local ? Date.now() : 0; }catch(e){} S.hub.busy=false; if(S.tab==='today') renderHub(); }
+function hubHot(){   // 최근 7일 받은 관심: 방명록 · 습사 등록 응원 · 광장 @언급
+  const D=(store&&store.docs)||{}, since=Date.now()-7*864e5, sinceDay=hubFrom(); const cnt={};
+  const mem=(S.members||[]).filter(m=>m&&m.name&&m.id!==HUB_BOT&&!m.rankHide); const ok=new Set(mem.map(m=>m.id));
+  const add=(id,k)=>{ if(!ok.has(id)) return; const o=cnt[id]||(cnt[id]={gb:0,ch:0,at:0}); o[k]++; };
+  for(const p in D){ const d=D[p]; if(!d||!d.entries) continue;
+    if(p.startsWith('guestbook/')){ const owner=p.slice(10); for(const v of Object.values(d.entries)) if(v&&v.from&&v.from!==owner&&v.from!==HUB_BOT&&(v.at||0)>=since) add(owner,'gb'); }
+    else if(p.startsWith('attendance/') && p.slice(11)>=sinceDay){ for(const [tid,e] of Object.entries(d.entries)) for(const [f,em] of Object.entries((e&&e.reactions)||{})) if(em&&f!==tid&&f!==HUB_BOT) add(tid,'ch'); }
+    else if(p.startsWith('plaza/') && p.slice(6)>=sinceDay){ for(const v of Object.values(d.entries)){ if(!v||!v.text||v.from===HUB_BOT||(v.at||0)<since) continue; for(const m of mem) if(m.id!==v.from && mentionRe(m.name).test(v.text)) add(m.id,'at'); } } }
+  let best=null; for(const [id,o] of Object.entries(cnt)){ const sc=o.gb*2+o.ch+o.at; if(!best||sc>best.sc) best={id,sc,...o}; } return best; }
+function hubMine(){ const f=hubFrom(); let n=0,h=0,mo=0; for(const d of (S.myDays||[])) if(d&&d.date>=f) for(const r of (d.rounds||[])) if(Array.isArray(r)){ n++; const x=hitsOf(r); h+=x; if(x===5) mo++; } return {n,h,mo}; }
+function hubMag(){ try{ const ym=magCurYM(), M=+ym.slice(5), d=magData(ym); const bits=[]; if(d.wide){ bits.push(`창간호 · 베타 ${magBetaDays()}일의 기록`); } else { if(d.A.tot.mo) bits.push(`몰기 ${d.A.tot.mo}번`); if(d.nGrade) bits.push(`승단 ${d.nGrade}명`); if(d.nNew) bits.push(`새 사원 ${d.nNew}명`); }
+  return {ym, t:`<b>${M}월호</b>${bits.length?' · '+esc(bits.slice(0,2).join(' · ')):' 가 나왔어요'}`}; }catch(e){ return null; } }
+function renderHub(){
+  const el=$('#hubCard'); if(!el) return;
+  if(!S.me || store.kind!=='remote' || !store.token || store.gate){ el.hidden=true; return; }
+  el.hidden=false; hubRankRefresh();
+  const R7=S.hub.rank; const cats=RK_CATS.map(c=>{ const L=R7?((R7.members||[]).filter(o=>c.ok(o)&&memberById(o.mid)&&o.mid!==HUB_BOT).sort((a,b)=>c.v(b)-c.v(a))):null; const o=L&&L[0]; const m=o&&memberById(o.mid);
+    if(!R7) return `<span class="none">${c.ic} ${c.t}<em>불러오는 중</em></span>`; if(!o) return `<span class="none">${c.ic} ${c.t}<em>아직 없음</em></span>`;
+    const [b,u]=c.big(o); return `<span>${c.ic} ${c.t} <b>${b}${u}</b><em>${esc(m.name)}</em></span>`; }).join('');
+  const my=hubMine(); const myT = my.n ? `최근 7일 <b>${my.n}순</b> · 관중률 <b>${Math.round(my.h/(my.n*5)*100)}%</b>${my.mo?` · 몰기 ${my.mo}번`:''}` : '이번 주 첫 순을 남겨 보세요 — 🎯 단 도전 목표 · ⏱ 휴식 타이머도 있어요';
+  const mg=hubMag(); const hot=hubHot(); const hm=hot&&memberById(hot.id);
+  el.innerHTML = `<h2>🧭 오늘 사대 둘러보기</h2>
+    <button type="button" class="hub-row" data-hub="rank"><span class="hub-h">🏆 이번 주 순위 <small>최근 7일 · 부문별 1위</small><span class="go">순위 전체 ›</span></span><span class="hub-rk">${cats}</span></button>
+    <button type="button" class="hub-row" data-hub="rec"><span class="hub-h">✍️ 내 기록<span class="go">표 기록 ›</span></span><span class="hub-v">${myT}</span></button>
+    ${mg?`<button type="button" class="hub-row" data-hub="mag"><span class="hub-h">📰 사대 월보<span class="go">월보 보기 ›</span></span><span class="hub-v">${mg.t}</span></button>`:''}
+    <button type="button" class="hub-row" data-hub="hot" ${hm?'':'disabled'}><span class="hub-h">🔥 이번 주 하태하태 사원<span class="go">${hm?'방 구경 ›':''}</span></span><span class="hub-v">${hm?`<b>${esc(hm.name)}</b> 님 · ${[hot.gb?`방명록 ${hot.gb}`:'',hot.ch?`응원 ${hot.ch}`:'',hot.at?`광장에서 불림 ${hot.at}`:''].filter(Boolean).join(' · ')}`:'아직 없어요 — 방명록 · 응원으로 정을 나눠 보세요'}</span></button>`;
+  $$('[data-hub]',el).forEach(b=>b.onclick=()=>{ const k=b.dataset.hub;
+    if(k==='rank'){ setTab('plaza'); S.rank.fold=false; try{ lsSet('sadae.rkFold',false); }catch(e){} setTimeout(()=>{ renderRank(); const c=$('#rkCard'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); },150); }
+    else if(k==='rec'){ setTab('record'); setRecView(my.n?'view':'input'); }
+    else if(k==='mag'){ if(mg) S.mag.ym=mg.ym; setTab('news'); }
+    else if(k==='hot' && hm){ openRoom(hm.id); } });
+}
 function renderToday(){
   const t=today(); const allAtt=attEntries(); const VJ=viewJ(); const listAll=allAtt.filter(e=>entryJid(e)===VJ.id);
   // 시간대 칩: 사람이 많으면 그 시간대 사람만 사대에 (아래 명단은 그대로 전체)
@@ -2801,6 +2851,7 @@ function renderToday(){
   $$('[data-react-open]').forEach(b=>b.addEventListener('click',()=>{ reactOpen = reactOpen===b.dataset.reactOpen ? null : b.dataset.reactOpen; renderToday(); }));
   $$('.att[data-att] [data-react]').forEach(b=>b.addEventListener('click', async ()=>{ const target=b.closest('.att').dataset.att; const em=b.dataset.react||null; reactOpen=null;
     const ok=await write(st=>st.merge('attendance/'+t, {entries:{[target]:{reactions:{[S.me.id]:em}}}})); if(ok&&em) toast(`${em} 응원을 보냈어요`); }));
+  try{ renderHub(); }catch(e){}
 }
 
 /* =========================================================
