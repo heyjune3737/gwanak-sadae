@@ -1639,7 +1639,6 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
       </div>
 
       <div id="recView" hidden>
-      <div class="card" id="myRankCard"></div>
       <div class="card" id="dayCard">
         <div class="dnav"><button type="button" class="btn sm" id="dPrev" aria-label="이전 날">◀</button><div class="dnav-t"><b id="dTitle"></b><span id="dSub"></span></div><button type="button" class="btn sm" id="dNext" aria-label="다음 날">▶</button></div>
         <div id="dBody"></div>
@@ -1673,6 +1672,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
     <!-- ===== 내 방 ===== -->
     <section class="view" id="view-room" hidden>
       <div class="room" id="room"></div>
+      <div class="card" id="myRankCard"></div>
       <div class="card" id="rosterCard"><div class="sec-head"><h2>👥 <span id="rosterTitle">우리 정</span> 사원 <small id="rosterCount"></small></h2><span class="tiny muted">누르면 방 구경</span></div><div class="rs-sort" id="rosterSort"></div><div class="roster" id="roster"></div><div id="rosterMore"></div><div id="rosterOther"></div></div>
       <div class="card" id="growthCard">
         <div class="sec-head"><h2>📈 내 성장</h2><span class="tiny muted" id="growthSub"></span></div>
@@ -2071,7 +2071,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.06b';
+const APP_VER = '2026.10.06c';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2638,7 +2638,7 @@ function daysQuery(){ return {col:'days', where:[['memberId','==', S.me ? S.me.i
 
 /* ---------- 탭 ---------- */
 $$('.tab').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
-function setTab(t){ S.tab=t; if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','news','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); { const bb=$('#bookBar'); if(bb) bb.style.display = t==='news'?'none':''; } if(t==='news') setTimeout(()=>{ if(typeof renderNews==='function') renderNews(); },0); lsSet('sadae.tab',t); try{ renderRest(); }catch(e){} window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
+function setTab(t){ S.tab=t; if(t==='room') setTimeout(()=>{ try{ renderMyRank(); }catch(e){} },0); if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','news','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); { const bb=$('#bookBar'); if(bb) bb.style.display = t==='news'?'none':''; } if(t==='news') setTimeout(()=>{ if(typeof renderNews==='function') renderNews(); },0); lsSet('sadae.tab',t); try{ renderRest(); }catch(e){} window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
 (function(){ const h=(location.hash||'').replace('#','').split('&')[0]; const t = ['today','plaza','record','news','room','comp','info'].includes(h) ? h : (lsGet('sadae.tab','today')); setTab(t); })();
 
 /* ---------- 헤더 ---------- */
@@ -3620,7 +3620,7 @@ function openRoomTheme(){
     if(ok){ const mm=memberById(S.me.id); if(mm) mm.roomTheme=k; closeSheet(); renderRoom(); toast(`${(ROOM_THEMES.find(x=>x[0]===k)||[])[1]||''} 방으로 꾸몄어요`); } });
 }
 function renderRoom(){
-  const room=$('#room'); if(!room) return;
+  const room=$('#room'); if(!room) return; try{ renderMyRank(); }catch(e){ console.warn('myrank', e); }
   const me=S.me; const g=gearOf(); const t=today();
   const td=S.myDays.find(d=>d.date===t); const todayHits=((td&&td.rounds)||[]).reduce((a,r)=>a+hitsOf(r),0);
   const ym=t.slice(0,7); const monthHits=S.myDays.filter(d=>d.date.startsWith(ym)).reduce((a,d)=>a+(d.rounds||[]).reduce((x,r)=>x+hitsOf(r),0),0);
@@ -4760,11 +4760,11 @@ const bigDots = r => `<div class="bdots">${r.map(x=>`<span class="bdot ${rc(x)}"
 S.myrk = {per:lsGet('sadae.myrkPer','month'), data:{}, at:{}, busy:{}};
 const myrkRange = per => { const t=today(); if(per==='week') return [hubFrom(), t]; if(per==='prev'){ const p=ymAdd(t.slice(0,7),-1); return [p+'-01', ymLast(p)]; } return [t.slice(0,7)+'-01', t]; };
 async function myrkLoad(per){ if(S.myrk.busy[per] || (S.myrk.data[per] && Date.now()-(S.myrk.at[per]||0)<10*60e3)) return; S.myrk.busy[per]=true;
-  try{ const [f,t]=myrkRange(per); const d=await rankFetch(f,t); S.myrk.data[per]=d; S.myrk.at[per]=Date.now(); }catch(e){} S.myrk.busy[per]=false; if(S.tab==='record' && S.recView==='view') renderMyRank(); }
+  try{ const [f,t]=myrkRange(per); const d=await rankFetch(f,t); S.myrk.data[per]=d; S.myrk.at[per]=(d && d.from && (d.members||[]).length) ? Date.now() : 0; }catch(e){} S.myrk.busy[per]=false; if(S.tab==='room') renderMyRank(); }
 const MYRK_NEED = {rate:[5,'순'], jeongsim:[20,'순']};
 function renderMyRank(){
   const el=$('#myRankCard'); if(!el) return; if(!S.me){ el.hidden=true; return; } el.hidden=false;
-  const per=S.myrk.per; const data=S.myrk.data[per]; myrkLoad(per);
+  const per=S.myrk.per; const data=S.myrk.data[per]; if(S.tab==='room') myrkLoad(per);
   const me=memberById(S.me.id)||{}; const hidden=!!me.rankHide; const [f,t]=myrkRange(per);
   let mine=data&&(data.members||[]).find(o=>o.mid===S.me.id); if(!mine && data){ try{ mine=(rankLocal(f,t).members||[]).find(o=>o.mid===S.me.id); }catch(e){} }
   const cells=(fill,cls,dash)=>`<span class="mr-cells ${cls}">${Array.from({length:10},(_,k)=>`<i class="${k<fill?'on':dash?'dash':''}"></i>`).join('')}</span>`;
@@ -4802,7 +4802,7 @@ function renderMonthSum(){
   $$('[data-msd]',el).forEach(b=>b.onclick=()=>{ S.viewDate=b.dataset.msd; renderRecord(); window.scrollTo({top:0,behavior:'smooth'}); });
 }
 function renderDayView(){
-  try{ renderMyRank(); renderMonthSum(); }catch(e){ console.warn('myrank', e); }
+  try{ renderMonthSum(); }catch(e){ console.warn('monthsum', e); }
   const L=recDays(); if(!S.viewDate) S.viewDate = L.includes(today()) ? today() : (L[L.length-1]||today());
   const d=(S.myDays||[]).find(x=>x.date===S.viewDate); const rs=((d&&d.rounds)||[]).filter(Array.isArray);
   const [Y,M,D]=S.viewDate.split('-').map(Number); const wd=WD[new Date(Y,M-1,D).getDay()];
