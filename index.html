@@ -2032,7 +2032,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.05i';
+const APP_VER = '2026.10.05j';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3143,7 +3143,7 @@ async function startRest(min){
 }
 function stopRest(silent){ restRepStop(); const had=restRun && !restRun.done; restRun=null; restSave(); wakeOff(); if(had) restServer(-1); renderRest(); if(!silent) toast('휴식 타이머를 껐어요'); }
 function finishRest(){ if(!restRun || restRun.done) return; restRun.done=Date.now(); restRun.srv=false; restSave(); wakeOff(); playRest(restCfg().sound); restRepStart(); renderRest(); }
-function restOfferVisible(){ if(!S.me || restRun || !restDev()) return false; const d=(S.myDays||[]).find(x=>x.date===today()); return !!(d && (d.rounds||[]).length) && !S.round.some(Boolean); }
+function restOfferVisible(){ if(!S.me || restRun || !restDev()) return false; return !S.round.some(Boolean); }   // 입력 화면에 늘 (화살 입력 중엔 숨김)
 function renderRest(){
   const el=$('#restBar'), chip=$('#restChip'); if(!el) return; const C=restCfg();
   if(!restDev()){ el.hidden=true; if(chip) chip.hidden=true; return; }
