@@ -1548,6 +1548,70 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .mz-jr .grow b{font-size:14.5px}.mz-jr .grow small{font-size:10.5px}.mz-jr .grow span{display:block;font-size:11.5px;opacity:.85}
 .mz-jgo{flex:none;font-size:11.5px;background:#231C16;color:#F5EFE0!important;border:2px solid #231C16;padding:5px 7px}
 .mz-jprog{flex:none;font-size:10.5px;text-align:right;line-height:1.45}.mz-jprog b{color:#E2463B!important}
+/* ===== 내 방 v2 (2026-10-06d): 바로가기판 · 구역 구분선 · 다른 정 · 성장 묶음 · 장비 색 띠 · 기록 공개 스위치 ===== */
+:root{--gw:#8B5E3C;--gw-soft:#F3E6D6;--gl-bow:#6B4A2B;--gl-arrow:#B8322A;--gl-kkakji:#9A6A00;--gl-etc:#3552A0}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--gw:#C99467;--gw-soft:#3E3328;--gl-bow:#C99467;--gl-arrow:#FF6B5E;--gl-kkakji:#FFD877;--gl-etc:#8FA8FF} }
+:root[data-theme="dark"]{--gw:#C99467;--gw-soft:#3E3328;--gl-bow:#C99467;--gl-arrow:#FF6B5E;--gl-kkakji:#FFD877;--gl-etc:#8FA8FF}
+#view-room>.card,#view-room>.rm-nav{scroll-margin-top:84px}
+.rm-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--card);border:2px solid var(--ink);box-shadow:var(--hard4)}
+.rm-nav[hidden]{display:none}
+.rm-nav button{position:relative;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-left:2px solid var(--ink);padding:5px 2px;min-width:0;color:var(--ink)}
+.rm-nav button:nth-child(4n+1){border-left:0}.rm-nav button:nth-child(n+5){border-top:2px solid var(--ink)}
+.rm-nav button:active{background:var(--card2)}
+.rm-nav .e{font-size:19px;line-height:1}.rm-nav b{font-size:13px;font-weight:700;line-height:1.3}
+.rm-nav small{font-family:var(--small);font-size:11px;color:var(--ink3);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rm-nav .dot{position:absolute;top:6px;right:8px;width:8px;height:8px;background:var(--red)}
+.rm-nav .new small{color:var(--red);font-weight:700}
+.rm-div{display:flex;align-items:center;gap:8px;padding-top:8px}.rm-div[hidden]{display:none}
+.rm-div b{flex:none;font-family:var(--display);font-size:13px;font-weight:700;background:var(--ink);color:var(--card);padding:3px 8px}
+.rm-div span{flex:none;font-family:var(--small);font-size:13px;color:var(--ink2)}.rm-div span:empty{display:none}
+.rm-div::after{content:"";flex:1;border-top:1.5px dashed var(--ink3)}
+#view-room .rs-note{margin:8px 0 0}
+#view-room .rm-other{border:2px dashed var(--ink3);box-shadow:none;padding:10px 14px}
+.ro-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ro-h>b{font-family:var(--display);font-size:14px;min-width:0}.ro-h small{font-family:var(--small);font-weight:400;font-size:12px;color:var(--ink2)}
+.ro-tog{flex:none;font-size:13px;font-weight:700;padding:4px 2px;color:var(--ink)}
+.ro-mini{display:flex;gap:4px;align-items:flex-end;margin-top:8px}
+.ro-m{width:48px;flex:none;display:flex;flex-direction:column;align-items:center;min-width:0;color:var(--ink)}.ro-m .rs-ch{width:34px}
+.ro-m small{font-family:var(--small);font-size:10.5px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.ro-more{margin-left:auto;align-self:center;font-family:var(--small);font-size:12px;color:var(--ink3)}
+#view-room .rm-other .roster{margin-top:8px}
+#growthCard .gc .gtrack i:not(:empty){border:2px solid var(--ink);border-bottom:0}
+#growthCard .gc .gv{font-family:var(--display);font-size:13px;font-weight:700;color:var(--ink2)}
+#growthCard .gc.cur .gtrack i{background:var(--red)}#growthCard .gc.cur .gv{color:var(--red)}#growthCard .gc.cur b{color:var(--ink);font-weight:700}
+.gk{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.gk-g{border:2px solid var(--ink);background:var(--card)}.gk-g.best{background:var(--gold-soft)}
+.gk-h{padding:4px 10px;font-family:var(--display);font-size:12px;font-weight:700;background:var(--ink);color:var(--card)}
+.gk-g.best .gk-h{background:var(--gold);color:#2A2233}
+.gk-r{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.gk-c{padding:8px 3px 9px;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;text-align:center}
+.gk-c+.gk-c{border-left:1.5px dashed var(--line2)}
+.gk-v{display:flex;align-items:baseline;gap:1px}.gk-v b{font-family:var(--display);font-size:24px;line-height:1.1;font-weight:700}.gk-v small{font-size:13px;color:var(--ink2)}
+.gk-k{font-size:11.5px;font-weight:700;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.gk-s{font-family:var(--small);font-size:10.5px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+#badgeCard .sec-head{gap:6px}#badgeCard .sec-head h2{min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#badgeCard .sec-head h2 small{font-size:10.5px}
+.bd-act{display:flex;gap:4px;flex:none}.bd-act[hidden]{display:none}
+.bd-act .btn{font-size:12px;padding:4px 7px;min-height:0;box-shadow:none}
+.bd-act #badgeFold{background:var(--ink);color:var(--card);font-weight:700}
+#gearGrid .gslot{position:relative;align-items:center;padding:7px 8px 7px 18px;background:var(--gs,var(--card2))}
+#gearGrid .gslot::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--gc,var(--ink3));border-right:2px solid var(--ink)}
+#gearGrid .gi{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--card);border:1.5px solid var(--gc,var(--ink3))}
+#gearGrid .gi svg{width:28px;height:28px}
+#gearGrid .gslot .t small{color:var(--gl,var(--ink2));font-weight:700}
+#gearGrid .gslot.empty .t span{color:var(--gl,var(--ink2));font-weight:700}
+#gearGrid .g-bow{--gc:var(--gw);--gs:var(--gw-soft);--gl:var(--gl-bow)}
+#gearGrid .g-arrow{--gc:var(--red);--gs:var(--red-soft);--gl:var(--gl-arrow)}
+#gearGrid .g-kkakji{--gc:var(--gold);--gs:var(--gold-soft);--gl:var(--gl-kkakji)}
+#gearGrid .g-etc{--gc:var(--indigo);--gs:var(--indigo-soft);--gl:var(--gl-etc)}
+#archCard .rs-more{margin-top:4px}#archCard #expAll[hidden]{display:none}
+#view-room .rm-share{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:50px;padding:8px 14px;cursor:pointer;position:relative}
+.rm-sh-t{display:flex;flex-direction:column;min-width:0}.rm-sh-t b{font-size:14px}.rm-sh-t small{font-family:var(--small);font-size:11.5px;color:var(--ink3)}
+.rm-sw-in{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.rm-sw{width:44px;height:24px;flex:none;border:2px solid var(--ink);background:var(--card2);display:flex;align-items:center;padding:2px}
+.rm-sw i{width:16px;height:16px;background:var(--ink3);transition:transform .15s}
+.rm-sw-in:checked+.rm-sw{background:var(--indigo)}.rm-sw-in:checked+.rm-sw i{transform:translateX(20px);background:var(--card)}
+.rm-sw-in:focus-visible+.rm-sw{outline:2px solid var(--indigo);outline-offset:2px}.rm-sw-in:disabled+.rm-sw{opacity:.45}
+.gb-new{flex:none;font-size:11px;font-weight:700;color:#FFFFFF;background:var(--red);padding:2px 6px}.gb-new[hidden]{display:none}
 </style>
 
 <div class="app" id="app">
@@ -1672,31 +1736,37 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
     <!-- ===== 내 방 ===== -->
     <section class="view" id="view-room" hidden>
       <div class="room" id="room"></div>
+      <nav class="rm-nav" id="roomNav" aria-label="내 방 바로가기"></nav>
+      <div class="rm-div" id="dvJeong"><b>우리 정</b><span>사원 · 방 구경</span></div>
+      <div class="card" id="rosterCard"><div class="sec-head"><h2>👥 <span id="rosterTitle">우리 정</span> 사원 <small id="rosterCount"></small></h2><span class="tiny muted">누르면 방 구경</span></div><div class="rs-sort" id="rosterSort"></div><div class="roster" id="roster"></div><div id="rosterMore"></div><p class="tiny muted rs-note" id="rosterNote"></p></div>
+      <div class="card rm-other" id="rosterOtherCard" hidden><div id="rosterOther"></div></div>
+      <div class="rm-div" id="dvMe"><b>나</b><span>순위 · 성장 · 배지</span></div>
       <div class="card" id="myRankCard"></div>
-      <div class="card" id="rosterCard"><div class="sec-head"><h2>👥 <span id="rosterTitle">우리 정</span> 사원 <small id="rosterCount"></small></h2><span class="tiny muted">누르면 방 구경</span></div><div class="rs-sort" id="rosterSort"></div><div class="roster" id="roster"></div><div id="rosterMore"></div><div id="rosterOther"></div></div>
       <div class="card" id="growthCard">
         <div class="sec-head"><h2>📈 내 성장</h2><span class="tiny muted" id="growthSub"></span></div>
         <div id="growth"></div>
       </div>
-      <div class="card">
-        <div class="sec-head"><h2>🏅 배지 <small id="badgeCount"></small></h2><span class="tiny muted">눌러서 조건 보기</span></div>
+      <div class="card" id="badgeCard">
+        <div class="sec-head"><h2>🏅 배지 <small id="badgeCount"></small></h2><span class="bd-act"><button class="btn sm" id="wallBtn" type="button">🖼 방에 걸기</button><button class="btn sm" id="badgeFold" type="button" aria-expanded="true">접기 ▴</button></span></div>
         <div class="badges" id="badges"></div>
       </div>
-      <div class="card">
-        <div class="sec-head"><h2>장비</h2><button class="btn sm" id="gearEdit">수정</button></div>
+      <div class="rm-div"><b>내 물건 · 기록</b><span>장비 · 정보 · 보관함</span></div>
+      <div class="card" id="gearCard">
+        <div class="sec-head"><h2>🏹 장비</h2><button class="btn sm" id="gearEdit">수정</button></div>
         <div class="gear" id="gearGrid"></div>
       </div>
-      <div class="card">
-        <div class="sec-head"><h2>내 정보</h2><button class="btn sm ghost" id="roomProfile">프로필 수정</button></div>
+      <div class="card" id="infoCard">
+        <div class="sec-head"><h2>🪪 내 정보</h2><button class="btn sm ghost" id="roomProfile">프로필 수정</button></div>
         <div class="info" id="roomInfo"></div>
       </div>
-      <div class="card">
-        <div class="sec-head"><h2>기록 보관함 <small id="archCount"></small></h2><button class="linkbtn" id="expMine">엑셀로 받기</button></div>
+      <div class="card" id="archCard">
+        <div class="sec-head"><h2>🗂 기록 보관함 <small id="archCount"></small></h2><button class="linkbtn" id="expMine">엑셀로 받기</button></div>
         <div class="arch" id="archive"></div>
         <button class="btn sm ghost" id="expAll" style="margin-top:10px">정 전체 기록 엑셀(CSV)</button>
-        <label class="share-row"><input type="checkbox" id="shareRec"> <span>내 날짜별 표 기록을 다른 사원에게도 보여 주기<br><span class="tiny muted">끄면 다른 사원에겐 이번 달 통계만 보여요</span></span></label>
       </div>
-      <div class="card" id="myGuestCard"><div class="sec-head"><h2>📮 내 방명록 <small id="myGuestCount"></small></h2></div><div id="myGuest"></div></div>
+      <label class="card rm-share" for="shareRec"><span class="rm-sh-t"><b>🔒 내 날짜별 표 기록 보여 주기</b><small>끄면 다른 사원에겐 이번 달 통계만 보여요</small></span><input type="checkbox" id="shareRec" class="rm-sw-in"><span class="rm-sw" aria-hidden="true"><i></i></span></label>
+      <div class="rm-div" id="dvGuest"><b>방명록</b><span></span></div>
+      <div class="card" id="myGuestCard"><div class="sec-head"><h2>📮 내 방명록 <small id="myGuestCount"></small></h2><span class="gb-new" id="myGuestNew" hidden>새 글</span></div><div id="myGuest"></div></div>
     </section>
 
     <!-- ===== 대회 ===== -->
@@ -2071,7 +2141,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.06c';
+const APP_VER = '2026.10.06d';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2415,7 +2485,8 @@ function rosterSorted(list){
 function renderRoomExtras(){
   // 사원 명부
   const R_=$('#roster'); if(R_){ const hj=homeJ(); const all=rosterSorted((S.members||[]).filter(m=>m&&m.name));
-    const so=$('#rosterSort'); if(so){ const cur=rosterSortKey(); so.innerHTML=[['rand','🎲 랜덤'],['name','가나다'],['recent','최근 습사'],['with','🧩 함께 선']].map(([k,t])=>`<button type="button" class="${k===cur?'on':''}" data-rsort="${k}">${t}</button>`).join('')+`<span class="tiny muted">${cur==='with'?'같은 날 · 같은 시간대에 함께 선 횟수 순 · ':''}★ 사대 동무(자주 함께 사대에 서거나 같이 배운 동기)는 맨 앞 · 나만 보여요</span>`;
+    const so=$('#rosterSort'); if(so){ const cur=rosterSortKey(); so.innerHTML=[['rand','🎲 랜덤'],['name','가나다'],['recent','최근 습사'],['with','🧩 함께 선']].map(([k,t])=>`<button type="button" class="${k===cur?'on':''}" data-rsort="${k}">${t}</button>`).join('');
+      const rn=$('#rosterNote'); if(rn) rn.textContent=(cur==='with'?'🧩 같은 날 · 같은 시간대에 함께 선 횟수 순 · ':'')+'★ 사대 동무는 맨 앞 · 나만 보여요';
       $$('[data-rsort]',so).forEach(b=>b.onclick=()=>{ lsSet('sadae.rosterSort', b.dataset.rsort); if(b.dataset.rsort==='rand') S.rosterSeed=null; renderRoomExtras(); }); }
     const L=all.filter(m=>memberJ(m).id===hj.id), O=all.filter(m=>memberJ(m).id!==hj.id);
     const cell=(m,j)=>`<button class="rs ${isFav(m.id)?'fav':''}" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name)}</b><small>${rosterSortKey()==='with'&&S.rosterWith&&S.rosterWith[m.id]?`🧩 함께 ${S.rosterWith[m.id].n}번`:esc(j?memberJ(m).name:(m.grade||'신사'))}</small></button>`;
@@ -2423,12 +2494,34 @@ function renderRoomExtras(){
     R_.innerHTML = L.length? LV.map(m=>cell(m)).join('') : '<div class="tiny muted">아직 이 정 사원이 없어요. 안내 탭에서 초대 링크를 보내 보세요</div>';
     const rm=$('#rosterMore'); if(rm){ rm.innerHTML = L.length>RF ? `<button type="button" class="rs-more" id="rosterTog" aria-expanded="${open}">${open?'▴ 접기':`▾ 모두 보기 · ${L.length}명`}</button>` : '';
       const tg=$('#rosterTog'); if(tg) tg.onclick=()=>{ lsSet('sadae.rosterOpen', !open); renderRoomExtras(); }; }
-    const ro=$('#rosterOther'); if(ro) ro.innerHTML = O.length? `<details class="notice" style="margin-top:10px"><summary>다른 정 사원 ${O.length}명</summary><div class="roster" style="margin-top:8px">${O.map(m=>cell(m,true)).join('')}</div></details>` : ''; }
+    const oc=$('#rosterOtherCard'), ro=$('#rosterOther'); if(oc&&ro){ oc.hidden=!O.length; if(!O.length) ro.innerHTML=''; else {
+      const op=lsGet('sadae.rosterOtherOpen',false)===true; const cnt={}; O.forEach(m=>{ const n=memberJ(m).name||'다른 정'; cnt[n]=(cnt[n]||0)+1; }); const JN=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]); const jl=JN.slice(0,2).join(' · ')+(JN.length>2?` 외 ${JN.length-2}곳`:'');
+      ro.innerHTML=`<div class="ro-h"><b>🏯 다른 정 사원 <small>${O.length}명 · ${esc(jl)}</small></b><button type="button" class="ro-tog" id="rosterOtherTog" aria-expanded="${op}">${op?'접기 ▴':'펼치기 ▾'}</button></div>`
+        + (op ? `<div class="roster">${O.map(m=>cell(m,true)).join('')}</div>` : `<div class="ro-mini">${O.slice(0,5).map(m=>`<button type="button" class="ro-m" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><small>${esc(m.name)}</small></button>`).join('')}${O.length>5?`<span class="ro-more">외 ${O.length-5}명</span>`:''}</div>`);
+      $('#rosterOtherTog').onclick=()=>{ lsSet('sadae.rosterOtherOpen', !op); renderRoomExtras(); }; } } }
   // 기록 공개 · 내 방명록
   const sw=$('#shareRec'); if(sw){ const mine=S.me&&S.members.find(x=>x.id===S.me.id); sw.checked=!!(mine&&mine.shareRecords); sw.disabled=!(S.me&&store.kind==='remote'&&store.token);
     sw.onchange=async()=>{ const v=sw.checked; const ok=await write(st=>st.merge('members/'+S.me.id,{shareRecords:v, updatedAt:Date.now()})); if(ok) toast(v?'날짜별 기록을 공개했어요':'이번 달 통계만 보이게 했어요'); else sw.checked=!v; }; }
-  const G=$('#myGuest'); if(G){ const gc=$('#myGuestCard'); if(!S.me||store.kind!=='remote'){ gc.hidden=true; } else { gc.hidden=false; const n=guestEntries(S.me.id).length; $('#myGuestCount').textContent=n?`${n}개`:''; G.innerHTML=guestHTML(S.me.id); bindGuestDel(G, S.me.id, renderRoomExtras); } }
+  const G=$('#myGuest'); if(G){ const gc=$('#myGuestCard'), gd=$('#dvGuest'); if(!S.me||store.kind!=='remote'){ gc.hidden=true; if(gd) gd.hidden=true; } else { gc.hidden=false; if(gd) gd.hidden=false; const n=guestEntries(S.me.id).length; $('#myGuestCount').textContent=n?`${n}개`:''; const nw=$('#myGuestNew'); if(nw) nw.hidden=!guestNewN(); G.innerHTML=guestHTML(S.me.id); bindGuestDel(G, S.me.id, renderRoomExtras); } }
+  renderRoomNav();
 }
+// 내 방 바로가기판 (4×2): 칸마다 요약 숫자 · 누르면 그 카드로
+const guestSeenKey = () => 'sadae.guestSeen.'+(S.me&&S.me.id);
+function guestNewN(){ if(!S.me||store.kind!=='remote') return 0; const seen=+lsGet(guestSeenKey(),0)||0, lim=Date.now()-7*864e5; return guestEntries(S.me.id).filter(e=>e.from!==S.me.id && (e.at||0)>Math.max(seen,lim)).length; }
+function renderRoomNav(){
+  const el=$('#roomNav'); if(!el) return; if(!S.me){ el.hidden=true; return; } el.hidden=false;
+  const hj=homeJ(); const nMem=(S.members||[]).filter(m=>m&&m.name&&memberJ(m).id===hj.id).length;
+  const ym=today().slice(0,7); let h=0, n=0; for(const d of (S.myDays||[])){ if(!d.date||!d.date.startsWith(ym)) continue; for(const r of (d.rounds||[])) if(Array.isArray(r)){ n++; h+=hitsOf(r); } }
+  const days=(S.myDays||[]).filter(d=>d.rounds&&d.rounds.length).length;
+  const me=memberById(S.me.id)||S.me; const B=S.myrkBest; const remote=store.kind==='remote';
+  const gNew=guestNewN(), gN=remote?guestEntries(S.me.id).length:0;
+  const it=[['rosterCard','👥','사원',nMem?nMem+'명':'–'],['myRankCard','📊','순위',me.rankHide?'숨김':B?`${B.t} ${B.rk}위`:'이번 달'],['growthCard','📈','성장',n?Math.round(h/(n*5)*100)+'%':'–'],['badgeCard','🏅','배지',(S.badgeN||0)+'개'],
+    ['gearCard','🏹','장비',(S.gearN||0)+'/4'],['infoCard','🪪','내 정보',me.grade||S.me.grade||'신사'],['archCard','🗂','보관함',days?days+'일':'–'],['myGuestCard','📮','방명록',!remote?'–':gNew?'새 글':gN?gN+'개':'비어 있음',gNew]];
+  el.innerHTML=it.map(([id,e,k,c,dot])=>`<button type="button" class="${dot?'new':''}" data-rmgo="${id}"><span class="e" aria-hidden="true">${e}</span><b>${k}</b><small>${esc(String(c))}</small>${dot?'<i class="dot"></i>':''}</button>`).join('');
+}
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-rmgo]'); if(!b) return; const c=$('#'+b.dataset.rmgo); if(c && !c.hidden) c.scrollIntoView({behavior:'smooth', block:'start'}); });
+(function(){ const c=$('#myGuestCard'); if(!c || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(es=>{ for(const e of es) if(e.isIntersecting && S.tab==='room' && S.me && guestNewN()){ lsSet(guestSeenKey(), Date.now()); setTimeout(()=>{ try{ renderRoomNav(); }catch(_){} }, 1500); } }, {threshold:.5}).observe(c); })();
 // 방 구경 진입: 사대 캐릭터 · 오늘 명단 · 사원 명부
 document.addEventListener('click',e=>{ const f=e.target.closest('[data-room]'); if(f && !e.target.closest('.sheet')){ openRoom(f.dataset.room); return; }
   const a=e.target.closest('.att[data-att]'); if(a && (e.target.closest('.av')||e.target.closest('.who b'))){ openRoom(a.dataset.att); } });
@@ -3644,7 +3737,8 @@ function renderRoom(){
     {ic:'kkakji', l:'깍지', b: g.kkakji||'', s: g.kkakjiNote||''},
     {ic:'etc', l:'그 외', b: g.etc||'', s:''},
   ];
-  $('#gearGrid').innerHTML = slots.map(x=>`<button class="gslot ${x.b?'':'empty'}" data-gear>${ICON[x.ic]}<span class="t"><small>${x.l}</small><b>${esc(x.b||'아직 없음')}</b><span>${esc(x.s)}</span></span></button>`).join('');
+  S.gearN = slots.filter(x=>x.b).length;
+  $('#gearGrid').innerHTML = slots.map(x=>`<button class="gslot g-${x.ic} ${x.b?'':'empty'}" data-gear><span class="gi">${ICON[x.ic]}</span><span class="t"><small>${x.l}</small><b>${esc(x.b||'아직 없음')}</b><span>${x.b?esc(x.s):'+ 등록'}</span></span></button>`).join('');
   $$('[data-gear]').forEach(b=>b.addEventListener('click', openGear));
   // 내 정보
   let since=''; if(me&&me.since){ const d=Math.floor((new Date(t)-new Date(me.since))/86400000); since = d>=0? `D+${d}` : ''; }
@@ -3698,26 +3792,27 @@ function openGear(){
     closeSheet(); if(ok) toast('장비를 저장했어요'); renderAll();
   });
 }
-let archOpen=null, archLimit=30;
+let archOpen=null, archAll=false; const ARCH_N=3;
 function renderArchive(){
   const el=$('#archive'); if(!el) return;
   const days=S.myDays.filter(d=>d.rounds&&d.rounds.length).slice().sort((a,b)=>a.date<b.date?1:-1);
   $('#archCount').textContent = days.length? `${days.length}일` : '';
+  const xa=$('#expAll'); if(xa) xa.hidden = !!days.length && !archAll && days.length>ARCH_N;
   if(!days.length){ el.innerHTML=`<div class="muted">${S.me?'아직 기록이 없어요. 표 기록에서 순을 저장하면 여기에 쌓여요.':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>`; return; }
   let html='', lastMo='';
-  days.slice(0,archLimit).forEach(d=>{
+  days.slice(0, archAll?days.length:ARCH_N).forEach(d=>{
     const mo=d.date.slice(0,7); if(mo!==lastMo){ lastMo=mo; const [y,m]=mo.split('-'); const mdays=days.filter(x=>x.date.startsWith(mo)); const mh=mdays.reduce((a,x)=>a+x.rounds.reduce((s,r)=>s+hitsOf(r),0),0), ma=mdays.reduce((a,x)=>a+x.rounds.length*5,0); html+=`<div class="mo">${+y!==new Date().getFullYear()?y+'년 ':''}${+m}월 <span class="tiny">· ${mdays.length}일 · ${ma?Math.round(mh/ma*100):0}%</span></div>`; }
     const h=d.rounds.reduce((a,r)=>a+hitsOf(r),0), a=d.rounds.length*5, molgi=d.rounds.filter(r=>hitsOf(r)===5).length;
     const [Y,M,D]=d.date.split('-').map(Number); const wd=WD[new Date(Y,M-1,D).getDay()];
     html+=`<button class="day" data-d="${d.date}"><span class="d">${M}/${D} <span class="tiny">${wd}</span></span><span class="bar"><i style="width:${Math.round(h/a*100)}%"></i></span><span class="s num">${h}/${a}시 · ${d.rounds.length}순${molgi?` · 몰기 ${molgi}`:''}</span></button>`;
     if(archOpen===d.date) html+=`<div class="rounds"><div class="rounds">${d.rounds.map((r,i)=>`<div class="rnd"><span class="n">${i+1}순</span><div class="dots">${r.map(x=>`<span class="dot ${rc(x)}">${glyph(x)}</span>`).join('')}</div>${hitsOf(r)===5?'<span class="molgi">몰기</span>':''}<span class="sum num">${hitsOf(r)}중</span></div>`).join('')}</div><div class="row" style="gap:6px;margin-top:6px"><button class="btn sm" data-bigday="${d.date}" type="button">📖 크게 보기</button><button class="btn sm ghost" data-card="${d.date}" type="button">📸 기록 카드</button></div></div>`;
   });
-  if(days.length>archLimit) html+=`<button class="btn block ghost" id="archMore">더 보기 (${days.length-archLimit}일 남음)</button>`;
+  if(days.length>ARCH_N) html+=`<button type="button" class="rs-more" id="archMore" aria-expanded="${archAll}">${archAll?'▴ 접기':`▾ 더보기 · ${days.length-ARCH_N}일 더`}</button>`;
   el.innerHTML=html;
   $$('.day',el).forEach(b=>b.addEventListener('click',()=>{ archOpen = archOpen===b.dataset.d ? null : b.dataset.d; renderArchive(); }));
   $$('[data-card]',el).forEach(b=>b.addEventListener('click',()=>openDayCard(b.dataset.card)));
   $$('[data-bigday]',el).forEach(b=>b.addEventListener('click',()=>openDayView(b.dataset.bigday)));
-  const more=$('#archMore'); if(more) more.addEventListener('click',()=>{ archLimit+=30; renderArchive(); });
+  const more=$('#archMore'); if(more) more.addEventListener('click',()=>{ archAll=!archAll; renderArchive(); if(!archAll) $('#archCard').scrollIntoView({block:'start'}); });
 }
 
 
@@ -4122,20 +4217,28 @@ function growthChartHTML(g){
   return `<div class="gchart" role="img" aria-label="최근 6개월 관중률">${ms.map(ym=>{ const M=g.months[ym]; const p=M&&M.n?Math.round(M.h/(M.n*5)*100):null; const cur=ym===today().slice(0,7);
     return `<div class="gc ${cur?'cur':''}" title="${+ym.slice(5)}월 · ${p===null?'기록 없음':`관중률 ${p}% · ${M.d}일 ${M.n}순`}"><span class="gtrack"><i style="height:${p===null?0:Math.max(p,2)}%">${p===null?'':`<em class="gv num">${p}%</em>`}</i></span><b>${+ym.slice(5)}월</b><small class="num">${M?M.n+'순':'–'}</small></div>`; }).join('')}</div>`;
 }
+// 내 성장 지표 (C안): [통산] · [🏆 내 최고 기록] 두 묶음
+function growthKpiHTML(g){
+  const ym=today().slice(0,7); const moNow=(S.myDays||[]).map(dayBrief).filter(d=>d.date&&d.date.startsWith(ym)).reduce((a,d)=>a+(d.mo||0),0);
+  const cell=(v,u,ic,k,sub)=>`<div class="gk-c"><span class="gk-v"><b class="num">${v}</b>${u?`<small>${u}</small>`:''}</span><span class="gk-k">${ic} ${k}</span><small class="gk-s">${sub||'&nbsp;'}</small></div>`;
+  return `<div class="gk"><div class="gk-g"><div class="gk-h">통산</div><div class="gk-r">${cell(Math.round(g.h/(g.n*5)*100),'%','🎯','통산 관중률',`${g.h}/${g.n*5}시`)}${cell(g.mo,'','🏅','통산 몰기',moNow?`${+ym.slice(5)}월 ${moNow}번`:'')}${cell(g.curWeeks||'–',g.curWeeks?'주':'','📅','연속 습사 중',g.curWeeks?'지금 이어가는 중':'이번 주에 다시 시작')}</div></div>
+    <div class="gk-g best"><div class="gk-h">🏆 내 최고 기록</div><div class="gk-r">${g.best?cell(Math.round(g.best.r*100),'%','🥇','하루 최고',`${fmtShort(g.best.date)} · ${g.best.h}/${g.best.n*5}시`):cell('–','','🥇','하루 최고','3순 이상 쏜 날')}${cell(g.maxN,'순','⚡','하루 최다',`${g.maxN*5}시`)}${cell(g.bestWeeks,'주','🔁','최장 연속',g.bestDays>1?`${g.bestDays}일 내리`:'')}</div></div></div>`;
+}
 function renderGrowth(){
   const el=$('#growth'); if(!el) return;
-  if(!S.me){ el.innerHTML='<div class="muted">캐릭터를 고르면 성장 기록이 쌓여요.</div>'; $('#badges').innerHTML=''; $('#badgeCount').textContent=''; $('#growthSub').textContent=''; return; }
+  const bact=$('#badgeCard .bd-act'); if(bact) bact.hidden=!S.me;
+  if(!S.me){ el.innerHTML='<div class="muted">캐릭터를 고르면 성장 기록이 쌓여요.</div>'; $('#badges').innerHTML=''; $('#badgeCount').textContent=''; $('#growthSub').textContent=''; S.badgeN=0; return; }
   const g=growthOf(S.myDays||[], S.me.id);
   $('#growthSub').textContent = g.days ? `통산 ${g.days}일 · ${g.n}순` : '';
   el.innerHTML = !g.days ? '<div class="muted">표 기록에서 순을 저장하면 달마다 관중률이 쌓여요.</div>' : `
     ${growthChartHTML(g)}
-    <div class="stats" style="margin-top:12px">${statTiles([[Math.round(g.h/(g.n*5)*100)+'<small>%</small>',`통산 관중률 · ${g.h}/${g.n*5}시`],[g.mo,'통산 몰기'],[g.curWeeks?`${g.curWeeks}<small>주</small>`:'–','연속 습사 중']])}</div>
-    <div class="pb">${g.best?`<div><span>🥇 하루 최고</span><b class="num">${Math.round(g.best.r*100)}%</b><small>${fmtShort(g.best.date)} · ${g.best.h}/${g.best.n*5}시</small></div>`:''}<div><span>⚡ 하루 최다</span><b class="num">${g.maxN}순</b><small>${g.maxN*5}시</small></div><div><span>🔁 최장 연속</span><b class="num">${g.bestWeeks}주</b><small>${g.bestDays>1?`${g.bestDays}일 내리`:''}</small></div></div>`;
+    ${growthKpiHTML(g)}`;
   const E=earnedOf(g); const ST=badgeState(S.me.id, S.myDays||[]);
-  $('#badgeCount').textContent=`받은 단계 ${ST.sets.reduce((a,x)=>a+x.k,0)} · 특별 ${ST.sp.length+ST.hidden.length}`;
+  $('#badgeCount').textContent=`단계 ${ST.sets.reduce((a,x)=>a+x.k,0)} · 특별 ${ST.sp.length+ST.hidden.length}`; S.badgeN=ST.sets.reduce((a,x)=>a+x.k,0)+ST.sp.length+ST.hidden.length;
   const bx=$('#badges'); bx.className='bboard'; bx.innerHTML=boardHTML(ST);
+  const bfold=lsGet('sadae.badgeFold',false)===true; bx.hidden=bfold; const bf=$('#badgeFold'); if(bf){ bf.textContent=bfold?'펼치기 ▾':'접기 ▴'; bf.setAttribute('aria-expanded', String(!bfold)); bf.onclick=()=>{ lsSet('sadae.badgeFold', !bfold); renderGrowth(); if(!bfold) $('#badgeCard').scrollIntoView({block:'nearest'}); }; }
   bx.onclick=e=>{ const b=e.target.closest('[data-bset]'); if(!b) return; const x=ST.sets.find(y=>y.id===b.dataset.bset); toast(`${x.ic} ${x.t} — ${x.d} · ${x.T.map((v,i)=>BTIER[i+1]+' '+v+x.u).join(' → ')}`); };
-  let wb=$('#wallBtn'); if(!wb){ const h=bx.parentElement.querySelector('.sec-head'); if(h){ wb=document.createElement('button'); wb.type='button'; wb.id='wallBtn'; wb.className='btn sm'; wb.textContent='🖼 방에 걸기'; const old=h.querySelector('.tiny.muted'); if(old) old.remove(); h.appendChild(wb); wb.onclick=openWallPick; } }
+  const wb=$('#wallBtn'); if(wb) wb.onclick=openWallPick;
   // 새로 얻은 배지 알림 (처음 한 번은 조용히 기억만)
   const KEY='sadae.badges2.'+S.me.id; const seen=lsGet(KEY,null); const ids=E.map(b=>b.id);
   const loaded = S.daysLoaded && (store.kind!=='remote' || store.lastRefresh>0);   // 서버 기록을 다 받은 뒤에만 (새 기기에서 배지 폭탄 방지)
@@ -4781,6 +4884,8 @@ function renderMyRank(){
     else { desc = c.id==='dajeong' ? '방명록 · 응원으로 정을 나눠 보세요' : '아직 기록이 없어요'; }
     return `<div class="mr-row"><div class="mr-top"><span class="mr-c">${c.ic} ${c.t}</span><span class="mr-rk ${rc}">${medal?`<em>${medal}</em>`:''}<b>${rk}</b>${rk!=='—'?'<small>위</small>':''}</span><span class="mr-v">${val!==''?`<b>${val}</b><small>${unit}</small>`:''}</span></div>
       <div class="mr-bot">${bar}<span class="mr-d ${dcls}">${desc}</span><span class="mr-t">/ ${L.length}명</span></div></div>`; }).join('');
+  if(per==='month' && data){ let best=null; if(mine && !hidden) for(const c of RK_CATS){ if(!c.ok(mine)) continue; const L=(data.members||[]).filter(o=>c.ok(o)&&memberById(o.mid)).sort((a,b)=>c.v(b)-c.v(a)); const i=L.findIndex(o=>o.mid===S.me.id); if(i>=0 && (!best || i+1<best.rk)) best={t:c.t, rk:i+1}; }
+    const was=JSON.stringify(S.myrkBest||null); S.myrkBest=best; if(was!==JSON.stringify(best) && typeof renderRoomNav==='function') setTimeout(()=>{ try{ renderRoomNav(); }catch(e){} },0); }
   const lab={month:`${+today().slice(5,7)}월`, week:'최근 7일', prev:`${+ymAdd(today().slice(0,7),-1).slice(5)}월`};
   el.innerHTML=`<div class="mr-h"><h2>📊 내 순위</h2><div class="mr-tabs" role="tablist">${['month','week','prev'].map(k=>`<button type="button" data-myrk="${k}" class="${per===k?'on':''}" aria-selected="${per===k}">${lab[k]}</button>`).join('')}</div></div>
     ${rows}<p class="mr-foot">${hidden?'🙈 랭킹 숨김 중 — 내 값만 보여요':'광장 순위와 같은 계산 · 나만 보는 화면'}</p>`;
