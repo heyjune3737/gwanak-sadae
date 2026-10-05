@@ -2032,7 +2032,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.05g';
+const APP_VER = '2026.10.05h';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4401,6 +4401,8 @@ const MAG_JMIN = {members:10, rec:3};   // 정별 월보: 가입 10명 이상 + 
 const MAG_VS_MIN = 3;                    // 정 대항: 위 기록 조건(3명)을 넘긴 정이 3곳 이상일 때
 const MAG_VS_SHOW = false;               // 정 대항 화면 노출 — 정이 늘면 true 로 (계산·화면 코드는 그대로 둠)
 const magJid = id => { const m=memberById(id); return m ? memberJ(m).id : null; };
+// 그 호 기간 끝(to)까지 가입한 사원인지 — joinedAt(서버가 붙임, SQL 20). 값이 없으면(옛 기기 캐시) 센다 · 사대지기 봇은 빼기
+const magJoinedBy = (m, to) => !!m && m.id!==HUB_BOT && (!m.joinedAt || dstr(new Date(+m.joinedAt)) <= to);
 function magData(ym, scope){
   scope=scope||'all'; const ck=ym+'|'+scope; const c=S.mag.cache[ck]; if(c && Date.now()-c.at<60e3) return c.d;
   const inS = id => scope==='all' || magJid(id)===scope;
@@ -4411,9 +4413,9 @@ function magData(ym, scope){
   for(const k in Dd){ const x=Dd[k]; if(!x||!x.entries) continue;
     if(k.startsWith('attendance/')){ const dt=k.slice(11); if(dt<from||dt>to) continue; for(const [tid,e] of Object.entries(x.entries)){ if(!e||!inS(tid)) continue; if(e.slot){ act.att++; (act.attDay[dt]=act.attDay[dt]||new Set()).add(tid); } for(const [fr,em] of Object.entries(e.reactions||{})) if(em&&fr!==tid) act.ch++; } }
     else if(k.startsWith('guestbook/')){ for(const v of Object.values(x.entries)) if(v&&(v.text||v.secret)&&v.at&&inS(v.from)){ const dt=dayOf(v.at); if(dt>=from&&dt<=to) act.gb++; } } }
-  act.members=(S.members||[]).filter(m=>m&&m.name&&inS(m.id)).length;
+  act.members=(S.members||[]).filter(m=>m&&m.name&&inS(m.id)&&magJoinedBy(m,to)).length;
   // 정별 현황 (전체 월보에서만): 가입 · 기록 사원 · 습사 · 관중
-  const jst={}; if(scope==='all'){ for(const m of (S.members||[])){ if(!m||!m.name) continue; const j=memberJ(m); const o=jst[j.id]||(jst[j.id]={id:j.id, name:j.name, hanja:j.hanja||j.name, members:0, rec:0, days:0, n:0, h:0, mo:0});
+  const jst={}; if(scope==='all'){ for(const m of (S.members||[])){ if(!m||!m.name||!magJoinedBy(m,to)) continue; const j=memberJ(m); const o=jst[j.id]||(jst[j.id]={id:j.id, name:j.name, hanja:j.hanja||j.name, members:0, rec:0, days:0, n:0, h:0, mo:0});
       o.members++; const a=A.by[m.id]; if(a&&a.n){ o.rec++; o.days+=a.days; o.n+=a.n; o.h+=a.h; o.mo+=a.mo; } }
     for(const o of Object.values(jst)) o.ok = o.members>=MAG_JMIN.members && o.rec>=MAG_JMIN.rec; }
   const ev=[]; const nm=id=>(memberById(id)||{}).name||'사원';
