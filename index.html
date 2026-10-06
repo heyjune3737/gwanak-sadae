@@ -1733,6 +1733,66 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .dw-bub .dw-sign{display:block;text-align:right;margin-top:4px;font-family:var(--display);color:var(--ink);font-size:12px}
 /* p99 */
 .d-empty{padding:18px 8px;text-align:center;line-height:1.7;word-break:keep-all}.d-empty small{font-size:12.5px;color:var(--ink3)}
+/* p101 · 방 이름표 위로 · 호패 */
+.room .item.gtop{top:1.5%!important;flex-direction:column-reverse}
+.room .shelf{top:31%}
+#roomInfo,.visit-info{display:block}
+.hopae{position:relative;margin:22px auto 0;max-width:320px;background:linear-gradient(#D9A066,#C88B50);border:3px solid #5A3A1E;border-radius:46px 46px 10px 10px;box-shadow:4px 4px 0 var(--ink);padding:30px 16px 14px;color:#2E1E10;text-align:center}
+.hopae .hp-hole{position:absolute;top:10px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--card);border:3px solid #5A3A1E}
+.hopae .hp-cord{position:absolute;top:-22px;left:50%;width:4px;height:26px;margin-left:-2px;background:#B8322A}
+.hp-jn{font-size:12px;letter-spacing:.15em}.hp-nm{font-family:var(--display);font-size:26px;margin:2px 0 8px;line-height:1.2}
+.hp-row{display:flex;border-top:2px solid #5A3A1E;border-bottom:2px solid #5A3A1E;padding:8px 0}.hp-row>div{flex:1;min-width:0}.hp-row>div+div{border-left:1.5px dashed #5A3A1E}
+.hp-row small{display:block;font-size:10.5px;opacity:.8}.hp-row b{font-family:var(--display);font-size:17px;white-space:nowrap}
+.hp-ft{font-size:11px;margin-top:8px;word-break:keep-all}
+.hp-lad{border:2px solid var(--ink);background:var(--card);padding:10px 12px;margin-top:14px}
+.hp-lt{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.hp-lt b{font-size:14px}.hp-lt small{font-size:11.5px;color:var(--ink2)}
+.hp-steps{display:flex;gap:2px;margin:8px 0 2px}.hp-steps span{flex:1;text-align:center;font-size:11px;padding:4px 0;border:1.5px solid var(--line2);color:var(--ink3);white-space:nowrap}
+.hp-steps span.done{background:#E8D4B4;color:#2E1E10;border-color:var(--ink)}.hp-steps span.me{background:var(--red);color:#fff;border-color:var(--ink);font-weight:700}.hp-steps span.nx{border:1.5px dashed var(--ink);color:var(--ink)}.hp-steps span.more{flex:.5;border:0}
+.hp-foot{font-size:11.5px;color:var(--ink2);margin-top:4px}.hp-foot b{color:var(--red)}
+/* p102 · 배지판 (디자인팀 다듬은 안) */
+:root{--bv-off:#F6F4F8;--bv-got:#FFF8E2;--bv-s1:#FFE3DF;--bv-s2:#E8F1F8;--bv-s3:#E6F2DF;--bv-s4:#E3ECF7;--bv-s6:#EEE9F6}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--bv-off:#232838;--bv-got:#3B3524;--bv-s1:#4A2E36;--bv-s2:#2B3A50;--bv-s3:#24402C;--bv-s4:#2E3A63;--bv-s6:#3A3350} }
+:root[data-theme="dark"]{--bv-off:#232838;--bv-got:#3B3524;--bv-s1:#4A2E36;--bv-s2:#2B3A50;--bv-s3:#24402C;--bv-s4:#2E3A63;--bv-s6:#3A3350}
+.bv-mon{border:2px solid var(--ink);background:var(--gold-soft);margin-bottom:12px}
+.bv-mh{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-bottom:2px solid var(--ink)}.bv-mh b{font-size:14px}
+.bv-left{font-size:12px;font-weight:700;color:#fff;background:var(--red);border:2px solid var(--ink);padding:0 6px}
+.bv-mbody{display:flex;gap:12px;align-items:center;padding:10px}
+.bv-mic{flex:none;width:64px;height:64px;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:34px}
+.bv-mtx{flex:1;min-width:0}.bv-mtx b{display:block;font-family:var(--display);font-size:16px}.bv-mtx small{display:block;font-size:12px;color:var(--ink2)}
+.bv-stamp{display:flex;gap:3px;margin:6px 0 3px}.bv-stamp i{flex:1;height:14px;border:2px solid var(--ink);background:var(--card)}.bv-stamp i.on{background:#E8833A}
+.bv-mn{font-size:12px;font-weight:700}
+.bv-mfoot{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:7px 10px;border-top:2px dashed var(--ink3);font-size:12px;color:var(--ink2)}
+.bv-12{margin-left:auto;font:inherit;font-size:12px;color:var(--ink);background:none;border:0;cursor:pointer;padding:2px}
+.bv-shelf{border:2px solid var(--ink);margin-top:12px;background:var(--card)}
+.bv-sh{padding:6px 10px;border-bottom:2px solid var(--ink)}.bv-sh b{display:block;font-size:14px}.bv-sh small{display:block;font-size:12px;color:var(--ink2)}
+.bv-shelf.s1 .bv-sh{background:var(--bv-s1)}.bv-shelf.s2 .bv-sh{background:var(--bv-s2)}.bv-shelf.s3 .bv-sh{background:var(--bv-s3)}.bv-shelf.s4 .bv-sh{background:var(--bv-s4)}.bv-shelf.s6 .bv-sh{background:var(--bv-s6)}
+.bv-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:8px}
+.bv-t{position:relative;font:inherit;color:var(--ink);text-align:center;border:2px solid var(--ink);background:var(--card);padding:7px 2px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+.bv-ic{width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;font-size:23px;border:2px solid var(--ink);background:#C9874A}
+.bv-t b{font-size:12.5px;line-height:1.2;word-break:keep-all}
+.bv-tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;padding:0 5px;border:1.5px solid var(--ink);white-space:nowrap}.bv-tag.off{background:var(--card);color:var(--ink);font-weight:400}
+.bv-pg{display:block;width:84%;height:6px;border:1.5px solid var(--ink);background:var(--card2)}.bv-pg i{display:block;height:100%;background:#C9874A}
+.bv-t.off,.bv-sk.off{border-style:dashed;background:var(--bv-off)}.bv-t.off .bv-ic,.bv-sk.off .bv-ic{filter:grayscale(1);border-style:dashed}
+.bv-new{position:absolute;top:-9px;right:-4px;font-size:11px;font-weight:700;color:#fff;background:var(--red);border:1.5px solid var(--ink);padding:0 4px}
+.bv-skl{padding:8px;display:flex;flex-direction:column;gap:6px}
+.bv-sk{font:inherit;color:var(--ink);display:flex;gap:10px;align-items:center;text-align:left;border:0;background:none;padding:2px 0;cursor:pointer}.bv-sk.off{border:0;background:none}
+.bv-skt b{display:flex;gap:6px;align-items:center;font-size:15px}.bv-skt small{font-size:12px;color:var(--ink2)}
+.bv-lad{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:6px}.bv-lad span{text-align:center;font-size:12px;border:1.5px solid var(--line2);padding:2px 0;color:var(--ink2);line-height:1.25}.bv-lad span b{display:block;font-size:12px;color:var(--ink)}
+.bv-lad span.on{background:#C9874A;border-color:var(--ink);color:#fff}.bv-lad span.on b{color:#fff}
+.bv-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px}.bv-chip{font-size:12.5px;border:1.5px solid var(--ink);padding:2px 8px;background:var(--card)}.bv-chip.off{border-style:dashed;color:var(--ink2);background:var(--bv-off)}
+.bv-tiles+.bv-chips{padding-top:0}
+.bv-none{font-size:12px;color:var(--ink3)}
+.bv-yh{display:flex;justify-content:space-between;align-items:baseline}.bv-yh h3{margin:0}.bv-yh b{font-family:var(--display)}
+.bv-leg{display:flex;gap:12px;font-size:12px;color:var(--ink2);margin:6px 0 10px}.bv-leg i{display:inline-block;width:12px;height:12px;border:2px solid var(--ink);margin-right:4px;vertical-align:-2px}.bv-leg i.g{background:var(--gold)}.bv-leg i.c{border-color:var(--red)}.bv-leg i.m{border-style:dashed;border-color:var(--ink3)}
+.bv-year{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.bv-ym{position:relative;text-align:center;border:2px solid var(--ink);padding:8px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--card)}
+.bv-ym b{font-size:12.5px}.bv-ym small{font-size:12px;color:var(--ink2)}
+.bv-ym.got{background:var(--bv-got);box-shadow:3px 3px 0 var(--ink)}.bv-ym.cur{border-color:var(--red);border-width:3px}.bv-ym.cur small{color:var(--red);font-weight:700}
+.bv-ym.miss,.bv-ym.todo{border-style:dashed;border-color:var(--ink3);background:var(--bv-off)}.bv-ym.miss .bv-ic,.bv-ym.todo .bv-ic{filter:grayscale(1)}
+.bv-got{position:absolute;top:-9px;right:-3px;font-size:11px;font-weight:700;background:var(--gold);color:var(--gold-ink,#2A2233);border:1.5px solid var(--ink);padding:0 4px}
+.gr-act{display:flex;align-items:center;gap:8px}
+/* p103 */
+.pz-bub.lv3{margin-bottom:80px}.pz-bub.lv3::before{content:"";position:absolute;left:50%;top:100%;width:2px;margin-left:-1px;height:76px;background:#2A2233;opacity:.5}
 </style>
 
 <div class="app" id="app">
@@ -1870,7 +1930,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
       <div class="rm-div" id="dvMe"><b>나</b><span>순위 · 성장 · 배지</span></div>
       <div class="card" id="myRankCard"></div>
       <div class="card" id="growthCard">
-        <div class="sec-head"><h2>📈 내 성장</h2><span class="tiny muted" id="growthSub"></span></div>
+        <div class="sec-head"><h2>📈 내 성장</h2><span class="gr-act"><span class="tiny muted" id="growthSub"></span><button class="btn sm" id="bragBtn" type="button">📸 자랑 카드</button></span></div>
         <div id="growth"></div>
       </div>
       <div class="card" id="badgeCard">
@@ -2269,7 +2329,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.07a';
+const APP_VER = '2026.10.07b';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2562,15 +2622,15 @@ function openRoom(mid){
     const sh=openSheet(`
     <div class="room visit th-${VTH}${VWALL?' has-wall':''}">
       <div class="floor"></div><div class="win" style="${VFX.winStyle}">${VFX.win}<div class="tg"><i></i></div></div><div class="shelf"></div>${VFX.room}
-      <div class="item" style="left:8%;top:13%">${ICON.bow}<span class="lb">${esc(g.bowName||m.bow||'활')}</span></div>
-      <div class="item" style="left:26%;top:13%">${ICON.arrow}<span class="lb">${esc(g.arrowName||m.arrow||'화살')}</span></div>
+      <div class="item gtop" style="left:8%;top:13%">${ICON.bow}<span class="lb">${esc(g.bowName||m.bow||'활')}</span></div>
+      <div class="item gtop" style="left:26%;top:13%">${ICON.arrow}<span class="lb">${esc(g.arrowName||m.arrow||'화살')}</span></div>
       ${hasCert(m.grade)?`<div class="frame">${esc(m.grade)}<br>단증</div>`:''}
       <div class="item" style="right:8%;bottom:10%">${ICON.kkakji}<span class="lb">${esc(g.kkakji||'깍지')}</span></div>
       <div class="vcount">TODAY <b>${VV.today}</b><br><span>TOTAL <b>${VV.total}</b></span></div>${VWALL}<div class="hero">${charSVG(m.char||DEFAULT_CHAR)}</div><div class="sign">${esc(memberJ(m).name)} · ${esc(m.name)}의 방</div>
       ${m.status?`<div class="bubble">${esc(m.status)}</div>`:''}
     </div>
 <button type="button" class="fav-btn ${isFav(mid)?'on':''}" id="rmFav" aria-pressed="${isFav(mid)}"><b>${isFav(mid)?'★ 사대 동무':'☆ 사대 동무'}</b><small>자주 함께 사대에 서거나 같이 배운 동기 · 나만 보여요</small></button>
-    <div class="info visit-info">${statTiles([[esc(m.grade||'신사'),'단급'],[esc(m.hand||'–'),'궁체'],[since||'–','집궁']])}</div>
+    <div class="visit-info">${hopaeHTML(m)}</div>
     <h3 style="margin:4px 0 0">🏹 이번 달</h3>
     <div class="info">${statTiles([[s.n?Math.round(s.h/(s.n*5)*100)+'<small>%</small>':'–',`관중률 · ${s.h}/${s.n*5}시`],[`${s.days}<small>일</small>`,`습사 · ${s.n}순`],[s.mo,'몰기']])}</div>
     ${s.full.length?`<details class="notice"><summary>날짜별 기록 (공개됨)</summary>${s.full.slice(0,20).map(d=>{ const h=d.rounds.reduce((a,r)=>a+hitsOf(r),0); const [Y,M,D]=d.date.split('-').map(Number); return `<div class="vday"><span>${M}/${D}</span><span class="num">${h}/${d.rounds.length*5}시 · ${d.rounds.length}순</span><span class="dots">${d.rounds.map(r=>`<i>${hitsOf(r)}</i>`).join('')}</span></div>`; }).join('')}</details>`:'<p class="tiny muted" style="margin:0">날짜별 기록은 본인이 공개하면 볼 수 있어요</p>'}
@@ -4135,6 +4195,29 @@ function openRoomTheme(){
 // 카드 접기 (기기에 기억) — hide: 접으면 숨길 것 · show: 접었을 때만 보일 것
 function applyFold(key, btn, hide, show, txt){ const f=lsGet(key,false)===true; (hide||[]).forEach(e=>{ if(e) e.hidden=f; }); (show||[]).forEach(e=>{ if(e) e.hidden=!f; });
   if(btn){ const [o,c]=txt||['접기 ▴','펼치기 ▾']; btn.textContent=f?c:o; btn.setAttribute('aria-expanded',String(!f)); btn.title=f?'펼치기':'접기'; btn.onclick=()=>{ lsSet(key,!f); applyFold(key,btn,hide,show,txt); }; } return f; }
+// ===== p101 · 호패(號牌) + 승단 사다리 =====
+const LADDER = ['1급','초단','2단','3단','4단','5단','6단','7단','8단','9단'];
+function sinceText(since, t){ if(!/^\d{4}-\d{2}-\d{2}$/.test(since||'')) return null; const [y,m,d]=since.split('-').map(Number); const [Y,M,D]=t.split('-').map(Number);
+  const days=Math.floor((new Date(Y,M-1,D)-new Date(y,m-1,d))/864e5); if(days<0) return null; let mo=(Y-y)*12+(M-m)-(D<d?1:0); const yy=Math.floor(mo/12); mo%=12;
+  return {days, dur: yy? `${yy}년${mo?` ${mo}개월`:''}` : mo? `${mo}개월` : `${days}일`, date:`${y}년 ${m}월 ${d}일`}; }
+function best9(days){ let b=null; for(const d of (days||[])){ const rs=(d.rounds||[]).filter(Array.isArray); if(rs.length<9) continue; const h=rs.slice(0,9).reduce((a,r)=>a+hitsOf(r),0); if(!b||h>b.h) b={h, date:d.date}; } return b; }
+function hopaeHTML(m, o={}){
+  if(!m) return ''; const t=today(); const J=memberJ(m); const g=m.grade||'신사'; const st=sinceText(m.since, t);
+  const jn=(J.hanja||J.name||'').split('').join(' ');
+  const idx=LADDER.indexOf(g); const next = idx<0 ? LADDER[0] : LADDER[idx+1]||null;
+  const from=Math.max(0, (idx<0?0:idx)-2); const cells=[]; if(idx<0) cells.push({l:g, me:true});
+  for(let i=from;i<Math.min(LADDER.length, (idx<0?0:idx)+4);i++) cells.push({l:LADDER[i], me:i===idx, done:i<idx, nx:LADDER[i]===next});
+  const need = next ? (GRADES.find(([,n])=>n===next)||[])[0] : null;
+  let foot='';
+  if(o.own){ const b=best9(o.days); foot = !next ? '가장 높은 단이에요' : need==null ? '' : b ? (b.h>=need ? `내 최고 9순 ${b.h}중(${fmtShort(b.date)}) · <b>${next} 기준을 넘었어요</b>` : `내 최고 9순 ${b.h}중(${fmtShort(b.date)}) · <b>${need-b.h}중 더</b>`) : '하루 9순을 쏜 날이 생기면 내 최고 기록과 견줘 봐요'; }
+  return `<div class="hopae"><span class="hp-cord"></span><span class="hp-hole"></span>
+    <div class="hp-jn">${esc(jn)}</div><div class="hp-nm">${esc(m.name||'사원')}</div>
+    <div class="hp-row"><div><small>단급</small><b>${esc(g)}</b></div><div><small>궁체</small><b>${esc(m.hand||'–')}</b></div><div><small>집궁</small><b>${st?st.dur:'–'}</b></div></div>
+    <div class="hp-ft">${st?`${st.date} 활을 잡음 · ${st.days}일째`:(o.own?'프로필에서 집궁일(활을 처음 잡은 날)을 적어 주세요':'집궁일을 아직 적지 않았어요')}</div></div>
+  <div class="hp-lad"><div class="hp-lt"><b>승단 사다리</b><small>${next?`다음 ${next}${need!=null?` · 9순 ${need}중`:''}`:'최고 단'}</small></div>
+    <div class="hp-steps">${cells.map(c=>`<span class="${c.me?'me':c.done?'done':c.nx?'nx':''}">${esc(c.l)}</span>`).join('')}${idx>=0&&idx+4<LADDER.length?'<span class="more">…</span>':''}</div>
+    ${foot?`<div class="hp-foot">${foot}</div>`:''}</div>`;
+}
 function renderRoom(){
   const room=$('#room'); if(!room) return; try{ renderMyRank(); }catch(e){ console.warn('myrank', e); }
   const me=S.me; const g=gearOf(); const t=today();
@@ -4146,8 +4229,8 @@ function renderRoom(){
     <div class="counter">TODAY <b class="num">${todayHits}</b> · MONTH <b class="num">${monthHits}</b> <span style="opacity:.7">관중</span></div>
     <div class="win" style="${FX.winStyle}">${FX.win}<div class="tg"><i></i></div></div>
     <div class="shelf"></div>${FX.room}${WALL}
-    <div class="item" style="left:8%;top:13%">${ICON.bow}<span class="lb">${esc(g.bowName||(me&&me.bow)||'활')}</span></div>
-    <div class="item" style="left:26%;top:13%">${ICON.arrow}<span class="lb">${esc(g.arrowName||(me&&me.arrow)||'화살')}</span></div>
+    <div class="item gtop" style="left:8%;top:13%">${ICON.bow}<span class="lb">${esc(g.bowName||(me&&me.bow)||'활')}</span></div>
+    <div class="item gtop" style="left:26%;top:13%">${ICON.arrow}<span class="lb">${esc(g.arrowName||(me&&me.arrow)||'화살')}</span></div>
     ${me&&hasCert(me.grade)?`<div class="frame">${esc(me.grade)}<br>단증</div>`:''}
     <div class="item" style="right:8%;bottom:10%">${ICON.kkakji}<span class="lb">${esc(g.kkakji||'깍지')}</span></div>
     <div class="hero">${charSVG(me?me.char:DEFAULT_CHAR)}</div>
@@ -4168,7 +4251,7 @@ function renderRoom(){
   $$('[data-gear]').forEach(b=>b.addEventListener('click', openGear));
   // 내 정보
   let since=''; if(me&&me.since){ const d=Math.floor((new Date(t)-new Date(me.since))/86400000); since = d>=0? `D+${d}` : ''; }
-  $('#roomInfo').innerHTML = statTiles([[esc((me&&me.grade)||'신사'),'단급'],[esc((me&&me.hand)||'–'),'궁체'],[since||'–',`집궁 ${me&&me.since?fmtShort(me.since):''}`]]);
+  $('#roomInfo').innerHTML = me ? hopaeHTML(memberById(me.id)||me, {own:true, days:S.myDays||[]}) : '<div class="muted">캐릭터를 고르면 내 호패가 생겨요.</div>';
   renderVisitRow(room);
   if(me){ const b=document.createElement('button'); b.type='button'; b.className='bg-pill rm-pick'; b.textContent='🎨 방 꾸미기'; b.onclick=e=>{ e.stopPropagation(); openRoomTheme(); }; room.appendChild(b); }
   renderArchive(); renderGrowth(); if(typeof renderRoomExtras==='function') renderRoomExtras();
@@ -4449,7 +4532,8 @@ function growthOf(days, mid){
   const L=days.map(dayBrief).filter(d=>d.date && d.n>0).sort((a,b)=>a.date<b.date?-1:1);
   const g={mid, days:L.length, n:0, h:0, mo:0, maxN:0, best:null, bestDays:0, bestWeeks:0, curWeeks:0, months:{}, bestMonthPct:0, bestMonthPct30:0, comps:0};
   let run=0, prev=null;
-  g.windStrong=0; for(const d0 of days){ if(Array.isArray(d0.winds)) g.windStrong+=d0.winds.filter(x=>x&&+x.l===3).length; }
+  g.windStrong=0; g.rainN=0; g.coldN=0; g.hotN=0; for(const d0 of days){ if(Array.isArray(d0.winds)){ g.windStrong+=d0.winds.filter(x=>x&&+x.l===3).length;
+    d0.winds.forEach((w,i)=>{ if(!w || !Array.isArray((d0.rounds||[])[i])) return; if(typeof WXG==='function' && WXG(w.wc)==='rain') g.rainN++; if(w.t!=null && w.t<=0) g.coldN++; if(w.t!=null && w.t>=30) g.hotN++; }); } }
   g.seasons={}; for(const d of L){ const y=+d.date.slice(0,4), mo=+d.date.slice(5,7); const sy = mo===12 ? y+1 : y; const se=(mo===12||mo<=2)?'w':mo<=5?'sp':mo<=8?'su':'au'; (g.seasons[sy]=g.seasons[sy]||new Set()).add(se); }
   for(const d of L){ g.n+=d.n; g.h+=d.h; g.mo+=d.mo; g.maxN=Math.max(g.maxN,d.n);
     if(d.n>=3){ const r=d.h/(d.n*5); if(!g.best || r>g.best.r || (r===g.best.r && d.n>g.best.n)) g.best={...d, r}; }
@@ -4475,6 +4559,9 @@ const BSETS = [
   {id:'cover', ic:'📰', t:'표지 스타', u:'번',     T:[1,6,12,36], v:g=>coverInfo(g.mid).n, d:'사대 월보 표지(성실왕)에 오른 횟수 · 정별 월보 포함', mag:false},
   {id:'tour',  ic:'🏯', t:'정 순례',  u:'곳',      T:[2,4,6,8], v:g=>tourCount(g.mid), d:'습사 등록한 서로 다른 정 (소속 정 포함 · 8곳 = 서울 8정 순례)', mag:false},
   {id:'wind',  ic:'🌬', t:'바람 궁사', u:'순',     T:[10,50,100,300], v:g=>g.windStrong||0, d:"바람 '강'일 때 쏜 순 (표 기록 위 바람 칸)"},
+  {id:'rain',  ic:'🌧', t:'비 궁사',  u:'순',      T:[10,30,100,300], v:g=>g.rainN||0, d:'비 오는 날 쏜 순 (순 저장 때 자동으로 남은 날씨)', nw:1},
+  {id:'cold',  ic:'🥶', t:'한파 궁사', u:'순',     T:[5,20,50,100], v:g=>g.coldN||0, d:'기온 0℃ 아래에서 쏜 순', hint:'0℃ 아래', nw:1},
+  {id:'hot',   ic:'🥵', t:'폭염 궁사', u:'순',     T:[5,20,50,100], v:g=>g.hotN||0, d:'기온 30℃ 위에서 쏜 순', hint:'30℃ 위', nw:1},
   {id:'kind',  ic:'🧩', t:'함께',     u:'번',      T:[10,100,300,1000], v:g=>kindCount(g.mid), d:'다른 사원 방명록에 남긴 글 + 보낸 응원', mag:false},
 ];
 const setTier = (set, g) => { let k=0; set.T.forEach((x,i)=>{ if(set.v(g,i+1)>=x) k=i+1; }); return k; };
@@ -4555,6 +4642,8 @@ const isBeta = (mid, days) => (days||[]).some(d=>d.date>=MAG_BETA && d.date<=MAG
 function gradeUp(m){ const H=(m&&m.gradeHist)||{}; const ks=Object.keys(H).filter(k=>{ const g=H[k]||{}; return g.to && hasCert(g.to) && g.to!==g.from; }).sort(); if(!ks.length) return null; const g=H[ks[ks.length-1]]; return {to:g.to, date:ks[ks.length-1]}; }
 // 한 사원의 배지 전체
 function badgeState(mid, days){
+  const _mon=monthlyOf(days||[]); const _st=badgeState0(mid, days); _st.monthly=_mon; return _st; }
+function badgeState0(mid, days){
   const g=growthOf(days||[], mid); const m=memberById(mid)||{};
   const sets=BSETS.map(set=>{ const k=setTier(set,g); const nx=set.T[k]; return {...set, k, val:set.v(g, Math.min(k+1,set.T.length)), next:nx, max:set.T.length}; });
   const sp=[]; const gu=gradeUp(m); if(gu) sp.push({id:'grade', ic:'🎖', t:'승단', lab:`${gu.to} · ${+gu.date.slice(5,7)}/${+gu.date.slice(8,10)}`, sub:'단급이 오른 날', cls:'red'});
@@ -4570,6 +4659,53 @@ const earnedOf = g => BADGES.filter(b=>b.v(g)>=b.goal);
 function badgeHTML(g, compact){   // 남의 방 등: 받은 칸만, 최고 단계
   const L=BSETS.map(set=>({set,k:setTier(set,g)})).filter(x=>x.k>0);
   return L.map(({set,k})=>`<button class="bb mini bb-tier t${k}" type="button" title="${esc(set.t)} ${BTIER[k]}"><span class="ring">${set.ic}</span><b>${esc(set.t)}</b><span class="tl">${BTIER[k]}</span></button>`).join('');
+}
+// ===== p102 · 이달의 배지 =====
+const MONTHLY=[null,['🎍','새해 첫 활',4,'#C0392B'],['🧧','설맞이',6,'#C0392B'],['🌱','새싹',8,'#5E9F4F'],['🌸','꽃바람',8,'#E07AA0'],['🌿','신록',8,'#4F9B6A'],['☔','장마',6,'#4A7FB5'],
+  ['🍉','한여름',6,'#2E9E63'],['🌻','해바라기',6,'#D9A520'],['🌕','한가위',8,'#D98C20'],['🍁','단풍',8,'#E8833A'],['🍂','첫서리',8,'#9C6B3E'],['⛄','동지',4,'#5B7DB1']];
+function monthlyOf(days){
+  const by={}; for(const d of (days||[])){ if(!d||!d.date) continue; if(!(d.rounds||[]).some(Array.isArray)) continue; const ym=d.date.slice(0,7); by[ym]=(by[ym]||0)+1; }
+  const t=today(), cy=+t.slice(0,4), cm=+t.slice(5,7), dim=new Date(cy,cm,0).getDate();
+  const one=ym=>{ const m=+ym.slice(5); const [ic,n,need,c]=MONTHLY[m]; const have=by[ym]||0; return {ym, m, ic, n, need, c, have, got:have>=need}; };
+  const got=Object.keys(by).map(one).filter(x=>x.got).sort((a,b)=>b.ym.localeCompare(a.ym));
+  const cur={...one(t.slice(0,7)), left:dim-(+t.slice(8))};
+  const year=[]; for(let m=1;m<=12;m++){ const ym=`${cy}-${pad(m)}`; const x=one(ym); x.state = x.got?'got' : m===cm?'cur' : m<cm?'miss':'todo'; year.push(x); }
+  return {cur, got, year, by};
+}
+const BCOL=['#9AA3AD','#C9874A','#9AA3AD','#D9A520','#3E9A7A','#6B2E78','#D4AF37'];
+const SHELVES=[['s1','🎯 실력','동 · 은 · 금 · 옥 · 명궁 · 신궁 6단계',['molgi','rate'],1],['s2','🏹 꾸준함','4단계',['days','rounds','weeks','day']],['s3','🧩 함께','4단계',['kind','tour','comp','cover']],['s4','🌦 날씨 · 계절','순 저장 때 남은 바람 · 날씨 · 기온으로 자동',['wind','rain','cold','hot']]];
+const NEW_UNTIL='2026-11-07';
+function board2HTML(st){
+  const M=st.monthly, c=M.cur; const SX=Object.fromEntries(st.sets.map(x=>[x.id,x]));
+  const left=x=>x.next ? Math.max(0, x.next - x.val) : 0;
+  const mon=`<div class="bv-mon"><div class="bv-mh"><b>📅 이달의 배지</b><span class="bv-left">${c.got?'받았어요':`${c.left}일 남음`}</span></div>
+    <div class="bv-mbody"><span class="bv-mic" style="background:${c.c}">${c.ic}</span><div class="bv-mtx"><b>${c.m}월 · ${esc(c.n)} 궁사</b><small>${c.m}월에 ${c.need}일 습사하면 받아요</small>
+      <div class="bv-stamp">${Array.from({length:c.need},(_,i)=>`<i class="${i<c.have?'on':''}"></i>`).join('')}</div><span class="bv-mn">${Math.min(c.have,c.need)} / ${c.need}일${c.got?' · 받았어요 🎉':` · ${c.need-c.have}일 더`}</span></div></div>
+    <div class="bv-mfoot"><span>받은 달</span>${M.got.filter(x=>x.ym!==c.ym).slice(0,2).map(x=>`<span class="bv-chip">${x.ic} ${x.m}월 ${esc(x.n)}</span>`).join('')||'<span class="bv-none">아직 없어요</span>'}<button type="button" class="bv-12" data-mon12>12달 보기 ›</button></div></div>`;
+  const tag=x=>x.k?`<span class="bv-tag" style="background:${BCOL[x.k]}">${BTIER[x.k]}</span>`:`<span class="bv-tag off">${x.hint&&!x.val?esc(x.hint):`${x.val}/${x.T[0]}${x.u==='회 출전'?'회':x.u==='주 연속'?'주':x.u}`}</span>`;
+  const pg=x=>{ const lo=x.T[x.k-1]||0; const p = x.next ? Math.max(3, Math.round(Math.min(1,(x.val-lo)/(x.next-lo))*100)) : 100; return `<span class="bv-pg"><i style="width:${p}%"></i></span>`; };
+  const tile=x=>`<button type="button" class="bv-t ${x.k?'':'off'}" data-bset="${x.id}">${x.nw&&today()<NEW_UNTIL?'<span class="bv-new">새로</span>':''}<span class="bv-ic">${x.ic}</span><b>${esc(x.t)}</b>${tag(x)}${pg(x)}</button>`;
+  const skill=x=>{ const u=x.u==='회'?'번':x.u; const nx = x.next ? (x.id==='rate' ? `지금 ${x.val}% · ${BTIER[x.k+1]}까지 ${left(x)}% 더` : `${BTIER[x.k+1]}까지 ${left(x)}${u} 더`) : '가장 높은 단계예요';
+    return `<button type="button" class="bv-sk ${x.k?'':'off'}" data-bset="${x.id}"><span class="bv-ic">${x.ic}</span><span class="bv-skt"><b>${esc(x.t)} ${x.k?`<span class="bv-tag" style="background:${BCOL[x.k]}">${BTIER[x.k]} · ${x.T[x.k-1]}${x.u}</span>`:'<span class="bv-tag off">아직</span>'}</b><small>${nx}</small></span></button>
+      <div class="bv-lad">${x.T.map((v,i)=>`<span class="${i<x.k?'on':''}"><b>${BTIER[i+1]}</b>${v}${x.u==='%'?'%':''}</span>`).join('')}</div>`; };
+  const shelf=([cls,t,sub,ids,isSkill],extra='')=>`<div class="bv-shelf ${cls}"><div class="bv-sh"><b>${t}</b><small>${sub}</small></div><div class="${isSkill?'bv-skl':'bv-tiles'}">${ids.map(id=>SX[id]?(isSkill?skill(SX[id]):tile(SX[id])):'').join('')}</div>${extra}</div>`;
+  const se=st.sp.find(x=>x.id==='seasons');
+  const seasons=`<div class="bv-chips"><span class="bv-chip ${se?'':'off'}">🍂 사계절 궁사${se?` · ${esc(se.lab)}`:' · 한 해 봄 · 여름 · 가을 · 겨울'}</span></div>`;
+  const sp=st.sp.filter(x=>x.id!=='seasons').map(x=>`<span class="bv-chip" title="${esc(x.sub||'')}">${x.ic} ${esc(x.t)}${x.lab?` · ${esc(x.lab.split(' · ')[0])}`:''}</span>`).join('')
+    + st.ribbons.map(r=>`<span class="bv-chip">🎀 ${esc(r.t)}</span>`).join('')
+    + st.hidden.map(x=>`<span class="bv-chip" title="${esc(x.d)}">${x.ic} ${esc(x.t)}</span>`).join('')
+    + (st.hiddenLeft?`<span class="bv-chip off">❓ 숨은 배지 ${st.hiddenLeft}개 남음</span>`:'');
+  return mon + SHELVES.map((s0,i)=>shelf(s0, i===3?seasons:'')).join('')
+    + `<div class="bv-shelf s6"><div class="bv-sh"><b>⭐ 특별 · 리본 · 숨은</b><small>한 줄로 모아서</small></div><div class="bv-chips">${sp||'<span class="bv-none">아직 없어요</span>'}</div></div>`;
+}
+function openMonthly12(){
+  const st=badgeState(S.me.id, S.myDays||[]); const M=st.monthly; const y=+today().slice(0,4); const n=M.year.filter(x=>x.got).length;
+  const sh=openSheet(`<div class="bv-yh"><h3>📅 ${y}년 이달의 배지</h3><b>${n} / 12</b></div>
+    <div class="bv-leg"><span><i class="g"></i>받음</span><span><i class="c"></i>이번 달</span><span><i class="m"></i>못 받음 · 아직</span></div>
+    <div class="bv-year">${M.year.map(x=>`<div class="bv-ym ${x.state}">${x.state==='got'?'<span class="bv-got">받음</span>':''}<span class="bv-ic" style="background:${x.c}">${x.ic}</span><b>${x.m}월 · ${esc(x.n)}</b><small>${x.state==='got'||x.state==='todo'?`${x.need}일 습사`:x.state==='cur'?`${x.have} / ${x.need}일 · 진행 중`:`${x.have} / ${x.need}일`}</small></div>`).join('')}</div>
+    <p class="tiny muted" style="margin:8px 0 0">그달에 표 기록을 남긴 날이 n일이면 받아요. 매달 1일에 새 배지가 열려요.</p>
+    <div class="actions"><button class="btn ghost" type="button" id="m12Close">닫기</button></div>`);
+  $('#m12Close',sh).onclick=closeSheet;
 }
 function boardHTML(st){
   const card=x=>{ const pct = x.next ? Math.max(4, Math.round(Math.min(1, (x.val-(x.T[x.k-1]||0))/(x.next-(x.T[x.k-1]||0)))*100)) : 100;
@@ -4592,6 +4728,7 @@ function wallChoices(st){   // 걸 수 있는 것: {key, ic, tier, main(세로 �
     else if(x.id==='beta') L.push({key:'sp:beta', ic:x.ic, tier:'한정', main:'베타', sub:'9/23~10/3', k:4, kind:'scroll', label:'베타 테스터'}); });
   st.hidden.forEach(x=>L.push({key:'hd:'+x.id, ic:x.ic, tier:'숨은', main:x.t.replace(/\s/g,''), sub:'숨은 배지', k:5, kind:'scroll', label:x.t}));
   st.ribbons.forEach(r=>{ const [when, what]=[r.t.split(' ')[0], r.t.split(' ').slice(1).join('')]; L.push({key:'rb:'+r.ym+':'+r.cat, ic:'🎀', tier:'리본', main:what, sub:when, k:3, kind:'scroll', label:r.t}); });
+  ((st.monthly&&st.monthly.got)||[]).forEach(x=>L.push({key:'mon:'+x.ym, ic:x.ic, tier:`${x.m}월`, main:x.n, sub:`${x.need}일 습사`, k:3, kind:'scroll', label:`${x.m}월 ${x.n} 궁사`}));
   st.covers.forEach(c=>L.push({key:'cover:'+c.ym+':'+c.scope, ym:c.ym, ic:'📰', tier:'표지', main:`${+c.ym.slice(5)}월호`, sub:c.scope==='all'?'전체 월보':'정별 월보', k:3, kind:'cover', label:`${+c.ym.slice(5)}월호 표지`}));
   return L;
 }
@@ -4660,17 +4797,17 @@ function renderGrowth(){
     ${growthChartHTML(g)}
     ${growthKpiHTML(g)}`;
   const E=earnedOf(g); const ST=badgeState(S.me.id, S.myDays||[]);
-  $('#badgeCount').textContent=`단계 ${ST.sets.reduce((a,x)=>a+x.k,0)} · 특별 ${ST.sp.length+ST.hidden.length}`; S.badgeN=ST.sets.reduce((a,x)=>a+x.k,0)+ST.sp.length+ST.hidden.length;
-  const bx=$('#badges'); bx.className='bboard'; bx.innerHTML=boardHTML(ST);
+  { const got=ST.sets.filter(x=>x.k>0).length+ST.sp.length+ST.hidden.length+ST.ribbons.length+ST.monthly.got.length; $('#badgeCount').textContent=`받은 배지 ${got}개`; S.badgeN=ST.sets.reduce((a,x)=>a+x.k,0)+ST.sp.length+ST.hidden.length+ST.monthly.got.length; }
+  const bx=$('#badges'); bx.className='bboard bv'; bx.innerHTML=board2HTML(ST);
   const bfold=lsGet('sadae.badgeFold',false)===true; bx.hidden=bfold; const bf=$('#badgeFold'); if(bf){ bf.textContent=bfold?'펼치기 ▾':'접기 ▴'; bf.setAttribute('aria-expanded', String(!bfold)); bf.onclick=()=>{ lsSet('sadae.badgeFold', !bfold); renderGrowth(); if(!bfold) $('#badgeCard').scrollIntoView({block:'nearest'}); }; }
-  bx.onclick=e=>{ const b=e.target.closest('[data-bset]'); if(!b) return; const x=ST.sets.find(y=>y.id===b.dataset.bset); toast(`${x.ic} ${x.t} — ${x.d} · ${x.T.map((v,i)=>BTIER[i+1]+' '+v+x.u).join(' → ')}`); };
+  bx.onclick=e=>{ if(e.target.closest('[data-mon12]')){ openMonthly12(); return; } const b=e.target.closest('[data-bset]'); if(!b) return; const x=ST.sets.find(y=>y.id===b.dataset.bset); toast(`${x.ic} ${x.t} — ${x.d} · ${x.T.map((v,i)=>BTIER[i+1]+' '+v+x.u).join(' → ')}`); };
   const wb=$('#wallBtn'); if(wb) wb.onclick=openWallPick;
   // 새로 얻은 배지 알림 (처음 한 번은 조용히 기억만)
-  const KEY='sadae.badges2.'+S.me.id; const seen=lsGet(KEY,null); const ids=E.map(b=>b.id);
+  const KEY='sadae.badges2.'+S.me.id; const seen=lsGet(KEY,null); const E2=E.concat(ST.monthly.got.map(x=>({id:'mon:'+x.ym, ic:x.ic, t:`${x.m}월 ${x.n} 궁사`}))); const ids=E2.map(b=>b.id);
   const loaded = S.daysLoaded && (store.kind!=='remote' || store.lastRefresh>0);   // 서버 기록을 다 받은 뒤에만 (새 기기에서 배지 폭탄 방지)
   if(!loaded) return;
   if(seen===null){ lsSet(KEY, ids); }
-  else { const fresh=E.filter(b=>!seen.includes(b.id)); if(fresh.length){ lsSet(KEY, [...new Set([...seen, ...ids])]); setTimeout(()=>toast(`🏅 새 배지! ${fresh.map(b=>b.ic+' '+b.t).join(', ')}`), 900); } }
+  else { const fresh=E2.filter(b=>!seen.includes(b.id)); if(fresh.length){ lsSet(KEY, [...new Set([...seen, ...ids])]); setTimeout(()=>toast(`🏅 새 배지! ${fresh.map(b=>b.ic+' '+b.t).join(', ')}`), 900); } }
 }
 
 /* =========================================================
@@ -4730,6 +4867,67 @@ async function drawDayCard(day){
   const link=shareLink().replace(/^https?:\/\//,'').replace(/\/$/,''); if(link) txt(link.length>54?link.slice(0,54)+'…':link, X+40, Y+CH-50, 24, INK3);
   return cv;
 }
+// ===== p102 · 자랑 카드 (지금까지 쌓은 것 한 장) =====
+async function drawBragCard(){
+  const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const c=cv.getContext('2d');
+  try{ await Promise.all([document.fonts.load('700 40px Galmuri11'), document.fonts.load('400 40px Galmuri11')]); }catch(e){}
+  const F=(px,b)=>`${b?'700':'400'} ${px}px Galmuri11, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif`;
+  const INK='#2A2233', INK2='#5C5566', INK3='#8E889A', RED='#E2463B', GOLD='#F4B63B', LINE='#B8B2C4', SKY='#DCEBF0', WOOD='#8B5E3C', YEL='#FFF1C9', GRY='#EEF4F6';
+  const txt=(t,x,y,px,col,b,al)=>{ c.font=F(px,b); c.fillStyle=col||INK; c.textAlign=al||'left'; c.textBaseline='alphabetic'; c.fillText(t,x,y); };
+  const box=(x,y,w,h,fill,lw)=>{ c.fillStyle=fill||'#fff'; c.fillRect(x,y,w,h); c.lineWidth=lw||5; c.strokeStyle=INK; c.strokeRect(x,y,w,h); };
+  c.fillStyle=SKY; c.fillRect(0,0,W,H); c.strokeStyle='rgba(42,34,51,.07)'; c.lineWidth=2;
+  for(let x=0;x<=W;x+=40){ c.beginPath(); c.moveTo(x,0); c.lineTo(x,H); c.stroke(); } for(let y=0;y<=H;y+=40){ c.beginPath(); c.moveTo(0,y); c.lineTo(W,y); c.stroke(); }
+  const X=60, Y=60, CW=W-120, CH=H-120; c.fillStyle=INK; c.fillRect(X+14,Y+14,CW,CH); box(X,Y,CW,CH,'#fff',6);
+  const me=S.me||{}; const m=memberById(me.id)||me; const j=homeJ(); const t=today(); const g=growthOf(S.myDays||[], me.id);
+  // 궁패 · 날짜
+  const pl=(j.hanja||j.name||'').slice(0,6); c.font=F(40,true); const pw=Math.max(170, c.measureText(pl).width+60);
+  c.fillStyle=INK; c.fillRect(X+46,Y+46,pw,74); c.fillStyle=WOOD; c.fillRect(X+40,Y+40,pw,74); c.strokeStyle=INK; c.lineWidth=4; c.strokeRect(X+40,Y+40,pw,74); txt(pl, X+40+pw/2, Y+92, 40, GOLD, true, 'center');
+  txt(t.replace(/-/g,'. '), X+CW-44, Y+92, 36, INK, false, 'right');
+  // 캐릭터 · 이름 · 순
+  const img=await loadImg((window.PIX||{})[m.char] || (window.PIX||{})[DEFAULT_CHAR]);
+  box(X+40,Y+150,330,390,GRY,5); if(img){ c.imageSmoothingEnabled=false; c.drawImage(img, X+50, Y+160, 310, 372); }
+  const RX=X+410; txt(String(m.name||'사원').slice(0,10), RX, Y+215, 72, INK, true);
+  txt([j.name, m.grade||'신사', m.hand||'우궁'].filter(Boolean).join(' · '), RX, Y+268, 32, INK3);
+  const L=(S.myDays||[]).filter(d=>d.date&&(d.rounds||[]).some(Array.isArray)).map(d=>d.date).sort();
+  if(L.length){ const [,fm,fd]=L[0].split('-').map(Number); txt(`${fm}월 ${fd}일부터 지금까지`, RX, Y+370, 32, INK2); }
+  c.font=F(170,true); c.fillStyle=INK; c.textAlign='left'; c.fillText(String(g.n), RX, Y+530); const nw=c.measureText(String(g.n)).width; txt('순', RX+nw+16, Y+530, 54, INK3, true);
+  // 세 칸
+  const by=Y+580, bw=(CW-80-40)/3, bh=150; const cells=[[String(g.h),'시수',null],[`${g.n?Math.round(g.h/(g.n*5)*100):0}%`,'통산 관중률',YEL],[String(g.mo),'몰기',null]];
+  cells.forEach(([v,l,f],i)=>{ const bx=X+40+i*(bw+20); box(bx,by,bw,bh,f||'#fff',5); txt(v, bx+bw/2, by+82, 64, INK, true, 'center'); txt(l, bx+bw/2, by+128, 30, INK2, false, 'center'); });
+  // 달마다 관중률
+  const ms=Object.keys(g.months||{}).sort(); const my=by+bh+70; txt('달마다 관중률', X+40, my, 32, INK2);
+  const pc=ym=>{ const o=g.months[ym]; return o&&o.n?Math.round(o.h/(o.n*5)*100):0; }; const curYM=t.slice(0,7);
+  if(ms.length<=6){ const show=ms.slice(-6); const cols=show.length>3?2:1; const rows=Math.ceil(show.length/cols); const cw=(CW-80-(cols-1)*40)/cols;
+    show.forEach((ym,i)=>{ const col=Math.floor(i/rows), row=i%rows; const x0=X+40+col*(cw+40), y0=my+30+row*62; txt(`${+ym.slice(5)}월`, x0, y0+40, 32, INK, true);
+      const bx0=x0+90, bw0=cw-90-130; c.fillStyle=GRY; c.fillRect(bx0,y0+12,bw0,36); c.fillStyle=ym===curYM?RED:INK2; c.fillRect(bx0,y0+12,bw0*pc(ym)/100,36); c.lineWidth=4; c.strokeStyle=INK; c.strokeRect(bx0,y0+12,bw0,36);
+      txt(`${pc(ym)}%`, x0+cw, y0+42, 36, INK, true, 'right'); }); }
+  else { const show=ms.slice(-12); const bw1=(CW-80)/show.length; const top=my+30, hh=180;
+    show.forEach((ym,i)=>{ const v=pc(ym); const x0=X+40+i*bw1+6; c.fillStyle=ym===curYM?RED:INK2; c.fillRect(x0, top+hh-hh*v/100, bw1-12, hh*v/100); txt(`${+ym.slice(5)}`, x0+(bw1-12)/2, top+hh+34, 24, INK3, false, 'center'); }); }
+  // 방에 건 배지
+  const st=badgeState(me.id, S.myDays||[]); const ch=wallChoices(st); const keys=wallSlots(m, st).filter(Boolean); const wy=Y+CH-200;
+  txt('방에 건 배지', X+40, wy+52, 30, INK2);
+  keys.slice(0,3).forEach((k,i)=>{ const x=ch.find(q=>q.key===k); if(!x) return; const bx=X+250+i*100; box(bx,wy,80,80,'#C9874A',4); txt(x.ic, bx+40, wy+56, 42, INK, false, 'center'); });
+  // 바닥
+  c.fillStyle=LINE; c.fillRect(X+40, Y+CH-96, CW-80, 3);
+  const link=shareLink().replace(/^https?:\/\//,'').replace(/\/$/,''); if(link) txt(link.length>40?link.slice(0,40)+'…':link, X+40, Y+CH-46, 26, INK3);
+  txt('🏹 오늘 사대', X+CW-40, Y+CH-46, 36, INK, true, 'right');
+  return cv;
+}
+async function openBragCard(){
+  if(!S.me){ openProfile(); return; } if(!(S.myDays||[]).some(d=>(d.rounds||[]).length)){ toast('표 기록을 남기면 자랑 카드를 만들 수 있어요'); return; }
+  const sh=openSheet(`<h3>📸 자랑 카드</h3><div class="card-prev" id="bgPrev"><span class="muted">만드는 중…</span></div>
+    <p class="tiny muted" style="margin:0">공유 버튼이 안 되면 <b>저장</b>한 뒤 카톡에서 사진으로 보내세요.</p>
+    <div class="actions"><button class="btn ghost" id="bgSave" disabled>저장</button><button class="btn pri" id="bgShare" disabled>카톡 등으로 공유</button></div>`);
+  let blob=null; try{ const cv=await drawBragCard(); blob=await new Promise(r=>cv.toBlob(r,'image/png')); }catch(e){ console.warn('brag',e); }
+  if(!sh.isConnected) return; if(!blob){ $('#bgPrev',sh).innerHTML='<span class="muted">카드를 만들지 못했어요</span>'; return; }
+  const url=URL.createObjectURL(blob); $('#bgPrev',sh).innerHTML=`<img src="${url}" alt="자랑 카드">`;
+  const fname=`오늘사대_자랑카드_${today()}.png`, file=new File([blob], fname, {type:'image/png'});
+  const text=`🏹 ${homeJ().name} ${S.me.name} · 오늘 사대 ${shareLink()}`.trim();
+  const save=()=>{ const a=document.createElement('a'); a.href=url; a.download=fname; document.body.appendChild(a); a.click(); a.remove(); toast('사진을 저장했어요'); };
+  const bs=$('#bgSave',sh), bh=$('#bgShare',sh); bs.disabled=false; bh.disabled=false; bs.onclick=save;
+  bh.onclick=async()=>{ try{ if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], text}); return; } }catch(e){ if(e&&e.name==='AbortError') return; } save(); };
+}
+document.addEventListener('click', e=>{ if(e.target.closest('#bragBtn')) openBragCard(); });
 async function openDayCard(date){
   const day=(S.myDays||[]).find(d=>d.date===date); if(!S.me || !day || !(day.rounds||[]).length){ toast('이 날 기록이 없어요'); return; }
   const sh=openSheet(`<h3>📸 기록 카드</h3><div class="card-prev" id="cdPrev"><span class="muted">만드는 중…</span></div>
@@ -5223,11 +5421,11 @@ function renderPlaza(){
   const order=shown.slice().sort((a,b)=>hashN(a.id+pzSeed,9973)-hashN(b.id+pzSeed,9973));
   const POS={}; order.forEach((m,i)=>{ const r=Math.floor(i/cols), c=i%cols; const jx=(hashN(m.id+pzSeed+'x',100)/100-.5)*0.3, jy=(hashN(m.id+pzSeed+'y',100)/100-.5)*0.3;
     POS[m.id]={x:Math.min(90, Math.max(10, ((c+.5+jx+(r%2?.35:0))/cols)*100)), y:rows===1?70:Math.min(100, Math.max(14, 12+((r+.5+jy*.7)/rows)*88))}; });
-  // 말풍선: 최근 3시간 안에 말한 사람 중, 서로 겹치지 않게 최대 3명
+  // 말풍선: 최근 3시간 안에 말한 사람 중, 서로 겹치지 않게 최대 7명 (10-07 사용자 요청)
   const bubbleOf=new Set(), bubLv={}; let newestBub=null;
-  for(const m of msgs){ if(bubbleOf.size>=3) break; const p=POS[m.from]; if(!p || bubbleOf.has(m.from)) continue;
+  for(const m of msgs){ if(bubbleOf.size>=7) break; const p=POS[m.from]; if(!p || bubbleOf.has(m.from)) continue;
     let lv=0; for(const o of bubbleOf){ if(Math.abs(POS[o].x-p.x)<50 && Math.abs(POS[o].y-p.y)<30) lv=Math.max(lv,bubLv[o]+1); }
-    bubLv[m.from]=Math.min(lv,2); bubbleOf.add(m.from); if(!newestBub) newestBub=m; }
+    bubLv[m.from]=Math.min(lv,3); bubbleOf.add(m.from); if(!newestBub) newestBub=m; }
   const bubKey=newestBub?newestBub.id||String(newestBub.at):''; const popNew = bubKey && S.plazaBubKey!==undefined && S.plazaBubKey!==bubKey; S.plazaBubKey=bubKey;
   box.innerHTML = order.map((m,i)=>{ const {x,y}=POS[m.id];
     const dur=6+hashN(m.id+'d',60)/10, dx=(hashN(m.id+'w',2)?1:-1)*(10+hashN(m.id+'k',18)), delay=-hashN(m.id+'l',50)/10;
