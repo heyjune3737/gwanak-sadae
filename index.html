@@ -1731,6 +1731,8 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .dw-bub{position:relative;flex:1;margin:0 0 22px;padding:10px 12px;background:var(--card);border:2px solid var(--ink);font-size:12.5px;line-height:1.6;color:var(--ink2);word-break:keep-all}.dw-bub b{color:var(--ink)}
 .dw-bub::before{content:"";position:absolute;left:-9px;bottom:14px;width:12px;height:12px;background:var(--card);border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
 .dw-bub .dw-sign{display:block;text-align:right;margin-top:4px;font-family:var(--display);color:var(--ink);font-size:12px}
+/* p99 */
+.d-empty{padding:18px 8px;text-align:center;line-height:1.7;word-break:keep-all}.d-empty small{font-size:12.5px;color:var(--ink3)}
 </style>
 
 <div class="app" id="app">
@@ -1855,7 +1857,6 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
         <p class="cite">출처: 관악정 국궁교본 교육용 V1.93 p.36~37 「반구제기」, 국궁교본 V1.71 5.7·8.8 (요약 발췌)</p>
       </div>
       <div class="card dw" id="dailyWord"></div>
-      <button type="button" class="btn block rs-open" data-share-open>📤 기록 공유 · 저장 <small>전체 또는 고른 부분을 사진 한 장으로</small></button>
       </div>
     </section>
 
@@ -2268,7 +2269,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.06g';
+const APP_VER = '2026.10.06h';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -5360,7 +5361,7 @@ function renderDayView(){
   const i=L.indexOf(S.viewDate); $('#dSub').textContent = L.length ? (i>=0 ? `기록한 날 ${i+1} / ${L.length}` : '') : '';
   $('#dPrev').disabled = !L.some(x=>x<S.viewDate); $('#dNext').disabled = !L.some(x=>x>S.viewDate);
   const h=rs.reduce((a,r)=>a+hitsOf(r),0), a=rs.length*5, mo=rs.filter(r=>hitsOf(r)===5).length;
-  $('#dBody').innerHTML = !rs.length ? `<div class="muted" style="padding:18px 0;text-align:center">${S.me?'이 날은 기록이 없어요. ◀ ▶ 로 기록한 날을 넘겨 보세요.':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>` : `
+  $('#dBody').innerHTML = !rs.length ? `<div class="muted d-empty">${S.me?'이 날은 기록이 없어요.<br><small>◀ ▶ 로 기록한 날을 넘겨 보세요</small>':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>` : `
     <div class="dsum"><div class="dsum-big num">${h}<small>/${a}시</small></div><div class="dsum-side"><b class="num">${Math.round(h/a*100)}%</b><span>${rs.length}순${mo?` · 🎯 몰기 ${mo}`:''}</span></div></div>
     ${rs.length>=9?`<div class="dtag-w"><span class="dtag">9순 ${nineOf(rs)}중${gradeFor(nineOf(rs))?` · ${gradeFor(nineOf(rs))} 기준 도달`:''}</span></div>`:''}
     ${roundTableHTML(rs, (d&&d.winds)||[])}
