@@ -1793,6 +1793,54 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .gr-act{display:flex;align-items:center;gap:8px}
 /* p103 */
 .pz-bub.lv3{margin-bottom:80px}.pz-bub.lv3::before{content:"";position:absolute;left:50%;top:100%;width:2px;margin-left:-1px;height:76px;background:#2A2233;opacity:.5}
+/* p104 · 북적 사대 */
+.pz-busy{position:absolute;left:50%;transform:translateX(-50%);top:46px;z-index:249;max-width:calc(100% - 16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--gold);color:var(--gold-ink,#2A2233);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);padding:3px 10px;font-size:12.5px;animation:pz-busy-in .5s steps(4) both}
+.pz-busy small{font-size:11px;opacity:.8}
+@keyframes pz-busy-in{0%{transform:translate(-50%,-6px);opacity:0}100%{transform:translate(-50%,0);opacity:1}}
+.pz-fig.dance .pz-ch{animation:pz-dance 1.1s ease-in-out var(--dd,0s) infinite;transform-origin:50% 100%}
+@keyframes pz-dance{0%,100%{transform:translateY(0) rotate(0)}15%{transform:translateY(-7px) rotate(-7deg)}30%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(7deg)}65%{transform:translateY(0) rotate(0)}80%{transform:translateY(-2px) scaleY(.96)}}
+.pz-fig.dance .pz-tag{background:var(--gold-soft)}
+.pz-fx.bz{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+.pz-fx.bz i{position:absolute;top:-8px;width:6px;height:6px;background:var(--c);border:1px solid rgba(0,0,0,.35);animation:pz-conf 4.2s linear var(--d) infinite}
+@keyframes pz-conf{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(560px) rotate(540deg)}}
+.calm-walk .pz-fig.dance .pz-ch{animation:none!important}
+.calm-fx .pz-busy{animation:none}
+@media (prefers-reduced-motion:reduce){.pz-fig.dance .pz-ch,.pz-busy{animation:none!important}.pz-fx.bz{display:none}}
+/* p105 · 배지 사다리 다음 단계까지만 */
+.bv-lad span.nx{border:1.5px dashed var(--ink)}
+.bv-lad span.lk{opacity:.55;border-style:dashed}
+.bv-lad span.lk b{font-size:11px}
+/* p106 · 모음판으로 되돌림 */
+.bv3 .bv-mon{margin-bottom:12px}
+.bb .skill.nw{background:var(--red);color:#fff;padding:0 4px}
+.bb.hid{font:inherit;cursor:pointer}
+.bb.hid .ring{animation:bb-hid 2.6s steps(2) infinite}
+@keyframes bb-hid{0%,80%{transform:none}90%{transform:rotate(-8deg)}100%{transform:rotate(8deg)}}
+@media (prefers-reduced-motion:reduce){.bb.hid .ring{animation:none}}
+.calm-fx .bb.hid .ring{animation:none}
+/* p107 · 광장 공유 */
+.pz-filter .pz-shotb{background:var(--gold-soft)}
+.pz-busy{display:flex;align-items:center;gap:6px}
+.pz-busy>span{overflow:hidden;text-overflow:ellipsis}
+.pz-busy .pz-busy-shot{flex:none;font:inherit;font-size:11.5px;padding:1px 6px;background:var(--card);color:var(--ink);border:1.5px solid var(--ink);cursor:pointer}
+.pz-shooting .pz-fig,.pz-shooting .pz-walk,.pz-shooting .pz-ch,.pz-shooting .pz-busy,.pz-shooting .pz-bub{animation:none!important}
+.pz-shooting .pz-fx.bz i{animation:none!important;transform:rotate(30deg)}.pz-shooting .pz-fx.bz i:nth-child(3n){top:18%}.pz-shooting .pz-fx.bz i:nth-child(3n+1){top:34%}.pz-shooting .pz-fx.bz i:nth-child(3n+2){top:52%}
+.ps-nobub .pz-bub{display:none!important}
+.ps-notag .pz-tag{visibility:hidden}
+/* p108 · 광장 한마디 반응 */
+.pz-rx{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:4px}
+.pz-rxc,.pz-rxadd{font:inherit;font-size:12px;line-height:1;min-height:26px;padding:3px 7px;background:var(--card);color:var(--ink);border:1.5px solid var(--line2);cursor:pointer;white-space:nowrap}
+.pz-rxc b{font-weight:700}
+.pz-rxc.on{background:var(--gold-soft);border-color:var(--ink);box-shadow:1px 1px 0 var(--ink)}
+.pz-rx.own .pz-rxc{cursor:default;border-style:dashed}
+.pz-rxadd{color:var(--ink3);border-style:dashed}
+.pz-rxpick{flex-basis:100%;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:6px;background:var(--card2);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.pz-rxpick[hidden]{display:none}
+.pz-rxpick button{font:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:44px;padding:4px 0;background:var(--card);color:var(--ink);border:1.5px solid var(--line2);cursor:pointer}
+.pz-rxpick button span{font-size:18px;line-height:1}
+.pz-rxpick button small{font-size:10px;color:var(--ink2)}
+.pz-rxpick button.on{background:var(--gold-soft);border-color:var(--ink)}
+.pz-rxpick button:active span{transform:scale(1.3)}
 </style>
 
 <div class="app" id="app">
@@ -2329,7 +2377,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.07b';
+const APP_VER = '2026.10.07c';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4550,7 +4598,7 @@ function growthOf(days, mid){
 const BTIER = ['','동','은','금','옥','명궁','신궁'];
 const BSETS = [
   {id:'molgi', ic:'🎯', t:'몰기',     u:'회',      skill:1, T:[1,30,100,500,1000,3000], v:g=>g.mo, d:'한 순 5시를 모두 관중'},
-  {id:'rate',  ic:'📈', t:'관중률',   u:'%',       skill:1, T:[50,60,70,80,85,90], v:(g,k)=> k>=3 ? g.bestMonthPct30 : g.bestMonthPct, d:'한 달 관중률 (동 · 은은 5순 이상, 금부터는 그 달 30순 이상)'},
+  {id:'rate',  ic:'📈', t:'관중률',   u:'%',       skill:1, T:[50,55,60,65,70,80], v:(g,k)=> k>=3 ? g.bestMonthPct30 : g.bestMonthPct, d:'한 달 관중률 (동 · 은은 5순 이상, 금부터는 그 달 30순 이상)'},
   {id:'days',  ic:'🏹', t:'성실',     u:'일',      T:[10,100,300,1000], v:g=>g.days, d:'활 낸 날 수'},
   {id:'rounds',ic:'💯', t:'누적',     u:'순',      T:[100,1000,3000,10000], v:g=>g.n, d:'쌓인 순 수'},
   {id:'weeks', ic:'🔁', t:'꾸준함',   u:'주 연속', T:[4,12,26,52], v:g=>g.bestWeeks, d:'한 주도 빠짐없이 활터에 온 주'},
@@ -4675,7 +4723,11 @@ function monthlyOf(days){
 const BCOL=['#9AA3AD','#C9874A','#9AA3AD','#D9A520','#3E9A7A','#6B2E78','#D4AF37'];
 const SHELVES=[['s1','🎯 실력','동 · 은 · 금 · 옥 · 명궁 · 신궁 6단계',['molgi','rate'],1],['s2','🏹 꾸준함','4단계',['days','rounds','weeks','day']],['s3','🧩 함께','4단계',['kind','tour','comp','cover']],['s4','🌦 날씨 · 계절','순 저장 때 남은 바람 · 날씨 · 기온으로 자동',['wind','rain','cold','hot']]];
 const NEW_UNTIL='2026-11-07';
-function board2HTML(st){
+function badgeTip(x){ const u=x.u, now = x.k ? `지금 ${BTIER[x.k]}(${x.T[x.k-1]}${u})` : '아직 받기 전';
+  if(!x.next) return `${x.ic} ${x.t} — ${x.d} · ${now} · 가장 높은 단계까지 모두 받았어요 🎉`;
+  const rest=Math.max(0, x.next - x.val); const more = x.k+1 < x.T.length ? ` · 그다음 단계는 ${BTIER[x.k+1]}을 받으면 열려요` : '';
+  return `${x.ic} ${x.t} — ${x.d} · ${now} · 다음 ${BTIER[x.k+1]}(${x.next}${u})까지 ${rest}${u==='%'?'%':u} 더${more}`; }
+function board2HTML(st, monOnly){
   const M=st.monthly, c=M.cur; const SX=Object.fromEntries(st.sets.map(x=>[x.id,x]));
   const left=x=>x.next ? Math.max(0, x.next - x.val) : 0;
   const mon=`<div class="bv-mon"><div class="bv-mh"><b>📅 이달의 배지</b><span class="bv-left">${c.got?'받았어요':`${c.left}일 남음`}</span></div>
@@ -4687,7 +4739,7 @@ function board2HTML(st){
   const tile=x=>`<button type="button" class="bv-t ${x.k?'':'off'}" data-bset="${x.id}">${x.nw&&today()<NEW_UNTIL?'<span class="bv-new">새로</span>':''}<span class="bv-ic">${x.ic}</span><b>${esc(x.t)}</b>${tag(x)}${pg(x)}</button>`;
   const skill=x=>{ const u=x.u==='회'?'번':x.u; const nx = x.next ? (x.id==='rate' ? `지금 ${x.val}% · ${BTIER[x.k+1]}까지 ${left(x)}% 더` : `${BTIER[x.k+1]}까지 ${left(x)}${u} 더`) : '가장 높은 단계예요';
     return `<button type="button" class="bv-sk ${x.k?'':'off'}" data-bset="${x.id}"><span class="bv-ic">${x.ic}</span><span class="bv-skt"><b>${esc(x.t)} ${x.k?`<span class="bv-tag" style="background:${BCOL[x.k]}">${BTIER[x.k]} · ${x.T[x.k-1]}${x.u}</span>`:'<span class="bv-tag off">아직</span>'}</b><small>${nx}</small></span></button>
-      <div class="bv-lad">${x.T.map((v,i)=>`<span class="${i<x.k?'on':''}"><b>${BTIER[i+1]}</b>${v}${x.u==='%'?'%':''}</span>`).join('')}</div>`; };
+      <div class="bv-lad">${x.T.map((v,i)=> (i<=x.k || !x.next) ? `<span class="${i<x.k?'on':'nx'}"><b>${BTIER[i+1]}</b>${v}${x.u==='%'?'%':''}</span>` : `<span class="lk" aria-label="아직 잠긴 단계"><b>❓</b></span>`).join('')}</div>`; };
   const shelf=([cls,t,sub,ids,isSkill],extra='')=>`<div class="bv-shelf ${cls}"><div class="bv-sh"><b>${t}</b><small>${sub}</small></div><div class="${isSkill?'bv-skl':'bv-tiles'}">${ids.map(id=>SX[id]?(isSkill?skill(SX[id]):tile(SX[id])):'').join('')}</div>${extra}</div>`;
   const se=st.sp.find(x=>x.id==='seasons');
   const seasons=`<div class="bv-chips"><span class="bv-chip ${se?'':'off'}">🍂 사계절 궁사${se?` · ${esc(se.lab)}`:' · 한 해 봄 · 여름 · 가을 · 겨울'}</span></div>`;
@@ -4695,6 +4747,7 @@ function board2HTML(st){
     + st.ribbons.map(r=>`<span class="bv-chip">🎀 ${esc(r.t)}</span>`).join('')
     + st.hidden.map(x=>`<span class="bv-chip" title="${esc(x.d)}">${x.ic} ${esc(x.t)}</span>`).join('')
     + (st.hiddenLeft?`<span class="bv-chip off">❓ 숨은 배지 ${st.hiddenLeft}개 남음</span>`:'');
+  if(monOnly) return mon;
   return mon + SHELVES.map((s0,i)=>shelf(s0, i===3?seasons:'')).join('')
     + `<div class="bv-shelf s6"><div class="bv-sh"><b>⭐ 특별 · 리본 · 숨은</b><small>한 줄로 모아서</small></div><div class="bv-chips">${sp||'<span class="bv-none">아직 없어요</span>'}</div></div>`;
 }
@@ -4715,6 +4768,17 @@ function boardHTML(st){
     + (st.hiddenLeft?`<div class="bb hid"><span class="ring">❓</span><b>숨은 배지</b><span class="tl">${st.hiddenLeft}개 남음</span><small>조건은 받으면 공개</small></div>`:'');
   const rib=st.ribbons.length?`<div class="bb-sec">🎀 리본 · 월보 분야별 1위</div><div class="bb-rib">${st.ribbons.map(r=>`<span>${r.ic} ${esc(r.t)}</span>`).join('')}</div>`:'';
   return `<div class="bb-grid">${st.sets.map(card).join('')}</div><div class="bb-sec">특별 · 한정 · 숨은 배지</div><div class="bb-grid">${sp}${hid}</div>${rib}`;
+}
+function board3HTML(st){
+  const nw=x=>x.nw && today()<NEW_UNTIL;
+  const card=x=>{ const pct = x.next ? Math.max(4, Math.round(Math.min(1, (x.val-(x.T[x.k-1]||0))/(x.next-(x.T[x.k-1]||0)))*100)) : 100;
+    return `<button type="button" class="bb bb-tier t${x.k} ${x.k?'':'none'}" data-bset="${x.id}">${nw(x)?'<span class="skill nw">새로</span>':x.skill?'<span class="skill">실력</span>':''}<span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">${x.k?`${BTIER[x.k]} · ${x.T[x.k-1]}${x.u}`:'아직'}</span><span class="pg"><i style="width:${pct}%"></i></span><small>${x.next?`다음 ${BTIER[x.k+1]} ${x.next}${x.u} · 지금 ${x.val}`:'최고 단계'}</small></button>`; };
+  const sp=st.sp.map(x=>`<div class="bb sp ${x.cls||''}"><span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">${esc(x.lab||'')}</span><small>${esc(x.sub||'')}</small></div>`).join('');
+  const mon=((st.monthly&&st.monthly.got)||[]).map(x=>`<div class="bb sp bb-mon"><span class="ring" style="background:${x.c}">${x.ic}</span><b>${esc(x.n)} 궁사</b><span class="tl" style="background:${x.c}">${x.ym.slice(2,4)}년 ${x.m}월</span><small>이달의 배지</small></div>`).join('');
+  const hid=st.hidden.map(x=>`<div class="bb sp hidok"><span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">숨은 배지</span><small>${esc(x.d)}</small></div>`).join('')
+    + Array.from({length:st.hiddenLeft||0},()=>`<button type="button" class="bb hid" data-hid><span class="ring">❓</span><b>？？？</b><span class="tl">숨은 배지</span><small>받는 순간 공개</small></button>`).join('');
+  const rib=st.ribbons.length?`<div class="bb-sec">🎀 리본 · 월보 분야별 1위</div><div class="bb-rib">${st.ribbons.map(r=>`<span>${r.ic} ${esc(r.t)}</span>`).join('')}</div>`:'';
+  return board2HTML(st,true) + `<div class="bb-grid">${st.sets.map(card).join('')}</div><div class="bb-sec">특별 · 한정 · 숨은 배지</div><div class="bb-grid">${sp}${mon}${hid}</div>${rib}`;
 }
 // 방에 거는 것: 한지 족자(배지) · 월보 표지 액자 · 선반 트로피
 function wallChoices(st){   // 걸 수 있는 것: {key, ic, tier, main(세로 이름 · 짧게), sub(가로 설명), k, kind}
@@ -4798,9 +4862,9 @@ function renderGrowth(){
     ${growthKpiHTML(g)}`;
   const E=earnedOf(g); const ST=badgeState(S.me.id, S.myDays||[]);
   { const got=ST.sets.filter(x=>x.k>0).length+ST.sp.length+ST.hidden.length+ST.ribbons.length+ST.monthly.got.length; $('#badgeCount').textContent=`받은 배지 ${got}개`; S.badgeN=ST.sets.reduce((a,x)=>a+x.k,0)+ST.sp.length+ST.hidden.length+ST.monthly.got.length; }
-  const bx=$('#badges'); bx.className='bboard bv'; bx.innerHTML=board2HTML(ST);
+  const bx=$('#badges'); bx.className='bboard bv bv3'; bx.innerHTML=board3HTML(ST);
   const bfold=lsGet('sadae.badgeFold',false)===true; bx.hidden=bfold; const bf=$('#badgeFold'); if(bf){ bf.textContent=bfold?'펼치기 ▾':'접기 ▴'; bf.setAttribute('aria-expanded', String(!bfold)); bf.onclick=()=>{ lsSet('sadae.badgeFold', !bfold); renderGrowth(); if(!bfold) $('#badgeCard').scrollIntoView({block:'nearest'}); }; }
-  bx.onclick=e=>{ if(e.target.closest('[data-mon12]')){ openMonthly12(); return; } const b=e.target.closest('[data-bset]'); if(!b) return; const x=ST.sets.find(y=>y.id===b.dataset.bset); toast(`${x.ic} ${x.t} — ${x.d} · ${x.T.map((v,i)=>BTIER[i+1]+' '+v+x.u).join(' → ')}`); };
+  bx.onclick=e=>{ if(e.target.closest('[data-mon12]')){ openMonthly12(); return; } if(e.target.closest('[data-hid]')){ toast(`❓ 숨은 배지 — 무엇을 하면 받는지는 받는 순간 공개돼요. 남은 숨은 배지 ${ST.hiddenLeft}개`); return; } const b=e.target.closest('[data-bset]'); if(!b) return; const x=ST.sets.find(y=>y.id===b.dataset.bset); toast(badgeTip(x)); };
   const wb=$('#wallBtn'); if(wb) wb.onclick=openWallPick;
   // 새로 얻은 배지 알림 (처음 한 번은 조용히 기억만)
   const KEY='sadae.badges2.'+S.me.id; const seen=lsGet(KEY,null); const E2=E.concat(ST.monthly.got.map(x=>({id:'mon:'+x.ym, ic:x.ic, t:`${x.m}월 ${x.n} 궁사`}))); const ids=E2.map(b=>b.id);
@@ -5397,18 +5461,92 @@ function renderNews(){
 }
 
 setInterval(()=>{ try{ if(S.tab==='plaza' && S.plazaSeed && S.plazaSeed !== today()+'_'+Math.floor(new Date().getHours()/8)) renderPlaza(); }catch(e){} }, 60000);
+const BUSY_N = 5;   // 같은 정 · 같은 시간대 사대에 이만큼 서면 북적 사대 (10-07 사용자 결정)
+function busyOf(att){ const g={}; (att||[]).forEach(e=>{ if(!e || !e.slot) return; const jid=entryJid(e); const k=jid+'|'+e.slot; (g[k]=g[k]||{jid, slot:e.slot, ids:[], jname:''}).ids.push(e.id); if(e.jname && !g[k].jname) g[k].jname=e.jname; });
+  const L=Object.values(g).filter(x=>x.ids.length>=BUSY_N).sort((a,b)=>b.ids.length-a.ids.length);
+  L.forEach(x=>{ if(!x.jname){ const j=[homeJ(), baseJ(), ...(typeof JEONGS!=='undefined'?JEONGS:[])].find(j=>j && j.id===x.jid); x.jname=(j&&j.name)||'우리 정'; } });
+  return L; }
+function renderBusy(busy){ const pz=$('#plaza'); if(!pz) return; let el=$('#pzBusy');
+  if(!busy.length){ S.plazaBusy=[]; if(el) el.remove(); $$('.pz-fx.bz',pz).forEach(x=>x.remove()); return; }
+  if(!el){ el=document.createElement('div'); el.id='pzBusy'; el.className='pz-busy'; el.setAttribute('role','status'); pz.appendChild(el); }
+  const b=busy[0]; el.innerHTML=`<b>🎉 북적 사대!</b> <span>${esc(b.jname)} ${esc(b.slot)} 사대에 <b class="num">${b.ids.length}</b>명이 섰어요${busy.length>1?` <small>외 ${busy.length-1}곳</small>`:''}</span><button type="button" class="pz-busy-shot" data-pzshot>📸 공유</button>`; S.plazaBusy=busy;
+  const sb=$('[data-pzshot]',el); if(sb) sb.onclick=e=>{ e.stopPropagation(); openPlazaShot(); };
+  const tk=$('#pzTicker'); el.style.top = (tk && !tk.hidden) ? '46px' : '8px';
+  if(!$('.pz-fx.bz',pz)){ const fx=document.createElement('div'); fx.className='pz-fx bz'; fx.setAttribute('aria-hidden','true'); fx.innerHTML=Array.from({length:14},(_,i)=>`<i style="left:${(i*7.3+3)%96}%;--d:${(i%7)*0.55}s;--c:${['#E2463B','#F4B63B','#3E8A4F','#3552A0','#F2A7BE'][i%5]}"></i>`).join(''); pz.appendChild(fx); } }
+function openPlazaShot(){
+  const opt=lsGet('sadae.pzShot',{bub:true,tag:true}) || {bub:true,tag:true};
+  const sh=openSheet(`<h3>📸 광장 공유</h3><p class="tiny muted" style="margin:0">지금 광장 모습을 사진(PNG) 한 장으로 만들어요. 카톡 · SNS로 보내 보세요.</p>
+    <div class="rs-list"><label class="rs-item"><input type="checkbox" id="psBub" ${opt.bub!==false?'checked':''}><span><b>말풍선 넣기</b><small>사원들이 남긴 한마디</small></span></label>
+      <label class="rs-item"><input type="checkbox" id="psTag" ${opt.tag!==false?'checked':''}><span><b>이름표 넣기</b><small>빼면 캐릭터만 보여요</small></span></label></div>
+    <button class="btn pri block" type="button" id="psGo">🖼 사진 만들기</button>
+    <div class="actions"><button class="btn ghost" type="button" id="psClose">닫기</button></div>`);
+  $('#psClose',sh).onclick=closeSheet;
+  $('#psGo',sh).onclick=()=>{ const o={bub:$('#psBub',sh).checked, tag:$('#psTag',sh).checked}; lsSet('sadae.pzShot',o); makePlazaShot(o); };
+}
+async function makePlazaShot(o){
+  const sh=openSheet(`<h3>🖼 사진 만드는 중</h3><div class="rs-prog" id="rsProg">광장을 그리는 중…</div>`);
+  const prog=t=>{ const p=$('#rsProg',sh); if(p) p.textContent=t; };
+  const pz=$('#plaza'); if(!pz){ prog('광장을 찾지 못했어요'); return; }
+  let blob; const t=today(); const busy=S.plazaBusy||[];
+  try{
+    await loadScript(RS_LIB.img); const H=window.htmlToImage;
+    let fontCSS=''; for(const ss of Array.from(document.styleSheets)){ let rules; try{ rules=ss.cssRules; }catch(e){ continue; } for(const r of Array.from(rules||[])){ if(r.type===5 && /Galmuri/.test(r.cssText)) fontCSS+=r.cssText+'\n'; } }
+    pz.classList.add('pz-shooting'); pz.classList.toggle('ps-nobub', !o.bub); pz.classList.toggle('ps-notag', !o.tag);
+    const op={pixelRatio:2, fontEmbedCSS:fontCSS, backgroundColor:getComputedStyle(pz).backgroundColor||'#DCEBF0', filter:n=>!(n.classList && (n.classList.contains('bg-pill')||n.classList.contains('pz-ticker')||n.classList.contains('pz-busy')||n.classList.contains('pz-more')))};
+    try{ await H.toCanvas(pz, op); }catch(e){}   // 사파리: 첫 그림은 이미지가 비어 나올 수 있어 한 번 더
+    const cvP=await H.toCanvas(pz, op);
+    pz.classList.remove('pz-shooting','ps-nobub','ps-notag');
+    const W=cvP.width, sc=W/390; const headH=Math.round(112*sc), footH=Math.round(46*sc);
+    const cv=document.createElement('canvas'); cv.width=W; cv.height=headH+cvP.height+footH; const g=cv.getContext('2d');
+    const css=getComputedStyle(document.documentElement); const ink=css.getPropertyValue('--ink').trim()||'#2A2233', ink3=css.getPropertyValue('--ink3').trim()||'#8E889A', card=css.getPropertyValue('--card').trim()||'#fff', gold=css.getPropertyValue('--gold').trim()||'#F4B63B';
+    const F=(px,b)=>`${b?'700':'400'} ${px*sc}px Galmuri11, "Noto Sans KR", sans-serif`;
+    g.fillStyle=card; g.fillRect(0,0,W,cv.height);
+    const j=homeJ(); const nAtt=attEntries().length; const M=+t.slice(5,7), D=+t.slice(8);
+    g.fillStyle=ink; g.textBaseline='alphabetic'; g.font=F(19,true); g.fillText(`🏹 ${j.hanja||j.name||''} 광장`, 14*sc, 34*sc);
+    g.font=F(12.5); g.fillStyle=ink3; g.fillText(`${t.slice(0,4)}년 ${M}월 ${D}일 ${slotNow()}${nAtt?` · 오늘 활터에 ${nAtt}명`:''}`, 14*sc, 58*sc);
+    if(busy.length){ const b=busy[0]; const txt=`🎉 북적 사대! ${b.jname} ${b.slot} 사대에 ${b.ids.length}명`; g.font=F(13,true); const tw=g.measureText(txt).width;
+      g.fillStyle=gold; g.fillRect(14*sc, 70*sc, tw+16*sc, 26*sc); g.strokeStyle=ink; g.lineWidth=2*sc; g.strokeRect(14*sc, 70*sc, tw+16*sc, 26*sc); g.fillStyle=ink; g.fillText(txt, 22*sc, 88*sc); }
+    g.font=F(12,true); g.fillStyle=ink; g.textAlign='right'; g.fillText('오늘 사대', W-14*sc, 34*sc); g.textAlign='left';
+    g.drawImage(cvP, 0, headH); g.fillStyle=ink; g.fillRect(0, headH-2*sc, W, 2*sc);
+    g.fillStyle=ink3; g.font=F(11.5); g.textAlign='center'; g.fillText('🏹 오늘 사대 · '+(shareLink().replace(/^https?:\/\//,'').replace(/\/$/,'')), W/2, headH+cvP.height+29*sc); g.textAlign='left';
+    blob=await new Promise(r=>cv.toBlob(r,'image/png'));
+  }catch(e){ console.warn('plaza shot',e); pz.classList.remove('pz-shooting','ps-nobub','ps-notag'); prog('사진을 만들지 못했어요. 인터넷 연결을 확인하고 다시 해 보세요.'); return; }
+  if(!sh.isConnected) return;
+  const fname=`오늘사대_광장_${t}.png`; const url=URL.createObjectURL(blob); const file=new File([blob], fname, {type:'image/png'});
+  sh.innerHTML=`<div class="handle"></div><h3>🖼 광장 사진 준비됐어요</h3>
+    <div class="rs-prev"><img src="${url}" alt="광장 사진"></div>
+    <p class="tiny muted" style="margin:0">공유 버튼이 안 되면 <b>저장</b>한 뒤 카톡 · SNS에서 사진으로 올리세요.</p>
+    <div class="actions"><button class="btn ghost" id="rsSave" type="button">저장</button><button class="btn pri" id="rsShare" type="button">카톡 · SNS로 공유</button></div>`;
+  const save=()=>{ const a=document.createElement('a'); a.href=url; a.download=fname; document.body.appendChild(a); a.click(); a.remove(); toast('사진을 저장했어요'); };
+  $('#rsSave',sh).onclick=save;
+  $('#rsShare',sh).onclick=async()=>{ const b=busy[0]; const text=(b?`🎉 오늘 ${b.jname} ${b.slot} 사대 북적북적! `:`🏹 오늘 ${homeJ().name} 광장 `)+`· 오늘 사대 ${shareLink()}`;
+    try{ if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], text}); return; } }catch(e){ if(e && e.name==='AbortError') return; console.warn('share',e); }
+    save(); };
+}
+const PZ_RX = [['heart','❤️','공감'],['clap','👏','박수'],['hit','🎯','관중!'],['laugh','😂','웃겨요'],['fire','🔥','불타요'],['tea','🍵','토닥'],['tease','😜','메롱']];
+function pzRxOf(m){ const by={}; for(const [who,v] of Object.entries((m&&m.rx)||{})){ if(who===m.from || !PZ_RX.some(r=>r[0]===v)) continue; (by[v]=by[v]||[]).push(who); } return by; }
+function pzRxN(m){ return Object.values(pzRxOf(m)).reduce((a,L)=>a+L.length,0); }
+function pzRxHTML(m){ const by=pzRxOf(m); const own=S.me&&m.from===S.me.id; const mine=S.me ? (((m.rx||{})[S.me.id])||'') : ''; const day=esc(m.day||today());
+  const nm=id=>{ const x=memberById(id); return (x&&x.name)||'사원'; };
+  const chips=PZ_RX.filter(([k])=>by[k]).map(([k,ic,lab])=>{ const L=by[k]; const t=`${lab} · ${L.map(nm).join(', ')}`;
+    return own ? `<span class="pz-rxc" title="${esc(t)}">${ic} <b class="num">${L.length}</b></span>`
+               : `<button type="button" class="pz-rxc ${mine===k?'on':''}" data-pzrx="${k}" data-pzid="${esc(m.id)}" data-pzday="${day}" title="${esc(t)}" aria-label="${lab} ${L.length}">${ic} <b class="num">${L.length}</b></button>`; }).join('');
+  if(own) return chips ? `<div class="pz-rx own">${chips}</div>` : '';
+  const pick=`<div class="pz-rxpick" hidden>${PZ_RX.map(([k,ic,lab])=>`<button type="button" class="${mine===k?'on':''}" data-pzrx="${k}" data-pzid="${esc(m.id)}" data-pzday="${day}" aria-label="${lab}"><span>${ic}</span><small>${lab}</small></button>`).join('')}</div>`;
+  return `<div class="pz-rx" data-mine="${esc(mine)}">${chips}<button type="button" class="pz-rxadd" data-pzrxopen aria-expanded="false" aria-label="반응 남기기">${mine?'바꾸기':'＋반응'}</button>${pick}</div>`; }
 function renderPlaza(){
   const box=$('#plazaCrowd'); if(!box) return; applyPlazaArt(); renderRank(); refreshRank(); renderTicker();
   { const pz=$('#plaza'); let cp=$('#pzCalm'); if(pz && !cp){ cp=document.createElement('button'); cp.type='button'; cp.id='pzCalm'; cp.className='bg-pill pz-calm'; cp.addEventListener('click',e=>{ e.stopPropagation(); openCalm(); }); pz.appendChild(cp); } applyCalm(); }
   const t=today(); const att=attEntries(); const attBy=Object.fromEntries(att.map(e=>[e.id,e]));
+  const busy=busyOf(att); const dancer=new Set(busy.flatMap(b=>b.ids)); try{ renderBusy(busy); }catch(e){ console.warn('busy',e); }
   const msgs=plazaMsgs(S.plaza).sort((a,b)=>(b.at||0)-(a.at||0));
   const lastMsg={}; for(const m of msgs) if(!lastMsg[m.from]) lastMsg[m.from]=m;
   let mem=(S.members||[]).filter(m=>m&&m.name);
   if(S.me && !mem.some(m=>m.id===S.me.id)) mem=[...mem, S.me];
   const memAll=mem; const hjId=homeJ().id; const nMine=memAll.filter(m=>memberJ(m).id===hjId).length;
   if(S.plazaMine && nMine) mem=memAll.filter(m=>memberJ(m).id===hjId);
-  const PF=$('#plazaFilter'); if(PF){ PF.innerHTML = memAll.length>nMine && nMine ? `<button type="button" data-pf="all" class="${S.plazaMine?'':'on'}">🌏 모든 정 <b class="num">${memAll.length}</b></button><button type="button" data-pf="mine" class="${S.plazaMine?'on':''}">🏯 ${esc(homeJ().name)} <b class="num">${nMine}</b></button><button type="button" class="pz-all" data-pf="list">👥 모두 보기</button>` : `<button type="button" class="pz-all" data-pf="list">👥 사원 모두 보기</button>`;
-    $$('[data-pf]',PF).forEach(b=>b.onclick=()=>{ const v=b.dataset.pf; if(v==='list'){ openPlazaList(); return; } S.plazaMine = v==='mine'; renderPlaza(); renderRank(); }); }
+  const PF=$('#plazaFilter'); if(PF){ PF.innerHTML = memAll.length>nMine && nMine ? `<button type="button" data-pf="all" class="${S.plazaMine?'':'on'}">🌏 모든 정 <b class="num">${memAll.length}</b></button><button type="button" data-pf="mine" class="${S.plazaMine?'on':''}">🏯 ${esc(homeJ().name)} <b class="num">${nMine}</b></button><button type="button" class="pz-all" data-pf="list">👥 모두 보기</button><button type="button" class="pz-shotb" data-pf="shot">📸 공유</button>` : `<button type="button" class="pz-all" data-pf="list">👥 사원 모두 보기</button><button type="button" class="pz-shotb" data-pf="shot">📸 광장 공유</button>`;
+    $$('[data-pf]',PF).forEach(b=>b.onclick=()=>{ const v=b.dataset.pf; if(v==='list'){ openPlazaList(); return; } if(v==='shot'){ openPlazaShot(); return; } S.plazaMine = v==='mine'; renderPlaza(); renderRank(); }); }
   const score=m=>(S.me&&m.id===S.me.id?1e15:0)+(lastMsg[m.id]?lastMsg[m.id].at:0)+(attBy[m.id]?1e12:0)+(m.updatedAt||0)/1e3;
   const PZ0=$('#plaza'); const top00 = PZ0 && PZ0.classList.contains('art') ? Math.round((PZ0.clientWidth||360)*(+PZ0.dataset.ratio||0.95)*0.40) : 118;
   const capN = Math.max(12, Math.floor((960 - top00 - 70)/86)*4);   // 광장 최대 높이(960px)에 들어가는 사람 수 — 넘치면 오늘 활동한 사원 먼저
@@ -5421,18 +5559,26 @@ function renderPlaza(){
   const order=shown.slice().sort((a,b)=>hashN(a.id+pzSeed,9973)-hashN(b.id+pzSeed,9973));
   const POS={}; order.forEach((m,i)=>{ const r=Math.floor(i/cols), c=i%cols; const jx=(hashN(m.id+pzSeed+'x',100)/100-.5)*0.3, jy=(hashN(m.id+pzSeed+'y',100)/100-.5)*0.3;
     POS[m.id]={x:Math.min(90, Math.max(10, ((c+.5+jx+(r%2?.35:0))/cols)*100)), y:rows===1?70:Math.min(100, Math.max(14, 12+((r+.5+jy*.7)/rows)*88))}; });
-  // 말풍선: 최근 3시간 안에 말한 사람 중, 서로 겹치지 않게 최대 7명 (10-07 사용자 요청)
-  const bubbleOf=new Set(), bubLv={}; let newestBub=null;
-  for(const m of msgs){ if(bubbleOf.size>=7) break; const p=POS[m.from]; if(!p || bubbleOf.has(m.from)) continue;
-    let lv=0; for(const o of bubbleOf){ if(Math.abs(POS[o].x-p.x)<50 && Math.abs(POS[o].y-p.y)<30) lv=Math.max(lv,bubLv[o]+1); }
-    bubLv[m.from]=Math.min(lv,3); bubbleOf.add(m.from); if(!newestBub) newestBub=m; }
+  // 말풍선 (p109 · 10-07 사용자 결정): ① 24시간 안 반응 · 답글 많은 글 → ② 최근 3시간 글 → ③ 10시간 안 아직 안 뜬 글 · 최대 7명 · 서로 겹치면 비켜 섬
+  const bubbleOf=new Set(), bubLv={}, bubMsg={}; let newestBub=null;
+  { const now=Date.now(), H=3600e3; const pool=[...msgs, ...plazaMsgs(S.plazaY)].filter(m=>m && now-(m.at||0) < 24*H);
+    const repN={}; pool.forEach(m=>{ const p=String(m.id).indexOf('_re_'); if(p>0){ const r=String(m.id).slice(p+4); repN[r]=(repN[r]||0)+1; } });
+    const eng=m=>(typeof pzRxN==='function'?pzRxN(m):0)+(repN[m.id]||0);
+    let seen=lsGet('sadae.pzBubSeen',[]); if(!Array.isArray(seen)) seen=[];
+    const A1=pool.filter(m=>eng(m)>0).sort((a,b)=>eng(b)-eng(a)||(b.at||0)-(a.at||0));
+    const A2=pool.filter(m=>now-(m.at||0)<3*H).sort((a,b)=>(b.at||0)-(a.at||0));
+    const A3=pool.filter(m=>now-(m.at||0)<10*H && !seen.includes(m.id)).sort((a,b)=>(a.at||0)-(b.at||0));
+    for(const m of [...A1, ...A2, ...A3]){ if(bubbleOf.size>=7) break; const p=POS[m.from]; if(!p || bubbleOf.has(m.from)) continue;
+      let lv=0; for(const o of bubbleOf){ if(Math.abs(POS[o].x-p.x)<50 && Math.abs(POS[o].y-p.y)<30) lv=Math.max(lv,bubLv[o]+1); }
+      bubLv[m.from]=Math.min(lv,3); bubbleOf.add(m.from); bubMsg[m.from]=m; if(!newestBub || (m.at||0)>(newestBub.at||0)) newestBub=m; }
+    const ids=Object.values(bubMsg).map(m=>m.id).filter(id=>!seen.includes(id)); if(ids.length) lsSet('sadae.pzBubSeen', [...seen, ...ids].slice(-300)); }
   const bubKey=newestBub?newestBub.id||String(newestBub.at):''; const popNew = bubKey && S.plazaBubKey!==undefined && S.plazaBubKey!==bubKey; S.plazaBubKey=bubKey;
   box.innerHTML = order.map((m,i)=>{ const {x,y}=POS[m.id];
     const dur=6+hashN(m.id+'d',60)/10, dx=(hashN(m.id+'w',2)?1:-1)*(10+hashN(m.id+'k',18)), delay=-hashN(m.id+'l',50)/10;
     const isMe=S.me&&m.id===S.me.id; const a=attBy[m.id]; const td=othersDay(m.id,t)||(isMe?(()=>{ const d=(S.myDays||[]).find(x=>x.date===t); return d?dayBrief(d):null; })():null);
     const mark = td&&td.mo ? '🎯' : a ? '🏹' : '';
-    const bt=String(bubbleOf.has(m.id)?lastMsg[m.id].text:''); const bub = bt ? `<span class="pz-bub ${x<28?'l':x>72?'r':''} ${bubLv[m.id]?'lv'+bubLv[m.id]:''} ${popNew&&newestBub.from===m.id?'pop':''}">${esc(bt.slice(0,18))}${bt.length>18?'…':''}</span>` : '';
-    return `<div class="pz-fig ${isMe?'me':''}" data-room="${esc(m.id)}" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;z-index:${Math.round(y)+(bub?100+(bubLv[m.id]||0)*10:0)};--dur:${dur.toFixed(1)}s;--dx:${dx}px;--dl:${delay.toFixed(1)}s" title="${esc(m.name)} · ${esc(memberJ(m).name)}">${bub}<span class="pz-walk"><span class="pz-ch">${charSVG(m.char||DEFAULT_CHAR)}</span></span>${mark?`<span class="pz-mk">${mark}</span>`:''}<span class="pz-tag">${esc(m.name)}</span></div>`; }).join('') + (more>0?`<button type="button" class="pz-more" onclick="openPlazaList()">외 ${more}명 보기</button>`:'');
+    const bt=String(bubbleOf.has(m.id)?bubMsg[m.id].text:''); const bub = bt ? `<span class="pz-bub ${x<28?'l':x>72?'r':''} ${bubLv[m.id]?'lv'+bubLv[m.id]:''} ${popNew&&newestBub.from===m.id?'pop':''}">${esc(bt.slice(0,18))}${bt.length>18?'…':''}</span>` : '';
+    return `<div class="pz-fig ${isMe?'me':''} ${dancer.has(m.id)?'dance':''}" data-room="${esc(m.id)}" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;z-index:${Math.round(y)+(bub?100+(bubLv[m.id]||0)*10:0)};--dur:${dur.toFixed(1)}s;--dx:${dx}px;--dl:${delay.toFixed(1)}s;--dd:${(-hashN(m.id+'dd',12)/10).toFixed(1)}s" title="${esc(m.name)} · ${esc(memberJ(m).name)}">${bub}<span class="pz-walk"><span class="pz-ch">${charSVG(m.char||DEFAULT_CHAR)}</span></span>${mark?`<span class="pz-mk">${mark}</span>`:''}<span class="pz-tag">${esc(m.name)}</span></div>`; }).join('') + (more>0?`<button type="button" class="pz-more" onclick="openPlazaList()">외 ${more}명 보기</button>`:'');
   const nAtt=att.length; $('#plazaCount').innerHTML = `사원 <b class="num">${mem.length}</b>명${nAtt?` · 오늘 활터에 <b class="num">${nAtt}</b>명`:''}`;
   // 글쓰기
   const W=$('#plazaWrite');
@@ -5460,7 +5606,7 @@ function renderPlaza(){
   const pzMsg=(m0,rootDay)=>{ const mm=memberById(m0.from)||{}; const pn=rootDay&&byId[m0.re]?pzNm(byId[m0.re].from):'';
     const m = pn ? {...m0, text:(pzStripAt(m0.text, pn)||m0.text)} : m0;
     const can=S.me&&(m.from===S.me.id||isAdminNow());
-    return `<div class="pz-msg ${rootDay?'pz-rep':''} ${S.me&&m.from===S.me.id?'mine':''}" data-pzid="${esc(m.id)}"><span class="pz-av" data-room="${esc(m.from)}">${charSVG(mm.char||DEFAULT_CHAR)}</span><div class="grow"><div class="pz-who"><b data-room="${esc(m.from)}">${esc(mm.name||'사원')}</b> ${rootDay&&m.day!==rootDay?`<span class="tiny muted">${+m.day.slice(5,7)}/${+m.day.slice(8)}</span> `:''}<span class="tiny muted">${esc(memberJ(mm).name)} · ${hhmm(m.at)}</span>${S.me&&mm.name?`<button class="linkbtn tiny" type="button" data-pzat="${esc(mm.name)}" data-pzre="${esc(m.re||m.id)}" data-pztx="${esc(String((m.re&&byId[m.re]?byId[m.re].text:m.text)||'').slice(0,30))}">↩ 답글</button>`:''}${can?`<button class="linkbtn tiny" data-pzdel="${esc(m.id)}" data-pzday="${m.day}">지우기</button>`:''}</div>${!rootDay&&m.re?'<div class="pz-reof tiny muted">↩ 지난 글에 단 답글</div>':''}<div class="pz-tx ${S.me&&S.me.name&&m.from!==S.me.id&&mentionRe(S.me.name).test(m.text||'')?'pz-me':''}">${esc(m.text)}</div></div></div>`; };
+    return `<div class="pz-msg ${rootDay?'pz-rep':''} ${S.me&&m.from===S.me.id?'mine':''}" data-pzid="${esc(m.id)}"><span class="pz-av" data-room="${esc(m.from)}">${charSVG(mm.char||DEFAULT_CHAR)}</span><div class="grow"><div class="pz-who"><b data-room="${esc(m.from)}">${esc(mm.name||'사원')}</b> ${rootDay&&m.day!==rootDay?`<span class="tiny muted">${+m.day.slice(5,7)}/${+m.day.slice(8)}</span> `:''}<span class="tiny muted">${esc(memberJ(mm).name)} · ${hhmm(m.at)}</span>${S.me&&mm.name?`<button class="linkbtn tiny" type="button" data-pzat="${esc(mm.name)}" data-pzre="${esc(m.re||m.id)}" data-pztx="${esc(String((m.re&&byId[m.re]?byId[m.re].text:m.text)||'').slice(0,30))}">↩ 답글</button>`:''}${can?`<button class="linkbtn tiny" data-pzdel="${esc(m.id)}" data-pzday="${m.day}">지우기</button>`:''}</div>${!rootDay&&m.re?'<div class="pz-reof tiny muted">↩ 지난 글에 단 답글</div>':''}<div class="pz-tx ${S.me&&S.me.name&&m.from!==S.me.id&&mentionRe(S.me.name).test(m.text||'')?'pz-me':''}">${esc(m.text)}</div>${pzRxHTML(m)}</div></div>`; };
   // 1쪽이 아닌 원글에 12시간 안에 달린 답글 → 맨 위에 알림 줄 (누르면 그 글로)
   const fresh=Object.entries(reps).map(([rid,L])=>({rid, last:L[L.length-1], pg:pgOf(rid)})).filter(f=>f.pg>1 && Date.now()-(f.last.at||0)<12*3600e3).sort((a,b)=>(b.last.at||0)-(a.last.at||0)).slice(0,2);
   C.innerHTML = top.length ? fresh.map(f=>`<button type="button" class="pz-newre" data-pzjump="${esc(f.rid)}">💬 <b>${esc(pzNm(f.last.from))}</b> 님이 ${esc(pzNm(byId[f.rid].from))} 님 글에 답글 · ${hhmm(f.last.at)}<span>보기 ›</span></button>`).join('') + top.map((m,i)=>{ const pg=Math.floor(i/PER)+1; let head=''; if(m.day!==lastDay || i%PER===0){ lastDay=m.day; head=`<div class="pz-day">${pzDayLabel(m.day)}</div>`; }
@@ -5472,6 +5618,13 @@ function renderPlaza(){
   $$('[data-pzpg]',C).forEach(b=>b.addEventListener('click',()=>{ const v=b.dataset.pzpg; const n = v==='prev'?S.pzPage-1 : v==='next'?S.pzPage+1 : +v; if(n<1||n>pages||n===S.pzPage) return; pzGo(n);
     const card=$('#pzChatCard'); if(card && card.getBoundingClientRect().top<60) card.scrollIntoView({block:'start'}); }));
   $$('[data-pzjump]',C).forEach(b=>b.addEventListener('click',()=>{ const id=b.dataset.pzjump; pzGo(pgOf(id)); const el=C.querySelector(`[data-pzid="${CSS.escape(id)}"]`); if(el){ const it=el.closest('.pz-item')||el; it.scrollIntoView({behavior:'smooth',block:'center'}); it.classList.remove('pz-flash'); void it.offsetWidth; it.classList.add('pz-flash'); } }));
+  $$('[data-pzrxopen]',C).forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); const pk=b.parentElement.querySelector('.pz-rxpick'); if(!pk) return; const open=pk.hidden; $$('.pz-rxpick',C).forEach(x=>x.hidden=true); pk.hidden=!open; b.setAttribute('aria-expanded',String(open)); }));
+  $$('[data-pzrx]',C).forEach(b=>b.addEventListener('click',async e=>{ e.stopPropagation(); if(!S.me){ toast('캐릭터를 고르면 반응할 수 있어요'); return; }
+    const id=b.dataset.pzid, day=b.dataset.pzday, k=b.dataset.pzrx; const box=b.closest('.pz-rx'); const cur=box&&box.dataset.mine||'';
+    const nv = cur===k ? null : k; if(box){ box.dataset.mine=nv||''; $$('[data-pzrx]',box).forEach(x=>x.classList.toggle('on', x.dataset.pzrx===nv)); const pk=box.querySelector('.pz-rxpick'); if(pk) pk.hidden=true; }
+    const ok=await write(st=>st.merge('plaza/'+day,{entries:{[id]:{rx:{[S.me.id]:nv}}}}));
+    if(!ok){ if(box) box.dataset.mine=cur; } else if(nv){ try{ navigator.vibrate&&navigator.vibrate(15); }catch(e){} }
+    if(S.tab==='plaza') renderPlaza(); }));
   $$('[data-pzat]',C).forEach(b=>b.addEventListener('click',()=>{ const i=$('#pzText'); if(!i) return; const rid=b.dataset.pzre; const root=byId[rid]; const rn=root?pzNm(root.from):b.dataset.pzat;
     if(S.pzRe && S.pzRe.name && S.pzRe.name!==rn) i.value=pzStripAt(i.value, S.pzRe.name);
     S.pzRe={id:rid, name:rn, tx:b.dataset.pztx}; const tag='@'+b.dataset.pzat+' '; if(S.me && b.dataset.pzat!==S.me.name && !i.value.includes(tag.trim())) i.value=tag+i.value; pzReBar(); i.focus(); i.scrollIntoView({block:'center'}); }));
