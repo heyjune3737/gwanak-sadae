@@ -2479,11 +2479,11 @@ function bindInstall(root){
   on('#inInstall',async()=>{ const e=window.__bip; if(!e) return; e.prompt(); try{ await e.userChoice; }catch(x){} window.__bip=null; if(S.tab==='info') renderInfo(); });
   on('#inCopy',async()=>{ try{ await navigator.clipboard.writeText(siteURL()); toast('주소를 복사했어요. 크롬 주소창에 붙여 넣으세요'); }catch(x){ toast('주소를 길게 눌러 복사하세요'); } });
 }
-// 공지: 최근 5개만 펼쳐 두고, 지난 공지는 달마다 폴더로 접어 둠
+// 공지: 최근 2개(10/6 · 10/5)만 펼쳐 두고, 지난 공지는 달마다 폴더로 접어 둠 (10-07 사용자 요청)
 // 공지 본문: 빈 줄로 꼭지를 나누고, 꼭지 첫 줄은 굵게 (줄바꿈 \n 지원)
 const ntBody = t => esc(t).split('\n\n').map(bk=>{ const i=bk.indexOf('\n'); return i>0 ? `<b class="nt-h">${bk.slice(0,i)}</b><br>${bk.slice(i+1).replace(/\n/g,'<br>')}` : bk.replace(/\n/g,'<br>'); }).join('<br><br>');
 function noticeHTML(){
-  const TOP=5; const ym=n=>{ const m=/(\d+)월/.exec(n.date||''); const y=/^\d{4}/.test(n.id)?n.id.slice(0,4):''; return m&&y ? y+'-'+String(m[1]).padStart(2,'0') : ''; }; const one=(n,open)=>`<details class="notice" ${open?'open':''}><summary><span class="tiny muted">${n.date}</span> ${esc(n.title)}</summary><p>${ntBody(n.body)}</p></details>`;
+  const TOP=2; const ym=n=>{ const m=/(\d+)월/.exec(n.date||''); const y=/^\d{4}/.test(n.id)?n.id.slice(0,4):''; return m&&y ? y+'-'+String(m[1]).padStart(2,'0') : ''; }; const one=(n,open)=>`<details class="notice" ${open?'open':''}><summary><span class="tiny muted">${n.date}</span> ${esc(n.title)}</summary><p>${ntBody(n.body)}</p></details>`;
   const top=ym(NOTICES[0]||{}); const head=NOTICES.filter((n,i)=>i<TOP && ym(n)===top), rest=NOTICES.slice(head.length);   /* 맨 위 = 최신 달만 */ const g={}, order=[];
   rest.forEach(n=>{ const k=ym(n)||'old'; if(!g[k]){ g[k]=[]; order.push(k); } g[k].push(n); });
   const lab=k=>k==='old'?'이전 공지':`${k.slice(0,4)}년 ${+k.slice(5)}월`;
