@@ -1683,6 +1683,54 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .pl-wd{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;height:90px;align-items:end;margin-top:6px}.pl-wd .hb-col i{max-width:36px}.pl-wd .hb-col.top i{background:var(--red)}.pl-wd .hb-col.top em{color:var(--red)}
 .pl-wdx{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center;font-size:11.5px;color:var(--ink2);border-top:2px solid var(--ink);padding-top:3px}
 .pl-sub{display:flex;flex-direction:column;gap:2px;margin:16px 0 6px;font-size:13px}.pl-sub b{font-size:13.5px}.pl-sub small{font-size:11px;color:var(--ink3)}
+/* p95 · 오늘의 국궁 한마디 */
+.dw{background:var(--card2)}
+.dw-h{display:flex;flex-direction:column;gap:3px;margin-bottom:16px}.dw-h h2{margin:0;font-family:var(--display);font-size:19px;white-space:nowrap}.dw-h small{font-size:11px;color:var(--ink3)}
+.dw-box{position:relative;background:var(--card);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:18px 16px 14px;text-align:center}
+.dw-kind{position:absolute;top:-11px;left:12px;font-size:11px;font-weight:700;padding:2px 8px;border:2px solid var(--ink);background:var(--gold);color:var(--gold-ink,#2A2233)}.dw-kind.t{background:var(--card2);color:var(--ink)}
+.dw-hj{font-family:"Noto Serif KR","Nanum Myeongjo","Batang",serif;font-size:26px;font-weight:700;letter-spacing:.08em;line-height:1.25;color:var(--ink)}
+.dw-rd{font-size:13px;color:var(--ink2);margin-top:4px;letter-spacing:.04em}
+.dw-m{font-size:15px;line-height:1.55;margin:12px 0 0;font-weight:700;word-break:keep-all}
+.dw-src{font-size:10.5px;color:var(--ink3);margin-top:10px}
+.dw-foot{margin:14px 2px 0;font-size:12.5px;line-height:1.6;color:var(--ink2);word-break:keep-all}.dw-foot b{color:var(--ink)}.dw-sign{display:block;text-align:right;margin-top:6px;font-family:var(--display);color:var(--ink)}
+/* p96 · 기록 보기 카드 배경 나누기 */
+:root{--tint-a:#E8F1F8;--tint-b:#FBF4E3}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--tint-a:#25304A;--tint-b:#34302A} }
+:root[data-theme="dark"]{--tint-a:#25304A;--tint-b:#34302A}
+.card.tint-a{background:var(--tint-a)}.card.tint-b{background:var(--tint-b)}
+#habitCard .hb-sec{background:var(--card);border:2px solid var(--ink);padding:12px 12px 10px;margin-top:12px}#habitCard .hb-sec:first-of-type{border-top:2px solid var(--ink);padding-top:12px}
+#habitCard .hb-lead{margin-bottom:2px}
+#habitCard .hb-avg span{background:var(--card)}
+#calCard #monthCal div.d:not(.wh){background:transparent}
+#pileCard .pl-next{background:var(--card)}
+/* 카드 안: 줄 번갈아 옅은 색 · 묶음 머리띠 (과하지 않게) */
+:root{--zebra:#F2F5F9;--band:#F6EFDD}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--zebra:#30364D;--band:#3A3628} }
+:root[data-theme="dark"]{--zebra:#30364D;--band:#3A3628}
+#recView .hb-rows{gap:0}
+#recView .hb-rows .hb-row{padding:6px 6px;margin:0 -6px}
+#recView .hb-rows .hb-row:nth-child(even){background:var(--zebra)}
+#wxCard .wx-g{background:var(--band);border-bottom:2px solid var(--ink);padding:6px 8px;margin:14px -6px 4px}
+#wxCard .wx-g:first-of-type{margin-top:4px}
+#habitCard .hb-kv>div:first-child{background:var(--zebra)}
+#pileCard .pl-next{background:var(--band)}
+/* p97 · 기록 공유 · 저장 */
+.rs-open{margin:0 0 12px;min-height:46px;font-weight:700;background:var(--card);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);color:var(--ink)}.rs-open small{font-weight:400;color:var(--ink3);margin-left:6px;font-size:11.5px}
+.rs-list{display:flex;flex-direction:column;gap:6px;margin:10px 0 8px;max-height:46vh;overflow:auto}
+.rs-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border:2px solid var(--ink);background:var(--card);cursor:pointer;font-size:14px}.rs-item input{width:20px;height:20px;accent-color:var(--red);flex:none}.rs-item small{display:block;font-size:11px;color:var(--ink3)}.rs-item.off{opacity:.45}
+.rs-item:has(input:checked){background:var(--red-soft)}
+.rs-all{display:flex;gap:8px;justify-content:flex-end}.rs-all button{font:inherit;font-size:12px;background:none;border:0;color:var(--ink2);text-decoration:underline;cursor:pointer;padding:2px}
+.rs-mode{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ink);margin:12px 0 6px}.rs-mode button{font:inherit;font-weight:700;font-size:14px;padding:10px 0;border:0;background:var(--card);color:var(--ink2);cursor:pointer}.rs-mode button+button{border-left:2px solid var(--ink)}.rs-mode button.on{background:var(--ink);color:var(--card)}
+.rs-list.all .rs-item:not(.off){opacity:.75;cursor:default}
+.rs-prev{max-height:52vh;overflow:auto;border:2px solid var(--ink);background:var(--card2);text-align:center;padding:6px;margin:8px 0}.rs-prev img{max-width:100%;display:block;margin:0 auto}
+.rs-prog{font-size:13px;color:var(--ink2);padding:24px 0;text-align:center}
+/* p98 · 사대지기 오리 말풍선 */
+.dw-say{display:flex;align-items:flex-end;gap:10px;margin-top:16px}
+.dw-duck{flex:none;width:68px;display:flex;flex-direction:column;align-items:center;gap:2px}.dw-duck .dw-av{display:block;width:64px;height:77px}.dw-duck .dw-av svg{width:100%;height:100%;display:block}
+.dw-duck b{font-size:10.5px;font-weight:700;padding:1px 6px;border:1.5px solid var(--ink);background:var(--gold);color:var(--gold-ink,#2A2233);white-space:nowrap}
+.dw-bub{position:relative;flex:1;margin:0 0 22px;padding:10px 12px;background:var(--card);border:2px solid var(--ink);font-size:12.5px;line-height:1.6;color:var(--ink2);word-break:keep-all}.dw-bub b{color:var(--ink)}
+.dw-bub::before{content:"";position:absolute;left:-9px;bottom:14px;width:12px;height:12px;background:var(--card);border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+.dw-bub .dw-sign{display:block;text-align:right;margin-top:4px;font-family:var(--display);color:var(--ink);font-size:12px}
 </style>
 
 <div class="app" id="app">
@@ -1774,6 +1822,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
       </div>
 
       <div id="recView" hidden>
+      <button type="button" class="btn block rs-open" data-share-open>📤 기록 공유 · 저장 <small>사진(PNG)</small></button>
       <div class="card" id="dayCard">
         <div class="dnav"><button type="button" class="btn sm" id="dPrev" aria-label="이전 날">◀</button><div class="dnav-t"><b id="dTitle"></b><span id="dSub"></span></div><button type="button" class="btn sm" id="dNext" aria-label="다음 날">▶</button></div>
         <div id="dBody"></div>
@@ -1784,27 +1833,29 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
       </div>
       <div class="card" id="monthSumCard"></div>
 
-      <div class="card">
+      <div class="card tint-b" id="monthCard">
         <div class="sec-head"><h2>이번 달 <small id="monthLabel"></small></h2></div>
         <div class="stats" id="monthStats"></div>
         <div style="height:14px"></div>
         <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="muted">낙점 분포</span><span class="tiny">이번 달 · 가운데가 관중</span></div>
         <div class="dist" id="missDist"></div>
       </div>
-      <div class="card" id="habitCard"></div>
+      <div class="card tint-a" id="habitCard"></div>
       <div class="card" id="wxCard"><div id="windStats"></div></div>
-      <div class="card" id="calCard">
+      <div class="card tint-b" id="calCard">
         <div class="mr-h"><h2>📆 습사 달력</h2><span class="tiny muted">날짜를 누르면 그날 기록을 봐요</span></div>
         <div class="cal" id="monthCal"></div>
         <div class="cal-lg tiny muted"><span>칸 색 = 그날 관중률</span><span><i class="c1"></i>~29%</span><span><i class="c2"></i>30~59%</span><span><i class="c3"></i>60%~</span><span><i class="c0"></i>안 쏜 날</span><span><b class="st">★</b>몰기한 날</span></div>
       </div>
-      <div class="card" id="pileCard"></div>
+      <div class="card tint-a" id="pileCard"></div>
 
-      <div class="card">
+      <div class="card" id="tipsCard">
         <div class="sec-head"><h2>반구제기 <small>교본 팁 — 활을 쏘아 맞지 않으면 나를 돌아본다</small></h2></div>
         <div class="tips" id="tips"></div>
         <p class="cite">출처: 관악정 국궁교본 교육용 V1.93 p.36~37 「반구제기」, 국궁교본 V1.71 5.7·8.8 (요약 발췌)</p>
       </div>
+      <div class="card dw" id="dailyWord"></div>
+      <button type="button" class="btn block rs-open" data-share-open>📤 기록 공유 · 저장 <small>전체 또는 고른 부분을 사진 한 장으로</small></button>
       </div>
     </section>
 
@@ -2217,7 +2268,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.06f';
+const APP_VER = '2026.10.06g';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3321,6 +3372,170 @@ function renderPile(){
   el.innerHTML=`<div class="mr-h"><h2>📚 쌓아온 기록</h2><span class="tiny muted">${fk(D[0].date)} 첫 기록부터</span></div>
     <div class="pl-sub" style="margin-top:0"><b>🏹 쌓인 순</b><small>습사한 날마다 그때까지 쏜 순을 쌓았어요. 빨강은 이번 달이에요.${cut?` 최근 ${PL_MAX}일만 보여요.`:''}</small></div>${stair}${next}${wdh}`;
 }
+// ===== p95 · 오늘의 국궁 한마디 (관악정 국궁교본 V1.71 수록 글) =====
+const DW_SRC={j:'국궁교본 5.2 집궁제원칙', g:'국궁교본 2.3.3 궁도 9계훈', s:'국궁교본 6.5 심담 14요', b:'국궁교본 6.6 불가필중', t:'국궁교본 용어 풀이'};
+const DAILY_WORDS=[
+ ['j','先觀地形 後察風勢','선관지형 후찰풍세','먼저 지형을 관찰하고 나서 다음은 바람의 흐름을 살핀다.'],
+ ['j','非丁非八 胸虛腹實','비정비팔 흉허복실','발의 위치는 丁 자도 八 자도 아니며, 가슴을 비우고 배를 든든히 한다.'],
+ ['j','前推泰山 後握虎尾','전추태산 후악호미','줌손은 태산을 밀듯이 밀고, 깍지손은 호랑이 꼬리를 잡아당기듯 뒤로 당긴다.'],
+ ['j','發而不中 反求諸己','발이부중 반구제기','활을 쏘아서 맞지 않으면 자신의 마음가짐과 자세를 다시 살핀다.'],
+ ['g','仁愛德行','인애덕행','사랑과 덕행으로 본을 보인다.'],
+ ['g','誠實謙遜','성실겸손','겸손하고 성실하게 행한다.'],
+ ['g','自重節操','자중절조','신중하고 조심스럽게 행동하라.'],
+ ['g','禮儀嚴守','예의엄수','예의 범절을 엄격히 지킨다.'],
+ ['g','廉直果敢','염직과감','청렴 강직하고 용감하게 행한다.'],
+ ['g','習射無言','습사무언','활을 쏠 때는 침묵을 지킨다.'],
+ ['g','正心正己','정심정기','몸과 마음을 항상 바르게 한다.'],
+ ['g','不怨勝者','불원승자','이긴 사람을 원망하지 않는다.'],
+ ['g','莫彎他弓','막만타궁','남의 활을 함부로 당기지 않는다.'],
+ ['s','弓要軟','궁요연','활은 자기 힘에 맞게 연해야 한다.'],
+ ['s','箭要長','전요장','살은 적당히 길어야 한다.'],
+ ['s','胸前宜吸','흉전의흡','가슴 앞은 안으로 거두어 들인다.'],
+ ['s','脚立要方','각립요방','다리는 평온하면서도 굳건하게 선다.'],
+ ['s','持弓如握卵','지궁여악란','활을 쥐는 것은 달걀을 잡듯이 한다.'],
+ ['s','搭箭如懸衡','탑전여현형','화살 끼우기는 저울질하듯 한다.'],
+ ['s','弓要梢側','궁요초측','활은 조금 기울인다.'],
+ ['s','手要平衡','수요평형','양손은 평형을 이루어야 한다.'],
+ ['s','前膀要轉','전방요전','앞팔 상반절은 틀어서 곧게 펴야 한다.'],
+ ['s','筋骨要神','근골요신','근육과 뼈는 쭉 펴야 한다.'],
+ ['s','前肩要藏','전견요장','앞어깨는 감추어야 한다.'],
+ ['s','後肩要擠','후견요제','뒷어깨는 뒤로 밀치듯이 한다.'],
+ ['s','出箭要輕','출전요경','화살을 낼 때는 가볍게 낸다.'],
+ ['s','放箭要速','방전요속','화살을 보내는 것은 빠르게 한다. 앞손이 화살을 보내는 것을 뒷손이 알지 못하듯이.'],
+ ['b','生弓 不可必中','생궁 불가필중','익지 않은 활은 적중할 수 없다.'],
+ ['b','生疎 不可必中','생소 불가필중','생소한 활로는 적중할 수 없다.'],
+ ['b','弓强矢輕 不可必中','궁강시경 불가필중','활은 강한데 살이 가벼우면 적중할 수 없다.'],
+ ['b','弓弱矢重 不可必中','궁약시중 불가필중','활은 약한데 살이 무거우면 적중할 수 없다.'],
+ ['b','氣驕志怠 不可必中','기교지태 불가필중','교만한 기와 뜻이 게으르면 적중할 수 없다.'],
+ ['b','心身恍惚 不可必中','심신황홀 불가필중','심신이 흐리멍텅하면 적중할 수 없다.'],
+ ['b','射多力疲 不可必中','사다역피 불가필중','많이 쏘아 피로하면 적중할 수 없다.'],
+ ['b','見己之病不改 不可必中','견기지병불개 불가필중','자기 잘못을 알고도 고치지 않으면 적중할 수 없다.'],
+ ['b','好勝之心甚 不可必中','호승지심심 불가필중','이기려는 마음이 심하면 적중할 수 없다.'],
+ ['b','怯懦之心生 不可必中','겁나지심생 불가필중','겁먹고 나약한 마음이 들면 적중할 수 없다.'],
+ ['t','몰기','','한 순(巡) 쏠 때 살 다섯 개가 다 맞는 것. 몰기를 하면 과녁에 대고 가볍게 목례한다.'],
+ ['t','접장','','상대를 높여 주는 말. 원래는 첫 몰기를 하면 접장이라는 칭호를 붙여 준다.'],
+ ['t','초순(初巡)','','처음 쏘는 한 순(巡).'],
+ ['t','막순','종순(終巡)','마지막에 쏘는 한 순(巡).'],
+ ['t','일획(一劃)','','관사 과녁에 10순(巡)을 쏘는 것. 즉 50시(矢)를 말한다.'],
+ ['t','시지(試紙)','','시수(矢數)를 기록하는 종이. 시수를 기록하는 사람은 획관(獲貫)이라 한다.'],
+ ['t','관중(貫中)','','화살이 과녁을 맞추는 것.'],
+ ['t','획(獲)','','화살이 과녁의 복판을 바로 맞힌 것을 이르는 말.'],
+ ['t','한배','한살','화살이 제턱에 가는 것. 좌우 편차와는 관계없이 과녁이 있는 곳까지 가는 것을 말한다.'],
+ ['t','반구비','','화살의 살고가 알맞아 적중할 수 있게 가는 것.'],
+ ['t','살고','','화살이 뜨는 높이.'],
+ ['t','평찌','','화살이 평평하고 낮게 가는 것.'],
+ ['t','앞난다','','살이 과녁의 오른쪽으로 떨어지는 것. 줌손의 앞쪽으로 떨어진다는 뜻.'],
+ ['t','뒤난다','','살이 과녁의 왼쪽으로 떨어지는 것. 줌손의 뒤쪽으로 떨어진다는 뜻.'],
+ ['t','안바람','촉바람','과녁에서 사대로 부는 바람. 안고 쏜다는 뜻이다.'],
+ ['t','오늬바람','','사대에서 과녁으로 부는 바람. 오늬의 뒤에서 부는 바람.'],
+ ['t','월촉','몰촉','활을 너무 많이 당겨서 촉이 줌을 지나 쑥 들어오는 것.'],
+ ['t','고자채기','','활을 쏠 때 발시하면서 윗고자가 과녁 쪽으로 기우는 것.'],
+ ['t','궁체(弓體)','체집','활 쏘는 자세. 활의 생긴 모습을 이르기도 한다.'],
+ ['t','사말','','활터에서 남에게 자신을 낮춰 부르는 말.'],
+ ['t','구사(舊射)','','활을 오래 쏜 사람. 처음 활을 배우는 사람은 신사(新射)라 한다.'],
+ ['t','무겁','개자리','과녁 앞에 웅덩이 등을 파고 사람이 들어앉아서 살의 적중 여부를 확인하는 장소.'],
+ ['t','바탕','','화살이 가는 거리. 즉 사대(射臺)에서 과녁까지의 거리.'],
+ ['t','정순(正巡)','','정식으로 활을 쏘는 것.'],
+ ['t','중구미','','팔꿈치. 활잡은 어깨 부위는 죽머리라 한다.'],
+];
+function dailyWordOf(ds){ const [y,m,d]=ds.split('-').map(Number); const n=Math.floor(Date.UTC(y,m-1,d)/864e5); const L=DAILY_WORDS.length; return DAILY_WORDS[((n*7)%L+L)%L]; }
+function dwDuck(){ try{ const m=(typeof BOT!=='undefined' && typeof memberById==='function') ? memberById(BOT) : null; if(m && m.char && isPix(m.char)) return m.char; }catch(e){} return 'duck/05'; }
+function renderDailyWord(){
+  const el=$('#dailyWord'); if(!el) return; const t=today(); const [k,h,r,m]=dailyWordOf(t); const term=k==='t';
+  el.innerHTML=`<div class="dw-h"><h2>📜 오늘의 국궁 한마디</h2><small>${+t.slice(5,7)}월 ${+t.slice(8)}일 · 날마다 바뀌어요</small></div>
+    <div class="dw-box"><span class="dw-kind ${term?'t':''}">${term?'용어':'옛 가르침'}</span>
+      <div class="dw-hj">${esc(h)}</div>${r?`<div class="dw-rd">${term?'다른 말 · ':''}${esc(r)}</div>`:''}
+      <p class="dw-m">${esc(m)}</p><div class="dw-src">관악정 ${DW_SRC[k]}</div></div>
+    <div class="dw-say"><div class="dw-duck"><span class="dw-av">${charSVG(dwDuck())}</span><b>사대지기</b></div>
+      <p class="dw-bub">활을 많이 내고 꾸준히 기록할수록 <b>궁체 점검</b>이 정확해지고, 내 성장 기록도 쌓여요.<br>그럼 오늘도 즐겁게 활 내러 갈까요?<span class="dw-sign">— 오늘 사대</span></p></div>`;
+}
+// ===== p97 · 기록 공유 · 저장 (PNG 사진) =====
+const RS_PARTS=[
+  ['dayCard','그날 기록표', d=>`${+d.slice(5,7)}월 ${+d.slice(8)}일 순별 기록`],
+  ['mapCard','낙점 그림', ()=>'지금 고른 기간'],
+  ['monthSumCard','월별 요약', ()=>'달마다 습사 · 순 · 관중률'],
+  ['monthCard','이번 달', ()=>'관중률 · 습사 · 몰기 · 낙점 분포'],
+  ['habitCard','기록으로 보는 궁체 점검', ()=>'시별 · 다음 시 · 순이 거듭될 때 · 3중 이상 한 순'],
+  ['wxCard','바람 · 날씨별', ()=>'바람 · 날씨 · 기온별 관중률'],
+  ['calCard','습사 달력', ()=>'이번 달 습사한 날'],
+  ['pileCard','쌓아온 기록', ()=>'쌓인 순 · 다음 고개 · 요일별'],
+  ['tipsCard','반구제기', ()=>'교본 팁'],
+  ['dailyWord','오늘의 국궁 한마디', ()=>'교본 글'],
+];
+const RS_LIB={img:'https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js'};
+const loadScript=src=>new Promise((ok,no)=>{ if(document.querySelector(`script[data-src="${src}"]`)) return ok(); const t=document.createElement('script'); t.src=src; t.dataset.src=src; t.onload=()=>ok(); t.onerror=()=>no(new Error('load '+src)); document.head.appendChild(t); });
+const rsVisible=id=>{ const e=document.getElementById(id); return !!(e && !e.hidden && e.offsetParent!==null && e.offsetHeight>0); };
+function openShareSheet(){
+  if(!S.me){ toast('캐릭터를 고르면 기록을 공유할 수 있어요'); return; }
+  const saved=lsGet('sadae.shareParts', null); const def=RS_PARTS.filter(p=>p[0]!=='tipsCard').map(p=>p[0]);
+  const on=new Set(Array.isArray(saved)?saved:def); const d=S.viewDate||today(); let mode=lsGet('sadae.shareMode','all')==='pick'?'pick':'all';
+  const sh=openSheet(`<h3>📤 기록 공유 · 저장</h3><p class="tiny muted" style="margin:0">고른 파트가 위에서부터 사진(PNG) 한 장으로 모여요.</p>
+    <div class="rs-mode" role="tablist"><button type="button" data-rsm="all">전체 파트</button><button type="button" data-rsm="pick">지정한 파트</button></div>
+    <div class="rs-all"><button type="button" data-rsall="1">모두 고르기</button><button type="button" data-rsall="0">모두 빼기</button></div>
+    <div class="rs-list">${RS_PARTS.map(([id,l,sub])=>{ const v=rsVisible(id); return `<label class="rs-item ${v?'':'off'}"><input type="checkbox" value="${id}" ${v&&on.has(id)?'checked':''} ${v?'':'disabled'} data-vis="${v?1:0}"><span><b>${l}</b><small>${v?sub(d):'지금은 보이지 않아요'}</small></span></label>`; }).join('')}</div>
+    <button class="btn pri block" type="button" data-rsgo="png">🖼 PNG 사진 만들기</button>
+    <div class="actions"><button class="btn ghost" type="button" id="rsClose">닫기</button></div>`);
+  const setMode=m=>{ mode=m; $$('[data-rsm]',sh).forEach(b=>b.classList.toggle('on',b.dataset.rsm===m)); const L=$('.rs-list',sh); L.classList.toggle('all',m==='all'); $('.rs-all',sh).hidden=m==='all';
+    $$('.rs-list input[data-vis="1"]',sh).forEach(x=>{ x.disabled=m==='all'; if(m==='all') x.checked=true; else x.checked=on.has(x.value); }); };
+  $$('[data-rsm]',sh).forEach(b=>b.onclick=()=>setMode(b.dataset.rsm)); setMode(mode);
+  $$('.rs-list input',sh).forEach(x=>x.addEventListener('change',()=>{ if(x.checked) on.add(x.value); else on.delete(x.value); }));
+  $('#rsClose',sh).onclick=closeSheet;
+  $$('[data-rsall]',sh).forEach(b=>b.onclick=()=>{ $$('.rs-list input:not([disabled])',sh).forEach(x=>{ x.checked=b.dataset.rsall==='1'; if(x.checked) on.add(x.value); else on.delete(x.value); }); });
+  $('[data-rsgo]',sh).onclick=()=>{ const ids=$$('.rs-list input:checked',sh).map(x=>x.value); if(!ids.length){ toast('공유할 파트를 하나 이상 골라 주세요'); return; }
+    lsSet('sadae.shareMode',mode); if(mode==='pick') lsSet('sadae.shareParts', ids); makeShare(ids, 'png'); };
+}
+async function rsCapture(ids, onStep){
+  await loadScript(RS_LIB.img); const H=window.htmlToImage; const css=getComputedStyle(document.documentElement);
+  let fontCSS=''; for(const sh of Array.from(document.styleSheets)){ let rules; try{ rules=sh.cssRules; }catch(e){ continue; } for(const r of Array.from(rules||[])){ if(r.type===5 && /Galmuri/.test(r.cssText)) fontCSS+=r.cssText+'\n'; } }   // 같은 문서 안 글꼴만 (다른 곳 스타일은 못 읽음)
+  const opt=el=>({pixelRatio:2, fontEmbedCSS:fontCSS, backgroundColor:getComputedStyle(el).backgroundColor||css.getPropertyValue('--card'), filter:n=>!(n.classList && (n.classList.contains('rs-open')||n.matches?.('button.btn.sm#dPrev,button.btn.sm#dNext')))});
+  const out=[]; let i=0;
+  for(const id of ids){ const el=document.getElementById(id); if(!rsVisible(id)) continue; onStep&&onStep(++i, ids.length);
+    if(!out.length){ try{ await H.toCanvas(el, opt(el)); }catch(e){} }   // 사파리: 첫 그림은 이미지가 비어 나올 수 있어 한 번 더
+    out.push(await H.toCanvas(el, opt(el))); }
+  return out;
+}
+function rsHeader(W, scale){
+  const c=document.createElement('canvas'); c.width=W; c.height=Math.round(150*scale); const g=c.getContext('2d'); const css=getComputedStyle(document.documentElement);
+  const ink=css.getPropertyValue('--ink').trim()||'#2A2233', ink3=css.getPropertyValue('--ink3').trim()||'#8E889A', card=css.getPropertyValue('--card').trim()||'#fff';
+  const F=(px,b)=>`${b?'700':'400'} ${px*scale}px Galmuri11, "Noto Sans KR", sans-serif`;
+  g.fillStyle=card; g.fillRect(0,0,W,c.height); g.fillStyle=ink; g.fillRect(0,c.height-4*scale,W,4*scale);
+  const j=homeJ(); const t=today(); const d=S.viewDate||t;
+  g.fillStyle=ink; g.font=F(22,true); g.textBaseline='alphabetic'; g.fillText(`🏹 ${S.me.name} 님의 표 기록`, 18*scale, 46*scale);
+  g.font=F(14); g.fillStyle=ink3; g.fillText(`${j.name||''}${S.me.grade?' · '+S.me.grade:''}${S.me.hand?' · '+S.me.hand:''}`, 18*scale, 76*scale);
+  g.fillText(`${t.replace(/-/g,'. ')} 만듦${d!==t?` · 그날 기록 ${+d.slice(5,7)}월 ${+d.slice(8)}일`:''}`, 18*scale, 102*scale);
+  g.font=F(13,true); g.fillStyle=ink; g.textAlign='right'; g.fillText('오늘 사대', W-18*scale, 46*scale); g.textAlign='left';
+  return c;
+}
+async function makeShare(ids, kind){
+  const sh=openSheet(`<h3>🖼 사진 만드는 중</h3><div class="rs-prog" id="rsProg">준비하는 중…</div>`);
+  const prog=t=>{ const p=$('#rsProg',sh); if(p) p.textContent=t; };
+  let parts; try{ parts=await rsCapture(ids, (i,n)=>prog(`${i} / ${n} 부분을 그리는 중…`)); }catch(e){ console.warn('share',e); prog('그림을 만들지 못했어요. 인터넷 연결을 확인하고 다시 해 보세요.'); return; }
+  if(!sh.isConnected) return; if(!parts.length){ prog('고른 부분이 지금 화면에 없어요'); return; }
+  const d=S.viewDate||today(); const fname=`오늘사대_기록_${d}.png`; let blob;
+  const bg=getComputedStyle(document.body).backgroundColor||'#DCEBF0';
+  try{
+    {
+      const W=Math.max(...parts.map(c=>c.width)); const gap=24; const head=rsHeader(W,2); const foot=56;
+      let H=head.height+gap+parts.reduce((a,c)=>a+c.height+gap,0)+foot; let sc=1; if(H>15000){ sc=15000/H; }
+      const cv=document.createElement('canvas'); cv.width=Math.round(W*sc); cv.height=Math.round(H*sc); const g=cv.getContext('2d'); g.scale(sc,sc);
+      g.fillStyle=bg; g.fillRect(0,0,W,H); g.drawImage(head,0,0); let y=head.height+gap; for(const c of parts){ g.drawImage(c,(W-c.width)/2,y); y+=c.height+gap; }
+      g.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--ink3')||'#888'; g.font='400 22px Galmuri11, sans-serif'; g.textAlign='center'; g.fillText('🏹 오늘 사대 · '+(shareLink().replace(/^https?:\/\//,'').replace(/\/$/,'')), W/2, y+20);
+      blob=await new Promise(r=>cv.toBlob(r,'image/png'));
+    }
+  }catch(e){ console.warn('share make',e); prog('파일을 만들지 못했어요. 고르는 부분을 줄여서 다시 해 보세요.'); return; }
+  if(!sh.isConnected) return;
+  const url=URL.createObjectURL(blob); const file=new File([blob], fname, {type:'image/png'});
+  sh.innerHTML=`<div class="handle"></div><h3>🖼 사진 준비됐어요</h3>
+    <div class="rs-prev"><img src="${url}" alt="기록 공유 사진"></div>
+    <p class="tiny muted" style="margin:0">공유 버튼이 안 되면 <b>저장</b>한 뒤 카톡에서 사진으로 보내세요.</p>
+    <div class="actions"><button class="btn ghost" id="rsSave" type="button">저장</button><button class="btn pri" id="rsShare" type="button">카톡 등으로 공유</button></div>`;
+  const save=()=>{ const a=document.createElement('a'); a.href=url; a.download=fname; document.body.appendChild(a); a.click(); a.remove(); toast('사진을 저장했어요'); };
+  $('#rsSave',sh).onclick=save;
+  $('#rsShare',sh).onclick=async()=>{ const text=`🏹 ${homeJ().name} ${S.me.name} 님의 표 기록 · 오늘 사대 ${shareLink()}`.trim();
+    try{ if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], text}); return; } }catch(e){ if(e && e.name==='AbortError') return; console.warn('share',e); }
+    save(); };
+}
+document.addEventListener('click', e=>{ if(e.target.closest('[data-share-open]')) openShareSheet(); });
 function renderRecord(){
   renderRoundInput();
   const t=today();
@@ -3344,6 +3559,7 @@ function renderRecord(){
   $('#windStats').innerHTML = wxStatsHTML(mdays);
   try{ renderHabit(); }catch(e){ console.warn('habit', e); }
   try{ renderPile(); }catch(e){ console.warn('pile', e); }
+  try{ renderDailyWord(); }catch(e){ console.warn('dw', e); }
   renderWindBar(); renderGoalBar(); renderRest(); if(S.tab==='record' && S.recView!=='view'){ const jw=S.windNow[windJid()]; if(!jw || Date.now()-(jw.at||0) > 15*60e3) refreshWind(); }
   // 달력
   const first=new Date(Y,M-1,1).getDay(), dim=new Date(Y,M,0).getDate(); const byDate=Object.fromEntries(mdays.map(d=>[d.date,d]));
