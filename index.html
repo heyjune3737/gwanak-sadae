@@ -1642,6 +1642,47 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 @keyframes pzFlash{0%,40%{background:var(--gold-soft)}100%{background:transparent}}
 .pz-rebar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 6px;padding:6px 8px;font-size:12.5px;background:var(--indigo-soft);border:2px solid var(--ink)}
 .pz-rebar #pzReX{flex:none;white-space:nowrap}.pz-rebar span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pz-rebar i{font-style:normal;color:var(--ink2)}
+/* p94 · 기록 보기: 버릇 · 바람 날씨 · 달력 · 쌓아온 기록 */
+.hb-tabs{display:flex;border:2px solid var(--ink);flex:none}.hb-tabs button{font:inherit;font-size:11.5px;padding:4px 9px;border:0;background:var(--card);color:var(--ink2);cursor:pointer}.hb-tabs button+button{border-left:2px solid var(--ink)}.hb-tabs button.on{background:var(--ink);color:var(--card)}
+.hb-sec{border-top:2px dashed var(--line2);padding:12px 0 4px}.hb-sec:first-of-type{border-top:0;padding-top:2px}
+#habitCard .mr-h{flex-wrap:wrap;row-gap:8px}#habitCard .mr-h h2{white-space:normal}#habitCard .hb-tabs{margin-left:auto}
+.hb-lead{font-size:12px;color:var(--ink2);line-height:1.5;margin:-4px 0 10px}.hb-lead b{color:var(--ink)}
+.hb-q{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}.hb-q b{font-size:14.5px;line-height:1.35}.hb-q small{color:var(--ink3);font-size:11.5px;line-height:1.45}
+.hb-say{font-size:12.5px;line-height:1.5;margin:8px 0 2px;padding:7px 10px;background:var(--card2);border-left:4px solid var(--ink3)}.hb-say.warn{border-left-color:var(--red);background:var(--red-soft)}.hb-say.good{border-left-color:var(--green);background:var(--green-soft)}.hb-say b{color:var(--red)}.hb-say.good b{color:var(--green)}
+.hb-cols{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;height:112px;margin-top:4px;align-items:end;padding:0 2px}
+.hb-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:3px}.hb-col i{display:block;width:100%;max-width:44px;background:var(--ink2);border:2px solid var(--ink)}.hb-col.lo i{background:var(--red)}.hb-col.hi i{background:var(--card2)}
+.hb-col em{font-style:normal;font-family:var(--display);font-size:15px;line-height:1}.hb-col.lo em{color:var(--red)}
+.hb-col small{font-size:10px;color:var(--ink3);height:12px;line-height:12px}.hb-col small.up{color:var(--green)}.hb-col small.dn{color:var(--red)}
+.hb-x{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;text-align:center;font-size:12px;font-weight:700;margin-top:4px;border-top:2px solid var(--ink);padding-top:4px}.hb-x span{display:flex;flex-direction:column;align-items:center;line-height:1.2}.hb-x small{font-size:10px;font-weight:400;color:var(--ink3)}.hb-x small.up{color:var(--green)}.hb-x small.dn{color:var(--red)}
+.hb-avg{position:absolute;left:0;right:0;border-top:2px dashed var(--ink3);pointer-events:none}.hb-avg span{position:absolute;left:-2px;top:-15px;font-size:10px;color:var(--ink3);background:var(--card);padding:0 3px}
+.hb-rows{display:flex;flex-direction:column;gap:7px}
+.hb-row{display:grid;grid-template-columns:80px 1fr 46px 40px;align-items:center;gap:8px;font-size:12.5px}.hb-row>b{font-weight:700;white-space:nowrap}.hb-row .wl b{white-space:nowrap}.hb-row .num{text-align:right;font-family:var(--display);font-size:15px}.hb-row>small{text-align:right;color:var(--ink3);font-size:11px}
+.hb-row.lo .num{color:var(--red)}.hb-row.dim{opacity:.45}
+.hb-row.wide{grid-template-columns:1fr 46px 44px;row-gap:3px}.hb-row.wide>b{grid-column:1/-1}
+.hb-row.wx{row-gap:1px}.hb-row.wx .wm{grid-column:1/-1;font-style:normal;font-size:10.5px;color:var(--ink3);padding-left:2px}
+
+.hb-tr{position:relative;height:14px;border:2px solid var(--ink);background:var(--card)}.hb-tr i{display:block;height:100%;background:var(--ink2)}.hb-row.lo .hb-tr i{background:var(--red)}.hb-row.hi .hb-tr i{background:var(--ink)}
+.hb-tr u{position:absolute;top:-4px;bottom:-4px;border-left:2px dashed var(--ink3)}
+.hb-dist{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;align-items:end;height:84px}
+.hb-dist .hb-col i{max-width:none}.hb-dist .hb-col.m3 i{background:var(--ink)}.hb-dist .hb-col.m0 i{background:var(--card2)}.hb-dist .hb-col.m5 i{background:var(--gold)}
+.hb-kv{display:flex;gap:8px;margin-top:8px}.hb-kv>div{flex:1;border:2px solid var(--ink);padding:6px 8px;background:var(--card)}.hb-kv b{font-family:var(--display);font-size:18px}.hb-kv small{display:block;font-size:10.5px;color:var(--ink3)}.hb-kv b small{display:inline;font-size:11px;color:var(--ink2)}
+.hb-kv .d{font-size:10.5px;margin-left:4px}.hb-kv .d.up{color:var(--green)}.hb-kv .d.dn{color:var(--red)}
+.hb-empty{font-size:12.5px;color:var(--ink3);border:2px dashed var(--line2);padding:12px;text-align:center}
+.wx-best{display:flex;align-items:center;gap:10px;border:2px solid var(--ink);background:var(--red-soft);padding:9px 12px;margin-bottom:12px}.wx-best .ic{font-size:22px}.wx-best .t{flex:1}.wx-best small{display:block;font-size:11px;color:var(--ink2)}.wx-best b{display:block;font-family:var(--display);font-size:16px;margin:2px 0}.wx-best .r{font-size:10.5px;color:var(--ink3);text-align:right;line-height:1.35}
+.wx-g{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;border-bottom:2px solid var(--ink);padding:10px 0 4px;margin-bottom:8px}.wx-g span{font-weight:400;color:var(--ink3)}
+.hb-row .wl{display:flex;flex-direction:column;line-height:1.15}.hb-row .wl em{font-style:normal;font-size:10px;color:var(--ink3);font-weight:400}
+.wx-foot{font-size:11px;color:var(--ink3);margin:10px 0 0;line-height:1.5}
+#monthCal .d.wh{border:0!important;aspect-ratio:auto;height:22px;font-size:11px}#monthCal div.d:not(.wh){background:var(--card);border:1.5px dashed var(--line2);color:var(--ink3)}#monthCal button.d{border:2px solid var(--ink);font-size:13px;font-weight:700;color:var(--ink)}#monthCal button.d.l2,#monthCal button.d.l3{color:var(--red-ink)}#monthCal .d.today{outline:3px solid var(--ink);outline-offset:-1px}
+.cal .d{position:relative}.cal .d .st{position:absolute;top:0;right:2px;font-size:11px;color:var(--gold);text-shadow:0 0 1px var(--ink)}
+.cal-lg{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:10px;align-items:center}.cal-lg span{display:inline-flex;align-items:center;gap:4px}.cal-lg i{display:inline-block;width:11px;height:11px;border:1.5px solid var(--ink)}.cal-lg i.c0{border-style:dashed;background:var(--card)}.cal-lg i.c1{background:var(--red-soft)}.cal-lg i.c2{background:color-mix(in srgb,var(--red) 55%,var(--card2))}.cal-lg i.c3{background:var(--red)}.cal-lg .st{color:var(--gold)}
+.pl-stair{position:relative;display:flex;align-items:flex-end;gap:2px;height:120px;border-bottom:2px solid var(--ink);margin-top:6px}.pl-stair i{flex:1;background:var(--ink2);min-height:2px}.pl-stair i.cur{background:var(--red)}
+.pl-mk{position:absolute;left:0;right:0;border-top:2px dashed var(--red)}.pl-mk span{position:absolute;left:0;top:-17px;font-size:10.5px;color:var(--red);font-weight:700;background:var(--card);padding-right:4px}
+.pl-ax{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink3);margin-top:3px}.pl-ax b{color:var(--ink);font-family:var(--display);font-size:15px}
+.pl-next{border:2px dashed var(--ink);padding:10px 12px;margin-top:14px}.pl-next .h{display:flex;justify-content:space-between;align-items:baseline;font-size:13px}.pl-next .h b.num{font-family:var(--display);font-size:16px}
+.pl-bar{height:14px;border:2px solid var(--ink);background:var(--card);margin:8px 0 6px}.pl-bar i{display:block;height:100%;background:var(--gold)}
+.pl-wd{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;height:90px;align-items:end;margin-top:6px}.pl-wd .hb-col i{max-width:36px}.pl-wd .hb-col.top i{background:var(--red)}.pl-wd .hb-col.top em{color:var(--red)}
+.pl-wdx{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center;font-size:11.5px;color:var(--ink2);border-top:2px solid var(--ink);padding-top:3px}
+.pl-sub{display:flex;flex-direction:column;gap:2px;margin:16px 0 6px;font-size:13px}.pl-sub b{font-size:13.5px}.pl-sub small{font-size:11px;color:var(--ink3)}
 </style>
 
 <div class="app" id="app">
@@ -1749,11 +1790,15 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
         <div style="height:14px"></div>
         <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="muted">낙점 분포</span><span class="tiny">이번 달 · 가운데가 관중</span></div>
         <div class="dist" id="missDist"></div>
-        <div id="windStats"></div>
-        <div style="height:14px"></div>
-        <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="muted">습사 달력</span><span class="tiny">날짜를 누르면 그날 기록</span></div>
-        <div class="cal" id="monthCal"></div>
       </div>
+      <div class="card" id="habitCard"></div>
+      <div class="card" id="wxCard"><div id="windStats"></div></div>
+      <div class="card" id="calCard">
+        <div class="mr-h"><h2>📆 습사 달력</h2><span class="tiny muted">날짜를 누르면 그날 기록을 봐요</span></div>
+        <div class="cal" id="monthCal"></div>
+        <div class="cal-lg tiny muted"><span>칸 색 = 그날 관중률</span><span><i class="c1"></i>~29%</span><span><i class="c2"></i>30~59%</span><span><i class="c3"></i>60%~</span><span><i class="c0"></i>안 쏜 날</span><span><b class="st">★</b>몰기한 날</span></div>
+      </div>
+      <div class="card" id="pileCard"></div>
 
       <div class="card">
         <div class="sec-head"><h2>반구제기 <small>교본 팁 — 활을 쏘아 맞지 않으면 나를 돌아본다</small></h2></div>
@@ -2172,7 +2217,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.06e';
+const APP_VER = '2026.10.06f';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3049,6 +3094,7 @@ function renderRoundInput(){
   $('#resultBtns').innerHTML = RES_PAD.map(k=>`<button class="res ${rc(k)} ${padArea(k).length===2?'corner':''}" data-r="${k}" style="grid-area:${padArea(k)}"><span class="k">${glyph(k)}</span><span class="l">${RES[k].l}</span></button>`).join('') + `<button class="res undo" id="undoArrow" ${S.round.some(Boolean)?'':'disabled'}>↶ 한 발</button>`;
   $('#saveRound').disabled = S.round.filter(Boolean).length<5;
   const n=S.round.filter(Boolean).length; $('#saveRound').textContent = n<5 ? `순 저장 (${n}/5시)` : (S.round.every(r=>r==='H') ? '몰기! 순 저장' : '순 저장');
+  { const mo = n===5 && S.round.every(r=>r==='H'); if(mo && !S.molgiBuzz){ try{ navigator.vibrate && navigator.vibrate([40,60,40,60,160]); }catch(e){} } S.molgiBuzz=mo; }
   $('#saveRound').classList.toggle('molgi', n===5 && S.round.every(r=>r==='H'));
   renderGoalBar(); renderRest();
 }
@@ -3067,7 +3113,7 @@ $('#saveRound').addEventListener('click', async ()=>{
   cur.rounds=[...(cur.rounds||[]), arr]; cur.updatedAt=Date.now();
   { const G=currentGoal(), v=goalStore(); if(G) cur.goal={g:G.g, n:G.n}; else if(cur.goal && v.day && v.day.date===t && !v.day.g) cur.goal=null; }
   const ok=await write(st=>st.set(p, cur));
-  if(ok){ const h=arr.filter(x=>x==='H').length; S.round=[]; saveDraft(); showRoundPop(arr, cur.rounds.length, cur.rounds.reduce((a,r)=>a+hitsOf(r),0)); if(restDev()){ if(restCfg().auto) startRest(restCfg().min); else { audioOn(); renderRest(); } } }
+  if(ok){ const h=arr.filter(x=>x==='H').length; if(h===5){ try{ navigator.vibrate && navigator.vibrate([120,80,120,80,300]); }catch(e){} } S.round=[]; saveDraft(); showRoundPop(arr, cur.rounds.length, cur.rounds.reduce((a,r)=>a+hitsOf(r),0)); if(restDev()){ if(restCfg().auto) startRest(restCfg().min); else { audioOn(); renderRest(); } } }
 });
 const hitsOf = r => r.filter(x=>x==='H').length;
 
@@ -3163,6 +3209,118 @@ function windStatsHTML(mdays){
   return `<div class="row" style="justify-content:space-between;margin:14px 0 6px"><span class="muted">🌬 바람별</span><span class="tiny">이번 달 · 바람과 함께 남긴 순</span></div><div class="wstats">${WREL_ORDER.filter(k=>g[k]).map(k=>{ const o=g[k]; const top=Object.entries(o.miss).sort((a,b)=>b[1]-a[1])[0]; return `<div class="wst"><span class="wk w-${k}">${WREL[k].k}</span><span class="grow"><b>${WREL[k].l}</b><small>${o.n}순${top?` · 주로 ${AG[top[0]]||top[0]}`:''}</small></span><span class="num wp">${Math.round(o.h/(o.n*5)*100)}<small>%</small></span></div>`; }).join('')}</div>`;
 }
 
+// ===== p94 · 기록 보기: 기록으로 보는 궁체 점검 · 바람 날씨 기온 · 쌓아온 기록 =====
+const HB_MIN=10;   // 이 순 수부터 점검을 보여 줌
+const pctOf=(h,n)=>n?Math.round(h/n*100):null;
+function roundsOf(days){ const out=[]; for(const d of days){ const ws=d.winds||[]; (d.rounds||[]).forEach((r,i)=>{ if(Array.isArray(r)&&r.length===5) out.push({date:d.date, i, r, w:ws[i]||null}); }); } return out; }
+function habitOf(days){
+  const R=roundsOf(days); const shot=[0,1,2,3,4].map(()=>({n:0,h:0})); const grp=[{l:'1~3순째',n:0,h:0},{l:'4~6순째',n:0,h:0},{l:'7~9순째',n:0,h:0},{l:'10순째부터',n:0,h:0}];
+  const dist=[0,0,0,0,0,0]; const am={n:0,h:0}, ah={n:0,h:0}; let H=0;
+  for(const x of R){ const h=hitsOf(x.r); H+=h; dist[h]++; const g=grp[Math.min(3,Math.floor(x.i/3))]; g.n+=5; g.h+=h;
+    x.r.forEach((a,k)=>{ shot[k].n++; if(a==='H') shot[k].h++; if(k){ const o=x.r[k-1]==='H'?ah:am; o.n++; if(a==='H') o.h++; } }); }
+  return {n:R.length, H, rate:R.length?H/(R.length*5):0, shot, grp, dist, am, ah};
+}
+const dlt=(a,b)=>{ if(a==null||b==null) return ''; const v=a-b; return v>0?`<small class="up">▲${v}</small>`:v<0?`<small class="dn">▼${-v}</small>`:'<small>–</small>'; };
+const josa=(w,a,b)=>{ const c=String(w).charCodeAt(String(w).length-1); return (c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28)?a:b; };
+function renderHabit(){
+  const el=$('#habitCard'); if(!el) return; const per=S.hbPer||lsGet('sadae.hbPer','month'); S.hbPer=per;
+  const ym=today().slice(0,7), pm=ymAdd(ym,-1), M=+ym.slice(5); const all=(S.myDays||[]).filter(d=>d.date);
+  const cur=habitOf(per==='month'?all.filter(d=>d.date.startsWith(ym)):all); const prev=per==='month'?habitOf(all.filter(d=>d.date.startsWith(pm))):null; const P=prev&&prev.n>=HB_MIN?prev:null;
+  const tabs=`<div class="hb-tabs" role="tablist"><button type="button" data-hbp="month" class="${per==='month'?'on':''}">${M}월</button><button type="button" data-hbp="all" class="${per==='all'?'on':''}">전체</button></div>`;
+  const span = per==='month' ? '이번 달' : '지금까지';
+  const head=`<div class="mr-h"><h2>🔍 기록으로 보는 궁체 점검</h2>${tabs}</div><p class="hb-lead">관중 기록에서 자세를 다시 살펴볼 곳을 짚어 줘요. 표 기록에서만 볼 수 있어요.${P?`<br><b>▲▼</b> 숫자는 ${+pm.slice(5)}월보다 오르내린 %p예요.`:''}</p>`;
+  if(cur.n<HB_MIN){ el.innerHTML=head+`<div class="hb-empty">${per==='month'?`${M}월에 `:'지금까지 '}<b>${cur.n}순</b>을 쐈어요. <b>${HB_MIN-cur.n}순 더</b> 쏘면 살펴볼 곳이 보여요.</div>`; bindHb(el); return; }
+  const avg=Math.round(cur.rate*100);
+  // ① 몇 번째 시를 낼 때
+  const sp=cur.shot.map(o=>pctOf(o.h,o.n)); const lo=Math.min(...sp), hi=Math.max(...sp); const loKs=[0,1,2,3,4].filter(k=>sp[k]===lo);
+  const sc=v=>Math.max(3, v*0.9);
+  const cols=sp.map((v,k)=>`<div class="hb-col ${hi-lo>=5&&v===lo?'lo':''}"><em>${v}</em><i style="height:${sc(v)}px"></i></div>`).join('');
+  const lowName=loKs.map(k=>`${k+1}시`).join(' · ');
+  const s1 = hi-lo<5 ? `<div class="hb-say good">1시부터 5시까지 관중률 차이가 <b>${hi-lo}%p</b>예요. 어느 시를 내도 고르게 관중하고 있어요.</div>`
+    : `<div class="hb-say warn"><b>${lowName}</b>${josa(lowName,'을','를')} 낼 때 관중률이 가장 낮아요. 평균보다 ${avg-lo}%p 낮아요.</div>`;
+  const sec1=`<div class="hb-sec"><div class="hb-q"><b>몇 번째 시를 낼 때 관중률이 낮을까요?</b><small>${span} 쏜 순의 1시~5시별 관중률이에요. 점선은 평균 ${avg}%예요.</small></div>
+    <div class="hb-cols">${cols}<div class="hb-avg" style="bottom:${sc(avg)}px"></div></div><div class="hb-x">${[1,2,3,4,5].map(k=>`<span>${k}시${P?dlt(sp[k-1],pctOf(P.shot[k-1].h,P.shot[k-1].n)):''}</span>`).join('')}</div>${s1}</div>`;
+  // ② 관중하지 못한 다음 시
+  const pa=pctOf(cur.am.h,cur.am.n), ph=pctOf(cur.ah.h,cur.ah.n); const gap=ph!=null&&pa!=null?ph-pa:0;
+  const s4 = gap>=8 ? `<div class="hb-say warn">관중하지 못한 후 다음 시는 관중률이 <b>${gap}%p</b> 낮아요. 발이부중 반구제기 — 마음가짐과 자세를 다시 살피고 다음 시를 내 보세요.</div>`
+    : gap<=-8 ? `<div class="hb-say good">관중하지 못한 후 다음 시가 오히려 관중률이 <b>${-gap}%p</b> 높아요.</div>`
+    : `<div class="hb-say good">관중한 후와 관중하지 못한 후, 다음 시 관중률 차이가 <b>${Math.abs(gap)}%p</b>예요. 크게 다르지 않아요.</div>`;
+  const sec4=`<div class="hb-sec"><div class="hb-q"><b>관중하지 못한 경우, 다음 시는 어땠을까요?</b><small>같은 순 안에서 바로 다음에 낸 시의 관중률이에요.</small></div>
+    <div class="hb-rows"><div class="hb-row wide hi"><b>관중한 후 다음 시</b><span class="hb-tr"><i style="width:${ph||0}%"></i></span><span class="num">${ph??'–'}<small>%</small></span><small>${cur.ah.n}시</small></div>
+    <div class="hb-row wide ${gap>=8?'lo':''}"><b>관중하지 못한 후 다음 시</b><span class="hb-tr"><i style="width:${pa||0}%"></i></span><span class="num">${pa??'–'}<small>%</small></span><small>${cur.am.n}시</small></div></div>${s4}</div>`;
+  // ③ 순이 거듭될 때
+  const G=cur.grp.filter(g=>g.n); const gp=G.map(g=>pctOf(g.h,g.n)); const g0=gp[0]; let drop=null;
+  G.forEach((g,i)=>{ if(i && g.n>=25 && g0-gp[i]>=7 && drop===null) drop=i; });
+  const rows2=G.map((g,i)=>{ const v=gp[i]; return `<div class="hb-row ${g.n<25?'dim':drop===i?'lo':''}"><b>${g.l}</b><span class="hb-tr"><i style="width:${v}%"></i><u style="left:${avg}%"></u></span><span class="num">${v}<small>%</small></span><small>${g.n/5}순</small></div>`; }).join('');
+  const s2 = drop!==null ? `<div class="hb-say warn"><b>${G[drop].l}</b>${josa(G[drop].l,'을','를')} 쏠 때 관중률이 1~3순째보다 ${g0-gp[drop]}%p 낮아요. ${drop*3}순을 쏜 뒤 <b>⏱ 쉬기</b>를 써 보세요.</div>`
+    : G.filter(g=>g.n>=25).length>1 ? `<div class="hb-say good">순이 거듭돼도 관중률이 크게 달라지지 않아요.</div>` : `<div class="hb-say">하루에 4순 넘게 쏜 날이 쌓이면 비교할 수 있어요.</div>`;
+  const sec2=`<div class="hb-sec"><div class="hb-q"><b>순이 거듭될수록 관중률이 달라질까요?</b><small>그날 몇 번째로 쏜 순인지로 묶은 관중률이에요. 점선은 평균이에요. 4순 이하로 쏜 묶음은 흐리게 보여요.</small></div><div class="hb-rows">${rows2}</div>${s2}</div>`;
+  // ④ 3중 이상 한 순
+  const dm=Math.max(...cur.dist,1); const c3=cur.dist.slice(3).reduce((a,b)=>a+b,0); const p3=pctOf(c3,cur.n); const pp3=P?pctOf(P.dist.slice(3).reduce((a,b)=>a+b,0),P.n):null;
+  const zr=cur.dist[0], pz=pctOf(zr,cur.n), pzr=P?pctOf(P.dist[0],P.n):null; const mean=(cur.H/cur.n).toFixed(1);
+  const dcols=cur.dist.map((v,k)=>`<div class="hb-col m${k===0?0:k===5?5:k>=3?3:1}"><em>${v}</em><i style="height:${Math.max(2,v/dm*56)}px"></i></div>`).join('');
+  const D=(a,b,rev)=>{ if(a==null||b==null||a===b) return ''; const up=rev?a<b:a>b; return `<span class="d ${up?'up':'dn'}">${a>b?'▲':'▼'}${Math.abs(a-b)}</span>`; };
+  const s3 = p3>=70 ? `<div class="hb-say good">3중 이상 한 순이 <b>${p3}%</b>예요. 순마다 고르게 관중하고 있어요.</div>`
+    : p3<50 ? `<div class="hb-say warn">3중 이상 한 순이 <b>${p3}%</b>예요. 2단(9순 26중)은 거의 순마다 3중을 해야 해요.</div>`
+    : `<div class="hb-say">3중 이상 한 순이 <b>${p3}%</b>예요. 2단(9순 26중)은 거의 순마다 3중을 해야 해요.</div>`;
+  const sec3=`<div class="hb-sec"><div class="hb-q"><b>3중 이상 한 순은 얼마나 될까요?</b><small>${span} 쏜 ${cur.n}순을 0중부터 몰기까지 중수별로 세었어요. 막대 위 숫자는 순의 수예요. 한 순 평균 ${mean}중이에요.</small></div>
+    <div class="hb-dist">${dcols}</div><div class="hb-x" style="grid-template-columns:repeat(6,1fr);gap:6px">${['0중','1중','2중','3중','4중','몰기'].map(x=>`<span>${x}</span>`).join('')}</div>
+    <div class="hb-kv"><div><b>${p3}<small>%</small></b>${D(p3,pp3)}<small>${cur.n}순 중 3중 이상 ${c3}순</small></div><div><b>${pz}<small>%</small></b>${D(pz,pzr,true)}<small>${cur.n}순 중 0중 ${zr}순</small></div></div>${s3}</div>`;
+  el.innerHTML=head+sec1+sec4+sec2+sec3; bindHb(el);
+}
+function bindHb(el){ $$('[data-hbp]',el).forEach(b=>b.onclick=()=>{ S.hbPer=b.dataset.hbp; lsSet('sadae.hbPer',S.hbPer); renderHabit(); }); }
+
+// 바람 · 날씨 · 기온별 (이번 달)
+const WXG = c => c==null ? null : c<=1 ? 'sun' : c<=48 ? 'cloud' : (c>=71&&c<=77)||(c>=85&&c<=86) ? 'snow' : 'rain';
+const WXL = {sun:['☀️','맑음'], cloud:['☁️','흐림'], rain:['🌧','비'], snow:['❄️','눈']};
+const WXN = {sun:'맑은 날', cloud:'흐린 날', rain:'비 오는 날', snow:'눈 오는 날'};
+const TPL = {c:['🥶','10℃ 아래'], m:['🙂','10~20℃'], w:['🥵','20℃ 위']};
+function wxStatsHTML(mdays){
+  const R=roundsOf(mdays); const wg={}, xg={}, tg={}; let any=0, H=0;
+  const add=(g,k,r)=>{ const o=g[k]||(g[k]={n:0,h:0,m:{F:0,B:0,S:0,O:0}}); o.n++; o.h+=hitsOf(r); const a=missAgg(Object.fromEntries(MISS_KEYS.map(q=>[q,r.filter(x=>x===q).length]))); ['F','B','S','O'].forEach(q=>o.m[q]+=a[q]); };
+  for(const x of R){ H+=hitsOf(x.r); const w=x.w; if(!w) continue; any++; if(w.r) add(wg,w.r,x.r); const gx=WXG(w.wc); if(gx) add(xg,gx,x.r); if(w.t!=null) add(tg, w.t<10?'c':w.t<20?'m':'w', x.r); }
+  const head=`<div class="mr-h"><h2>🌬 바람 · 날씨별</h2><span class="tiny muted">이번 달</span></div><p class="hb-lead">순을 저장할 때 바람 · 날씨 · 기온이 자동으로 남아요.</p>`;
+  if(!any) return head+'<div class="hb-empty">순을 저장할 때 바람 · 날씨가 함께 남아요. 쌓이면 여기서 비교할 수 있어요.</div>';
+  const avg=R.length?Math.round(H/(R.length*5)*100):0; const ML={F:'앞났어요',B:'뒤났어요',S:'코 박았어요',O:'넘었어요'};
+  const cand=[]; const pc=o=>Math.round(o.h/(o.n*5)*100);
+  const rows=(g,keys,lab,nm)=>keys.filter(k=>g[k]).map(k=>{ const o=g[k], v=pc(o), [ic,l]=lab(k); if(o.n>=5) cand.push({ic,t:nm(k,l),v}); const t=Object.entries(o.m).sort((a,b)=>b[1]-a[1])[0];
+    return `<div class="hb-row wx ${o.n<5?'dim':''}" data-wxk="${k}"><b>${ic==='·'?'':ic+' '}${l}</b><span class="hb-tr"><i style="width:${v}%"></i><u style="left:${avg}%"></u></span><span class="num">${v}<small>%</small></span><small>${o.n}순</small>${t&&t[1]?`<em class="wm">관중하지 못한 살은 주로 ${ML[t[0]]}</em>`:''}</div>`; }).join('');
+  const r1=rows(wg, WREL_ORDER, k=>[WREL[k].k, WREL[k].l], (k,l)=>k==='0'?'바람 없을 때 낸 순':(k==='LR'||k==='RL')?`${l} 바람에 낸 순`:`${l}에 낸 순`);
+  const r2=rows(xg, ['sun','cloud','rain','snow'], k=>WXL[k], k=>`${WXN[k]} 낸 순`);
+  const r3=rows(tg, ['c','m','w'], k=>TPL[k], (k,l)=>`${l}에서 낸 순`);
+  const best=cand.sort((a,b)=>b.v-a.v)[0]; const nox=['sun','cloud','rain','snow'].filter(k=>!xg[k]).map(k=>`${WXL[k][0]} ${WXN[k]}`);
+  return head + (best?`<div class="wx-best"><span class="ic">🏆</span><span class="t"><small>이번 달 관중률이 가장 높았던 조건</small><b>${best.ic==='·'?'':best.ic+' '}${best.t} · ${best.v}%</b><small>5순 이상 쏜 조건끼리 비교해요</small></span></div>`:'')
+    + (r1?`<div class="wx-g">🌬 바람<span>관중률 · 순</span></div><div class="hb-rows">${r1}</div>`:'')
+    + (r2?`<div class="wx-g">🌦 날씨<span>관중률 · 순</span></div><div class="hb-rows">${r2}</div>`:'')
+    + (r3?`<div class="wx-g">🌡 기온<span>순을 저장할 때 정 근처 기온이에요</span></div><div class="hb-rows">${r3}</div>`:'')
+    + `<p class="wx-foot">${nox.length?nox.join(' · ')+'은 아직 기록이 없어요.<br>':''}세로 점선은 이번 달 평균 관중률(${avg}%)이에요. 4순 이하로 쏜 조건은 흐리게 보여요.</p>`;
+}
+
+// 쌓아온 기록 — 쌓인 순 · 다음 고개(시수) · 요일별 (통산 수치 · 최고 기록 · 월별 관중률은 내 방 '내 성장'에)
+const PL_STEPS=[100,300,500,1000,2000,3000,5000,10000];
+const PL_MAX=40;
+function renderPile(){
+  const el=$('#pileCard'); if(!el) return; const D=(S.myDays||[]).filter(d=>d.date&&(d.rounds||[]).some(Array.isArray)).sort((a,b)=>a.date<b.date?-1:1);
+  if(D.length<2){ el.hidden=true; return; } el.hidden=false;
+  let cum=0, hits=0; const pts=D.map(d=>{ const rs=d.rounds.filter(Array.isArray); cum+=rs.length; hits+=rs.reduce((a,r)=>a+hitsOf(r),0); return {date:d.date, cum, hits}; });
+  const ym=today().slice(0,7); const show=pts.slice(-PL_MAX); const cut=pts.length>PL_MAX; const mx=cum;
+  const mk=[...PL_STEPS].reverse().find(v=>v<=cum && v>=100); const mkAt=mk?pts.find(p=>p.cum>=mk):null; const mkShow=mk && (!cut || mkAt.date>=show[0].date);
+  const f=d=>`${+d.slice(5,7)}.${+d.slice(8)}`, fk=d=>`${+d.slice(5,7)}월 ${+d.slice(8)}일`;
+  const stair=`<div class="pl-stair">${show.map(p=>`<i class="${p.date.startsWith(ym)?'cur':''}" style="height:${Math.max(2,p.cum/mx*100)}%" title="${f(p.date)} · ${p.cum}순"></i>`).join('')}${mkShow?`<div class="pl-mk" style="bottom:${mk/mx*100}%"><span>🎉 ${fk(mkAt.date)} ${mk}순 돌파</span></div>`:''}</div>
+    <div class="pl-ax"><span>${f(show[0].date)}</span><span>지금까지 <b>${cum}</b>순</span></div>`;
+  // 다음 고개: 시수
+  const nxt=PL_STEPS.find(v=>v>hits)||hits+1000; const prv=[...PL_STEPS].reverse().find(v=>v<=hits)||0;
+  const since=new Date(Date.now()-30*864e5); const sinceS=`${since.getFullYear()}-${pad(since.getMonth()+1)}-${pad(since.getDate())}`;
+  const h30=D.filter(d=>d.date>=sinceS).reduce((a,d)=>a+d.rounds.filter(Array.isArray).reduce((q,r)=>q+hitsOf(r),0),0);
+  let eta=''; if(h30>0){ const days=Math.ceil((nxt-hits)/(h30/30)); const t=new Date(Date.now()+days*864e5); const wk=Math.ceil(t.getDate()/7); eta = days>365 ? '' : ` 최근 30일처럼 쏘면 ${t.getMonth()+1}월 ${['첫','둘','셋','넷','다섯'][wk-1]}째 주쯤이에요.`; }
+  const next=`<div class="pl-next"><div class="h"><span>🎯 다음 고개 · 시수 ${nxt.toLocaleString()}</span><b class="num">지금 ${hits.toLocaleString()}</b></div><div class="pl-bar"><i style="width:${Math.min(100,(hits-prv)/(nxt-prv)*100)}%"></i></div><div class="tiny muted">${(nxt-hits).toLocaleString()}시 더 관중하면 넘어요.${eta}</div></div>`;
+  // 요일별
+  const wd=[0,0,0,0,0,0,0]; D.forEach(d=>{ const [y,m,dd]=d.date.split('-').map(Number); wd[new Date(y,m-1,dd).getDay()]++; }); const wm=Math.max(...wd);
+  const wdh=`<div class="pl-sub"><b>📅 요일별 습사</b><small>요일마다 습사한 날 수예요. ${WD.filter((w,i)=>wd[i]===wm).join(' · ')}요일에 가장 많이 나왔어요.</small></div>
+    <div class="pl-wd">${wd.map(v=>`<div class="hb-col ${v===wm?'top':''}"><em>${v}</em><i style="height:${Math.max(2,v/wm*62)}px"></i></div>`).join('')}</div><div class="pl-wdx">${WD.map((w,i)=>`<span style="${i===0?'color:var(--red)':''}">${w}</span>`).join('')}</div>`;
+  el.innerHTML=`<div class="mr-h"><h2>📚 쌓아온 기록</h2><span class="tiny muted">${fk(D[0].date)} 첫 기록부터</span></div>
+    <div class="pl-sub" style="margin-top:0"><b>🏹 쌓인 순</b><small>습사한 날마다 그때까지 쏜 순을 쌓았어요. 빨강은 이번 달이에요.${cut?` 최근 ${PL_MAX}일만 보여요.`:''}</small></div>${stair}${next}${wdh}`;
+}
 function renderRecord(){
   renderRoundInput();
   const t=today();
@@ -3183,12 +3341,14 @@ function renderRecord(){
   $('#monthStats').innerHTML = statTiles([[ma?Math.round(mh/ma*100)+'<small>%</small>':'–',`관중률 · ${mh}/${ma}시`],[`${mdays.length}<small>일</small>`,`습사 · ${mr}순`],[mm,'몰기']]);
   const missTotal=Object.values(miss).reduce((a,b)=>a+b,0);
   $('#missDist').innerHTML = missGridHTML(miss, mh);
-  $('#windStats').innerHTML = windStatsHTML(mdays);
+  $('#windStats').innerHTML = wxStatsHTML(mdays);
+  try{ renderHabit(); }catch(e){ console.warn('habit', e); }
+  try{ renderPile(); }catch(e){ console.warn('pile', e); }
   renderWindBar(); renderGoalBar(); renderRest(); if(S.tab==='record' && S.recView!=='view'){ const jw=S.windNow[windJid()]; if(!jw || Date.now()-(jw.at||0) > 15*60e3) refreshWind(); }
   // 달력
   const first=new Date(Y,M-1,1).getDay(), dim=new Date(Y,M,0).getDate(); const byDate=Object.fromEntries(mdays.map(d=>[d.date,d]));
-  let cal = WD.map(w=>`<div class="d" style="background:none;color:var(--ink3)">${w}</div>`).join('') + Array(first).fill('<div></div>').join('');
-  for(let d=1; d<=dim; d++){ const ds=`${ym}-${pad(d)}`; const dd=byDate[ds]; let cls=''; if(dd && dd.rounds && dd.rounds.length){ const h=dd.rounds.reduce((a,r)=>a+hitsOf(r),0)/(dd.rounds.length*5); cls = h<0.3?'l1':h<0.6?'l2':'l3'; } cal+= (dd&&dd.rounds&&dd.rounds.length) ? `<button type="button" class="d ${cls} ${ds===t?'today':''} ${S.recView==='view'&&S.viewDate===ds?'sel':''}" data-cal="${ds}" title="${ds} · ${dd.rounds.length}순">${d}</button>` : `<div class="d ${ds===t?'today':''}" title="${ds}">${d}</div>`; }
+  let cal = WD.map((w,i)=>`<div class="d wh" style="background:none;color:${i===0?'var(--red)':'var(--ink3)'}">${w}</div>`).join('') + Array(first).fill('<div></div>').join('');
+  for(let d=1; d<=dim; d++){ const ds=`${ym}-${pad(d)}`; const dd=byDate[ds]; let cls=''; if(dd && dd.rounds && dd.rounds.length){ const h=dd.rounds.reduce((a,r)=>a+hitsOf(r),0)/(dd.rounds.length*5); cls = h<0.3?'l1':h<0.6?'l2':'l3'; } cal+= (dd&&dd.rounds&&dd.rounds.length) ? `<button type="button" class="d ${cls} ${ds===t?'today':''} ${S.recView==='view'&&S.viewDate===ds?'sel':''}" data-cal="${ds}" title="${ds} · ${dd.rounds.length}순">${d}${dd.rounds.some(r=>Array.isArray(r)&&hitsOf(r)===5)?'<b class="st">★</b>':''}</button>` : `<div class="d ${ds===t?'today':''}" title="${ds}">${d}</div>`; }
   $('#monthCal').innerHTML=cal;
   $$('#monthCal [data-cal]').forEach(b=>b.addEventListener('click',()=>{ openDayView(b.dataset.cal); }));
   $('#todayBig').hidden = !rounds.length; { const dd=$('#todayBigDesc'); if(dd) dd.hidden = !rounds.length; }
