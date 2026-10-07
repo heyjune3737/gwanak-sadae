@@ -3406,7 +3406,7 @@ function renderHub(){
     <button type="button" class="hub-row" data-hub="rec"><span class="hub-h">✍️ 내 기록<span class="go">표 기록 ›</span></span><span class="hub-v">${myT}</span></button>
     ${mg?`<button type="button" class="hub-row" data-hub="mag"><span class="hub-h">📰 사대 월보<span class="go">월보 보기 ›</span></span><span class="hub-v">${mg.t}</span></button>`:''}
     <button type="button" class="hub-row" data-hub="hot" ${hm?'':'disabled'}><span class="hub-h">🔥 이번 주 하태하태 사원<span class="go">${hm?'방 구경 ›':''}</span></span><span class="hub-v">${hm?`<b>${esc(hm.name)}</b> 님 · ${[hot.gb?`방명록 ${hot.gb}`:'',hot.ch?`응원 ${hot.ch}`:'',hot.at?`광장에서 불림 ${hot.at}`:''].filter(Boolean).join(' · ')}`:'아직 없어요 — 방명록 · 응원으로 정을 나눠 보세요'}</span></button>
-    ${(()=>{ const CL=hubCompLines(); return `<button type="button" class="hub-row" data-hub="comp"><span class="hub-h">🏟 대회 소식 ${CL.length>1?`<small id="hubCompN">1/${CL.length}</small>`:''}<span class="go">대회 보기 ›</span></span><span class="hub-v hub-roll" id="hubComp" data-n="${CL.length}">${CL[0]||'이번 달엔 아직 친선 대회가 없어요 — 사대에서 함께 쏘는 날 한 판 벌여 보세요 🎲'}</span></button>`; })()}
+    ${(()=>{ const CL=hubCompLines(); const live=CL.length && CL[0].startsWith('🔴'); const ci=live?0:(CL.length?Math.floor(Date.now()/(12*3600e3))%CL.length:0); return `<button type="button" class="hub-row" data-hub="comp"><span class="hub-h">🏟 대회 소식 ${CL.length>1?`<small id="hubCompN">${live?'지금':`${ci+1}/${CL.length} · 12시간마다 바뀜`}</small>`:''}<span class="go">대회 보기 ›</span></span><span class="hub-v" id="hubComp" data-n="${CL.length}">${CL[ci]||'이번 달엔 아직 친선 대회가 없어요 — 사대에서 함께 쏘는 날 한 판 벌여 보세요 🎲'}</span></button>`; })()}
     ${nm?`<button type="button" class="hub-row" data-hub="news"><span class="hub-h">🎉 오늘 소식 <small>${NL.length>1?`${NL.indexOf(nw)+1}/${NL.length} · 12시간마다 바뀜`:'최근 7일'}</small><span class="go">방 구경 ›</span></span><span class="hub-v">${nw.hid?`<b>${esc(nm.name)}</b> 님이 숨은 배지를 발견했어요! · ${nw.x.ic} ${esc(nw.x.t)}`:`<b>${esc(nm.name)}</b> 님 새 배지 · ${nw.x.ic} ${esc(nw.x.t)}${nw.n>1?` 외 ${nw.n-1}개`:''}`}</span></button>`:''}`;
   $$('[data-hub]',el).forEach(b=>b.onclick=()=>{ const k=b.dataset.hub;
     if(k==='rank'){ setTab('plaza'); S.rank.fold=false; try{ lsSet('sadae.rkFold',false); }catch(e){} setTimeout(()=>{ renderRank(); const c=$('#rkCard'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); },150); }
@@ -3415,7 +3415,7 @@ function renderHub(){
     else if(k==='hot' && hm){ openRoom(hm.id); }
     else if(k==='news' && nm){ openRoom(nm.id); }
     else if(k==='comp'){ S.openComp=null; setTab('comp'); renderComp(); } });
-  clearInterval(hubCompT); { const CL=hubCompLines(); if(CL.length>1){ let i=0; hubCompT=setInterval(()=>{ const v=$('#hubComp'); if(!v || S.tab!=='today'){ if(!v) clearInterval(hubCompT); return; } i=(i+1)%CL.length; v.classList.remove('in'); void v.offsetWidth; v.innerHTML=CL[i]; v.classList.add('in'); const n=$('#hubCompN'); if(n) n.textContent=`${i+1}/${CL.length}`; }, 4000); } }
+  clearInterval(hubCompT);
 }
 function renderToday(){
   const t=today(); const allAtt=attEntries(); const VJ=viewJ(); const listAll=allAtt.filter(e=>entryJid(e)===VJ.id);
