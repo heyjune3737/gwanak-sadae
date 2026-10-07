@@ -82,7 +82,7 @@ body.gated{overflow:hidden}
 .adm-row{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--line);background:var(--card)}
 .adm-ch{width:40px;flex:0 0 40px;display:block}.adm-btns{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:58%}
 .adm-tag{font-size:11px;background:var(--gold);color:#2A2233;padding:1px 5px}
-#brandBtn{position:relative}#brandBtn.has-badge::after{content:attr(data-badge);position:absolute;top:-6px;left:-6px;min-width:18px;height:18px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px}
+.adm-top{display:flex;align-items:center;gap:8px;justify-content:space-between}.adm-top h3{margin:0}.adm-real{font:inherit;font-size:11.5px;padding:1px 6px;margin:2px 0;background:var(--card2);color:var(--ink);border:1px dashed var(--ink3);cursor:pointer}.adm-real.none{color:var(--red);border-color:var(--red)}.us-rng{display:flex;gap:4px}.us-rng button{font:inherit;font-size:12px;padding:3px 9px;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer}.us-rng button.on{background:var(--ink);color:var(--card)}.us-kpi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:10px 0}.us-kpi div{border:2px solid var(--ink);background:var(--card2);padding:8px;display:flex;flex-direction:column}.us-kpi b{font-size:18px}.us-kpi small{font-size:11px;color:var(--ink3)}.sheet h4{margin:14px 0 6px;font-size:13.5px}.us-row{display:grid;grid-template-columns:72px 1fr auto;gap:6px;align-items:center;font-size:12px;margin:3px 0}.us-l{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.us-l code{font-size:10.5px}.us-b{height:10px;background:var(--card2);border:1px solid var(--line2)}.us-b i{display:block;height:100%;background:var(--gold)}.us-v{font-size:11px;color:var(--ink2);white-space:nowrap}.us-hrs{display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:2px;height:70px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:14px;position:relative}.us-hrs span{position:relative;height:100%;display:flex;align-items:flex-end}.us-hrs i{display:block;width:100%;background:var(--red);min-height:1px}.us-hrs small{position:absolute;bottom:-14px;left:0;font-size:9px;color:var(--ink3)}#brandBtn{position:relative}#brandBtn.has-badge::after{content:attr(data-badge);position:absolute;top:-6px;left:-6px;min-width:18px;height:18px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2406,7 +2406,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.07d';
+const APP_VER = '2026.10.07e';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2571,7 +2571,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-10-03l', date:'10월 3일', title:'🔒 소속 정은 한 달 동안 고정돼요', body:'이제 관악정 밖 다른 정으로도 오늘 사대가 넓어져요. 정마다 사원·순위·월보가 섞이지 않도록, 소속 정(궁패)은 가입한 날(또는 바꾼 날)부터 한 달 동안 바꿀 수 없어요. 잘못 고르셨다면 관리자에게 메일(heysadae3737@gmail.com)이나 방명록으로 알려 주시면 바로 고쳐 드려요. 다른 정에 가는 날은 지금처럼 오늘 정 탭 위 📍에서 그 정 사대를 구경하고 습사 등록할 수 있어요.'},
   {id:'2026-10-03a', date:'10월 3일', title:'✍️ 표 기록 · 내 방 고친 점', body:'🌬 바람 기록\n표 기록 맨 위에 그날의 바람(맞바람·뒷바람·좌→우·우→좌 + 약·중·강)이 자동으로 뜨고, 순을 저장하면 함께 남아요. 눌러서 직접 고칠 수도 있어요. 처음엔 바람 칸 → "과녁 방향"을 한 번 정해 주세요(폰 나침반으로도 잴 수 있어요). 바람은 내 기록에만 남고 월보에는 실리지 않아요.\n\n🎯 낙점 그림\n기록 보기에서 "이 날 · 이번 달 · 100일 · 전체"로 볼 수 있어요.\n\n📄 엑셀(CSV)\n내 방의 내려받기에 순마다 바람이 함께 들어가요.\n\n🙋 프로필\n단급에 무급·무단을 넣었고, 집궁일은 고르지 않아도 되며 "지우기"로 지울 수 있어요. 활 세기는 호 대신 파운드로 적어요(예전 숫자는 그대로).'},
   {id:'2026-09-24c', date:'9월 24일', title:'앱으로 설치하세요 📱', body:'① 카톡방 공지의 링크로 접속 → 크롬으로 열기  ② 크롬 ⋮ → 홈 화면에 추가 → 설치. 바탕화면의 오늘 사대 아이콘으로 들어오면 앱처럼 쓸 수 있어요.'},
-  {id:'2026-09-24b', date:'9월 24일', title:'가입 승인제 · 안내 탭이 생겼어요', body:'링크를 받은 분은 가입 신청 후 관리자 승인이 나면 쓸 수 있어요. 이 안내 탭에서 앱 설치 방법, 이용법, 로그아웃을 찾을 수 있어요.'},
+  {id:'2026-09-24b', date:'9월 24일', title:'가입 승인제 · 안내 탭이 생겼어요', body:'링크를 받은 분은 가입 신청 후 관리자 승인이 나면 쓸 수 있어요. 이 안내 탭에서 앱 설치 방법, 이용법, 로그아웃을 찾을 수 있어요.\n\n서비스 개선을 위해 사용 기록(어느 화면을 얼마나 썼는지)을 모아요.'},
   {id:'2026-09-24a', date:'9월 24일', title:'이름 + 비밀번호로 어느 폰에서나', body:'다른 폰·카톡에서 열어도 "이미 가입했어요 → 불러오기"에 이름과 비밀번호 4자리를 넣으면 내 기록이 그대로 나와요.'},
 ];
 // 최신 공지가 맨 위 (날짜 → 같은 날이면 나중에 쓴 것)
@@ -2931,21 +2931,29 @@ function renderAdminBadge(){ const b=$('#brandBtn'); if(!b) return; const n=(sto
 async function openAdmin(){
   const r=await pinRpc('sadae_admin_list',{p_token:store.token}); if(r.error){ toast(r.error==='not_admin'?'관리자만 볼 수 있어요':'잠시 후 다시 해 주세요'); return; }
   const L=r.members||[]; const grp={pending:[],active:[],blocked:[]}; L.forEach(m=>(grp[m.status]||grp.active).push(m)); const resets=L.filter(m=>m.reset&&m.status!=='pending');
-  const row=m=>`<div class="adm-row" data-mid="${esc(m.mid)}"><span class="adm-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><span class="grow"><b>${esc(m.name||'(이름 없음)')}</b>${m.admin?' <span class="adm-tag">관리자</span>':''}<br><span class="tiny ${m.real?'':'muted'}">${m.real?'실명 '+esc(m.real):'실명 미입력'}</span><br><span class="tiny muted">${m.jeong?esc(m.jeong)+' · ':''}${(m.since||'').slice(0,10)} 신청</span></span>
+  const row=m=>`<div class="adm-row" data-mid="${esc(m.mid)}"><span class="adm-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><span class="grow"><b>${esc(m.name||'(이름 없음)')}</b>${m.admin?' <span class="adm-tag">관리자</span>':''}<br><button type="button" class="adm-real ${m.real?'':'none'}" data-act="real">${m.real?'실명 '+esc(m.real)+' ✏️':'✏️ 실명 넣기'}</button><br><span class="tiny muted">${m.jeong?esc(m.jeong)+' · ':''}${(m.since||'').slice(0,10)} 신청</span></span>
     <span class="adm-btns">${m._reset?'<button class="btn sm pri" data-act="reset_ok">비번 승인</button><button class="btn sm ghost" data-act="reset_no">거절</button>':m.status==='pending'?'<button class="btn sm pri" data-act="approve">승인</button><button class="btn sm ghost" data-act="delete">거절</button>'
       : m.status==='blocked'?'<button class="btn sm ghost" data-act="approve">차단 풀기</button><button class="btn sm ghost" data-act="delete">삭제</button>'
       : m.mid===r.me?'<span class="tiny muted">나</span>':`<button class="btn sm ghost" data-act="more">관리 ▾</button>`}</span></div>`;
   const sec=(t,a)=>a.length?`<div class="adm-sec"><div class="adm-h">${t} <b>${a.length}</b></div>${a.map(row).join('')}</div>`:'';
-  const sh=openSheet(`<h3>사원 관리</h3><p class="muted" style="margin:0">모르는 이름·가명은 거절하거나 차단하세요. 거절·삭제하면 그 사람의 기록도 지워져요.</p>
+  const nReal=grp.active.filter(m=>!m.real).length;
+  const sh=openSheet(`<div class="adm-top"><h3>사원 관리</h3>${(typeof isDevNow==='function'&&isDevNow())?'<button class="btn sm ghost" type="button" id="admUsage">📊 사용 현황</button>':''}</div>${nReal?`<p class="tiny" style="margin:0 0 4px">✏️ 실명 미입력 사원 <b>${nReal}</b>명 — 이름 아래 '실명 넣기'를 눌러 적을 수 있어요(관리자만 봐요)</p>`:''}<p class="muted" style="margin:0">모르는 이름·가명은 거절하거나 차단하세요. 거절·삭제하면 그 사람의 기록도 지워져요.</p>
     ${sec('🔑 비밀번호 초기화 요청',resets.map(m=>({...m,_reset:true})))}${sec('승인 대기',grp.pending)||'<div class="tiny muted">승인 대기 중인 신청이 없어요</div>'}${sec('사원',grp.active)}${sec('차단',grp.blocked)}
     <div class="actions"><button class="btn ghost" id="admClose">닫기</button></div>`);
-  $('#admClose',sh).addEventListener('click',closeSheet);
+  $('#admClose',sh).addEventListener('click',closeSheet); { const ub=$('#admUsage',sh); if(ub) ub.addEventListener('click',()=>openUsage(7)); }
   const act=async(mid,a,label)=>{ const x=await pinRpc('sadae_admin_act',{p_token:store.token,p_mid:mid,p_act:a}); if(x&&x.error==='protected'){ toast('개발자 계정은 바꿀 수 없어요'); return; }
     if(x.error){ toast(x.error==='self'?'나 자신에게는 할 수 없어요':'처리하지 못했어요'); return; }
     if(a==='reset_pin'){ closeSheet(); openSheet(`<h3>임시 비밀번호</h3><p>그 사원에게 알려 주세요. 불러오기 후 궁패 → 비밀번호 바꾸기로 바꿀 수 있어요.</p><div style="font-size:40px;letter-spacing:.3em;text-align:center;font-family:var(--display)">${x.pin}</div><div class="actions"><button class="btn pri" onclick="closeSheet()">확인</button></div>`); return; }
     if(a==='approve') pushSend('approve', mid);
     toast(label); await store.refresh(); openAdmin(); };
   $$('.adm-row',sh).forEach(rw=>rw.addEventListener('click',e=>{ const b=e.target.closest('[data-act]'); if(!b) return; const mid=rw.dataset.mid, nm=rw.querySelector('b').textContent, a=b.dataset.act;
+    if(a==='real'){ const m=L.find(x=>x.mid===mid)||{}; const rs=openSheet(`<h3>${esc(nm)} 님 실명</h3><p class="muted" style="margin:0 0 8px">관리자만 보는 칸이에요. 사원 화면 · 다른 사원에게는 보이지 않아요.</p>
+        <div class="field"><label for="admRealIn">실명 (2~20자 · 비우면 지움)</label><input class="input" id="admRealIn" maxlength="20" value="${esc(m.real||'')}" placeholder="예: 김준호"></div>
+        <div class="actions"><button class="btn ghost" type="button" id="arBack">취소</button><button class="btn pri" type="button" id="arSave">저장</button></div>`);
+      $('#arBack',rs).onclick=()=>{ closeSheet(); openAdmin(); }; setTimeout(()=>{ const i=$('#admRealIn',rs); if(i) i.focus(); },50);
+      $('#arSave',rs).onclick=async()=>{ const v=$('#admRealIn',rs).value.trim(); const x=await pinRpc('sadae_admin_set_realname',{p_token:store.token,p_mid:mid,p_real:v});
+        if(x.error){ toast(x.error==='bad_real'?'실명은 2~20자로 적어 주세요':x.error==='not_admin'?'관리자만 할 수 있어요':'저장하지 못했어요 · 서버 23) 실행 여부를 확인해 주세요'); return; }
+        toast(v?`${nm} 님 실명을 저장했어요`:`${nm} 님 실명을 지웠어요`); closeSheet(); openAdmin(); }; return; }
     if(a==='approve') return act(mid,'approve',`${nm} 님을 승인했어요`);
     if(a==='reset_ok') return act(mid,'reset_ok',`${nm} 님 새 비밀번호를 승인했어요`);
     if(a==='reset_no') return act(mid,'reset_no',`${nm} 님 비밀번호 요청을 거절했어요`);
@@ -2959,6 +2967,36 @@ async function openAdmin(){
     if(a==='mkadmin') return act(mid,'admin',`${nm} 님을 관리자로 지정했어요`);
     if(a==='unadmin') return act(mid,'unadmin',`${nm} 님 관리자를 해제했어요`);
     if(a==='block') return act(mid,'block',`${nm} 님을 차단했어요`); }));
+}
+// ===== p113 · 사용 현황 (개발자만 — 서버 sadae_usage_list 도 sadae_is_dev) =====
+const UT_TAB={today:'오늘',record:'표 기록',plaza:'광장',room:'내 방',news:'소식',comp:'대회',info:'안내'};
+async function openUsage(n){ if(!(typeof isDevNow==='function'&&isDevNow())){ toast('개발자만 볼 수 있어요'); return; }
+  const to=today(), from=dstr(new Date(Date.now()-(n-1)*864e5));
+  const sh=openSheet(`<h3>📊 사용 현황</h3><div class="rs-prog">불러오는 중…</div>`); sh.classList.add('sheet-tall');
+  const r=await pinRpc('sadae_usage_list',{p_token:store.token,p_from:from,p_to:to});
+  if(!sh.isConnected) return;
+  if(r.error){ sh.innerHTML=`<div class="handle"></div><h3>📊 사용 현황</h3><p>${r.error==='not_dev'||r.error==='not_admin'?'개발자만 볼 수 있어요':'불러오지 못했어요 · 서버 23)을 먼저 실행했는지 확인해 주세요'}</p><div class="actions"><button class="btn ghost" onclick="closeSheet()">닫기</button></div>`; return; }
+  const rows=r.rows||[]; const days={}; const tabs={}; const clk={}; const hrs=Array(24).fill(0); const users=new Set(); const devs={m:new Set(),d:new Set()}; let sess=0;
+  for(const x of rows){ const d=x.data||{}; users.add(x.mid); (days[x.day]=days[x.day]||new Set()).add(x.mid); sess+=+d.sess||0; if(d.dev==='m'||d.dev==='d') devs[d.dev].add(x.mid);
+    for(const [t,v] of Object.entries(d.tabs||{})){ const o=tabs[t]=tabs[t]||{n:0,s:0,u:new Set()}; o.n+=+v.n||0; o.s+=+v.s||0; o.u.add(x.mid); }
+    for(const [k,v] of Object.entries(d.clk||{})) clk[k]=(clk[k]||0)+(+v||0);
+    for(const [h,v] of Object.entries(d.hrs||{})) if(+h>=0&&+h<24) hrs[+h]+=+v||0; }
+  const L=[]; for(let i=n-1;i>=0;i--){ const ds=dstr(new Date(Date.now()-i*864e5)); L.push([ds,(days[ds]||new Set()).size]); }
+  const totS=Object.values(tabs).reduce((a,o)=>a+o.s,0); const uDays=L.reduce((a,x)=>a+x[1],0);
+  const mm=s=>s>=3600?`${Math.floor(s/3600)}시간 ${Math.round(s%3600/60)}분`:s>=60?`${Math.round(s/60)}분`:`${s}초`;
+  const bar=(lab,v,max,txt)=>`<div class="us-row"><span class="us-l">${lab}</span><span class="us-b"><i style="width:${max?Math.max(2,Math.round(v/max*100)):0}%"></i></span><span class="us-v">${txt}</span></div>`;
+  const maxD=Math.max(1,...L.map(x=>x[1])); const TL=Object.entries(tabs).sort((a,b)=>b[1].s-a[1].s); const maxT=Math.max(1,...TL.map(x=>x[1].s));
+  const CL=Object.entries(clk).sort((a,b)=>b[1]-a[1]).slice(0,15); const maxC=Math.max(1,...CL.map(x=>x[1])); const maxH=Math.max(1,...hrs);
+  sh.innerHTML=`<div class="handle"></div><div class="adm-top"><h3>📊 사용 현황</h3><span class="us-rng"><button type="button" class="${n===7?'on':''}" data-un="7">7일</button><button type="button" class="${n===30?'on':''}" data-un="30">30일</button></span></div>
+    <p class="tiny muted" style="margin:0">개발자만 보는 화면이에요(관리자 지정 사원도 못 봐요) · 새 버전(07e)을 연 사원부터 쌓여요 · 글 내용 · 기록은 모으지 않아요</p>
+    <div class="us-kpi"><div><b>${users.size}</b><small>쓴 사원</small></div><div><b>${uDays?(uDays/n).toFixed(1):0}</b><small>하루 평균 사원</small></div><div><b>${uDays?mm(Math.round(totS/uDays)):'–'}</b><small>1인 하루 머문 시간</small></div><div><b>${sess}</b><small>접속 횟수</small></div></div>
+    <h4>하루 사용자</h4>${L.map(([ds,v])=>bar(`${+ds.slice(5,7)}/${+ds.slice(8)}`,v,maxD,v+'명')).join('')}
+    <h4>탭별 머문 시간</h4>${TL.length?TL.map(([t,o])=>bar(UT_TAB[t]||t,o.s,maxT,`${mm(o.s)} · ${Math.round(o.s/Math.max(1,totS)*100)}% · ${o.u.size}명`)).join(''):'<p class="tiny muted">아직 기록이 없어요</p>'}
+    <h4>시간대별 접속</h4><div class="us-hrs">${hrs.map((v,h)=>`<span title="${h}시 ${v}번"><i style="height:${Math.round(v/maxH*100)}%"></i><small>${h%6===0?h:''}</small></span>`).join('')}</div>
+    <h4>많이 누른 버튼</h4>${CL.length?CL.map(([k,v])=>bar(`<code>${esc(k)}</code>`,v,maxC,v+'번')).join(''):'<p class="tiny muted">아직 기록이 없어요</p>'}
+    <h4>기기</h4><p class="tiny" style="margin:0">📱 폰 ${devs.m.size}명 · 💻 PC ${devs.d.size}명</p>
+    <div class="actions"><button class="btn ghost" type="button" id="usBack">사원 관리로</button><button class="btn pri" type="button" onclick="closeSheet()">닫기</button></div>`;
+  $$('[data-un]',sh).forEach(b=>b.onclick=()=>openUsage(+b.dataset.un)); $('#usBack',sh).onclick=()=>{ closeSheet(); openAdmin(); };
 }
 // 부팅 후: 열쇠가 있으면 그 캐릭터로, 예전 캐릭터만 있으면 비밀번호 걸기 안내
 async function syncIdentity(){
@@ -3005,7 +3043,29 @@ function daysQuery(){ return {col:'days', where:[['memberId','==', S.me ? S.me.i
 
 /* ---------- 탭 ---------- */
 $$('.tab').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
-function setTab(t){ S.tab=t; if(t==='room') setTimeout(()=>{ try{ renderMyRank(); }catch(e){} },0); if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','news','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); { const bb=$('#bookBar'); if(bb) bb.style.display = t==='news'?'none':''; } if(t==='news') setTimeout(()=>{ if(typeof renderNews==='function') renderNews(); },0); lsSet('sadae.tab',t); try{ renderRest(); }catch(e){} window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
+// ===== p113 · 사용 기록 (관리자만 봄) =====
+const UT = {day:null, d:null, cur:null, t0:0, dirty:false, last:0, away:0};
+function utDev(){ let d=lsGet('sadae.dev',null); if(!d || !/^[a-z0-9]{6,16}$/.test(d)){ d=(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)).replace(/[^a-z0-9]/g,'').slice(0,10); lsSet('sadae.dev',d); } return d; }
+function utOn(){ try{ return lsGet('sadae.noTrack',false)!==true && typeof store==='object' && store && store.kind==='remote' && !!store.token && !store.gate; }catch(e){ return false; } }
+function utLoad(){ const t=today(); if(UT.day===t && UT.d) return UT.d;
+  if(UT.day && UT.day!==t && UT.d){ UT.dirty=true; }   // 날이 바뀌면 새 묶음
+  UT.day=t; let d=lsGet('sadae.ut.'+t,null); if(!d||typeof d!=='object') d={tabs:{},clk:{},hrs:{},sess:0,dev:/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?'m':'d'}; UT.d=d;
+  try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&k.startsWith('sadae.ut.')&&k.slice(9)<dstr(new Date(Date.now()-3*864e5))) localStorage.removeItem(k); } }catch(e){}
+  return d; }
+function utSave(){ if(UT.d){ lsSet('sadae.ut.'+UT.day, UT.d); UT.dirty=true; } }
+function utTabEnd(){ if(!UT.cur || !UT.t0) return; const sec=Math.min(1800, Math.round((Date.now()-UT.t0)/1000)); UT.t0=Date.now(); if(sec<=0) return; const d=utLoad(); const x=d.tabs[UT.cur]=d.tabs[UT.cur]||{n:0,s:0}; x.s+=sec; utSave(); }
+function utTab(t){ try{ utTabEnd(); UT.cur=t; UT.t0=document.hidden?0:Date.now(); const d=utLoad(); const x=d.tabs[t]=d.tabs[t]||{n:0,s:0}; x.n++; utSave(); }catch(e){} }
+function utSess(){ try{ const d=utLoad(); d.sess=(d.sess||0)+1; const h=String(new Date().getHours()); d.hrs[h]=(d.hrs[h]||0)+1; utSave(); }catch(e){} }
+function utKey(el){ if(el.dataset && el.dataset.tab) return 'tab:'+el.dataset.tab; if(el.id) return '#'+el.id;
+  const dk=Object.keys(el.dataset||{})[0]; if(dk) return '[data-'+dk.replace(/[A-Z]/g,c=>'-'+c.toLowerCase())+']';
+  const c=(el.className&&typeof el.className==='string')?el.className.trim().split(/\s+/).find(x=>!/^(btn|on|sm|pri|ghost|block|red|tiny|muted)$/.test(x)):''; return c?'.'+c:el.tagName.toLowerCase(); }
+document.addEventListener('click', e=>{ try{ if(!utOn()) return; const el=e.target.closest('button,a,[role="button"],[data-tab],[data-room]'); if(!el) return; const k=utKey(el).slice(0,40); const d=utLoad(); if(!(k in d.clk) && Object.keys(d.clk).length>=80) return; d.clk[k]=(d.clk[k]||0)+1; utSave(); }catch(err){} }, true);
+async function utFlush(force){ try{ if(!utOn() || !UT.dirty) return; if(!force && Date.now()-UT.last<120e3) return; UT.last=Date.now(); utTabEnd(); const d=utLoad(); d.v=(typeof APP_VER!=='undefined')?APP_VER:'';
+    const r=await store.client.rpc('sadae_track',{p_space:store.space, p_token:store.token, p_day:UT.day, p_dev:utDev(), p_data:d}); if(!r.error && !(r.data&&r.data.error)) UT.dirty=false; }catch(e){} }
+document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ utTabEnd(); UT.t0=0; UT.away=Date.now(); utFlush(true); } else { if(UT.away && Date.now()-UT.away>30*60e3) utSess(); UT.away=0; UT.t0=Date.now(); } });
+setInterval(()=>utFlush(false), 60e3);
+setTimeout(()=>{ utSess(); utTab(S.tab||'today'); }, 1500);
+function setTab(t){ try{ if(t!==UT.cur) utTab(t); }catch(e){} S.tab=t; if(t==='room') setTimeout(()=>{ try{ renderMyRank(); }catch(e){} },0); if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','news','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); { const bb=$('#bookBar'); if(bb) bb.style.display = t==='news'?'none':''; } if(t==='news') setTimeout(()=>{ if(typeof renderNews==='function') renderNews(); },0); lsSet('sadae.tab',t); try{ renderRest(); }catch(e){} window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
 (function(){ const h=(location.hash||'').replace('#','').split('&')[0]; const t = ['today','plaza','record','news','room','comp','info'].includes(h) ? h : (lsGet('sadae.tab','today')); setTab(t); })();
 
 /* ---------- 헤더 ---------- */
