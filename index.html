@@ -253,7 +253,7 @@ select.input{appearance:none;background-image:linear-gradient(45deg,transparent 
 .led-h{display:flex;justify-content:space-between;align-items:center;font-size:15px;letter-spacing:1px;text-shadow:0 0 6px rgba(255,177,59,.6)}.led-m{color:#7CF29C;display:flex;align-items:center;gap:2px}.led-m button{font:inherit;background:none;border:0;color:#7CF29C;font-size:18px;padding:0 6px;cursor:pointer}.led-m button[disabled]{opacity:.25}
 .led-n{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}.led-n div{border:1px solid #4a3a20;padding:6px;text-align:center;display:flex;flex-direction:column}.led-n b{font-size:24px;text-shadow:0 0 8px rgba(255,177,59,.7)}.led-n small{font-size:10.5px;color:#b98a3a}
 .led-k{display:flex;align-items:center;gap:8px;font-size:13px;margin:4px 0}.led-k>span:first-child{width:108px;color:#b98a3a;font-size:12px}.led-k b{color:#fff3d6}.led-av{width:24px;height:24px;display:inline-block}.led-av svg{width:100%;height:100%}.led-dim{color:#7c6334!important;font-size:12px}
-.led-roll{margin-top:10px;border-top:1px dashed #4a3a20;padding-top:4px}.cm-led .lr{width:100%;font:inherit;background:none;border:0;border-bottom:1px dotted #2c241a;color:inherit;text-align:left;cursor:pointer;display:grid;grid-template-columns:40px 1fr auto;grid-template-rows:auto auto;column-gap:6px;padding:5px 0}.lr .d{grid-row:span 2;color:#7CF29C;font-size:12px}.lr b{color:#fff3d6;font-size:13px}.lr .s{color:#b98a3a;font-family:var(--small);font-size:11px}.lr .w{grid-column:3;grid-row:1/span 2;align-self:center;color:#FFB13B;font-size:12.5px}
+.led-sub{font-size:11px;color:#b98a3a;margin:10px 0 4px;font-family:var(--small)}.led-t{display:grid;grid-template-columns:116px 46px 1fr;align-items:center;gap:6px;border:1px solid #4a3a20;padding:12px 8px 6px;margin-bottom:6px}.lt-l b{display:block;font-size:13px;color:#FFB13B}.lt-l small{font-size:10px;color:#b98a3a;font-family:var(--small)}.lt-n b{display:block;color:#fff3d6;font-size:15px}.lt-n small{font-size:11px;color:#7CF29C}.lt-ch{position:relative;display:inline-block;width:44px;height:44px}.lt-ch>svg:first-child{width:100%;height:100%}.lt-ch .acc{position:absolute;left:50%;transform:translateX(-50%)}.lt-ch .acc.top{top:-12px;width:24px;height:16px}.lt-ch .acc.bib{bottom:5px;width:22px;height:13px}.led-roll{margin-top:10px;border-top:1px dashed #4a3a20;padding-top:4px}.cm-led .lr{width:100%;font:inherit;background:none;border:0;border-bottom:1px dotted #2c241a;color:inherit;text-align:left;cursor:pointer;display:grid;grid-template-columns:40px 1fr auto;grid-template-rows:auto auto;column-gap:6px;padding:5px 0}.lr .d{grid-row:span 2;color:#7CF29C;font-size:12px}.lr b{color:#fff3d6;font-size:13px}.lr .s{color:#b98a3a;font-family:var(--small);font-size:11px}.lr .w{grid-column:3;grid-row:1/span 2;align-self:center;color:#FFB13B;font-size:12.5px}
 .sm-host{display:flex;align-items:center;gap:10px;border:2px dashed var(--ink3);padding:6px 10px}.sm-host .av,.sm-pod .av{width:40px;height:40px;display:inline-block}.sm-host .av svg,.sm-pod .av svg,.sm-ppl .av svg{width:100%;height:100%}.sm-host small{display:block;font-size:11px;color:var(--ink3)}.sm-host b{font-size:16px}
 .sm-pod{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 0}.sm-pod .pd{border:2px solid var(--ink);display:flex;flex-direction:column;align-items:center;padding:6px 0;background:var(--card2)}.sm-pod .pd.p1{background:#FFF1C9}.sm-pod .pd b{font-size:13px}.sm-pod .pd>span:last-child{font-size:16px}
 .sm-ppl{display:flex;flex-wrap:wrap;gap:6px}.sm-ppl>span{display:flex;align-items:center;gap:3px;font-size:12px;border:1.5px solid var(--line2);padding:2px 6px 2px 2px}.sm-ppl .av{width:22px;height:22px;display:inline-block}
@@ -2416,7 +2416,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.07i';
+const APP_VER = '2026.10.07j';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4280,6 +4280,11 @@ const compCanSee = c => compOfficial(c) || (typeof isDevNow==='function' && isDe
 const compNm = id => { const m=memberById(id); return (m&&m.name)||'사원'; };
 const compDone = c => { const rows=rankComp(c).filter(r=>r.done>0); return rows.length>=1 && rows.length===(c.members||[]).length && rows.every(r=>r.done===c.roundCount); };
 // 🏟 친선 전광판 — 숫자 · 내기왕 · 최다 출전 · 최근 대회 줄 (사원별 점수는 안 보임)
+const LED_ACC = {
+  crown:`<svg class="acc top" viewBox="0 0 10 6" shape-rendering="crispEdges"><rect x="0" y="2" width="10" height="4" fill="#FFB13B"/><rect x="0" y="0" width="2" height="2" fill="#FFB13B"/><rect x="4" y="0" width="2" height="2" fill="#FFB13B"/><rect x="8" y="0" width="2" height="2" fill="#FFB13B"/><rect x="4" y="3" width="2" height="2" fill="#E8437A"/></svg>`,
+  hat:`<svg class="acc top" viewBox="0 0 10 7" shape-rendering="crispEdges"><rect x="2" y="0" width="6" height="5" fill="#111"/><rect x="2" y="0" width="6" height="1" fill="#333"/><rect x="2" y="3" width="6" height="1" fill="#E8437A"/><rect x="0" y="5" width="10" height="2" fill="#111"/></svg>`,
+  bib:`<svg class="acc bib" viewBox="0 0 14 8" shape-rendering="crispEdges"><rect x="0.5" y="0.5" width="13" height="7" fill="#F4EEE6" stroke="#111" stroke-width="1"/><text x="7" y="6.3" font-size="6" text-anchor="middle" fill="#111" font-family="monospace" font-weight="700">001</text></svg>`};
+const ledTitle = (lab, sub, x, u, acc) => `<div class="led-t"><div class="lt-l"><b>${lab}</b><small>${sub}</small></div>${x?`<span class="lt-ch">${charSVG((memberById(x[0])||{}).char||DEFAULT_CHAR)}${LED_ACC[acc]}</span><div class="lt-n"><b>${esc(compNm(x[0]))}</b><small>${x[1]}${u}</small></div>`:'<span></span><div class="lt-n"><b class="led-dim">아직 없어요</b></div>'}</div>`;
 function compLedHTML(){
   const ym=S.cmYM||today().slice(0,7), J=homeJ();
   const L=(S.comps||[]).filter(c=>!compOfficial(c) && String(c.date||'').startsWith(ym) && compJid(c)===J.id && rankComp(c).filter(r=>r.done>0).length>=2)
@@ -4287,11 +4292,12 @@ function compLedHTML(){
   const join={}, win={}; let ppl=0, arrows=0;
   for(const c of L){ const rows=rankComp(c).filter(r=>r.done>0); ppl+=rows.length; rows.forEach(r=>{ join[r.id]=(join[r.id]||0)+1; arrows+=r.done*5; }); if(compDone(c)) win[rows[0].id]=(win[rows[0].id]||0)+1; }
   const best=o=>Object.entries(o).sort((a,b)=>b[1]-a[1])[0];
-  const kw=best(win), kj=best(join); const who=(x,u)=>x?`<span class="led-av">${charSVG((memberById(x[0])||{}).char||DEFAULT_CHAR)}</span><b>${esc(compNm(x[0]))} ${x[1]}${u}</b>`:'<b class="led-dim">아직 없어요</b>';
+  const host={}; for(const c of L) host[c.createdBy]=(host[c.createdBy]||0)+1;
+  const kw=best(win), kj=best(join), kh=best(host); const who=(x,u)=>x?`<span class="led-av">${charSVG((memberById(x[0])||{}).char||DEFAULT_CHAR)}</span><b>${esc(compNm(x[0]))} ${x[1]}${u}</b>`:'<b class="led-dim">아직 없어요</b>';
   const [y,m]=ym.split('-').map(Number); const prev=`${m===1?y-1:y}-${String(m===1?12:m-1).padStart(2,'0')}`, next=`${m===12?y+1:y}-${String(m===12?1:m+1).padStart(2,'0')}`;
   return `<div class="cm-led"><div class="led-h"><span>🏟 ${esc(J.name)} 친선 전광판</span><span class="led-m"><button type="button" data-cmym="${prev}" aria-label="이전 달">‹</button>${m}월<button type="button" data-cmym="${next}" ${next>today().slice(0,7)?'disabled':''} aria-label="다음 달">›</button></span></div>
     <div class="led-n"><div><b>${L.length}</b><small>대회</small></div><div><b>${ppl}</b><small>출전</small></div><div><b>${arrows}</b><small>화살</small></div></div>
-    <div class="led-k"><span>👑 이달의 내기왕</span>${who(kw,'승')}</div><div class="led-k"><span>🏃 최다 출전</span>${who(kj,'번')}</div>
+    <p class="led-sub">이달의 세 사람</p>${ledTitle('👑 내기왕','가장 많이 이긴 사람',kw,'승','crown')}${ledTitle('🎩 판주인','가장 많이 판을 벌인 사람',kh,'번 개최','hat')}${ledTitle('🎟 참가번호 001','모든 판에 낀 사람',kj,'번 출전','bib')}
     <div class="led-roll">${L.length?L.slice(0,8).map(c=>{ const rows=rankComp(c).filter(r=>r.done>0); return `<button type="button" class="lr" data-open="${c.id}"><span class="d">${+c.date.slice(5,7)}/${+c.date.slice(8)}</span><b>${esc(c.name)}</b><span class="s">개최 ${esc(compNm(c.createdBy))} · ${rows.length}명</span><span class="w">${compDone(c)?`🥇 ${esc(compNm(rows[0].id))}`:'진행 중'}</span></button>`; }).join(''):`<p class="led-dim" style="margin:6px 0">${m}월엔 아직 친선 대회가 없어요 · 사대에서 함께 쏘는 날 '+ 새 대회 열기'로!</p>`}</div></div>`;
 }
 function renderComp(){
