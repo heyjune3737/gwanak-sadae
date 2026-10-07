@@ -248,7 +248,7 @@ select.input{appearance:none;background-image:linear-gradient(45deg,transparent 
 .cal .d.today{outline:2px solid var(--indigo);outline-offset:-2px}
 
 /* ---- 대회 ---- */
-.comp-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r2);background:var(--card2);width:100%;text-align:left}
+.wit-pop{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:rgba(20,18,14,.35);animation:wit-in .25s ease-out}.wit-pop.out{opacity:0;transition:opacity .25s}.wit-c{background:#1d1b22;color:#fff;border:3px solid #000;box-shadow:5px 5px 0 #E8437A;padding:16px 22px;text-align:center;display:flex;flex-direction:column;gap:6px;max-width:300px}.wit-c small{color:#F2A7C3;font-size:12px;letter-spacing:2px}.wit-c b{font-family:var(--display);font-size:20px;line-height:1.35}@keyframes wit-in{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}.cd-ok{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin:6px 0 8px;font-size:12.5px}.sq-sheet{background:#1d1b22!important;color:#f4eee6!important;border-color:#000!important}.sq-inv{text-align:center;padding:6px 4px 2px}.sq-shapes{display:flex;justify-content:center;align-items:center;gap:16px;margin:6px 0 12px}.sq-shapes>svg{width:72px;height:72px;display:block}.sq-s{width:64px;height:64px;box-sizing:border-box;border:5px solid #F2A7C3;display:flex;align-items:center;justify-content:center;padding:4px;background:#1d1b22}.sq-c{width:68px;height:68px;box-sizing:border-box;border:5px solid #F2A7C3;clip-path:circle(50%);overflow:hidden;display:block;background:#F2A7C3;padding:0}.sq-c img{width:100%;height:100%;display:block;object-fit:cover;clip-path:circle(50%)}.sq-k{letter-spacing:10px;font-size:12px;color:#F2A7C3;margin:0}.sq-inv h3{font-size:20px;margin:6px 0 8px;color:#fff}.sq-d{font-size:13px;line-height:1.6;color:#d8d2ca;margin:0 0 14px}.sq-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sq-btns button{font:inherit;font-family:var(--display);font-size:16px;padding:12px 0;border:3px solid #000;cursor:pointer}.sq-yes{background:#E8437A;color:#fff;box-shadow:3px 3px 0 #000}.sq-no{background:#f4eee6;color:#1d1b22;box-shadow:3px 3px 0 #000}.sq-f{color:#a9a29a;margin:10px 0 0}.cm-month{margin-bottom:10px}.cmm-h{display:flex;align-items:center;justify-content:space-between;gap:6px}.cmm-h b{font-size:15px}.cmm-h .linkbtn{font-size:20px;padding:0 8px}.cmm-k{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}.cmm-k div{border:2px solid var(--ink);background:var(--card2);padding:6px;text-align:center;display:flex;flex-direction:column}.cmm-k b{font-size:18px}.cmm-k small{font-size:11px;color:var(--ink3)}.cmm-r{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-size:13px;margin:3px 0}.cmm-r em{font-style:normal;font-size:11.5px;color:var(--ink3);width:62px}.comp-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r2);background:var(--card2);width:100%;text-align:left}
 .comp-item .t{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start}
 .comp-item .t b{display:block;font-weight:500}
 .comp-item .t .sub{font-size:12px;color:var(--ink2);text-align:left}
@@ -2406,7 +2406,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.07g';
+const APP_VER = '2026.10.07h';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3147,7 +3147,7 @@ const memberById = id => S.members.find(m=>m.id===id) || (S.me && S.me.id===id ?
 const subMembers = sub({col:'members'}, rows => { S.members = rows; renderAll(); });
 const subAtt = sub({doc:'attendance/'+today()}, d => { S.attendance = d; renderToday(); });
 const subDays = sub(daysQuery(), rows => { S.myDays = rows; S.daysLoaded = true; renderRecord(); renderRoom(); if(window.__booted) renderHeader(); });
-const subComps = sub({col:'comps', orderBy:['date','desc'], limit:60}, rows => { S.comps = rows; renderComp(); if(typeof liveDraw==='function' && liveDraw) liveDraw(); });
+const subComps = sub({col:'comps', orderBy:['date','desc'], limit:60}, rows => { S.comps = rows; renderComp(); setTimeout(()=>{ if(typeof compInviteCheck==='function') compInviteCheck(); }, 1200); if(typeof liveDraw==='function' && liveDraw) liveDraw(); });
 function daysQuery(){ return {col:'days', where:[['memberId','==', S.me ? S.me.id : '__none__']], orderBy:['date','desc'], limit:2000}; }
 
 /* ---------- 탭 ---------- */
@@ -4228,6 +4228,34 @@ function cmpEntries(comp, a, b){
   }
   return {v:0, by:null};
 }
+// p120: 공식 대회 = kind 'official' (서버 26)부터 관리자 · 개발자만 만들거나 인정할 수 있음)
+const compOfficial = c => !!c && c.kind==='official';
+// p122: 참가 확인 — ok 칸이 없는 예전 대회는 모두 확인한 것으로 · 만든 사람은 늘 확인
+const compCanCancel = c => !!S.me && (canOfficial() || (!compOfficial(c) && c.createdBy===S.me.id));
+// p123: 친선 대회 위트 — 내가 만든 · 참가 확인한 친선 대회 수가 이 숫자가 될 때 한 번
+const WIT = {3:'🎲 슬슬 내기 맛을 아시는군요', 5:'🃏 당신은 내기 왕!', 10:'🎰 사대의 승부사 — 오늘도 한 판?', 20:'🀄 활터의 타짜… 아니 명궁!', 30:'💰 내기 장부가 두꺼워지는 중', 50:'👑 내기 명예의 전당 입성', 100:'🏯 전설의 내기꾼 — 정에 이름이 남아요'};
+function witCheck(){ try{ if(!S.me) return; const n=(S.comps||[]).filter(c=>!compOfficial(c) && (c.createdBy===S.me.id || (c.ok&&c.ok[S.me.id]===true))).length; const t=WIT[n]; if(!t) return;
+    const seen=lsGet('sadae.wit',{})||{}; if(seen[n]) return; seen[n]=1; lsSet('sadae.wit',seen);
+    const old=$('#witPop'); if(old) old.remove(); const el=document.createElement('div'); el.id='witPop'; el.className='wit-pop';
+    el.innerHTML=`<div class="wit-c"><small>친선 대회 ${n}번째</small><b>${t}</b></div>`; document.body.appendChild(el);
+    const close=()=>{ el.classList.add('out'); setTimeout(()=>el.remove(),250); }; el.addEventListener('click',close); setTimeout(close, 3200); }catch(e){} }
+const compOk = (c,id) => !c.ok || c.ok[id]===true || c.createdBy===id;
+const compAskList = () => (!S.me || store.kind!=='remote') ? [] : (S.comps||[]).filter(c=>c && !compOfficial(c) && c.ok && (c.members||[]).includes(S.me.id) && c.createdBy!==S.me.id && c.ok[S.me.id]===undefined && String(c.date||'')>=dstr(new Date(Date.now()-2*864e5)));
+const SQ_SHAPES = `<div class="sq-shapes" aria-hidden="true"><span class="sq-c"><img src="icon-192.png" alt=""></span><svg class="sq-t" viewBox="0 0 64 64"><polygon points="32,5 60,58 4,58" fill="none" stroke="#F2A7C3" stroke-width="5" stroke-linejoin="miter"/><svg x="18" y="24" width="28" height="28" viewBox="0 0 12 12" shape-rendering="crispEdges"><rect x="3" y="0" width="1" height="1" fill="#C98A4B"/><rect x="4" y="1" width="1" height="1" fill="#C98A4B"/><rect x="5" y="2" width="1" height="1" fill="#C98A4B"/><rect x="6" y="3" width="1" height="1" fill="#C98A4B"/><rect x="6" y="4" width="1" height="1" fill="#C98A4B"/><rect x="6" y="5" width="1" height="1" fill="#C98A4B"/><rect x="6" y="6" width="1" height="1" fill="#C98A4B"/><rect x="6" y="7" width="1" height="1" fill="#C98A4B"/><rect x="6" y="8" width="1" height="1" fill="#C98A4B"/><rect x="5" y="9" width="1" height="1" fill="#C98A4B"/><rect x="4" y="10" width="1" height="1" fill="#C98A4B"/><rect x="3" y="11" width="1" height="1" fill="#C98A4B"/><rect x="3" y="1" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="2" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="3" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="4" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="5" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="7" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="8" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="9" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="10" width="1" height="1" fill="#F4EEE6"/><rect x="1" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="2" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="3" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="4" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="5" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="6" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="7" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="8" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="9" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="10" y="6" width="1" height="1" fill="#F4EEE6"/><rect x="11" y="6" width="1" height="1" fill="#F2A7C3"/><rect x="10" y="5" width="1" height="1" fill="#F2A7C3"/><rect x="10" y="7" width="1" height="1" fill="#F2A7C3"/><rect x="1" y="5" width="1" height="1" fill="#E8437A"/><rect x="1" y="7" width="1" height="1" fill="#E8437A"/></svg></svg><span class="sq-s"><svg viewBox="0 0 6 7" width="30" height="35" shape-rendering="crispEdges"><rect x="0" y="0" width="6" height="7" fill="#2E3D63"/><rect x="1" y="2" width="4" height="3" fill="#C43E3E"/><rect x="2" y="3" width="2" height="1" fill="#E8D9B0"/></svg></span></div>`;
+let compAskShown=new Set();
+function compInviteCheck(){ try{ if(document.querySelector('#sheetBg')) return; const c=compAskList().find(x=>!compAskShown.has(x.id)); if(!c) return; compAskShown.add(c.id); openCompInvite(c); }catch(e){} }
+function openCompInvite(c){
+  const by=memberById(c.createdBy); const n=(c.members||[]).length;
+  const sh=openSheet(`<div class="sq-inv">${SQ_SHAPES}
+    <p class="sq-k">초 대 장</p><h3>🏹 대회에 참가하시겠습니까?</h3>
+    <p class="sq-d"><b>${esc((by&&by.name)||'사원')}</b> 님이 당신을 초대했습니다.<br>「${esc(c.name)}」 · ${fmtK(c.date)} · ${c.roundCount}순 ${c.roundCount*5}시 · 참가자 ${n}명</p>
+    <div class="sq-btns"><button type="button" class="sq-yes" id="sqYes">⭕ 참가</button><button type="button" class="sq-no" id="sqNo">❌ 안 함</button></div>
+    <p class="tiny sq-f">참가를 눌러야 친선 대회 배지에 들어가요</p></div>`);
+  sh.classList.add('sq-sheet');
+  const ans=async v=>{ const ok=await write(st=>st.merge('comps/'+c.id,{ok:{[S.me.id]:v}})); if(ok){ closeSheet(); toast(v?'참가했어요 · 행운을 빌어요 🏹':'이번엔 빠질게요'); if(v){ c.ok={...(c.ok||{}), [S.me.id]:true}; setTimeout(witCheck, 900); } setTimeout(compInviteCheck, v?4500:600); } };
+  $('#sqYes',sh).addEventListener('click',()=>ans(true)); $('#sqNo',sh).addEventListener('click',()=>ans(false));
+}
+const canOfficial = () => (typeof isAdminNow==='function' && isAdminNow()) || (typeof isDevNow==='function' && isDevNow());
 function rankComp(comp){
   const rows=(comp.members||[]).map(id=>({id, member:memberById(id)||{id,name:'(탈퇴)',char:'rabbit'}, ...entryOf(comp,id)}));
   rows.forEach(r=>{ r.total=r.rounds.reduce((s,x)=>s+rHits(x),0); r.done=r.rounds.filter(rDone).length; });
@@ -4235,29 +4263,48 @@ function rankComp(comp){
   let rank=1; rows.forEach((r,i)=>{ if(i>0){ const c=cmpEntries(comp,rows[i-1],r); if(c.v!==0) rank=i+1; r.tieWith = c.v===0; r.tieBy=c.by; if(c.v===0){ rows[i-1].tieWith=true; rows[i-1].tieBy=c.by; } } r.rank=rank; });
   return rows;
 }
+// p121: 대회의 정 · 보이는 대회 · 달별 친선 판
+const compJid = c => c.jid || (()=>{ const m=memberById(c.createdBy); return (m?memberJ(m):baseJ()).id; })();
+const compVisible = c => compJid(c)===homeJ().id || (!!S.me && (c.members||[]).includes(S.me.id));
+function compMonthHTML(){
+  const ym=S.cmYM||today().slice(0,7), J=homeJ(); const nm=id=>{ const m=memberById(id); return (m&&m.name)||'사원'; };
+  const L=(S.comps||[]).filter(c=>!compOfficial(c) && String(c.date||'').startsWith(ym) && compJid(c)===J.id && rankComp(c).filter(r=>r.done>0).length>=2);   // 2명 이상 쏜 대회만
+  const join={}, win={}, best=[]; let ppl=0, arrows=0;
+  for(const c of L){ const rows=rankComp(c).filter(r=>r.done>0); ppl+=rows.length; rows.forEach(r=>{ join[r.id]=(join[r.id]||0)+1; arrows+=r.done*5; if(r.done===c.roundCount && c.roundCount>=2) best.push({id:r.id, p:Math.round(r.total/(c.roundCount*5)*100), t:r.total, n:c.roundCount}); });
+    if(rows.length>=2 && rows.every(r=>r.done===c.roundCount)) win[rows[0].id]=(win[rows[0].id]||0)+1; }
+  const top=(o,u)=>Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([id,v],i)=>`<span>${['🥇','🥈','🥉'][i]} ${esc(nm(id))} <b class="num">${v}</b>${u}</span>`).join('')||'<span class="muted">아직 없어요</span>';
+  const b=best.sort((a,b)=>b.p-a.p||b.t-a.t)[0];
+  const [y,m]=ym.split('-').map(Number); const prev=`${m===1?y-1:y}-${String(m===1?12:m-1).padStart(2,'0')}`, next=`${m===12?y+1:y}-${String(m===12?1:m+1).padStart(2,'0')}`;
+  return `<div class="card cm-month"><div class="cmm-h"><button type="button" class="linkbtn" data-cmym="${prev}" aria-label="이전 달">‹</button><b>🤝 ${m}월 친선 대회 · ${esc(J.name)}</b><button type="button" class="linkbtn" data-cmym="${next}" ${next>today().slice(0,7)?'disabled':''} aria-label="다음 달">›</button></div>
+    <div class="cmm-k"><div><b class="num">${L.length}</b><small>대회</small></div><div><b class="num">${ppl}</b><small>참가(연인원)</small></div><div><b class="num">${arrows}</b><small>쏜 화살</small></div></div>
+    <div class="cmm-r"><em>다승</em>${top(win,'승')}</div><div class="cmm-r"><em>최다 출전</em>${top(join,'번')}</div>
+    <div class="cmm-r"><em>최고 기록</em>${b?`<span>🎯 ${esc(nm(b.id))} <b class="num">${b.p}%</b> <small class="muted">(${b.n}순 ${b.t}중)</small></span>`:'<span class="muted">아직 없어요</span>'}</div>
+    <p class="tiny muted" style="margin:6px 0 0">${L.length?'친선 대회는 누구나 열 수 있어요 · 달마다 새로 쌓여요':'이번 달엔 아직 친선 대회가 없어요. 사대에서 함께 쏘는 날 \'+ 새 대회\'로 열어 보세요!'}</p></div>`;
+}
 function renderComp(){
   const list=$('#compList'), det=$('#compDetail');
   if(S.openComp){ const comp=S.comps.find(c=>c.id===S.openComp); if(comp){ list.hidden=true; det.hidden=false; renderCompDetail(comp); return; } S.openComp=null; }
   list.hidden=false; det.hidden=true;
-  list.innerHTML = `<div class="card">
+  list.innerHTML = compMonthHTML() + `<div class="card">
     <div class="sec-head"><h2>대회 <small>정식(협회 규정) · 친선</small></h2><button class="btn pri sm" id="newComp">+ 새 대회</button></div>
-    ${S.comps.length ? `<div style="display:flex;flex-direction:column;gap:8px">${S.comps.map(c=>{ const rows=rankComp(c); const top=rows[0]; const done=rows.filter(r=>r.done===c.roundCount).length; return `<button class="comp-item" data-open="${c.id}"><span class="t"><b>${esc(c.name)}<span class="badge ${c.kind==='friendly'?'fun':''}">${c.kind==='friendly'?'친선':'정식'}</span></b><span class="sub">${fmtK(c.date)} · ${c.roundCount}순 ${c.roundCount*5}시 · ${rows.length}명${done===rows.length&&rows.length?` · 1위 ${esc(top.member.name)} ${top.total}중`:done?` · ${done}/${rows.length}명 완료`:''}</span></span><span class="n num">${c.roundCount}순</span></button>`; }).join('')}</div>`
+    ${S.comps.filter(compVisible).length ? `<div style="display:flex;flex-direction:column;gap:8px">${S.comps.filter(compVisible).map(c=>{ const rows=rankComp(c); const top=rows[0]; const done=rows.filter(r=>r.done===c.roundCount).length; return `<button class="comp-item" data-open="${c.id}"><span class="t"><b>${esc(c.name)}<span class="badge ${c.kind==='friendly'?'fun':''}">${c.kind==='friendly'?'친선':'공식'}</span>${compJid(c)!==homeJ().id?`<span class="badge">${esc(c.jname||'다른 정')}</span>`:''}</b><span class="sub">${fmtK(c.date)} · ${c.roundCount}순 ${c.roundCount*5}시 · ${rows.length}명${done===rows.length&&rows.length?` · 1위 ${esc(top.member.name)} ${top.total}중`:done?` · ${done}/${rows.length}명 완료`:''}</span></span><span class="n num">${c.roundCount}순</span></button>`; }).join('')}</div>`
       : `<p class="muted" style="margin:0">아직 대회가 없어요. <b>정식</b>은 월례회·승단·단체 사대에서 협회 경기규칙대로 순위를 내고, <b>친선</b>은 규칙을 자유롭게 정하는 내기용이에요. 만든 뒤 "사대 기록"으로 획관처럼 한 발씩 中/不을 적으면 됩니다.</p>`}
   </div>`;
   $('#newComp').addEventListener('click', openNewComp);
+  $$('[data-cmym]',list).forEach(b=>b.addEventListener('click',()=>{ if(b.disabled) return; S.cmYM=b.dataset.cmym; renderComp(); }));
   $$('[data-open]',list).forEach(b=>b.addEventListener('click',()=>{ S.openComp=b.dataset.open; renderComp(); }));
 }
 function openNewComp(){
   if(!S.me){ openProfile(); return; }
-  let kind='official'; let rules=[...OFFICIAL_RULES]; let rc=3; let order=[];   // p116: 처음엔 아무도 안 고름
+  let kind=canOfficial()?'official':'friendly'; let rules=kind==='official'?[...OFFICIAL_RULES]:['seonda','shootoff']; let rc=3; let order=[];   // p116: 처음엔 아무도 안 고름
   const allMembers=[S.me, ...S.members.filter(m=>m.id!==S.me.id)];
   const sh=openSheet(`
     <h3>새 대회</h3>
     <div class="kind" id="ncKind">
-      <button type="button" class="on" data-k="official"><b>정식 · 협회 규정</b><span>월례회·승단·단체 사대. 선다시수순 → 각궁·죽시 → 비교전 고정</span></button>
-      <button type="button" data-k="friendly"><b>친선 · 내기</b><span>규칙을 자유롭게 고르는 재미용</span></button>
+      <button type="button" class="${kind==='official'?'on':''}" data-k="official" ${canOfficial()?'':'disabled'}><b>정식 · 공식 대회</b><span>${canOfficial()?'월례회·승단·단체 사대. 선다시수순 → 각궁·죽시 → 비교전 고정 · 공식 배지':'관리자가 열어요 · 친선으로 연 뒤 관리자가 공식으로 인정할 수 있어요'}</span></button>
+      <button type="button" class="${kind==='friendly'?'on':''}" data-k="friendly"><b>친선 · 내기</b><span>규칙을 자유롭게 고르는 재미용 · 친선 배지</span></button>
     </div>
-    <div class="field"><label for="ncName">대회 이름</label><input class="input" id="ncName" maxlength="30" value="${new Date().getMonth()+1}월 월례회"></div>
+    <div class="field"><label for="ncName">대회 이름</label><input class="input" id="ncName" maxlength="30" value="${kind==='official'?(new Date().getMonth()+1)+'월 월례회':'친선 내기'}"></div>
     <div class="row">
       <div class="field grow"><label for="ncDate">날짜</label><input class="input" id="ncDate" type="date" value="${today()}"></div>
       <div class="field grow"><label for="ncRc">순수</label><select class="input" id="ncRc"><option value="3" selected>3순 (15시) · 월례회</option><option value="5">5순 (25시) · 친선</option><option value="9">9순 (45시) · 승단</option><option value="1">1순 (5시)</option><option value="2">2순 (10시)</option><option value="4">4순 (20시)</option><option value="6">6순 (30시)</option><option value="10">10순 (50시) · 일획</option></select></div>
@@ -4269,7 +4316,7 @@ function openNewComp(){
   const drawRules=()=>{ const locked=kind==='official'; $('#ncRuleLabel',sh).textContent = locked?'동점 규칙 (협회 경기규칙 제6조 · 고정)':'동점 규칙 — 누르는 순서대로 적용'; $('#ncRules',sh).innerHTML = RULES.filter(r=>!locked||OFFICIAL_RULES.includes(r.id)).map(r=>{ const i=rules.indexOf(r.id); return `<button type="button" class="rule ${i>-1?'on':''}" data-r="${r.id}" ${locked?'disabled':''}><span class="o">${i>-1?i+1:''}</span><span class="t">${r.name}<small>${r.desc}</small></span><span class="src ${r.src==='협회 규칙'?'assoc':''}">${r.src}</span></button>`; }).join(''); };
   const drawOrder=()=>{ const c=$('#ncCnt',sh); if(c) c.textContent=order.length+'명'; $$('#ncMembers .mp',sh).forEach(b=>b.classList.toggle('on',order.includes(b.dataset.m))); if(!order.length){ $('#ncOrder',sh).innerHTML='<p class="tiny muted" style="margin:0">위에서 참가 사원을 골라 주세요</p>'; return; } $('#ncOrder',sh).innerHTML = order.map((id,i)=>{ const m=allMembers.find(x=>x.id===id); if(!m) return ''; return `<div class="oi"><span class="n">${i+1}</span><span class="av">${charSVG(m.char)}</span><span class="nm">${esc(m.name)}${m.hand==='좌궁'?' <span class="tiny">좌궁</span>':''}</span><button type="button" data-up="${i}" ${i===0?'disabled':''}>▲</button><button type="button" data-down="${i}" ${i===order.length-1?'disabled':''}>▼</button></div>`; }).join('') || '<div class="muted">참가 사원을 골라주세요</div>'; };
   drawRules(); drawOrder();
-  $('#ncKind',sh).addEventListener('click',e=>{ const b=e.target.closest('[data-k]'); if(!b) return; kind=b.dataset.k; $$('#ncKind button',sh).forEach(x=>x.classList.toggle('on',x===b)); if(kind==='official') rules=[...OFFICIAL_RULES]; else rules=['seonda','shootoff']; if(kind==='friendly' && $('#ncName',sh).value.includes('월례회')) $('#ncName',sh).value='친선 내기'; drawRules(); });
+  $('#ncKind',sh).addEventListener('click',e=>{ const b=e.target.closest('[data-k]'); if(!b) return; if(b.disabled || (b.dataset.k==='official' && !canOfficial())){ toast('정식 대회는 관리자가 열어요'); return; } kind=b.dataset.k; $$('#ncKind button',sh).forEach(x=>x.classList.toggle('on',x===b)); if(kind==='official') rules=[...OFFICIAL_RULES]; else rules=['seonda','shootoff']; if(kind==='friendly' && $('#ncName',sh).value.includes('월례회')) $('#ncName',sh).value='친선 내기'; drawRules(); });
   $('#ncRules',sh).addEventListener('click', e=>{ const b=e.target.closest('.rule'); if(!b||b.disabled) return; const id=b.dataset.r; const i=rules.indexOf(id); if(i>-1) rules.splice(i,1); else rules.push(id); drawRules(); });
   $('#ncQuick',sh).addEventListener('click', e=>{ const b=e.target.closest('[data-qp]'); if(!b) return; const q=b.dataset.qp, ids=allMembers.map(m=>m.id);
     if(q==='none') order=[];
@@ -4284,8 +4331,8 @@ function openNewComp(){
     const name=$('#ncName',sh).value.trim()||'대회'; const date=$('#ncDate',sh).value||today(); rc=+$('#ncRc',sh).value;
     if(!order.length){ toast('참가 사원을 한 명 이상 골라주세요'); return; }
     const id=uid();
-    const ok=await write(st=>st.set('comps/'+id, {name, date, kind, roundCount:rc, rules, members:[...order], entries:{}, createdBy:S.me.id, createdAt:Date.now()}));
-    if(ok){ closeSheet(); S.openComp=id; renderComp(); toast('대회를 만들었어요'); }
+    const ok=await write(st=>st.set('comps/'+id, {name, date, kind, roundCount:rc, rules, members:[...order], entries:{}, createdBy:S.me.id, createdAt:Date.now(), jid:homeJ().id||'', jname:homeJ().name||'', ok:{[S.me.id]:true}}));
+    if(ok){ closeSheet(); S.openComp=id; renderComp(); toast('대회를 만들었어요'); if(kind==='friendly') setTimeout(witCheck, 900); }
   });
 }
 // ---------- 관(과녁) 그룹 ----------
@@ -4345,7 +4392,7 @@ function renderCompDetail(comp){
         ${cols.map(i=>{ const rd=r.rounds[i]; const h=rHits(rd); const part=rd&&!rDone(rd); return `<button class="cell ${rd?(h===5?'m':''):'empty'} ${part?'cur':''}" data-cell="${r.id}:${i}" aria-label="${esc(r.member.name)} ${i+1}순">${rd?(part?h+'·':h):'–'}</button>`; }).join('')}
         ${showShoot?`<button class="cell ${r.shootoff===null?'empty':''}" data-shoot="${r.id}">${r.shootoff===null?'–':r.shootoff}</button>`:''}`; }).join('')}
     </div>`;
-  det.innerHTML = `<div class="cd-top"><button class="btn sm" id="cdBack">← 대회</button><span class="grow"><b style="font-size:15px">${esc(comp.name)}</b><span class="badge ${comp.kind==='friendly'?'fun':''}">${comp.kind==='friendly'?'친선':'정식'}</span><br><span class="tiny">${fmtK(comp.date)} · ${comp.roundCount}순 ${comp.roundCount*5}시 · ${rows.length}명</span></span><button class="btn sm ghost" id="cdDel" style="color:var(--red)">대회 취소</button></div><div id="cdConfirm"></div>
+  det.innerHTML = `<div class="cd-top"><button class="btn sm" id="cdBack">← 대회</button><span class="grow"><b style="font-size:15px">${esc(comp.name)}</b><span class="badge ${comp.kind==='friendly'?'fun':''}">${comp.kind==='friendly'?'친선':'공식 ✅'}</span>${canOfficial()?`<button type="button" class="linkbtn tiny" id="cdCert">${comp.kind==='friendly'?'✅ 공식으로 인정':'친선으로 되돌리기'}</button>`:''}<br><span class="tiny">${fmtK(comp.date)} · ${comp.roundCount}순 ${comp.roundCount*5}시 · ${rows.length}명</span></span>${compCanCancel(comp)?'<button class="btn sm ghost" id="cdDel" style="color:var(--red)">대회 취소</button>':''}</div><div id="cdConfirm"></div>${!compOfficial(comp)&&comp.ok?`<div class="cd-ok"><span class="tiny muted">참가 확인</span>${(comp.members||[]).map(id=>{ const m=memberById(id); const v=compOk(comp,id)?'✅':comp.ok[id]===false?'❌':'⏳'; return `<span class="cd-okm">${v} ${esc((m&&m.name)||'사원')}</span>`; }).join('')}${S.me&&(comp.members||[]).includes(S.me.id)&&!compOk(comp,S.me.id)?'<button type="button" class="btn sm pri" id="cdOkMe">참가 확인</button>':''}</div>`:''}
     <div class="card">
     <div class="dv-tabs" role="tablist">${[['all','전체'],...DIVS].map(([k,t])=>{ const n=k==='all'?(comp.members||[]).length:(comp.members||[]).filter(id=>divOf(comp,id)===k).length; return `<button type="button" role="tab" data-dvtab="${k}" class="${DV===k?'on':''}">${t} <small>${n}</small></button>`; }).join('')}</div>
     ${!rows.length?'<p class="tiny muted" style="margin:6px 0">이 부에는 아직 사원이 없어요.</p>':''}
@@ -4365,7 +4412,13 @@ function renderCompDetail(comp){
   $('#cdBack').addEventListener('click',()=>{ S.openComp=null; renderComp(); });
   $('#cdLive').addEventListener('click',()=>openLive(comp.id)); bindGwan(comp, det); bindDiv(comp, det);
   $('#cdExport').addEventListener('click',()=>exportComp(comp));
-  $('#cdDel').addEventListener('click',()=>{ $('#cdConfirm').innerHTML=`<div class="confirm" style="margin:10px 0 4px"><span class="grow">이 대회를 취소할까요? 대회와 점수가 함께 지워져요.</span><button class="btn sm" id="cdNo">그대로 두기</button><button class="btn sm red" id="cdYes">대회 취소하기</button></div>`; try{ $('#cdConfirm').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){} $('#cdNo').addEventListener('click',()=>$('#cdConfirm').innerHTML=''); $('#cdYes').addEventListener('click',async()=>{ const ok=await write(st=>st.del('comps/'+comp.id)); if(ok){ S.openComp=null; renderComp(); toast('대회를 취소했어요'); } }); });
+  { const cb=$('#cdCert'); if(cb) cb.addEventListener('click', async ()=>{ const to=comp.kind==='friendly'?'official':'friendly';
+      const ok=await write(st=>st.merge('comps/'+comp.id, {kind:to, cert: to==='official'?{by:S.me.id, at:Date.now()}:null})); if(ok) toast(to==='official'?'공식 대회로 인정했어요 · 공식 배지에 들어가요':'친선 대회로 되돌렸어요'); }); }
+  { const ob=$('#cdOkMe'); if(ob) ob.addEventListener('click',()=>openCompInvite(comp)); }
+  if($('#cdDel')) $('#cdDel').addEventListener('click',()=>{ if(!compCanCancel(comp)){ toast(compOfficial(comp)?'공식 대회는 관리자가 취소해요':'대회를 만든 사람이 취소해요'); return; } $('#cdConfirm').innerHTML=`<div class="confirm" style="margin:10px 0 4px"><span class="grow">이 대회를 취소할까요? 대회와 점수가 함께 지워져요.</span><button class="btn sm" id="cdNo">그대로 두기</button><button class="btn sm red" id="cdYes">대회 취소하기</button></div>`; try{ $('#cdConfirm').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){} $('#cdNo').addEventListener('click',()=>$('#cdConfirm').innerHTML=''); $('#cdYes').addEventListener('click',()=>{ $('#cdConfirm').innerHTML='';
+    const n=Object.keys(comp.entries||{}).length; const sh=openSheet(`<h3>⚠️ 정말 취소할까요?</h3><p style="margin:0 0 6px">「<b>${esc(comp.name)}</b>」${n?` · <b>${n}명</b>의 점수`:''}가 모두 지워지고 <b style="color:var(--red)">되돌릴 수 없어요.</b></p><p class="tiny muted" style="margin:0">한 번 더 확인하는 창이에요 (잘못 누르는 걸 막아요)</p><div class="actions"><button class="btn ghost" type="button" id="cd2No">아니요, 그대로 둘게요</button><button class="btn red" type="button" id="cd2Yes">네, 대회를 지워요</button></div>`);
+    $('#cd2No',sh).addEventListener('click',closeSheet);
+    $('#cd2Yes',sh).addEventListener('click',async()=>{ const ok=await write(st=>st.del('comps/'+comp.id)); closeSheet(); if(ok){ S.openComp=null; renderComp(); toast('대회를 취소했어요'); } }); }); });
   $$('[data-cell]',det).forEach(b=>b.addEventListener('click',()=>{ const [mid,i]=b.dataset.cell.split(':'); openCellEdit(comp, mid, +i); }));
   $$('[data-shoot]',det).forEach(b=>b.addEventListener('click',()=>openShootoff(comp, b.dataset.shoot)));
 }
@@ -4862,7 +4915,12 @@ function growthOf(days, mid){
   const W=[...new Set(L.map(d=>wNum(d.date)))].sort((a,b)=>a-b); let wr=0, wp=null;
   for(const w of W){ wr = (wp!==null && w===wp+1) ? wr+1 : 1; wp=w; g.bestWeeks=Math.max(g.bestWeeks,wr); }
   const tw=wNum(today()); if(W.length && (W[W.length-1]===tw || W[W.length-1]===tw-1)){ let k=W.length-1, c=1; while(k>0 && W[k-1]===W[k]-1){ c++; k--; } g.curWeeks=c; }
-  g.comps=(S.comps||[]).filter(c=>{ const e=(c.entries||{})[mid]; return e && (e.rounds||[]).some(r=>Array.isArray(r)&&r.some(x=>x===true||x===false)); }).length;
+  const cpRec=(c,id)=>{ const e=(c.entries||{})[id]; return !!e && (e.rounds||[]).some(r=>Array.isArray(r)&&r.some(x=>x===true||x===false)); };
+  g.comps=(S.comps||[]).filter(c=>compOfficial(c) && cpRec(c,mid)).length;   // p120: 공식 대회만
+  { const ds=new Set(); for(const c of (S.comps||[])){ if(compOfficial(c) || (+c.roundCount||0)<2) continue; const e=(c.entries||{})[mid]; if(!e) continue;
+      if(!compOk(c,mid) || (e.rounds||[]).filter(rDone).length < c.roundCount) continue; if(Object.keys(c.entries||{}).filter(id=>id!==mid && compOk(c,id) && cpRec(c,id)).length<2) continue; ds.add(c.date); }
+    g.friendly=ds.size; }
+  g.podium=placesOf(mid).length;
   return g;
 }
 // ---------- 배지: 단계형 (실력 6단계 · 노력 4단계) ----------
@@ -4874,7 +4932,9 @@ const BSETS = [
   {id:'rounds',ic:'💯', t:'누적',     u:'순',      T:[100,1000,3000,10000], v:g=>g.n, d:'쌓인 순 수'},
   {id:'weeks', ic:'🔁', t:'꾸준함',   u:'주 연속', T:[4,12,26,52], v:g=>g.bestWeeks, d:'한 주도 빠짐없이 활터에 온 주'},
   {id:'day',   ic:'⚡', t:'하루',     u:'순',      T:[9,12,15,20], v:g=>g.maxN, d:'하루에 쏜 순 (9순 = 승단 심사만큼)'},
-  {id:'comp',  ic:'🏆', t:'대회',     u:'회 출전', T:[1,10,30,100], v:g=>g.comps, d:'정 대회에 나간 횟수'},
+  {id:'comp',  ic:'🏆', t:'공식 대회', u:'회 출전', T:[1,5,15,30], v:g=>g.comps, d:'관리자가 연 · 인정한 공식 대회(월례회 등)에 나간 횟수'},
+  {id:'podium',ic:'🥇', t:'입상',     u:'번',      T:[1,3,10,20], v:g=>g.podium||0, d:'공식 대회 1~3등 (부별 포함)', mag:false},
+  {id:'friendly',ic:'🤝', t:'친선 대회', u:'번',    T:[1,10,30,100], v:g=>g.friendly||0, d:'나 말고 2명 이상과 2순 이상을 끝까지 쏜 친선 대회 · 하루 한 번만 셈', mag:false},
   {id:'cover', ic:'📰', t:'표지 스타', u:'번',     T:[1,6,12,36], v:g=>coverInfo(g.mid).n, d:'사대 월보 표지(성실왕)에 오른 횟수 · 정별 월보 포함', mag:false},
   {id:'tour',  ic:'🏯', t:'정 순례',  u:'곳',      T:[2,4,6,8], v:g=>tourCount(g.mid), d:'습사 등록한 서로 다른 정 (소속 정 포함 · 8곳 = 서울 8정 순례)', mag:false},
   {id:'wind',  ic:'🌬', t:'바람 궁사', u:'순',     T:[10,50,100,300], v:g=>g.windStrong||0, d:"바람 '강'일 때 쏜 순 (표 기록 위 바람 칸)"},
@@ -4932,7 +4992,7 @@ function ribbonsOf(mid){
 }
 // 대회 입상: 끝까지 쏜 대회에서 부별 1~3위
 function placesOf(mid){
-  const out=[]; for(const c of (S.comps||[])){ if(!(c.members||[]).includes(mid)) continue;
+  const out=[]; for(const c of (S.comps||[])){ if(!compOfficial(c) || !(c.members||[]).includes(mid)) continue;   // p120: 공식만
     const div=(typeof divOf==='function')?divOf(c,mid):null; const mem = div ? (c.members||[]).filter(id=>divOf(c,id)===div) : (c.members||[]);
     const rows=rankComp({...c, members:mem}); const r=rows.find(x=>x.id===mid); if(!r || r.done!==c.roundCount) continue;
     if(rows.some(x=>x.done!==c.roundCount)) continue;   // 그 부가 다 끝난 대회만
@@ -4962,7 +5022,8 @@ const HIDDEN = [
   {id:'samenum',ic:'🔢', t:'같은 숫자 날', d:'월과 일이 같은 날 습사(1/1 · 2/2 … 12/12)', c:'날씨 · 때', h:['숫자가 겹치는 날','달력을 보세요 — 몇 월 며칠?']},
   {id:'holiday',ic:'🎑', t:'명절 사대',  d:'설 · 추석 당일 습사', c:'날씨 · 때', h:['모두 고향 갈 때','설이나 한가위 당일']},
   {id:'crowd',  ic:'👯', t:'북적 사대',  d:'같은 시간대 사대에 6명 이상과 함께', c:'함께', h:['혼자가 아니야','한 시간대에 여섯 명 넘게']},
-  {id:'shoot',  ic:'⚖️', t:'비교전',     d:'대회에서 동점으로 비교전까지', c:'함께', h:['승부는 끝나지 않았다','같은 점수, 한 순 더']},
+  {id:'shoot',  ic:'⚖️', t:'비교전',     d:'공식 대회에서 동점으로 비교전까지', c:'함께', h:['승부는 끝나지 않았다','같은 점수, 한 순 더']},
+  {id:'jangwon',ic:'👑', t:'장원',       d:'공식 대회 1등 (부별 포함)', c:'함께', h:['정에서 가장 높은 자리','공식 대회에서 맨 위에']},
   {id:'cheers', ic:'💌', t:'응원 부자',  d:'받은 응원 · 반응 · 방명록 100개', c:'함께', h:['사랑받는 궁사','응원이 백 개']},
 ];
 // 이달의 숨은 배지 — 그달에만 받음 · 힌트는 처음부터 보임 [그림, 이름, 조건, 힌트]
@@ -5034,7 +5095,8 @@ function hiddenOf(mid, days, upto){
     if(HID_HOL.includes(d.date)) got.holiday=1; }
   for(const k in D){ if(!k.startsWith('attendance/')||(upto&&k.slice(11)>upto)) continue; const E=(D[k]&&D[k].entries)||{}; const me=E[mid]; if(!me||!me.slot) continue; const j=entryJid(me);
     if(Object.values(E).filter(e=>e&&e.slot===me.slot&&entryJid(e)===j).length>=6){ got.crowd=1; break; } }
-  if((S.comps||[]).some(c=>c&&c.entries&&c.entries[mid]&&c.entries[mid].shootoff!=null&&c.entries[mid].shootoff!==false)) got.shoot=1;
+  if((S.comps||[]).some(c=>c&&compOfficial(c)&&c.entries&&c.entries[mid]&&c.entries[mid].shootoff!=null&&c.entries[mid].shootoff!==false)) got.shoot=1;
+  if(placesOf(mid).some(p=>p.rank===1)) got.jangwon=1;
   { let n=0; for(const k in D){ const x=D[k]; if(!x||!x.entries) continue;
       if(k.startsWith('attendance/')){ const e=x.entries[mid]; if(e&&e.reactions) n+=Object.entries(e.reactions).filter(([f,v])=>v&&f!==mid).length; }
       else if(k.startsWith('plaza/')){ for(const e of Object.values(x.entries)) if(e&&e.from===mid&&e.rx) n+=Object.entries(e.rx).filter(([f,v])=>v&&f!==mid).length; }
@@ -5077,7 +5139,7 @@ function monthlyOf(days){
   return {cur, got, year, by};
 }
 const BCOL=['#9AA3AD','#C9874A','#9AA3AD','#D9A520','#3E9A7A','#6B2E78','#D4AF37'];
-const SHELVES=[['s1','🎯 실력','동 · 은 · 금 · 옥 · 명궁 · 신궁 6단계',['molgi','rate'],1],['s2','🏹 꾸준함','4단계',['days','rounds','weeks','day']],['s3','🧩 함께','4단계',['kind','tour','comp','cover']],['s4','🌦 날씨 · 계절','순 저장 때 남은 바람 · 날씨 · 기온으로 자동',['wind','rain','cold','hot']]];
+const SHELVES=[['s1','🎯 실력','동 · 은 · 금 · 옥 · 명궁 · 신궁 6단계',['molgi','rate'],1],['s2','🏹 꾸준함','4단계',['days','rounds','weeks','day']],['s3','🧩 함께','4단계',['kind','tour','cover']],['s5','🏆 대회','공식 대회 · 친선 대회 따로',['comp','podium','friendly']],['s4','🌦 날씨 · 계절','순 저장 때 남은 바람 · 날씨 · 기온으로 자동',['wind','rain','cold','hot']]];
 const NEW_UNTIL='2026-11-07';
 function badgeTip(x){ const u=x.u, now = x.k ? `지금 ${BTIER[x.k]}(${x.T[x.k-1]}${u})` : '아직 받기 전';
   if(!x.next) return `${x.ic} ${x.t} — ${x.d} · ${now} · 가장 높은 단계까지 모두 받았어요 🎉`;
