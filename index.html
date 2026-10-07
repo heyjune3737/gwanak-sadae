@@ -278,7 +278,7 @@ td.total{font-family:var(--display);font-size:16px}
 .rule .t small{display:block;color:var(--ink2);font-size:11.5px}
 .rule .src{font-size:10.5px;padding:1px 6px;border-radius:999px;border:1px solid var(--line)}
 .rule .src.assoc{color:var(--green);border-color:var(--green)}
-.member-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.nc-quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}.member-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
 .mp{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:var(--r2);border:1px solid var(--line);background:var(--card)}
 .mp svg{width:44px;height:53px}
 .mp span{font-size:12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -945,7 +945,7 @@ svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:
 .rt-f{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink2);padding:7px 8px;border-top:2px solid var(--ink)}
 .rt-del .rt-h,.rt-del .rt-r{grid-template-columns:38px repeat(5,minmax(0,1fr)) 38px 52px 24px}
 .rt-x{width:22px;height:30px;padding:0;border:0;background:transparent;color:var(--ink3);font:inherit;font-size:14px;cursor:pointer}
-#todayRounds .rt{margin:4px 0 2px}
+#todayRounds .rt{margin:4px 0 2px}.rt-ed{font:inherit;font-size:inherit;font-weight:700;padding:1px 4px;margin:-2px 0;border:1.5px dashed var(--ink3);background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap}.rt-lk{font-style:normal;font-size:10px;opacity:.55;margin-left:2px}#reSlots{margin:0 0 10px}#reSlots .arrow.cur{outline:3px solid var(--gold);outline-offset:1px}#rePad .res.on{outline:3px solid var(--ink)}
 .rt-c{white-space:nowrap}.rt-del .rt-c{font-size:11px;padding-right:2px}.rt-del .rt-c small{font-size:9.5px;margin-left:1px}
 .dtag-w{text-align:center;margin:-4px 0 8px}.dtag{display:inline-block;font-size:11.5px;background:var(--gold-soft);border:1.5px solid var(--ink);padding:1px 7px}
 /* 승단 사다리 · 목표 · 조언 */
@@ -3499,6 +3499,7 @@ $('#saveRound').addEventListener('click', async ()=>{
   const n0=(cur.rounds||[]).length; { const jw=S.windNow[windJid()]; if(!jw || jw.err || Date.now()-(jw.at||0)>15*60e3){ try{ await Promise.race([fetchWind(windJid(), true), new Promise(r=>setTimeout(r,2500))]); }catch(e){} } } const cw=currentWind();
   if(cw && (cw.r || cw.ms!=null)){ const ws=(cur.winds||[]).slice(0,n0); while(ws.length<n0) ws.push(null); ws.push({...(cw.r?{r:cw.r, l:cw.l||0}:{}), src:'a', ...(cw.ms!=null?{ms:cw.ms,deg:cw.deg,g:cw.g}:{}), ...(cw.wc!=null?{wc:cw.wc}:{}), ...(cw.t!=null?{t:cw.t}:{}), ...(cw.p!=null?{p:cw.p}:{})}); cur.winds=ws; }
   else if(cur.winds){ const ws=cur.winds.slice(0,n0); while(ws.length<n0) ws.push(null); ws.push(null); cur.winds=ws; }
+  { const at=(Array.isArray(cur.at)?cur.at:[]).slice(0,n0); while(at.length<n0) at.push(null); at.push(Date.now()); cur.at=at; }
   cur.rounds=[...(cur.rounds||[]), arr]; cur.updatedAt=Date.now();
   { const G=currentGoal(), v=goalStore(); if(G) cur.goal={g:G.g, n:G.n}; else if(cur.goal && v.day && v.day.date===t && !v.day.g) cur.goal=null; }
   const ok=await write(st=>st.set(p, cur));
@@ -3885,9 +3886,11 @@ function renderRecord(){
   $('#todaySum').innerHTML = ta ? `${th}/${ta}시 · <b>${Math.round(th/ta*100)}%</b> · 몰기 ${tm}` : '';
   $('#cardToday').hidden = !rounds.length;
   const tws=(td&&td.winds)||[];
-  $('#todayRounds').innerHTML = rounds.length ? roundTableHTML(rounds, tws, {del:true})
+  $('#todayRounds').innerHTML = rounds.length ? roundTableHTML(rounds, tws, {del:true, ed:rounds.map((r,k)=>rdEditable(td,k))})
     : `<div class="muted">${S.me?'오늘 낸 순이 아직 없어요. 위에서 5시를 채우고 저장해 보세요.':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>`;
   $$('#todayRounds [data-del]').forEach(b=>b.addEventListener('click', ()=>confirmDelRound(+b.dataset.del)));
+  $$('#todayRounds [data-edr]').forEach(b=>b.addEventListener('click', ()=>openRoundEdit(+b.dataset.edr)));
+  if(rounds.length) setTimeout(rdLockTick, 0);
   // 이번 달
   const ym=t.slice(0,7); const [Y,M]=ym.split('-').map(Number);
   $('#monthLabel').textContent = `${M}월`;
@@ -3921,10 +3924,38 @@ function missGridHTML(miss, hits){
   return `<div class="mgrid">${['ul','u','ur','l','h','r','dl','d','dr'].map(cell).join('')}</div>${miss.X?`<div class="tiny muted" style="margin-top:6px">? 불(기타) ${miss.X}발</div>`:''}`;
 }
 const statTiles = arr => arr.map(([v,l])=>`<div class="stat"><div class="v num">${v}</div><div class="l">${l}</div></div>`).join('');
+// ===== p117 · 순 고치기 (저장 뒤 1시간 · 그날만) =====
+const RD_EDIT_MS = 60*60e3;
+function rdEditable(day, k){ if(!day || day.date!==today()) return false; const t=Array.isArray(day.at)?day.at[k]:null; return !!t && Date.now()-t < RD_EDIT_MS; }
+let rdTick=null; function rdLockTick(){ clearTimeout(rdTick); const td=S.myDays.find(d=>d.date===today()); if(!td || !Array.isArray(td.at)) return;
+  const left=td.at.filter(Boolean).map(t=>RD_EDIT_MS-(Date.now()-t)).filter(x=>x>0); if(!left.length) return;
+  rdTick=setTimeout(()=>{ if(S.tab==='record' && !document.querySelector('#sheetBg')) renderRecord(); else rdLockTick(); }, Math.min(...left)+500); }
+function openRoundEdit(k){
+  const td=S.myDays.find(d=>d.date===today()); if(!rdEditable(td,k)){ toast('저장하고 1시간이 지나 잠겼어요'); renderRecord(); return; }
+  let arr=[...td.rounds[k]]; let cur=0;
+  const mins=()=>Math.max(1,Math.ceil((RD_EDIT_MS-(Date.now()-td.at[k]))/60e3));
+  const sh=openSheet(`<h3>${k+1}순 고치기</h3><p class="tiny muted" style="margin:0 0 8px">고칠 시를 누르고 아래에서 결과를 고르세요 · <b id="reLeft">${mins()}분</b> 더 고칠 수 있어요</p>
+    <div class="arrows" id="reSlots"></div><div class="results" id="rePad"></div>
+    <div class="actions"><button class="btn ghost" type="button" id="reCancel">취소</button><button class="btn pri" type="button" id="reSave">고친 대로 저장</button></div>`);
+  const draw=()=>{ $('#reSlots',sh).innerHTML=arr.map((r,i)=>`<button type="button" class="arrow set ${rc(r)} ${i===cur?'cur':''}" data-ri="${i}" aria-label="${i+1}시 ${RES[r].l}"><span class="k">${r==='H'?'中':glyph(r)}</span><span>${i+1}시</span></button>`).join('');
+    $('#rePad',sh).innerHTML=RES_PAD.map(x=>`<button type="button" class="res ${rc(x)} ${padArea(x).length===2?'corner':''} ${arr[cur]===x?'on':''}" data-rv="${x}" style="grid-area:${padArea(x)}"><span class="k">${glyph(x)}</span><span class="l">${RES[x].l}</span></button>`).join('');
+    $('#reSave',sh).textContent = arr.every(x=>x==='H')?'몰기! 고친 대로 저장':'고친 대로 저장'; };
+  draw();
+  $('#reSlots',sh).addEventListener('click',e=>{ const b=e.target.closest('[data-ri]'); if(!b) return; cur=+b.dataset.ri; draw(); });
+  $('#rePad',sh).addEventListener('click',e=>{ const b=e.target.closest('[data-rv]'); if(!b) return; arr[cur]=b.dataset.rv; if(cur<4) cur++; draw(); });
+  $('#reCancel',sh).addEventListener('click',closeSheet);
+  $('#reSave',sh).addEventListener('click', async ()=>{
+    const t=today(), p=`days/${S.me.id}_${t}`; const doc=await store.get(p);
+    if(!doc || !Array.isArray(doc.rounds) || !doc.rounds[k] || !rdEditable({...doc,date:t},k)){ toast('저장하고 1시간이 지나 잠겼어요'); closeSheet(); renderRecord(); return; }
+    if(JSON.stringify(doc.rounds[k])===JSON.stringify(arr)){ closeSheet(); return; }
+    doc.rounds[k]=arr; doc.updatedAt=Date.now();
+    const ok=await write(st=>st.set(p, doc)); if(ok){ closeSheet(); toast(`${k+1}순을 고쳤어요`); }
+  });
+}
 function confirmDelRound(i){
   const sh=openSheet(`<h3>${i+1}순 기록을 지울까요?</h3><p class="muted">지운 기록은 되돌릴 수 없어요.</p><div class="actions"><button class="btn ghost" id="cNo">취소</button><button class="btn red" id="cYes">지우기</button></div>`);
   $('#cNo',sh).addEventListener('click',closeSheet);
-  $('#cYes',sh).addEventListener('click', async ()=>{ const t=today(), p=`days/${S.me.id}_${t}`; const cur=await store.get(p); if(cur){ cur.rounds.splice(i,1); if(Array.isArray(cur.winds)) cur.winds.splice(i,1); cur.updatedAt=Date.now(); await write(st=> cur.rounds.length ? st.set(p,cur) : st.del(p)); } closeSheet(); });
+  $('#cYes',sh).addEventListener('click', async ()=>{ const t=today(), p=`days/${S.me.id}_${t}`; const cur=await store.get(p); if(cur){ cur.rounds.splice(i,1); if(Array.isArray(cur.winds)) cur.winds.splice(i,1); if(Array.isArray(cur.at)) cur.at.splice(i,1); cur.updatedAt=Date.now(); await write(st=> cur.rounds.length ? st.set(p,cur) : st.del(p)); } closeSheet(); });
 }
 
 /* =========================================================
@@ -3941,9 +3972,9 @@ const GRADES = [[39,'9단'],[37,'8단'],[35,'7단'],[33,'6단'],[31,'5단'],[30,
 const gradeFor = t => { const g=GRADES.find(([n])=>t>=n); return g?g[1]:null; };
 /* ---------- 순 기록 표 (시지표) — 기록 보기 · 입력 화면 오늘 칸 ---------- */
 function roundTableHTML(rs, winds, o={}){
-  const del=!!o.del; let ch=0; const tot=rs.reduce((a,r)=>a+hitsOf(r),0);
+  const del=!!o.del; const ed=o.ed||null; let ch=0; const tot=rs.reduce((a,r)=>a+hitsOf(r),0);
   return `<div class="rt ${del?'rt-del':''}"><div class="rt-h"><span>순</span><span>1시</span><span>2시</span><span>3시</span><span>4시</span><span>5시</span><span>중</span><span>누적</span>${del?'<span></span>':''}</div>${rs.map((r,k)=>{ const n=hitsOf(r); ch+=n; const pc=Math.round(ch/((k+1)*5)*100);
-    return `<div class="rt-r ${n===5?'molgi':''} ${n===0?'zero':''} ${n>0&&n<5?'hit':''} ${n===4?'s4':''}"><span class="rt-n">${k+1}순${windLine((winds||[])[k])?'':windChip((winds||[])[k])}</span>${r.map(x=>`<span class="rt-d ${x==='H'?'H':''}">${x==='H'?'中':glyph(x)}</span>`).join('')}<span class="rt-s num">${n}<em>${n*20}%</em></span><span class="rt-c num">${ch}<small>· ${pc}%</small><i><b style="width:${pc}%"></b></i></span>${del?`<button type="button" class="rt-x" data-del="${k}" aria-label="${k+1}순 지우기">✕</button>`:''}</div>${windLine((winds||[])[k])?`<div class="rt-w">${windChipB((winds||[])[k])}<span class="rt-wd">${esc(windDetail((winds||[])[k]))}</span><span class="rt-wx">${esc(wxLabel((winds||[])[k]))}</span></div>`:''}`; }).join('')}
+    return `<div class="rt-r ${n===5?'molgi':''} ${n===0?'zero':''} ${n>0&&n<5?'hit':''} ${n===4?'s4':''}"><span class="rt-n">${ed?(ed[k]?`<button type="button" class="rt-ed" data-edr="${k}" aria-label="${k+1}순 고치기">${k+1}순 ✏️</button>`:`${k+1}순<i class="rt-lk" title="1시간이 지나 잠김">🔒</i>`):`${k+1}순`}${windLine((winds||[])[k])?'':windChip((winds||[])[k])}</span>${r.map(x=>`<span class="rt-d ${x==='H'?'H':''}">${x==='H'?'中':glyph(x)}</span>`).join('')}<span class="rt-s num">${n}<em>${n*20}%</em></span><span class="rt-c num">${ch}<small>· ${pc}%</small><i><b style="width:${pc}%"></b></i></span>${del?`<button type="button" class="rt-x" data-del="${k}" aria-label="${k+1}순 지우기">✕</button>`:''}</div>${windLine((winds||[])[k])?`<div class="rt-w">${windChipB((winds||[])[k])}<span class="rt-wd">${esc(windDetail((winds||[])[k]))}</span><span class="rt-wx">${esc(wxLabel((winds||[])[k]))}</span></div>`:''}`; }).join('')}
     <div class="rt-f"><span>${(winds||[]).some(w=>w&&(w.r||w.ms!=null))?'바람 세기 <span class="wsp ws1">약</span> <span class="wsp ws2">중</span> <span class="wsp ws3">강</span>':'中 관중 · 화살표 = 빗나간 방향'}</span><span>평균 ${rs.length?(tot/rs.length).toFixed(1):0}중</span></div></div>`;
 }
 /* ---------- ⏱ 휴식 타이머 ---------- */
@@ -4212,7 +4243,7 @@ function renderComp(){
 }
 function openNewComp(){
   if(!S.me){ openProfile(); return; }
-  let kind='official'; let rules=[...OFFICIAL_RULES]; let rc=3; let order=[S.me.id, ...S.members.map(m=>m.id).filter(id=>id!==S.me.id)];
+  let kind='official'; let rules=[...OFFICIAL_RULES]; let rc=3; let order=[];   // p116: 처음엔 아무도 안 고름
   const allMembers=[S.me, ...S.members.filter(m=>m.id!==S.me.id)];
   const sh=openSheet(`
     <h3>새 대회</h3>
@@ -4226,14 +4257,20 @@ function openNewComp(){
       <div class="field grow"><label for="ncRc">순수</label><select class="input" id="ncRc"><option value="3" selected>3순 (15시) · 월례회</option><option value="5">5순 (25시) · 친선</option><option value="9">9순 (45시) · 승단</option><option value="1">1순 (5시)</option><option value="2">2순 (10시)</option><option value="4">4순 (20시)</option><option value="6">6순 (30시)</option><option value="10">10순 (50시) · 일획</option></select></div>
     </div>
     <div><div class="muted" style="margin-bottom:6px" id="ncRuleLabel">동점 규칙 (협회 경기규칙 제6조 · 고정)</div><div class="rule-list" id="ncRules"></div></div>
-    <div><div class="muted" style="margin-bottom:6px">참가 사원 <span class="tiny">— 누르면 빼고 넣기</span></div><div class="member-pick" id="ncMembers">${allMembers.map(m=>`<button type="button" class="mp on" data-m="${m.id}">${charSVG(m.char)}<span>${esc(m.name)}</span></button>`).join('')}</div></div>
+    <div><div class="muted" style="margin-bottom:6px">참가 사원 <b id="ncCnt">0명</b> <span class="tiny">— 누르면 넣고 빼기</span></div><div class="nc-quick" id="ncQuick"><button type="button" class="chip" data-qp="att">🏹 오늘 사대 온 사원</button><button type="button" class="chip" data-qp="me">나</button><button type="button" class="chip" data-qp="all">모두</button><button type="button" class="chip" data-qp="none">모두 빼기</button></div><div class="member-pick" id="ncMembers">${allMembers.map(m=>`<button type="button" class="mp" data-m="${m.id}">${charSVG(m.char)}<span>${esc(m.name)}</span></button>`).join('')}</div></div>
     <div><div class="muted" style="margin-bottom:6px">사대 순서 (팔찌동) <span class="tiny">— 왼쪽부터. ▲▼로 바꾸기</span></div><div class="order" id="ncOrder"></div></div>
     <div class="actions"><button class="btn ghost" id="ncCancel">취소</button><button class="btn pri" id="ncSave">대회 만들기</button></div>`);
   const drawRules=()=>{ const locked=kind==='official'; $('#ncRuleLabel',sh).textContent = locked?'동점 규칙 (협회 경기규칙 제6조 · 고정)':'동점 규칙 — 누르는 순서대로 적용'; $('#ncRules',sh).innerHTML = RULES.filter(r=>!locked||OFFICIAL_RULES.includes(r.id)).map(r=>{ const i=rules.indexOf(r.id); return `<button type="button" class="rule ${i>-1?'on':''}" data-r="${r.id}" ${locked?'disabled':''}><span class="o">${i>-1?i+1:''}</span><span class="t">${r.name}<small>${r.desc}</small></span><span class="src ${r.src==='협회 규칙'?'assoc':''}">${r.src}</span></button>`; }).join(''); };
-  const drawOrder=()=>{ $('#ncOrder',sh).innerHTML = order.map((id,i)=>{ const m=allMembers.find(x=>x.id===id); if(!m) return ''; return `<div class="oi"><span class="n">${i+1}</span><span class="av">${charSVG(m.char)}</span><span class="nm">${esc(m.name)}${m.hand==='좌궁'?' <span class="tiny">좌궁</span>':''}</span><button type="button" data-up="${i}" ${i===0?'disabled':''}>▲</button><button type="button" data-down="${i}" ${i===order.length-1?'disabled':''}>▼</button></div>`; }).join('') || '<div class="muted">참가 사원을 골라주세요</div>'; };
+  const drawOrder=()=>{ const c=$('#ncCnt',sh); if(c) c.textContent=order.length+'명'; $$('#ncMembers .mp',sh).forEach(b=>b.classList.toggle('on',order.includes(b.dataset.m))); if(!order.length){ $('#ncOrder',sh).innerHTML='<p class="tiny muted" style="margin:0">위에서 참가 사원을 골라 주세요</p>'; return; } $('#ncOrder',sh).innerHTML = order.map((id,i)=>{ const m=allMembers.find(x=>x.id===id); if(!m) return ''; return `<div class="oi"><span class="n">${i+1}</span><span class="av">${charSVG(m.char)}</span><span class="nm">${esc(m.name)}${m.hand==='좌궁'?' <span class="tiny">좌궁</span>':''}</span><button type="button" data-up="${i}" ${i===0?'disabled':''}>▲</button><button type="button" data-down="${i}" ${i===order.length-1?'disabled':''}>▼</button></div>`; }).join('') || '<div class="muted">참가 사원을 골라주세요</div>'; };
   drawRules(); drawOrder();
   $('#ncKind',sh).addEventListener('click',e=>{ const b=e.target.closest('[data-k]'); if(!b) return; kind=b.dataset.k; $$('#ncKind button',sh).forEach(x=>x.classList.toggle('on',x===b)); if(kind==='official') rules=[...OFFICIAL_RULES]; else rules=['seonda','shootoff']; if(kind==='friendly' && $('#ncName',sh).value.includes('월례회')) $('#ncName',sh).value='친선 내기'; drawRules(); });
   $('#ncRules',sh).addEventListener('click', e=>{ const b=e.target.closest('.rule'); if(!b||b.disabled) return; const id=b.dataset.r; const i=rules.indexOf(id); if(i>-1) rules.splice(i,1); else rules.push(id); drawRules(); });
+  $('#ncQuick',sh).addEventListener('click', e=>{ const b=e.target.closest('[data-qp]'); if(!b) return; const q=b.dataset.qp, ids=allMembers.map(m=>m.id);
+    if(q==='none') order=[];
+    else if(q==='all') order=[...order, ...ids.filter(id=>!order.includes(id))];
+    else if(q==='me'){ if(!order.includes(S.me.id)) order.push(S.me.id); }
+    else if(q==='att'){ const at=attEntries().map(x=>x.id).filter(id=>ids.includes(id)); if(!at.length){ toast('오늘 사대에 등록한 사원이 아직 없어요'); return; } order=[...order, ...at.filter(id=>!order.includes(id))]; }
+    drawOrder(); });
   $('#ncMembers',sh).addEventListener('click', e=>{ const b=e.target.closest('.mp'); if(!b) return; const id=b.dataset.m; if(order.includes(id)) order=order.filter(x=>x!==id); else order.push(id); b.classList.toggle('on',order.includes(id)); drawOrder(); });
   $('#ncOrder',sh).addEventListener('click', e=>{ const u=e.target.closest('[data-up]'), d=e.target.closest('[data-down]'); if(u){ const i=+u.dataset.up; [order[i-1],order[i]]=[order[i],order[i-1]]; } if(d){ const i=+d.dataset.down; [order[i+1],order[i]]=[order[i],order[i+1]]; } if(u||d) drawOrder(); });
   $('#ncCancel',sh).addEventListener('click',closeSheet);
