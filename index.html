@@ -1632,7 +1632,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .gb[hidden]{display:none}
 .gb-pager{margin-top:8px}.gb-pager button{min-width:32px;height:32px;font-size:13px}.gb-pager span{align-self:center;color:var(--ink3);padding:0 2px}
 .gb-pgnote{text-align:center;margin-top:4px}
-.pz-reps{margin:0 0 6px 34px;padding-left:10px;border-left:2px solid var(--line2)}
+.pz-reps{margin:0 0 6px 34px;padding-left:10px;border-left:2px solid var(--line2)}.pz-repmore{font:inherit;font-size:12px;font-weight:700;margin:2px 0 4px;padding:3px 10px;background:var(--card2);color:var(--ink);border:1.5px dashed var(--ink3);cursor:pointer}.pz-reps-more[hidden]{display:none}
 .pz-msg.pz-rep{padding-top:6px;padding-bottom:6px}.pz-msg.pz-rep .pz-av{width:26px;flex-basis:26px}.pz-msg.pz-rep .pz-tx{font-size:13.5px}
 .pz-msg.pz-rep .pz-who::before{content:"↳ ";color:var(--ink3)}
 .pz-reof{margin:1px 0 2px}
@@ -1834,7 +1834,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .pz-rxc.on{background:var(--gold-soft);border-color:var(--ink);box-shadow:1px 1px 0 var(--ink)}
 .pz-rx.own .pz-rxc{cursor:default;border-style:dashed}
 .pz-rxadd{color:var(--ink3);border-style:dashed}
-.pz-rxpick{flex-basis:100%;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:6px;background:var(--card2);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.pz-rxpick{flex-basis:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:6px;background:var(--card2);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
 .pz-rxpick[hidden]{display:none}
 .pz-rxpick button{font:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:44px;padding:4px 0;background:var(--card);color:var(--ink);border:1.5px solid var(--line2);cursor:pointer}
 .pz-rxpick button span{font-size:18px;line-height:1}
@@ -2804,7 +2804,12 @@ document.addEventListener('click',e=>{ const f=e.target.closest('[data-room]'); 
 const NOTI_DAYS=7;
 const PUSH_OK = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
 const notiKey = () => 'sadae.noti.'+(store.space||'')+'.'+((S.me&&S.me.id)||'');
-function notiState(){ const s=lsGet(notiKey(),null)||{}; return {seenAt:s.seenAt||0, told:s.told||0, first:s.first||{}}; }
+// 10-07: 읽음 표시를 서버(내 사원 문서 ntSeen)에도 남김 → 앱을 지웠다 다시 깔아도(아이폰은 저장소가 지워짐) 옛 알림이 '새 알림'으로 다시 뜨지 않게
+//        이 기기에 기록이 하나도 없으면(새로 깐 기기) 서버 값, 그것도 없으면 '지금'부터 새 알림으로 봄
+function notiState(){ const raw=lsGet(notiKey(),null); const s=raw||{}; const srv=+((memberDoc&&S.me&&memberDoc(S.me.id))||{}).ntSeen||0;
+  if(!raw && S.me && store.kind==='remote' && store.online){ const st={seenAt:Math.max(srv, srv?0:Date.now()), told:Date.now(), first:{}, fresh:1}; lsSet(notiKey(), st); return {seenAt:st.seenAt, told:st.told, first:{}, fresh:1}; }
+  return {seenAt:Math.max(s.seenAt||0, srv), told:s.told||0, first:s.first||{}, fresh:s.fresh||0}; }
+let ntSyncAt=0; function notiSeenSync(t){ try{ if(!S.me||store.kind!=='remote'||!store.token) return; const srv=+((memberDoc(S.me.id)||{}).ntSeen)||0; if(t-srv<60e3 || Date.now()-ntSyncAt<60e3) return; ntSyncAt=Date.now(); write(st=>st.merge('members/'+S.me.id,{ntSeen:t})); }catch(e){} }
 function notiSave(p){ lsSet(notiKey(), {...notiState(), ...p}); }
 function mentionRe(name){ return new RegExp('@'+String(name||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![가-힣A-Za-z0-9])'); }
 function notiItems(){
@@ -2814,7 +2819,7 @@ function notiItems(){
   for(const e of guestEntries(me)) if(e.from!==me && (e.at||0)>since) out.push({k:'g:'+e.id, at:e.at, ic:'📮', tx:`<b>${esc(nm(e.from))}</b> 님이 방명록을 남겼어요`, sub:e.text, go:'guest'});
   for(const p in D){ if(!p.startsWith('attendance/')) continue; const day=p.slice(11); if(day<sinceDay) continue;
     const r=((((D[p]||{}).entries||{})[me])||{}).reactions||{};
-    for(const [f,em] of Object.entries(r)){ if(!em||f===me) continue; const k='r:'+day+':'+f+':'+em; if(!st.first[k]){ st.first[k]=now; dirty=true; }
+    for(const [f,em] of Object.entries(r)){ if(!em||f===me) continue; const k='r:'+day+':'+f+':'+em; if(!st.first[k]){ st.first[k]=st.fresh?Math.min(now, Date.parse(day+'T12:00:00+09:00')||now):now; dirty=true; }
       out.push({k, at:st.first[k], ic:em, tx:`<b>${esc(nm(f))}</b> 님이 ${esc(em)} 응원을 보냈어요`, sub:day===today()?'오늘 습사 등록에':`${Number(day.slice(5,7))}/${Number(day.slice(8))} 습사 등록에`, go:'today'}); } }
   const myPz=new Set(); for(const p in D){ if(!p.startsWith('plaza/')) continue; for(const [id,v] of Object.entries((D[p]||{}).entries||{})) if(v&&v.from===me) myPz.add(id); }
   if(S.me.name){ const re=mentionRe(S.me.name);
@@ -2822,6 +2827,7 @@ function notiItems(){
       if(re.test(v.text)) out.push({k:'p:'+id, at:v.at, ic:'💬', tx:`<b>${esc(nm(v.from))}</b> 님이 광장에서 불렀어요`, sub:v.text, go:'plaza'});
       else { const ri=id.indexOf('_re_'); if(ri>0 && myPz.has(id.slice(ri+4))) out.push({k:'p:'+id, at:v.at, ic:'💬', tx:`<b>${esc(nm(v.from))}</b> 님이 내 광장 글에 답글을 달았어요`, sub:v.text, go:'plaza'}); } } } }
   if(dirty){ for(const k in st.first) if(st.first[k]<since) delete st.first[k]; notiSave({first:st.first}); }
+  if(st.fresh) notiSave({fresh:0});
   return out.sort((a,b)=>b.at-a.at).slice(0,40);
 }
 let notiBooted=false;
@@ -2845,7 +2851,7 @@ function openNoti(){
     <div class="actions"><button class="btn ghost" id="ntClose">닫기</button></div>`);
   sh.classList.add('sheet-tall');
   $('#ntClose',sh).addEventListener('click',closeSheet);
-  notiSave({seenAt:Date.now()}); renderNoti();
+  { const t=Date.now(); notiSave({seenAt:t}); notiSeenSync(t); } renderNoti();
   $$('[data-go]',sh).forEach(b=>b.addEventListener('click',()=>notiGo(b.dataset.go)));
   bindPush(sh);
 }
@@ -3934,7 +3940,7 @@ function openRoundEdit(k){
   const td=S.myDays.find(d=>d.date===today()); if(!rdEditable(td,k)){ toast('저장하고 1시간이 지나 잠겼어요'); renderRecord(); return; }
   let arr=[...td.rounds[k]]; let cur=0;
   const mins=()=>Math.max(1,Math.ceil((RD_EDIT_MS-(Date.now()-td.at[k]))/60e3));
-  const sh=openSheet(`<h3>${k+1}순 고치기</h3><p class="tiny muted" style="margin:0 0 8px">고칠 시를 누르고 아래에서 결과를 고르세요 · <b id="reLeft">${mins()}분</b> 더 고칠 수 있어요</p>
+  const sh=openSheet(`<h3>${k+1}순 고치기</h3><p class="tiny muted" style="margin:0 0 8px">기록 후 1시간 뒤까진 고칠 수 있어요 <span id="reLeft">(${mins()}분 남음)</span></p>
     <div class="arrows" id="reSlots"></div><div class="results" id="rePad"></div>
     <div class="actions"><button class="btn ghost" type="button" id="reCancel">취소</button><button class="btn pri" type="button" id="reSave">고친 대로 저장</button></div>`);
   const draw=()=>{ $('#reSlots',sh).innerHTML=arr.map((r,i)=>`<button type="button" class="arrow set ${rc(r)} ${i===cur?'cur':''}" data-ri="${i}" aria-label="${i+1}시 ${RES[r].l}"><span class="k">${r==='H'?'中':glyph(r)}</span><span>${i+1}시</span></button>`).join('');
@@ -5908,7 +5914,9 @@ async function makePlazaShot(o){
     try{ if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], text}); return; } }catch(e){ if(e && e.name==='AbortError') return; console.warn('share',e); }
     save(); };
 }
-const PZ_RX = [['heart','❤️','공감'],['clap','👏','박수'],['hit','🎯','관중!'],['laugh','😂','웃겨요'],['fire','🔥','불타요'],['tea','🍵','토닥'],['tease','😜','메롱']];
+const PZ_REP_SHOW = 2;   // p118: 원글마다 처음 보이는 답글 수
+if(!S.pzRepOpen) S.pzRepOpen=new Set();
+const PZ_RX = [['heart','❤️','공감'],['clap','👏','박수'],['hit','🎯','관중!'],['laugh','😂','웃겨요'],['fire','🔥','불타요'],['tea','🍵','토닥'],['tease','😜','메롱'],['sad','😢','슬퍼요'],['hungry','🤤','배고파요'],['sleepy','😴','졸려요'],['wow','😮','대박'],['good','👍','좋아요'],['strong','💪','힘내요'],['cold','🥶','추워요'],['thanks','🙏','고마워요']];
 function pzRxOf(m){ const by={}; for(const [who,v] of Object.entries((m&&m.rx)||{})){ if(who===m.from || !PZ_RX.some(r=>r[0]===v)) continue; (by[v]=by[v]||[]).push(who); } return by; }
 function pzRxN(m){ return Object.values(pzRxOf(m)).reduce((a,L)=>a+L.length,0); }
 function pzRxHTML(m){ const by=pzRxOf(m); const own=S.me&&m.from===S.me.id; const mine=S.me ? (((m.rx||{})[S.me.id])||'') : ''; const day=esc(m.day||today());
@@ -5996,13 +6004,15 @@ function renderPlaza(){
   const fresh=Object.entries(reps).map(([rid,L])=>({rid, last:L[L.length-1], pg:pgOf(rid)})).filter(f=>f.pg>1 && Date.now()-(f.last.at||0)<12*3600e3).sort((a,b)=>(b.last.at||0)-(a.last.at||0)).slice(0,2);
   C.innerHTML = top.length ? fresh.map(f=>`<button type="button" class="pz-newre" data-pzjump="${esc(f.rid)}">💬 <b>${esc(pzNm(f.last.from))}</b> 님이 ${esc(pzNm(byId[f.rid].from))} 님 글에 답글 · ${hhmm(f.last.at)}<span>보기 ›</span></button>`).join('') + top.map((m,i)=>{ const pg=Math.floor(i/PER)+1; let head=''; if(m.day!==lastDay || i%PER===0){ lastDay=m.day; head=`<div class="pz-day">${pzDayLabel(m.day)}</div>`; }
       const R_=reps[m.id]||[];
-      return `<div class="pz-item" data-pg="${pg}" ${pg!==S.pzPage?'hidden':''}>${head}${pzMsg(m,'')}${R_.length?`<div class="pz-reps">${R_.map(r=>pzMsg(r,m.day)).join('')}</div>`:''}</div>`; }).join('')
+      return `<div class="pz-item" data-pg="${pg}" ${pg!==S.pzPage?'hidden':''}>${head}${pzMsg(m,'')}${R_.length?`<div class="pz-reps">${R_.slice(0,PZ_REP_SHOW).map(r=>pzMsg(r,m.day)).join('')}${R_.length>PZ_REP_SHOW?(()=>{ const op=S.pzRepOpen.has(m.id); return `<div class="pz-reps-more" ${op?'':'hidden'}>${R_.slice(PZ_REP_SHOW).map(r=>pzMsg(r,m.day)).join('')}</div><button type="button" class="pz-repmore" data-pzrm="${esc(m.id)}" aria-expanded="${op}">${op?'답글 접기 ▴':`💬 답글 ${R_.length-PZ_REP_SHOW}개 더 보기 ▾`}</button>`; })():''}</div>`:''}</div>`; }).join('')
       + (pages>1 ? `<div class="pz-pager" role="navigation" aria-label="한마디 페이지"><button type="button" data-pzpg="prev" aria-label="이전 페이지">‹</button>${Array.from({length:pages},(_,k)=>`<button type="button" data-pzpg="${k+1}" class="${k+1===S.pzPage?'on':''}">${k+1}</button>`).join('')}<button type="button" data-pzpg="next" aria-label="다음 페이지">›</button></div><div class="pz-pgnote tiny muted">최근 7일 한마디 ${all.length}개 · 한 쪽에 글 ${PER}개(답글은 원글 아래)</div>` : '')
     : '<div class="muted">아직 조용해요. 첫 인사를 남겨 보세요 👋</div>';
+  $$('[data-pzrm]',C).forEach(b=>b.addEventListener('click',()=>{ const id=b.dataset.pzrm; const box=b.previousElementSibling; const op=!S.pzRepOpen.has(id); if(op) S.pzRepOpen.add(id); else S.pzRepOpen.delete(id);
+    if(box) box.hidden=!op; b.setAttribute('aria-expanded',String(op)); b.textContent = op?'답글 접기 ▴':`💬 답글 ${box?box.children.length:''}개 더 보기 ▾`; }));
   const pzGo=n=>{ S.pzPage=n; $$('.pz-item',C).forEach(x=>x.hidden = +x.dataset.pg!==n); $$('[data-pzpg]',C).forEach(x=>x.classList.toggle('on', x.dataset.pzpg===String(n))); };
   $$('[data-pzpg]',C).forEach(b=>b.addEventListener('click',()=>{ const v=b.dataset.pzpg; const n = v==='prev'?S.pzPage-1 : v==='next'?S.pzPage+1 : +v; if(n<1||n>pages||n===S.pzPage) return; pzGo(n);
     const card=$('#pzChatCard'); if(card && card.getBoundingClientRect().top<60) card.scrollIntoView({block:'start'}); }));
-  $$('[data-pzjump]',C).forEach(b=>b.addEventListener('click',()=>{ const id=b.dataset.pzjump; pzGo(pgOf(id)); const el=C.querySelector(`[data-pzid="${CSS.escape(id)}"]`); if(el){ const it=el.closest('.pz-item')||el; it.scrollIntoView({behavior:'smooth',block:'center'}); it.classList.remove('pz-flash'); void it.offsetWidth; it.classList.add('pz-flash'); } }));
+  $$('[data-pzjump]',C).forEach(b=>b.addEventListener('click',()=>{ const id=b.dataset.pzjump; pzGo(pgOf(id)); { const rb=C.querySelector(`[data-pzrm="${CSS.escape(id)}"]`); if(rb && rb.getAttribute('aria-expanded')!=='true') rb.click(); } const el=C.querySelector(`[data-pzid="${CSS.escape(id)}"]`); if(el){ const it=el.closest('.pz-item')||el; it.scrollIntoView({behavior:'smooth',block:'center'}); it.classList.remove('pz-flash'); void it.offsetWidth; it.classList.add('pz-flash'); } }));
   $$('[data-pzrxopen]',C).forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); const pk=b.parentElement.querySelector('.pz-rxpick'); if(!pk) return; const open=pk.hidden; $$('.pz-rxpick',C).forEach(x=>x.hidden=true); pk.hidden=!open; b.setAttribute('aria-expanded',String(open)); }));
   $$('[data-pzrx]',C).forEach(b=>b.addEventListener('click',async e=>{ e.stopPropagation(); if(!S.me){ toast('캐릭터를 고르면 반응할 수 있어요'); return; }
     const id=b.dataset.pzid, day=b.dataset.pzday, k=b.dataset.pzrx; const box=b.closest('.pz-rx'); const cur=box&&box.dataset.mine||'';
