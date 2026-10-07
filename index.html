@@ -4891,7 +4891,7 @@ function board3HTML(st){
   const mon=((st.monthly&&st.monthly.got)||[]).map(x=>`<div class="bb sp bb-mon"><span class="ring" style="background:${x.c}">${x.ic}</span><b>${esc(x.n)} 궁사</b><span class="tl" style="background:${x.c}">${x.ym.slice(2,4)}년 ${x.m}월</span><small>이달의 배지</small></div>`).join('');
   const jn=memberJ(memberById(S.me&&S.me.id)||S.me||{}).name||'우리 정';
   const fTile=(c,id)=>{ const F=hidFinders(id); const first=F.length && S.me && F[0].id===S.me.id && F[0].at>1; const n=F.length;
-    return `<button type="button" class="bb sp hidok ${first?'hfirst':''}" data-hidok="${esc(id)}">${first?'<span class="hf-tag">첫 발견</span>':''}<span class="ring">${c.ic}</span><b>${esc(c.t)}</b><span class="tl">${esc(c.c||'숨은 배지')}</span><small>${n?`${esc(jn)} 사원 중 ${n}명`:'숨은 배지'}</small></button>`; };
+    return `<button type="button" class="bb sp hidok ${first?'hfirst':''}" data-hidok="${esc(id)}">${first?'<span class="hf-tag">첫 발견</span>':''}<span class="ring">${c.ic}</span><b>${esc(c.t)}</b><span class="tl">${esc(c.c||'숨은 배지')}</span><small>${!n?'숨은 배지':(n===1&&S.me&&F[0].id===S.me.id)?'나만 가진 배지예요':`${esc(jn)}에서 ${n}명이 찾았어요`}</small></button>`; };
   const gotIds=new Set(st.hidden.map(x=>x.id));
   const hid=st.hidden.map(x=>fTile(x,x.id)).join('') + (st.mhid||[]).slice().reverse().map(ym=>{ const c=hidCat('mh:'+ym); return c?fTile(c,'mh:'+ym):''; }).join('')
     + HIDDEN.filter(x=>!gotIds.has(x.id)).map(x=>`<button type="button" class="bb hid" data-hid="${x.id}"><span class="ring">❓</span><b>？？？</b><span class="tl">${esc(x.c)}</span><small>힌트 보기</small></button>`).join('');
@@ -4993,7 +4993,7 @@ function openHidFound(ids){ const L=ids.map(hidCat).filter(Boolean); if(!L.lengt
 function openHidHint(id){ const c=HIDDEN.find(x=>x.id===id); if(!c) return; const F=hidFinders(id); const jn=memberJ(memberById(S.me&&S.me.id)||S.me||{}).name||'우리 정';
   const sh=openSheet(`<div class="hh-head"><span class="hh-q">?</span><span><b>숨은 배지 힌트</b><small>${esc(c.c)}</small></span></div>
     <p class="hh-hint" id="hhHint">“${esc(c.h[0])}”</p>
-    <div class="hh-meta"><span>${F.length?`${esc(jn)}에서 ${F.length}명이 찾았어요`:`${esc(jn)}에서 아직 아무도 못 찾았어요`}</span><span id="hhN">힌트 1 / 2</span></div>
+    <div class="hh-meta"><span>${F.length===1?`${esc(jn)}에서 1명만 찾았어요`:F.length?`${esc(jn)}에서 ${F.length}명이 찾았어요`:`${esc(jn)}에서 아직 아무도 못 찾았어요`}</span><span id="hhN">힌트 1 / 2</span></div>
     <div class="actions"><button class="btn ghost" type="button" id="hhMore">힌트 하나 더</button><button class="btn pri" type="button" id="hhOk">알겠어요</button></div>`);
   $('#hhOk',sh).onclick=closeSheet;
   $('#hhMore',sh).onclick=()=>{ $('#hhHint',sh).innerHTML=`“${esc(c.h[0])}”<br><b>“${esc(c.h[1])}”</b>`; $('#hhN',sh).textContent='힌트 2 / 2'; $('#hhMore',sh).disabled=true; }; }
