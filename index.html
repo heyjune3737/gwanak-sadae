@@ -1855,7 +1855,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .pz-rxpick[hidden]{display:none}
 .pz-rxpick button{font:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:44px;padding:4px 0;background:var(--card);color:var(--ink);border:1.5px solid var(--line2);cursor:pointer}
 .pz-rxpick button span{font-size:18px;line-height:1}
-.pz-rxpick button small{font-size:10px;color:var(--ink2)}
+.pz-rxpick button small{font-size:10px;color:var(--ink2);line-height:1.15;text-align:center;word-break:keep-all;overflow-wrap:anywhere;padding:0 2px}
 .pz-rxpick button.on{background:var(--gold-soft);border-color:var(--ink)}
 .pz-rxpick button:active span{transform:scale(1.3)}
 /* p110 · 숨은 배지 */
@@ -6064,7 +6064,7 @@ async function makePlazaShot(o){
 }
 const PZ_REP_SHOW = 2;   // p118: 원글마다 처음 보이는 답글 수
 if(!S.pzRepOpen) S.pzRepOpen=new Set();
-const PZ_RX = [['heart','❤️','공감'],['clap','👏','박수'],['hit','🎯','관중!'],['laugh','😂','웃겨요'],['fire','🔥','불타요'],['tea','🍵','토닥'],['tease','😜','메롱'],['sad','😢','슬퍼요'],['hungry','🤤','배고파요'],['sleepy','😴','졸려요'],['wow','😮','대박'],['good','👍','좋아요'],['strong','💪','힘내요'],['cold','🥶','추워요'],['thanks','🙏','고마워요']];
+const PZ_RX = [['heart','❤️','공감'],['clap','👏','박수'],['hit','🎯','관중!'],['laugh','😂','웃겨요'],['fire','🔥','불타요'],['tea','🍵','토닥'],['tease','😜','메롱'],['sad','😢','슬퍼요'],['hungry','🤤','배고파요'],['sleepy','😴','졸려요'],['wow','😮','대박'],['good','👍','좋아요'],['strong','💪','힘내요'],['cold','🥶','추워요'],['thanks','🙏','수고하셨습니다'],['ok','🫡','ㅇㅋ'],['gazua','🙌','가즈아'],['curious','👀','궁금'],['legend','🤯','레전드'],['sob','😭','오열'],['moved','🥹','감동'],['luck','🍀','행운을 빕니다'],['oho','😏','오호라'],['giggle','🤭','킥킥'],['melt','🫠','녹는다'],['best','💯','최고다 이순신']];
 // ===== p126 · 반응 터지기 · 감정 풍선 =====
 const pzFxOff = () => document.documentElement.classList.contains('calm-fx');
 const pzRxIc = k => (PZ_RX.find(r=>r[0]===k)||[])[1] || '';
