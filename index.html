@@ -1841,6 +1841,35 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .pz-rxpick button small{font-size:10px;color:var(--ink2)}
 .pz-rxpick button.on{background:var(--gold-soft);border-color:var(--ink)}
 .pz-rxpick button:active span{transform:scale(1.3)}
+/* p110 · 숨은 배지 */
+.bb-sec.hb-sec{display:block;border:0;padding:0;margin-top:14px}
+.hb-head{display:flex;align-items:baseline;gap:8px;font-size:14px}.hb-head small{margin-left:auto;font-size:11px;color:var(--ink3)}
+.hb-head b.num{color:var(--red)}
+.hb-bar{height:12px;border:2px solid var(--ink);background:var(--card2);margin:6px 0 8px}
+.hb-bar i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--gold) 0 8px,#E0A12E 8px 10px)}
+.hb-mon{width:100%;display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;padding:9px 10px;margin-bottom:4px;background:linear-gradient(135deg,#3552A0,#6A4FA8);color:#fff;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.hb-mon .hb-mic{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:22px;background:#231C3A;border:2px dashed #FFF1C9;color:#FFF1C9}
+.hb-mon.got .hb-mic{background:#FFF1C9;border-style:solid;color:#2A2233}
+.hb-mon .hb-mt{display:flex;flex-direction:column;gap:2px}.hb-mon .hb-mt b{font-size:13px}.hb-mon .hb-mt small{font-size:11px;color:#E6E0FF}
+.bb.hidok{font:inherit;cursor:pointer;position:relative}
+.bb.hfirst{border:3px solid #F4B63B!important;box-shadow:0 0 0 2px var(--ink),3px 3px 0 var(--ink)!important}
+.bb .hf-tag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;padding:1px 6px;background:#F4B63B;color:#2A2233;border:2px solid #2A2233;white-space:nowrap;z-index:1}
+.hf-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding-top:14px;overflow:hidden}
+.hf-fx{position:absolute;inset:0;pointer-events:none}.hf-fx i{position:absolute;width:7px;height:7px;background:var(--c);border:1px solid rgba(0,0,0,.35);animation:hf-fall 2.4s ease-in infinite;animation-delay:calc(var(--i,0)*.1s)}
+@keyframes hf-fall{0%{transform:translateY(-20px) rotate(0)}100%{transform:translateY(160px) rotate(300deg);opacity:0}}
+.hf-ribbon{padding:3px 12px;background:#6A4FA8;color:#fff;border:2px solid var(--ink);font-size:12px;font-weight:700}
+.hf-medal{width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:repeating-conic-gradient(#FFF1C9 0 12deg,#FFFFFF 12deg 24deg);border:2px dashed #F4B63B}
+.hf-medal span{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:42px;background:#CFE3F1;border:3px solid var(--ink)}
+.hf-medal.gold span{border:4px solid #F4B63B;box-shadow:0 0 0 3px var(--ink)}
+.hf-t{margin:0;font-size:22px}.hf-d{margin:0;font-size:13px;color:var(--ink2);line-height:1.6}
+.hf-note{width:100%;box-sizing:border-box;padding:8px 10px;background:var(--gold-soft);border:2px solid var(--ink);font-size:12.5px;text-align:left;line-height:1.6}
+.hf-note small{color:var(--ink2)}
+.hh-head{display:flex;align-items:center;gap:10px}.hh-head>span:last-child{display:flex;flex-direction:column}.hh-head small{font-size:11px;color:var(--ink3)}
+.hh-q{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;background:var(--ink3);color:var(--card);border:2px solid var(--ink)}
+.hh-hint{margin:12px 0 8px;padding:12px;background:var(--gold-soft);border:2px solid var(--ink);font-size:15px;line-height:1.6;text-align:center}
+.hh-meta{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink2)}
+.calm-fx .hf-fx{display:none}
+@media (prefers-reduced-motion:reduce){.hf-fx i{animation:none}}
 </style>
 
 <div class="app" id="app">
@@ -2377,7 +2406,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.07c';
+const APP_VER = '2026.10.07d';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3062,7 +3091,7 @@ function openProfileDetail(){
     <div class="row">
       <div class="field grow"><label for="pfGrade">단급</label><select class="input" id="pfGrade">${GRADE_OPTS.map(g=>`<option ${(me.grade||'신사')===g?'selected':''}>${g}</option>`).join('')}</select></div>
     </div>
-    <div class="field"><label for="pfSince">집궁일 (활 시작한 날) <span class="tiny muted">· 선택</span></label>
+    <div class="field"><label for="pfSince">집궁일 (사대에서 정식으로 처음 활을 쏜 날) <span class="tiny muted">· 선택</span></label>
       <div class="row" style="gap:6px;align-items:center"><input class="input grow" id="pfSince" type="date" max="${today()}" value="${esc(me.since||'')}"><button class="btn sm ghost" id="pfSinceClr" type="button">지우기</button></div>
       <span class="tiny muted" id="pfSinceHint">${me.since?'바꾸려면 날짜를 누르세요. 지우면 집궁 D+ 표시가 사라져요':'모르면 비워 두셔도 돼요'}</span></div>
     <div class="field"><label for="pfStatus">오늘의 한마디 (내 방 말풍선)</label><input class="input" id="pfStatus" maxlength="24" placeholder="예: 이번 달엔 몰기 한 번!" value="${esc(me.status||'')}"></div>
@@ -4261,7 +4290,7 @@ function hopaeHTML(m, o={}){
   return `<div class="hopae"><span class="hp-cord"></span><span class="hp-hole"></span>
     <div class="hp-jn">${esc(jn)}</div><div class="hp-nm">${esc(m.name||'사원')}</div>
     <div class="hp-row"><div><small>단급</small><b>${esc(g)}</b></div><div><small>궁체</small><b>${esc(m.hand||'–')}</b></div><div><small>집궁</small><b>${st?st.dur:'–'}</b></div></div>
-    <div class="hp-ft">${st?`${st.date} 활을 잡음 · ${st.days}일째`:(o.own?'프로필에서 집궁일(활을 처음 잡은 날)을 적어 주세요':'집궁일을 아직 적지 않았어요')}</div></div>
+    <div class="hp-ft">${st?`${st.date} 집궁 · ${st.days}일째`:(o.own?'프로필에서 집궁일(사대에서 정식으로 처음 활을 쏜 날)을 적어 주세요':'집궁일을 아직 적지 않았어요')}</div></div>
   <div class="hp-lad"><div class="hp-lt"><b>승단 사다리</b><small>${next?`다음 ${next}${need!=null?` · 9순 ${need}중`:''}`:'최고 단'}</small></div>
     <div class="hp-steps">${cells.map(c=>`<span class="${c.me?'me':c.done?'done':c.nx?'nx':''}">${esc(c.l)}</span>`).join('')}${idx>=0&&idx+4<LADDER.length?'<span class="more">…</span>':''}</div>
     ${foot?`<div class="hp-foot">${foot}</div>`:''}</div>`;
@@ -4670,12 +4699,74 @@ function placesOf(mid){
 }
 // 숨은 배지 (받기 전엔 조건 비공개)
 const HIDDEN = [
-  {id:'moon',  ic:'🌙', t:'달빛 궁사',  d:'저녁 사대에 선 날 몰기'},
-  {id:'dawn',  ic:'🌅', t:'새벽 궁사',  d:'새벽 사대 등록 10번'},
-  {id:'combo', ic:'🔥', t:'연속 몰기',  d:'한 날 두 순 연달아 몰기'},
-  {id:'since', ic:'🎂', t:'집궁 기념 습사', d:'활을 잡은 날과 같은 날(월 · 일)에 습사'},
-  {id:'anniv', ic:'📅', t:'1년 전 오늘', d:'1년 전 오늘에도 활을 냈어요'},
+  {id:'moon',  ic:'🌙', t:'달빛 궁사',  d:'저녁 사대에 선 날 몰기', c:'날씨 · 때', h:['해가 진 뒤에도','저녁 사대에서 다섯 발 모두']},
+  {id:'dawn',  ic:'🌅', t:'새벽 궁사',  d:'새벽 사대 등록 10번', c:'날씨 · 때', h:['닭이 울기 전에','새벽 사대에 열 번']},
+  {id:'combo', ic:'🔥', t:'연속 몰기',  d:'한 날 두 순 연달아 몰기', c:'순의 자리', h:['불은 번진다','두 순 내리 다섯 발 모두']},
+  {id:'since', ic:'🎂', t:'집궁 기념 습사', d:'집궁한 날(사대에서 정식으로 처음 활을 쏜 날)과 같은 날(월 · 일)에 습사', c:'날씨 · 때', h:['처음 사대에 서던 그날처럼','집궁한 날과 같은 날짜']},
+  {id:'anniv', ic:'📅', t:'1년 전 오늘', d:'1년 전 오늘에도 활을 냈어요', c:'날씨 · 때', h:['한 바퀴 돌아','작년 이맘때도 사대에 섰다면']},
+  // p110 · 새 숨은 배지 17종
+  {id:'stone',  ic:'🪨', t:'징검다리',   d:'한 순을 中 · 불 · 中 · 불 · 中으로 번갈아', c:'한 순 모양', h:['돌다리를 건너듯','하나 걸러 하나']},
+  {id:'ends',   ic:'🪞', t:'양 끝',      d:'한 순에 1시와 5시만 관중', c:'한 순 모양', h:['처음과 끝만','가운데 세 발은 비우고']},
+  {id:'oneway', ic:'🧲', t:'한 길 고집', d:'한 순 5시가 관중 없이 모두 같은 쪽으로', c:'한 순 모양', h:['한 우물만 판다','다섯 발이 같은 길로']},
+  {id:'compass',ic:'🧭', t:'동서남북',   d:'한 순에 관중 · 넘음 · 짧음 · 앞남 · 뒤남이 하나씩', c:'한 순 모양', h:['사방을 다 둘러보고','넘고 · 짧고 · 앞 · 뒤 · 그리고 하나']},
+  {id:'stairs', ic:'🪜', t:'오르막',     d:'한 날 1중 → 2중 → 3중 → 4중 → 몰기를 차례로', c:'한 순 모양', h:['한 계단씩','하나에서 다섯까지 차례로']},
+  {id:'twin',   ic:'🔂', t:'판박이',     d:'같은 날 두 순의 낙점 5개가 똑같음(몰기 빼고)', c:'한 순 모양', h:['거울에 비친 듯','같은 날 같은 모양 두 번']},
+  {id:'first',  ic:'🌱', t:'초순 몰기',  d:'그날 처음 쏜 순(초순)에 몰기', c:'순의 자리', h:['시작이 반','첫 순부터 다섯 발 모두']},
+  {id:'last',   ic:'🏁', t:'막순 몰기',  d:'그날 마지막 순(막순)에 몰기', c:'순의 자리', h:['끝이 좋으면','마지막 순에 다섯 발 모두']},
+  {id:'chin',   ic:'🎯', t:'턱걸이',     d:'한 날 처음 9순 합계가 딱 26중(2단 기준)', c:'순의 자리', h:['아슬아슬하게','아홉 순, 2단 기준에 딱']},
+  {id:'rainmo', ic:'☔', t:'빗속 몰기',  d:'비 오는 날 몰기', c:'날씨 · 때', h:['젖어도 간다','빗소리 속 다섯 발']},
+  {id:'windmo', ic:'🌪', t:'바람을 이긴 살', d:'바람 세기 \'강\'일 때 몰기', c:'날씨 · 때', h:['바람이 세도','센 바람 속 다섯 발 모두']},
+  {id:'snow',   ic:'❄️', t:'첫눈 궁사',  d:'눈 오는 날 습사', c:'날씨 · 때', h:['하얀 사대','눈 내리는 날 활을']},
+  {id:'samenum',ic:'🔢', t:'같은 숫자 날', d:'월과 일이 같은 날 습사(1/1 · 2/2 … 12/12)', c:'날씨 · 때', h:['숫자가 겹치는 날','달력을 보세요 — 몇 월 며칠?']},
+  {id:'holiday',ic:'🎑', t:'명절 사대',  d:'설 · 추석 당일 습사', c:'날씨 · 때', h:['모두 고향 갈 때','설이나 한가위 당일']},
+  {id:'crowd',  ic:'👯', t:'북적 사대',  d:'같은 시간대 사대에 6명 이상과 함께', c:'함께', h:['혼자가 아니야','한 시간대에 여섯 명 넘게']},
+  {id:'shoot',  ic:'⚖️', t:'비교전',     d:'대회에서 동점으로 비교전까지', c:'함께', h:['승부는 끝나지 않았다','같은 점수, 한 순 더']},
+  {id:'cheers', ic:'💌', t:'응원 부자',  d:'받은 응원 · 반응 · 방명록 100개', c:'함께', h:['사랑받는 궁사','응원이 백 개']},
 ];
+// 이달의 숨은 배지 — 그달에만 받음 · 힌트는 처음부터 보임 [그림, 이름, 조건, 힌트]
+const MHID = [null,
+  ['🧊','얼음 과녁','0℃ 아래에서 3중 이상 한 순','손이 곱아도'],
+  ['🧧','세뱃살','한 날 3중 이상 순 5번','세배하듯 다섯 번'],
+  ['🌱','새순','초순 4중 이상','첫 순이 싹을 틔우면'],
+  ['🌸','꽃비','한 날 10순 이상','꽃잎이 다 질 때까지'],
+  ['🎏','단오 활쏘기','이달 몰기 한 번','오월의 다섯 발'],
+  ['☔','장맛비 궁사','비 오는 날 습사','장마에도 사대로'],
+  ['🍉','한여름 개근','이달 10일 습사','더위를 이겨 내고'],
+  ['🌻','해바라기','오후 사대 5번','해를 따라'],
+  ['🌕','보름달 궁사','저녁 사대 3번','달 뜨는 사대'],
+  ['🍁','단풍잎 서른 장','이달 3중 이상 순 30번','단풍이 지기 전에'],
+  ['🍂','낙엽 쓸기','막순 4중 이상인 날 5번','끝까지 쓸어 담기'],
+  ['⛄','눈사람','0℃ 아래 습사 3일','손 시린 날 세 번']];
+const HID_RAIN = c => (c>=51&&c<=67)||(c>=80&&c<=82)||c>=95, HID_SNOW = c => (c>=71&&c<=77)||c===85||c===86;
+const HID_HOL = ['2026-02-17','2026-09-25','2027-02-07','2027-09-15','2028-01-27','2028-10-03','2029-02-13','2029-09-22','2030-02-03','2030-09-12'];
+function mhidOf(mid, days){   // 이달의 숨은 배지를 받은 달 목록 ['2026-10', …]
+  const by={}; (days||[]).forEach(d=>{ if(!d||!d.date) return; const Rr=(d.rounds||[]).filter(r=>Array.isArray(r)&&r.length===5); if(!Rr.length) return; (by[d.date.slice(0,7)]=by[d.date.slice(0,7)]||[]).push({d, R:Rr, W:d.winds||[], hs:Rr.map(r=>r.filter(c=>c==='H').length)}); });
+  const D=(store&&store.docs)||{}; const out=[];
+  const months=new Set([...Object.keys(by), ...Object.keys(D).filter(k=>k.startsWith('attendance/')).map(k=>k.slice(11,18))]);
+  for(const ym of months){ const L=by[ym]||[]; const m=+ym.slice(5); if(!(m>=1&&m<=12)) continue;
+    const att=Object.keys(D).filter(k=>k.startsWith('attendance/'+ym)).map(k=>((D[k]||{}).entries||{})[mid]).filter(e=>e&&e.slot);
+    const cold=w=>w && w.t!=null && w.t!=='' && +w.t<=0; let ok=false;
+    switch(m){ case 1: ok=L.some(x=>x.R.some((r,i)=>cold(x.W[i])&&x.hs[i]>=3)); break;
+      case 2: ok=L.some(x=>x.hs.filter(h=>h>=3).length>=5); break;
+      case 3: ok=L.some(x=>x.hs[0]>=4); break;
+      case 4: ok=L.some(x=>x.R.length>=10); break;
+      case 5: ok=L.some(x=>x.hs.includes(5)); break;
+      case 6: ok=L.some(x=>x.W.some(w=>w&&HID_RAIN(+w.wc))); break;
+      case 7: ok=L.length>=10; break;
+      case 8: ok=att.filter(e=>e.slot==='오후').length>=5; break;
+      case 9: ok=att.filter(e=>e.slot==='저녁').length>=3; break;
+      case 10: ok=L.reduce((a,x)=>a+x.hs.filter(h=>h>=3).length,0)>=30; break;
+      case 11: ok=L.filter(x=>x.R.length>=2&&x.hs[x.R.length-1]>=4).length>=5; break;
+      case 12: ok=L.filter(x=>x.W.some(cold)).length>=3; break; }
+    if(ok) out.push(ym); }
+  return out.sort(); }
+// 정에서 이 숨은 배지를 찾은 사람(찾은 시각 순)
+function hidFinders(id, mid){ const me=memberById(mid||(S.me&&S.me.id))||S.me||{}; const J=memberJ(me).id;
+  return (S.members||[]).filter(m=>m && m.hid && m.hid[id] && memberJ(m).id===J).map(m=>({id:m.id, name:m.name, at:+m.hid[id]||0})).sort((a,b)=>a.at-b.at); }
+function hidCat(id){ if(String(id).startsWith('mh:')){ const ym=String(id).slice(3), M=MHID[+ym.slice(5)]; return M?{id, ic:M[0], t:M[1], d:`${+ym.slice(5)}월의 숨은 배지 — ${M[2]}`, c:`${+ym.slice(5)}월 숨은`}:null; } return HIDDEN.find(x=>x.id===id)||null; }
+function hidFirstNews(){ const now=Date.now(); let best=null; const ids=[...HIDDEN.map(x=>x.id)];
+  for(const id of ids){ const L=hidFinders(id); if(!L.length) continue; const f=L[0]; if(now-f.at<24*3600e3 && (!best||f.at>best.at)) best={...f, bid:id}; }
+  if(!best) return null; const c=hidCat(best.bid); return c?{mid:best.id, name:best.name, t:c.t, at:best.at}:null; }
 function hiddenOf(mid, days, upto){
   const D=(store&&store.docs)||{}; const got={}; const att=[]; for(const k in D){ if(k.startsWith('attendance/') && (!upto || k.slice(11)<=upto) && D[k] && D[k].entries && D[k].entries[mid]) att.push([k.slice(11), D[k].entries[mid]]); }
   const byDate={}; (days||[]).forEach(d=>{ const b=dayBrief(d); if(b.n) byDate[d.date]={b, d}; });
@@ -4684,13 +4775,36 @@ function hiddenOf(mid, days, upto){
   if((days||[]).some(d=>{ const rs=(d.rounds||[]).filter(Array.isArray).map(r=>hitsOf(r)); return rs.some((h,i)=>i>0&&h===5&&rs[i-1]===5); })) got.combo=1;
   const sm=(memberById(mid)||{}).since; if(/^\d{4}-\d{2}-\d{2}$/.test(sm||'') && Object.keys(byDate).some(dt=>dt.slice(5)===sm.slice(5) && dt>sm)) got.since=1;
   if(Object.keys(byDate).some(dt=>byDate[(+dt.slice(0,4)-1)+dt.slice(4)])) got.anniv=1;
+  // p110 · 새 숨은 배지
+  const isH=x=>x==='H'; const CMP=['B','F','H','O','S'].join();
+  for(const d of (days||[])){ if(!d||!d.date||(upto&&d.date>upto)) continue; const Rr=(d.rounds||[]).filter(r=>Array.isArray(r)&&r.length===5); if(!Rr.length) continue; const W=d.winds||[]; const hs=Rr.map(r=>r.filter(isH).length);
+    Rr.forEach((r,i)=>{ const p=r.map(x=>isH(x)?1:0).join('');
+      if(p==='10101') got.stone=1; if(p==='10001') got.ends=1;
+      if(p==='00000' && r.every(x=>x===r[0]) && r[0]!=='X') got.oneway=1;
+      if([...r].sort().join()===CMP) got.compass=1;
+      const w=W[i]; if(hs[i]===5 && w){ if(HID_RAIN(+w.wc)) got.rainmo=1; if((+w.l||0)>=3) got.windmo=1; } });
+    for(let i=0;i+4<hs.length;i++) if(hs.slice(i,i+5).join()==='1,2,3,4,5') got.stairs=1;
+    const ks=Rr.map(r=>r.join()); if(ks.some((k,i)=>hs[i]<5 && ks.indexOf(k)!==i)) got.twin=1;
+    if(hs[0]===5) got.first=1; if(hs.length>=2 && hs[hs.length-1]===5) got.last=1;
+    if(hs.length>=9 && hs.slice(0,9).reduce((a,b)=>a+b,0)===26) got.chin=1;
+    if(W.some(w=>w&&HID_SNOW(+w.wc))) got.snow=1;
+    if(+d.date.slice(5,7)===+d.date.slice(8,10)) got.samenum=1;
+    if(HID_HOL.includes(d.date)) got.holiday=1; }
+  for(const k in D){ if(!k.startsWith('attendance/')||(upto&&k.slice(11)>upto)) continue; const E=(D[k]&&D[k].entries)||{}; const me=E[mid]; if(!me||!me.slot) continue; const j=entryJid(me);
+    if(Object.values(E).filter(e=>e&&e.slot===me.slot&&entryJid(e)===j).length>=6){ got.crowd=1; break; } }
+  if((S.comps||[]).some(c=>c&&c.entries&&c.entries[mid]&&c.entries[mid].shootoff!=null&&c.entries[mid].shootoff!==false)) got.shoot=1;
+  { let n=0; for(const k in D){ const x=D[k]; if(!x||!x.entries) continue;
+      if(k.startsWith('attendance/')){ const e=x.entries[mid]; if(e&&e.reactions) n+=Object.entries(e.reactions).filter(([f,v])=>v&&f!==mid).length; }
+      else if(k.startsWith('plaza/')){ for(const e of Object.values(x.entries)) if(e&&e.from===mid&&e.rx) n+=Object.entries(e.rx).filter(([f,v])=>v&&f!==mid).length; }
+      else if(k==='guestbook/'+mid){ n+=Object.values(x.entries).filter(e=>e&&e.from&&e.from!==mid).length; } }
+    if(n>=100) got.cheers=1; }
   return got;
 }
 const isBeta = (mid, days) => (days||[]).some(d=>d.date>=MAG_BETA && d.date<=MAG_BETA_END && dayBrief(d).n>0) || Object.keys((store&&store.docs)||{}).some(k=>k.startsWith('attendance/') && k.slice(11)>=MAG_BETA && k.slice(11)<=MAG_BETA_END && ((store.docs[k]||{}).entries||{})[mid]);
 function gradeUp(m){ const H=(m&&m.gradeHist)||{}; const ks=Object.keys(H).filter(k=>{ const g=H[k]||{}; return g.to && hasCert(g.to) && g.to!==g.from; }).sort(); if(!ks.length) return null; const g=H[ks[ks.length-1]]; return {to:g.to, date:ks[ks.length-1]}; }
 // 한 사원의 배지 전체
 function badgeState(mid, days){
-  const _mon=monthlyOf(days||[]); const _st=badgeState0(mid, days); _st.monthly=_mon; return _st; }
+  const _mon=monthlyOf(days||[]); const _st=badgeState0(mid, days); _st.monthly=_mon; try{ _st.mhid=mhidOf(mid, days); }catch(e){ _st.mhid=[]; } return _st; }
 function badgeState0(mid, days){
   const g=growthOf(days||[], mid); const m=memberById(mid)||{};
   const sets=BSETS.map(set=>{ const k=setTier(set,g); const nx=set.T[k]; return {...set, k, val:set.v(g, Math.min(k+1,set.T.length)), next:nx, max:set.T.length}; });
@@ -4775,10 +4889,17 @@ function board3HTML(st){
     return `<button type="button" class="bb bb-tier t${x.k} ${x.k?'':'none'}" data-bset="${x.id}">${nw(x)?'<span class="skill nw">새로</span>':x.skill?'<span class="skill">실력</span>':''}<span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">${x.k?`${BTIER[x.k]} · ${x.T[x.k-1]}${x.u}`:'아직'}</span><span class="pg"><i style="width:${pct}%"></i></span><small>${x.next?`다음 ${BTIER[x.k+1]} ${x.next}${x.u} · 지금 ${x.val}`:'최고 단계'}</small></button>`; };
   const sp=st.sp.map(x=>`<div class="bb sp ${x.cls||''}"><span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">${esc(x.lab||'')}</span><small>${esc(x.sub||'')}</small></div>`).join('');
   const mon=((st.monthly&&st.monthly.got)||[]).map(x=>`<div class="bb sp bb-mon"><span class="ring" style="background:${x.c}">${x.ic}</span><b>${esc(x.n)} 궁사</b><span class="tl" style="background:${x.c}">${x.ym.slice(2,4)}년 ${x.m}월</span><small>이달의 배지</small></div>`).join('');
-  const hid=st.hidden.map(x=>`<div class="bb sp hidok"><span class="ring">${x.ic}</span><b>${esc(x.t)}</b><span class="tl">숨은 배지</span><small>${esc(x.d)}</small></div>`).join('')
-    + Array.from({length:st.hiddenLeft||0},()=>`<button type="button" class="bb hid" data-hid><span class="ring">❓</span><b>？？？</b><span class="tl">숨은 배지</span><small>받는 순간 공개</small></button>`).join('');
+  const jn=memberJ(memberById(S.me&&S.me.id)||S.me||{}).name||'우리 정';
+  const fTile=(c,id)=>{ const F=hidFinders(id); const first=F.length && S.me && F[0].id===S.me.id && F[0].at>1; const n=F.length;
+    return `<button type="button" class="bb sp hidok ${first?'hfirst':''}" data-hidok="${esc(id)}">${first?'<span class="hf-tag">첫 발견</span>':''}<span class="ring">${c.ic}</span><b>${esc(c.t)}</b><span class="tl">${esc(c.c||'숨은 배지')}</span><small>${n?`${esc(jn)} 사원 중 ${n}명`:'숨은 배지'}</small></button>`; };
+  const gotIds=new Set(st.hidden.map(x=>x.id));
+  const hid=st.hidden.map(x=>fTile(x,x.id)).join('') + (st.mhid||[]).slice().reverse().map(ym=>{ const c=hidCat('mh:'+ym); return c?fTile(c,'mh:'+ym):''; }).join('')
+    + HIDDEN.filter(x=>!gotIds.has(x.id)).map(x=>`<button type="button" class="bb hid" data-hid="${x.id}"><span class="ring">❓</span><b>？？？</b><span class="tl">${esc(x.c)}</span><small>힌트 보기</small></button>`).join('');
+  const ymNow=today().slice(0,7), MH=MHID[+ymNow.slice(5)], mhGot=(st.mhid||[]).includes(ymNow);
+  const hHead=`<div class="hb-head"><b>❓ 숨은 배지</b><span><b class="num">${st.hidden.length}</b> / ${HIDDEN.length}</span><small>받는 순간 공개돼요</small></div><div class="hb-bar"><i style="width:${Math.round(st.hidden.length/HIDDEN.length*100)}%"></i></div>`
+    + (MH?`<button type="button" class="hb-mon ${mhGot?'got':''}" data-mhid><span class="hb-mic">${mhGot?MH[0]:'❓'}</span><span class="hb-mt"><b>${mhGot?`${+ymNow.slice(5)}월 숨은 배지 · ${esc(MH[1])}`:'이번 달 숨은 배지가 열렸어요'}</b><small>${mhGot?'받았어요 🎉 · '+esc(MH[2]):`${+ymNow.slice(5)}월에만 받을 수 있어요 · 힌트 “${esc(MH[3])}”`}</small></span></button>`:'');
   const rib=st.ribbons.length?`<div class="bb-sec">🎀 리본 · 월보 분야별 1위</div><div class="bb-rib">${st.ribbons.map(r=>`<span>${r.ic} ${esc(r.t)}</span>`).join('')}</div>`:'';
-  return board2HTML(st,true) + `<div class="bb-grid">${st.sets.map(card).join('')}</div><div class="bb-sec">특별 · 한정 · 숨은 배지</div><div class="bb-grid">${sp}${mon}${hid}</div>${rib}`;
+  return board2HTML(st,true) + `<div class="bb-grid">${st.sets.map(card).join('')}</div><div class="bb-sec">특별 · 한정</div><div class="bb-grid">${sp}${mon}</div><div class="bb-sec hb-sec">${hHead}</div><div class="bb-grid">${hid}</div>${rib}`;
 }
 // 방에 거는 것: 한지 족자(배지) · 월보 표지 액자 · 선반 트로피
 function wallChoices(st){   // 걸 수 있는 것: {key, ic, tier, main(세로 이름 · 짧게), sub(가로 설명), k, kind}
@@ -4851,6 +4972,31 @@ function growthKpiHTML(g){
   return `<div class="gk"><div class="gk-g"><div class="gk-h">통산</div><div class="gk-r">${cell(Math.round(g.h/(g.n*5)*100),'%','🎯','통산 관중률',`${g.h}/${g.n*5}시`)}${cell(g.mo,'','🏅','통산 몰기',moNow?`${+ym.slice(5)}월 ${moNow}번`:'')}${cell(g.curWeeks||'–',g.curWeeks?'주':'','📅','연속 습사 중',g.curWeeks?'지금 이어가는 중':'이번 주에 다시 시작')}</div></div>
     <div class="gk-g best"><div class="gk-h">🏆 내 최고 기록</div><div class="gk-r">${g.best?cell(Math.round(g.best.r*100),'%','🥇','하루 최고',`${fmtShort(g.best.date)} · ${g.best.h}/${g.best.n*5}시`):cell('–','','🥇','하루 최고','3순 이상 쏜 날')}${cell(g.maxN,'순','⚡','하루 최다',`${g.maxN*5}시`)}${cell(g.bestWeeks,'주','🔁','최장 연속',g.bestDays>1?`${g.bestDays}일 내리`:'')}</div></div></div>`;
 }
+function hidAfter(ST){ if(!S.me) return; const me=S.me.id; const ids=[...ST.hidden.map(x=>x.id), ...(ST.mhid||[]).map(ym=>'mh:'+ym)];
+  const have=((memberById(me)||{}).hid)||{}; S.hidW=S.hidW||new Set(); const miss=ids.filter(id=>!have[id] && !S.hidW.has(id));
+  const KEY='sadae.hidSeen.'+me; const seen=lsGet(KEY,null);
+  // 이 기능을 처음 연 때(이 기기)에 이미 갖고 있던 배지는 찾은 시각을 1(옛날)로 — 첫 발견 · 광장 소식은 새로 찾은 것만
+  if(miss.length){ miss.forEach(id=>S.hidW.add(id)); const at=Array.isArray(seen)?Date.now():1; write(st=>st.merge('members/'+me, {hid:Object.fromEntries(miss.map(id=>[id,at]))})); }
+  if(!Array.isArray(seen)){ lsSet(KEY, ids); return; }
+  const fresh=ids.filter(id=>!seen.includes(id)); if(fresh.length){ lsSet(KEY, [...new Set([...seen, ...ids])]); setTimeout(()=>openHidFound(fresh), 1100); } }
+function openHidFound(ids){ const L=ids.map(hidCat).filter(Boolean); if(!L.length) return; const c=L[0]; const id=ids[0];
+  const others=hidFinders(id).filter(f=>!S.me||f.id!==S.me.id); const first=!others.length && !String(id).startsWith('mh:'); const jn=memberJ(memberById(S.me.id)||S.me).name||'우리 정';
+  const isH=HIDDEN.some(x=>x.id===id); const nGot=badgeState(S.me.id, S.myDays||[]).hidden.length;
+  const sh=openSheet(`<div class="hf-wrap"><div class="pz-fx hf-fx" aria-hidden="true">${Array.from({length:14},(_,i)=>`<i style="left:${(i*7.1+4)%94}%;top:${(i*13)%60}%;--c:${['#E2463B','#F4B63B','#3E8A4F','#3552A0','#F2A7BE','#6A4FA8'][i%6]}"></i>`).join('')}</div>
+    <span class="hf-ribbon">숨은 배지를 찾았어요!</span>
+    <div class="hf-medal ${first?'gold':''}"><span>${c.ic}</span></div>
+    <h3 class="hf-t">${esc(c.t)}</h3><p class="hf-d">${esc(c.d)}</p>
+    <div class="hf-note">${first?`<b>🥇 ${esc(jn)}에서 처음</b> 찾았어요 — 배지에 금테가 둘러져요`:others.length?`${esc(jn)}에서 <b>${others.length+1}번째</b>로 찾았어요`:'이달에만 받을 수 있는 배지예요'}${isH?`<br><small>숨은 배지 ${nGot} / ${HIDDEN.length}</small>`:''}${L.length>1?`<br><small>외 ${L.length-1}개를 함께 찾았어요: ${L.slice(1).map(x=>x.ic+' '+esc(x.t)).join(', ')}</small>`:''}</div>
+    <div class="actions"><button class="btn ghost" type="button" id="hfWall">🖼 방에 걸기</button><button class="btn pri" type="button" id="hfOk">확인</button></div></div>`);
+  $('#hfOk',sh).onclick=closeSheet; $('#hfWall',sh).onclick=()=>{ closeSheet(); if(typeof openWallPick==='function') openWallPick(); };
+  try{ navigator.vibrate&&navigator.vibrate([30,40,30]); }catch(e){} }
+function openHidHint(id){ const c=HIDDEN.find(x=>x.id===id); if(!c) return; const F=hidFinders(id); const jn=memberJ(memberById(S.me&&S.me.id)||S.me||{}).name||'우리 정';
+  const sh=openSheet(`<div class="hh-head"><span class="hh-q">?</span><span><b>숨은 배지 힌트</b><small>${esc(c.c)}</small></span></div>
+    <p class="hh-hint" id="hhHint">“${esc(c.h[0])}”</p>
+    <div class="hh-meta"><span>${F.length?`${esc(jn)}에서 ${F.length}명이 찾았어요`:`${esc(jn)}에서 아직 아무도 못 찾았어요`}</span><span id="hhN">힌트 1 / 2</span></div>
+    <div class="actions"><button class="btn ghost" type="button" id="hhMore">힌트 하나 더</button><button class="btn pri" type="button" id="hhOk">알겠어요</button></div>`);
+  $('#hhOk',sh).onclick=closeSheet;
+  $('#hhMore',sh).onclick=()=>{ $('#hhHint',sh).innerHTML=`“${esc(c.h[0])}”<br><b>“${esc(c.h[1])}”</b>`; $('#hhN',sh).textContent='힌트 2 / 2'; $('#hhMore',sh).disabled=true; }; }
 function renderGrowth(){
   const el=$('#growth'); if(!el) return;
   const bact=$('#badgeCard .bd-act'); if(bact) bact.hidden=!S.me;
@@ -4861,15 +5007,16 @@ function renderGrowth(){
     ${growthChartHTML(g)}
     ${growthKpiHTML(g)}`;
   const E=earnedOf(g); const ST=badgeState(S.me.id, S.myDays||[]);
-  { const got=ST.sets.filter(x=>x.k>0).length+ST.sp.length+ST.hidden.length+ST.ribbons.length+ST.monthly.got.length; $('#badgeCount').textContent=`받은 배지 ${got}개`; S.badgeN=ST.sets.reduce((a,x)=>a+x.k,0)+ST.sp.length+ST.hidden.length+ST.monthly.got.length; }
+  { const got=ST.sets.filter(x=>x.k>0).length+ST.sp.length+ST.hidden.length+ST.ribbons.length+ST.monthly.got.length+(ST.mhid||[]).length; $('#badgeCount').textContent=`받은 배지 ${got}개`; S.badgeN=ST.sets.reduce((a,x)=>a+x.k,0)+ST.sp.length+ST.hidden.length+ST.monthly.got.length; }
   const bx=$('#badges'); bx.className='bboard bv bv3'; bx.innerHTML=board3HTML(ST);
   const bfold=lsGet('sadae.badgeFold',false)===true; bx.hidden=bfold; const bf=$('#badgeFold'); if(bf){ bf.textContent=bfold?'펼치기 ▾':'접기 ▴'; bf.setAttribute('aria-expanded', String(!bfold)); bf.onclick=()=>{ lsSet('sadae.badgeFold', !bfold); renderGrowth(); if(!bfold) $('#badgeCard').scrollIntoView({block:'nearest'}); }; }
-  bx.onclick=e=>{ if(e.target.closest('[data-mon12]')){ openMonthly12(); return; } if(e.target.closest('[data-hid]')){ toast(`❓ 숨은 배지 — 무엇을 하면 받는지는 받는 순간 공개돼요. 남은 숨은 배지 ${ST.hiddenLeft}개`); return; } const b=e.target.closest('[data-bset]'); if(!b) return; const x=ST.sets.find(y=>y.id===b.dataset.bset); toast(badgeTip(x)); };
+  bx.onclick=e=>{ if(e.target.closest('[data-mon12]')){ openMonthly12(); return; } { const hb=e.target.closest('[data-hid]'); if(hb){ openHidHint(hb.dataset.hid); return; } const ok=e.target.closest('[data-hidok]'); if(ok){ const c=hidCat(ok.dataset.hidok); const F=hidFinders(ok.dataset.hidok); if(c) toast(`${c.ic} ${c.t} — ${c.d}${F.length&&F[0].at>1?` · 처음 찾은 사원: ${F[0].name}`:''}`); return; } if(e.target.closest('[data-mhid]')){ const M=MHID[+today().slice(5,7)]; if(M) toast(`${M[0]} ${today().slice(5,7)*1}월 숨은 배지 · 힌트 “${M[3]}”${(ST.mhid||[]).includes(today().slice(0,7))?` — ${M[1]}: ${M[2]}`:''}`); return; } } const b=e.target.closest('[data-bset]'); if(!b) return; const x=ST.sets.find(y=>y.id===b.dataset.bset); toast(badgeTip(x)); };
   const wb=$('#wallBtn'); if(wb) wb.onclick=openWallPick;
   // 새로 얻은 배지 알림 (처음 한 번은 조용히 기억만)
   const KEY='sadae.badges2.'+S.me.id; const seen=lsGet(KEY,null); const E2=E.concat(ST.monthly.got.map(x=>({id:'mon:'+x.ym, ic:x.ic, t:`${x.m}월 ${x.n} 궁사`}))); const ids=E2.map(b=>b.id);
   const loaded = S.daysLoaded && (store.kind!=='remote' || store.lastRefresh>0);   // 서버 기록을 다 받은 뒤에만 (새 기기에서 배지 폭탄 방지)
   if(!loaded) return;
+  try{ hidAfter(ST); }catch(e){ console.warn('hid', e); }
   if(seen===null){ lsSet(KEY, ids); }
   else { const fresh=E2.filter(b=>!seen.includes(b.id)); if(fresh.length){ lsSet(KEY, [...new Set([...seen, ...ids])]); setTimeout(()=>toast(`🏅 새 배지! ${fresh.map(b=>b.ic+' '+b.t).join(', ')}`), 900); } }
 }
@@ -5296,7 +5443,7 @@ function magData(ym, scope){
   for(const m of (S.members||[])){ if(!m||!m.name||!inS(m.id)||!/^\d{4}-\d{2}-\d{2}$/.test(m.since||'')) continue; const s0=new Date(m.since+'T12:00:00');
     const hits=[]; for(const k of [100,1000]){ const d=new Date(s0); d.setDate(d.getDate()+k); const ds=dstr(d); if(ds>=from&&ds<=end) hits.push([ds,`집궁 ${k}일`]); }
     const dm=end.slice(0,7); const yy=+dm.slice(0,4)-s0.getFullYear(); const ad=dm+'-'+m.since.slice(8,10); if(yy>=1 && m.since.slice(5,7)===dm.slice(5,7) && ad>=from && ad<=end) hits.push([ad,`집궁 ${yy}주년`]);
-    for(const [ds,lb] of hits) ev.push({tag:lb.replace('집궁 ',''), mid:m.id, t:`${m.name} 사원 · ${lb}`, p: ds>T ? `${magMD(ds)}에 ${lb}이 돼요. 미리 축하해요!` : `${magMD(ds)}, 활을 잡은 지 ${lb.replace('집궁 ','')}이 되었어요.`, k:'since', ds}); }
+    for(const [ds,lb] of hits) ev.push({tag:lb.replace('집궁 ',''), mid:m.id, t:`${m.name} 사원 · ${lb}`, p: ds>T ? `${magMD(ds)}에 ${lb}이 돼요. 미리 축하해요!` : `${magMD(ds)}, 집궁한 지 ${lb.replace('집궁 ','')}이 되었어요.`, k:'since', ds}); }
   // 새 사원 (첫 기록이 이번 달)
   let nNew=0;
   for(const [id,days] of Object.entries(idx)){ if(!memberById(id)) continue; const L=days.filter(d=>dayBrief(d).n).map(d=>d.date).sort(); if(!L.length || L[0]<from || L[0]>to) continue; nNew++;
@@ -5337,6 +5484,8 @@ function renderNewsDot(){ const el=$('#newsDot'); if(el) el.hidden = lsGet('sada
 function renderTicker(){
   const el=$('#pzTicker'); if(!el) return; if(S.calm && !S.calm.ticker){ el.hidden=true; return; } const ym=magCurYM(), M=+ym.slice(5); let d; try{ d=magData(ym); }catch(e){ el.hidden=true; return; }
   const bits=[]; if(d.wide){ bits.push(`창간호 · 베타 ${magBetaDays()}일의 기록`); if(d.act.members) bits.push(`사원 ${d.act.members}명`); } if(d.A.tot.mo) bits.push(`${d.wide?'베타':'이번 호'} 몰기 ${d.A.tot.mo}번`); if(d.nGrade) bits.push(`승단 ${d.nGrade}명`); if(d.nBadge) bits.push(`새 배지 ${d.nBadge}개`); if(d.nSince) bits.push(`집궁 기념 ${d.nSince}명`); if(d.nNew) bits.push(`새 사원 ${d.nNew}명`);
+  { let ff=null; try{ ff=hidFirstNews(); }catch(e){}
+    if(ff){ el.innerHTML=`<b>🥇 첫 발견</b><span>${esc(ff.name)} 님이 처음으로 숨은 배지 ‘${esc(ff.t)}’${josa(ff.t,'을','를')} 찾았어요</span><i>▸</i>`; el.hidden=false; el.onclick=()=>{ if(typeof openRoom==='function') openRoom(ff.mid); }; return; } }
   el.innerHTML = `<b>📰 ${M}월호</b><span>${bits.length ? bits.join(' · ')+(d.wide?'':' — 축하해요!') : `사대 월보 ${M}월호가 나왔어요`}</span><i>▸</i>`; el.hidden=false;
   el.onclick = ()=>{ S.mag.ym=ym; setTab('news'); };
 }
