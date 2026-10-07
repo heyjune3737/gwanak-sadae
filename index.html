@@ -3180,6 +3180,30 @@ async function utFlush(force){ try{ if(!utOn() || !UT.dirty) return; if(!force &
 document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ try{ if(utOn()){ const d=utLoad(); d.exit=d.exit||{}; const w=utWhere(); d.exit[w]=(d.exit[w]||0)+1; utSave(); } }catch(e){} utTabEnd(); UT.t0=0; UT.away=Date.now(); utFlush(true); } else { if(UT.away && Date.now()-UT.away>30*60e3) utSess(); UT.away=0; UT.t0=Date.now(); } });
 setInterval(()=>utFlush(false), 60e3);
 setTimeout(()=>{ utSess(); utTab(S.tab||'today'); }, 1500);
+// ===== p115 · 안드로이드 뒤로가기 =====
+const BK={exitAt:0, roundAt:0};
+function bkLog(what){ try{ if(!utOn()) return; const d=utLoad(); const k='뒤로가기 › '+what; d.clk[k]=(d.clk[k]||0)+1; utSave(); }catch(e){} }
+function bkArm(){ try{ if(!(history.state && history.state.sdg)) history.pushState({sdg:1}, ''); }catch(e){} }
+function bkHandle(){
+  const pop=document.getElementById('rpop'); if(pop){ pop.remove(); return '창 닫기'; }
+  const ap=document.getElementById('approveBox'); if(ap){ ap.remove(); return '창 닫기'; }
+  const sh=document.querySelector('#sheetBg .sheet');
+  if(sh){ const bb=sh.querySelector('[data-back],#arBack,#usBack'); if(bb && !bb.disabled) bb.click(); else closeSheet(); return '창 닫기'; }
+  const now=Date.now();
+  if(S.tab==='record' && Array.isArray(S.round) && S.round.some(Boolean) && now-BK.roundAt>2500){ BK.roundAt=now; toast('쏘던 순이 있어요 · 저장하거나 ↶로 지운 뒤 나가세요'); return '쏘던 순 붙잡음'; }
+  if(S.tab && S.tab!=='today'){ setTab('today'); return '오늘 정으로'; }
+  if(now-BK.exitAt<2000) return null;
+  BK.exitAt=now; toast('한 번 더 누르면 앱이 닫혀요'); return '종료 안내';
+}
+window.addEventListener('popstate', e=>{
+  if(e.state && e.state.sdg) return;              // 앞으로 가기 등으로 다시 가드 위에 온 경우
+  let r=null; try{ r=bkHandle(); }catch(err){ r='창 닫기'; }
+  if(r){ bkLog(r); bkArm(); return; }
+  bkLog('앱 종료'); try{ utFlush(true); }catch(err){}
+  history.back();                                  // 처음 화면보다 더 뒤 = 앱 종료(설치 앱) · 이전 사이트(브라우저)
+});
+// 크롬은 사용자가 누르기 전에 깐 '앞 화면'을 건너뛰므로, 처음 누를 때와 그 뒤 누를 때마다 확인해서 깔아 둠
+['pointerdown','keydown'].forEach(ev=>document.addEventListener(ev, bkArm, {capture:true, passive:true}));
 function setTab(t){ try{ if(t!==UT.cur) utTab(t); }catch(e){} S.tab=t; if(t==='room') setTimeout(()=>{ try{ renderMyRank(); }catch(e){} },0); if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','news','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); { const bb=$('#bookBar'); if(bb) bb.style.display = t==='news'?'none':''; } if(t==='news') setTimeout(()=>{ if(typeof renderNews==='function') renderNews(); },0); lsSet('sadae.tab',t); try{ renderRest(); }catch(e){} window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
 (function(){ const h=(location.hash||'').replace('#','').split('&')[0]; const t = ['today','plaza','record','news','room','comp','info'].includes(h) ? h : (lsGet('sadae.tab','today')); setTab(t); })();
 
