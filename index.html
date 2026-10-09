@@ -25,6 +25,44 @@
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.0/dist/umd/supabase.js"></script>
 <script src="config.js"></script>
+<script>(function(){ try{ var t=JSON.parse(localStorage.getItem('sadae.theme')||'"auto"'); if(t==='light'||t==='dark') document.documentElement.setAttribute('data-theme',t); }catch(e){} })();</script>
+<style>/* 화면 색 고르기: 어둡게 */
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --bg:#151A15; --card:#212822; --card2:#1A201B; --ink:#EDEBE1; --ink2:#AEAC9F; --ink3:#7E7D72;
+    --line:#333B34; --line2:#2A312B;
+    --red:#DE625E; --red-ink:#1A0F0F; --red-soft:#4A2A2A;
+    --indigo:#8FA9D8; --indigo-soft:#283449; --indigo-ink:#0F1522;
+    --green:#82B06B; --green-soft:#26361F; --gold:#D8B25E; --gold-soft:#3D3320;
+    --miss:#6F7268; --hit:#DE625E;
+    --grass:#3F5A38; --grass2:#33492D; --sky:#1C2620; --soil:#4E432E;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+  }
+
+:root[data-theme="dark"]{--wall:#3B3326;--floor:#5A4128;--floor2:#4A351F;--wood:#6B4A2E}
+:root[data-theme="dark"] .room .win{background:linear-gradient(#26343C 0 55%,#3F5A38 55% 100%)}
+ :root[data-theme="dark"]{--ws1-bg:#1F3646;--ws1-fg:#B5DAF2;--ws2-bg:#3D6F8F;--ws2-fg:#F1F8FD;--ws3-bg:#B5DAF2;--ws3-fg:#10243D} 
+ :root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#1B1F2E; --card:#2A2F44; --card2:#353B55; --ink:#F1EEE6; --ink2:#B7B2C4; --ink3:#8E889A;
+  --line:#F1EEE6; --line2:#5A5F78; --grid:rgba(241,238,230,.05);
+  --red:#FF6B5E; --red-ink:#1B1F2E; --red-soft:#4A2E36;
+  --indigo:#8FA8FF; --indigo-soft:#2E3A63; --indigo-ink:#1B1F2E;
+  --green:#7CCB8A; --green-soft:#24402C; --gold:#FFD877; --gold-soft:#4A4128; --gold-ink:#1B1F2E;
+  --miss:#8E889A; --hit:#FF6B5E; --yel:#4A4128;
+  --sky:#26344A; --grass:#3F5A38; --grass2:#33492D; --soil:#6B4A2E;
+  --wall:#3B3326; --floor:#5A4128; --floor2:#4A351F; --wood:#6B4A2E;
+  --hard:3px 3px 0 #000; --hard4:4px 4px 0 #000;
+}
+:root[data-theme="dark"]{--memo-bg:#2E2A1F;--memo-line:#4A4230;--memo-bar:#C9A24A;--memo-on:#8A6D22;--memo-hl:#E9C46A}
+:root[data-theme="dark"]{--wind-bg:#2B5878;--wind-bd:#8CC4EA;--wind-ink:#EEF6FC;--wind-ink2:#C4DDF0;--wind-go:#CFE8FA}
+:root[data-theme="dark"] .tabbar{background-color:#2B2824!important;background-image:radial-gradient(rgba(255,240,200,.05) .6px,transparent .7px),repeating-linear-gradient(115deg,transparent 0 7px,rgba(255,240,200,.05) 7px 7.6px,transparent 7.6px 19px),repeating-linear-gradient(28deg,transparent 0 11px,rgba(255,240,200,.05) 11px 11.5px,transparent 11.5px 27px)!important;border-top-color:#E8DCC0!important}
+  :root[data-theme="dark"] .tabbar .tab{color:#BDB3A0}:root[data-theme="dark"] .tabbar .tab.on{background:#E8DCC0;color:#231C16}:root[data-theme="dark"] .tabbar .tab-dot{box-shadow:0 0 0 2px #2B2824}
+ :root[data-theme="dark"] .mz{background-color:#E6DDC6;box-shadow:4px 4px 0 #000} :root[data-theme="dark"] .news-dot{box-shadow:0 0 0 2px #2B2824} :root[data-theme="dark"] .pz-ticker{border-color:#E8DCC0} 
+ :root[data-theme="dark"]{--gw:#C99467;--gw-soft:#3E3328;--gl-bow:#C99467;--gl-arrow:#FF6B5E;--gl-kkakji:#FFD877;--gl-etc:#8FA8FF} 
+ :root[data-theme="dark"]{--tint-a:#25304A;--tint-b:#34302A} 
+ :root[data-theme="dark"]{--zebra:#30364D;--band:#3A3628} 
+ :root[data-theme="dark"]{--bv-off:#232838;--bv-got:#3B3524;--bv-s1:#4A2E36;--bv-s2:#2B3A50;--bv-s3:#24402C;--bv-s4:#2E3A63;--bv-s6:#3A3350} </style>
 </head>
 <body>
 <title>오늘 사대</title>
@@ -68,7 +106,7 @@
 .notice{border-top:1px dashed var(--line);padding:8px 0}
 .step{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px dashed var(--line)}.step-n{font-size:22px;line-height:1;color:var(--red)}.step ul{margin:6px 0;padding-left:18px;line-height:1.75}.step code{font-size:12.5px;background:var(--card2);padding:1px 4px;word-break:break-all}
 .step-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.now-line{background:color-mix(in srgb,var(--red) 10%,var(--card));padding:8px 10px;border-left:4px solid var(--red)}.notice summary{cursor:pointer;font-weight:600}.notice p{color:var(--ink2);font-size:14px}
-.info-btns{display:flex;flex-direction:column;gap:8px;margin-top:10px}.ok-line{color:var(--green);font-weight:600}
+.info-btns{display:flex;flex-direction:column;gap:8px;margin-top:10px}.th-seg{display:flex;border:2px solid var(--ink);background:var(--card)}.th-seg button{flex:1;font:inherit;font-size:13px;padding:9px 2px;background:transparent;color:var(--ink);border:0;border-right:2px solid var(--ink);cursor:pointer}.th-seg button:last-child{border-right:0}.th-seg button.on{background:var(--ink);color:var(--card);font-weight:700}.ok-line{color:var(--green);font-weight:600}
 .pin-in{letter-spacing:.5em;font-size:20px;text-align:center;max-width:180px}
 #approveBox{position:fixed;inset:0;z-index:40;background:rgba(27,31,46,.6);display:flex;align-items:center;justify-content:center;padding:16px}
 #gate{position:fixed;inset:0;z-index:25;background:var(--bg);background-image:linear-gradient(rgba(42,34,51,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(42,34,51,.06) 1px,transparent 1px);background-size:24px 24px;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
@@ -2479,7 +2517,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.09c';
+const APP_VER = '2026.10.09e';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2699,6 +2737,12 @@ function noticeHTML(){
   const lab=k=>k==='old'?'이전 공지':`${k.slice(0,4)}년 ${+k.slice(5)}월`;
   return head.map((n,i)=>one(n,i===0)).join('') + (rest.length ? `<div class="nt-old"><div class="nt-oh">지난 공지 ${rest.length}개 · 달마다 접어 뒀어요</div>${order.map(k=>`<details class="nt-month"><summary><span>📁 ${lab(k)}</span><span class="tiny muted">${g[k].length}개 ▾</span></summary><div class="nt-in">${g[k].map(n=>one(n,false)).join('')}</div></details>`).join('')}</div>` : '');
 }
+// 10-09 · 화면 색 고르기
+const themeSaved = () => { const t=lsGet('sadae.theme',''); return (t==='light'||t==='dark')?t:''; };
+const themePick = () => themeSaved() || ((window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light');   // 아직 안 골랐으면 지금 보이는 색
+function applyTheme(t){ if(t) lsSet('sadae.theme', t); const v=themeSaved(); const r=document.documentElement; if(!v) r.removeAttribute('data-theme'); else r.setAttribute('data-theme', v);
+  try{ const m=document.querySelector('meta[name="theme-color"]'); if(m){ const bg=getComputedStyle(document.body).backgroundColor; if(bg) m.setAttribute('content', bg); } }catch(e){} }
+setTimeout(()=>applyTheme(), 0);
 function renderInfo(){
   const el=$('#infoBody'); if(!el) return;
   const who=store.who||{}; const loggedIn=store.kind==='remote'&&store.token&&S.me;
@@ -2707,6 +2751,9 @@ function renderInfo(){
   <div class="card info-card"><div class="sec-head"><h2>공지사항</h2></div>
     ${noticeHTML()}</div>
   <div class="card info-card"><div class="sec-head"><h2>📱 앱으로 설치하기</h2></div>${installHTML()}</div>
+  <div class="card info-card"><div class="sec-head"><h2>🌓 화면 색</h2></div>
+    <div class="th-seg" id="thSeg">${[['light','☀️ 밝게'],['dark','🌙 어둡게']].map(([k,l])=>`<button type="button" data-th="${k}" class="${themePick()===k?'on':''}">${l}</button>`).join('')}</div>
+    <p class="tiny muted" style="margin:6px 0 0">폰 설정과 상관없이 이 기기에서 고른 색으로 보여요</p></div>
   <div class="card info-card"><div class="sec-head"><h2>이용법</h2></div>
     <details class="notice"><summary>오늘 정 — 습사 등록</summary><p>시간대(새벽~저녁)를 누르면 사대에 내 캐릭터가 서요. 사대에는 <b>내 소속 정</b> 사원만 보여요. 다른 정에 가는 날은 위의 📍정 이름을 눌러 그 정을 고르고 시간대를 누르세요. 다른 사원 이름 옆 ＋로 이모지 응원, 안 가게 되면 "안 가요".</p></details>
     <details class="notice"><summary>광장 — 모든 정 사원과 한마디</summary><p>가입한 사원 모두가 광장에 모여요. 캐릭터를 누르면 그 사원의 방에 놀러 가고, 아래에서 한마디(하루 30개까지)를 남길 수 있어요. 오늘 몰기·새 배지 소식도 여기 떠요.</p></details>
@@ -2730,6 +2777,7 @@ function renderInfo(){
   <p class="tiny muted" style="text-align:center;margin:8px 0 0">오늘 사대 · 웹앱 ${esc(APP_VER)}</p>`;
   const on=(id,f)=>{ const b=el.querySelector(id); if(b) b.addEventListener('click',f); };
   on('#inAdmin',openAdmin); on('#inNoti',openNoti); on('#inJeong',openJeong); on('#inPin',openPinChange); on('#inOut',logoutHere); on('#inLogin',()=>openLogin('')); bindInstall(el);
+  el.querySelectorAll('[data-th]').forEach(b=>b.addEventListener('click',()=>{ applyTheme(b.dataset.th); el.querySelectorAll('[data-th]').forEach(x=>x.classList.toggle('on', x===b)); toast(b.dataset.th==='dark'?'어둡게 바꿨어요':'밝게 바꿨어요'); }));
   on('#inInvite',async()=>{ try{ await navigator.clipboard.writeText(inviteLink()); toast('초대 링크를 복사했어요. 단톡방 공지에 올려 주세요'); }catch(x){ toast('주소를 길게 눌러 복사하세요'); } });
   try{ lsSet('sadae.noticeSeen', NOTICES[0].id); }catch(x){} renderInfoDot();
 }
