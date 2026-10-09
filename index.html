@@ -1047,30 +1047,33 @@ svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:
 #saveRound.molgi{background:var(--gold);color:var(--gold-ink);border-color:var(--ink)}
 #saveRound:disabled{opacity:.55}
 /* p136 · 습사 메모 */
+:root{--memo-bg:#FFFBEA;--memo-line:#EADFB8;--memo-bar:#E9C46A;--memo-on:#E9C46A;--memo-hl:#FFE08A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--memo-bg:#2E2A1F;--memo-line:#4A4230;--memo-bar:#C9A24A;--memo-on:#8A6D22;--memo-hl:#E9C46A}}
+:root[data-theme="dark"]{--memo-bg:#2E2A1F;--memo-line:#4A4230;--memo-bar:#C9A24A;--memo-on:#8A6D22;--memo-hl:#E9C46A}
 .save-row{display:flex;gap:6px;align-items:stretch}.save-row #saveRound{flex:1;min-width:0}
-.rm-btn{flex:none;width:56px;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:#FFFBEA;color:var(--ink);border:2px solid var(--ink);box-shadow:var(--hard);cursor:pointer}
-.rm-btn span{font-size:18px;line-height:1}.rm-btn small{font-size:10px}.rm-btn.on{background:#E9C46A}
-.rm-line{display:flex;gap:6px;align-items:center;margin:0 0 8px}.rm-line .input{flex:1;background:#FFFBEA;border:2px solid var(--ink);font-size:14px}.rm-line[hidden]{display:none}
+.rm-btn{flex:none;width:56px;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:var(--memo-bg);color:var(--ink);border:2px solid var(--ink);box-shadow:var(--hard);cursor:pointer}
+.rm-btn span{font-size:18px;line-height:1}.rm-btn small{font-size:10px}.rm-btn.on{background:var(--memo-on)}
+.rm-line{display:flex;gap:6px;align-items:center;margin:0 0 8px}.rm-line .input{flex:1;background:var(--memo-bg);color:var(--ink);border:2px solid var(--ink);font-size:14px}.rm-line[hidden]{display:none}
 .rm-x{flex:none;width:34px;height:34px;font:inherit;background:var(--card);border:1.5px solid var(--line2);color:var(--ink3);cursor:pointer}
-.rt-mm{grid-column:1/-1;order:99;margin:4px 2px -2px 4px;font-size:12px;color:var(--ink2);background:#FFFBEA;border-left:3px solid #E9C46A;padding:2px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;text-align:left}
+.rt-mm{grid-column:1/-1;order:99;margin:4px 2px -2px 4px;font-size:12px;color:var(--ink2);background:var(--memo-bg);border-left:3px solid var(--memo-bar);padding:2px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;text-align:left}
 .rt.rm-open .rt-mm{white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
 .rt-more{display:block;font:inherit;font-size:12px;font-weight:700;margin:6px 8px;padding:4px 10px;background:var(--card);color:var(--ink);border:1.5px dashed var(--ink3);cursor:pointer}
-.memo-pad{position:relative;margin:16px 0 4px;border:2px solid var(--ink);background:repeating-linear-gradient(#FFFBEA 0 25px,#EADFB8 25px 26px);background-position:0 14px;padding:14px 10px 18px}
+.memo-pad{position:relative;margin:16px 0 4px;border:2px solid var(--ink);background:repeating-linear-gradient(var(--memo-bg) 0 25px,var(--memo-line) 25px 26px);background-position:0 14px;padding:14px 10px 18px}
 .memo-pad textarea{display:block;width:100%;border:0;background:transparent;resize:none;font:inherit;font-size:14px;line-height:26px;color:var(--ink);padding:0;outline:none}
 .memo-pad textarea::placeholder{color:var(--ink3)}
-.mp-tag{position:absolute;top:-11px;left:8px;background:var(--ink);color:#fff;font-family:var(--display);font-size:11.5px;padding:1px 7px}
+.mp-tag{position:absolute;top:-11px;left:8px;background:var(--ink);color:var(--card);font-family:var(--display);font-size:11.5px;padding:1px 7px}
 .mp-st{position:absolute;right:8px;bottom:2px;font-size:10.5px;color:var(--ink3)}
-.re-memo{display:flex;flex-direction:column;gap:4px;margin:10px 0 0;font-size:12.5px;font-weight:700}.re-memo .input{background:#FFFBEA;font-size:14px}
-.jn-open{margin-top:10px;background:#FFFBEA}.jn-open small{font-size:11px;color:var(--ink3);margin-left:4px}
+.re-memo{display:flex;flex-direction:column;gap:4px;margin:10px 0 0;font-size:12.5px;font-weight:700}.re-memo .input{background:var(--memo-bg);color:var(--ink);font-size:14px}
+.jn-open{margin-top:10px;background:var(--memo-bg);color:var(--ink)}.jn-open small{font-size:11px;color:var(--ink3);margin-left:4px}
 .jn-srch{display:flex;align-items:center;gap:6px;margin-bottom:8px}.jn-srch .input{flex:1}.jn-srch small{font-size:11px;color:var(--ink3);white-space:nowrap}
 .jn-fl{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px}.jn-fl button{font:inherit;font-size:12px;padding:3px 9px;background:var(--card);color:var(--ink);border:1.5px solid var(--ink);cursor:pointer}.jn-fl button.on{background:var(--ink);color:var(--card)}
 .jn-list{display:flex;flex-direction:column;gap:7px;max-height:56vh;overflow:auto;padding:2px 3px 4px 0}
 .jn-mh{font-family:var(--display);font-size:12px;color:var(--ink3);margin:6px 0 -2px;letter-spacing:1px}
 .jn-it{font:inherit;text-align:left;display:flex;flex-direction:column;gap:4px;background:var(--card);color:var(--ink);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);padding:8px 10px;cursor:pointer}
 .jn-it .top{display:flex;align-items:baseline;gap:6px}.jn-it .top b{font-family:var(--display);font-size:14px}.jn-it .top small{font-size:11px;color:var(--ink3)}.jn-it .top .s{margin-left:auto;font-family:var(--display);font-size:12.5px}
-.jn-it .t{font-size:13px;line-height:1.5;background:#FFFBEA;padding:3px 7px;border-left:3px solid #E9C46A;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.jn-it .r{font-size:12px;color:var(--ink2)}.jn-it .r em{font-style:normal;font-family:var(--display);font-size:11px;background:var(--ink);color:#fff;padding:0 4px;margin-right:5px}
-.jn-it mark{background:#FFE08A;padding:0 1px}
+.jn-it .t{font-size:13px;line-height:1.5;background:var(--memo-bg);padding:3px 7px;border-left:3px solid var(--memo-bar);white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.jn-it .r{font-size:12px;color:var(--ink2)}.jn-it .r em{font-style:normal;font-family:var(--display);font-size:11px;background:var(--ink);color:var(--card);padding:0 4px;margin-right:5px}
+.jn-it mark{background:var(--memo-hl);color:#2A2233;padding:0 1px}
 #todaySum{font-size:12px}
 #todaySum b{color:var(--red)}
 .rounds{gap:0}
@@ -2476,7 +2479,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.09b';
+const APP_VER = '2026.10.09c';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
