@@ -1806,6 +1806,30 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 /* p103 */
 .pz-bub.lv3{margin-bottom:80px}.pz-bub.lv3::before{content:"";position:absolute;left:50%;top:100%;width:2px;margin-left:-1px;height:76px;background:#2A2233;opacity:.5}
 /* p104 · 북적 사대 */
+/* p135 · 북적 사대 더 티 나게 */
+.pz-party .pz-fx:not(.bz){display:none}
+.pz-fx.bz i.rib{width:5px;height:13px;background:var(--c);border:1px solid rgba(0,0,0,.3);animation:pz-conf2 var(--t) linear var(--d) infinite}
+.pz-fx.bz i.jung{width:15px;height:15px;background:#fff;color:#E2463B;border:1.5px solid #E2463B;font:700 10px/13px var(--display);text-align:center;font-style:normal;animation:pz-conf2 var(--t) linear var(--d) infinite}
+.pz-fx.bz i.tgt{width:auto;height:auto;background:none;border:0;font-size:15px;font-style:normal;animation:pz-conf2 var(--t) linear var(--d) infinite}
+@keyframes pz-conf2{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(var(--sw),140px) rotate(120deg)}50%{transform:translate(0,280px) rotate(200deg)}75%{transform:translate(calc(var(--sw)*-1),420px) rotate(300deg)}100%{transform:translate(0,580px) rotate(400deg)}}
+.pz-pop{position:absolute;left:50%;top:70px;z-index:260;pointer-events:none}
+.pz-pop i{position:absolute;left:0;top:0;width:9px;height:9px;background:var(--c);border:1px solid rgba(0,0,0,.35);font:700 9px/9px var(--display);color:#fff;font-style:normal;text-align:center;animation:pz-pop 1.3s cubic-bezier(.2,.7,.3,1) both}
+@keyframes pz-pop{0%{transform:translate(0,0) scale(.4);opacity:1}70%{opacity:1}100%{transform:translate(var(--x),var(--y)) scale(1.1) rotate(200deg);opacity:0}}
+.pz-busy{animation:pz-busy-in .5s steps(4) both, pz-glow 1.6s steps(2) .5s infinite}
+@keyframes pz-glow{50%{box-shadow:2px 2px 0 var(--ink),0 0 0 3px #FFE08A}}
+.pz-ring-c{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);font-size:30px;z-index:60;pointer-events:none;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.25))}
+.pz-fig.dance.ring{left:50%!important;top:58%!important;animation:pz-orbit var(--rt) linear var(--ro) infinite}
+.pz-fig.dance.ring .pz-walk{animation:pz-face2 var(--rt) steps(1) var(--ro) infinite}
+.pz-fig.dance.ring .pz-ch{animation:pz-hop .55s ease-in-out var(--hop) infinite}
+@keyframes pz-orbit{0%{transform:translate(0,var(--ry))}12.5%{transform:translate(calc(var(--rx)*-.707),calc(var(--ry)*.707))}25%{transform:translate(calc(var(--rx)*-1),0)}37.5%{transform:translate(calc(var(--rx)*-.707),calc(var(--ry)*-.707))}50%{transform:translate(0,calc(var(--ry)*-1))}62.5%{transform:translate(calc(var(--rx)*.707),calc(var(--ry)*-.707))}75%{transform:translate(var(--rx),0)}87.5%{transform:translate(calc(var(--rx)*.707),calc(var(--ry)*.707))}100%{transform:translate(0,var(--ry))}}
+@keyframes pz-face2{0%,49%{transform:scaleX(-1)}50%,100%{transform:scaleX(1)}}
+@keyframes pz-hop{0%,100%{transform:translateY(0)}45%{transform:translateY(-9px)}}
+.pz-note{position:absolute;top:-6px;left:60%;font-size:13px;opacity:0;pointer-events:none;animation:pz-note 5s ease-out var(--nd) infinite}
+@keyframes pz-note{0%{opacity:0;transform:translateY(0)}10%{opacity:1}35%{opacity:0;transform:translate(8px,-26px)}100%{opacity:0}}
+.calm-walk .pz-fig.dance.ring,.calm-walk .pz-fig.dance.ring .pz-walk,.calm-walk .pz-fig.dance.ring .pz-ch{animation:none!important}
+.calm-fx .pz-pop,.calm-fx .pz-note,.calm-fx .pz-fx.bz{display:none!important}.calm-fx .pz-busy{animation:none}
+.pz-shooting .pz-pop,.pz-shooting .pz-note{display:none!important}.pz-shooting .pz-fig.dance.ring,.pz-shooting .pz-fig.dance.ring .pz-ch{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){.pz-fig.dance.ring,.pz-fig.dance.ring .pz-ch,.pz-fig.dance.ring .pz-walk,.pz-busy{animation:none!important}.pz-pop,.pz-note{display:none}}
 .pz-busy{position:absolute;left:50%;transform:translateX(-50%);top:46px;z-index:249;max-width:calc(100% - 16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--gold);color:var(--gold-ink,#2A2233);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);padding:3px 10px;font-size:12.5px;animation:pz-busy-in .5s steps(4) both}
 .pz-busy small{font-size:11px;opacity:.8}
 @keyframes pz-busy-in{0%{transform:translate(-50%,-6px);opacity:0}100%{transform:translate(-50%,0);opacity:1}}
@@ -2423,7 +2447,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.07l';
+const APP_VER = '2026.10.09a';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -6006,12 +6030,22 @@ function busyOf(att){ const g={}; (att||[]).forEach(e=>{ if(!e || !e.slot) retur
   L.forEach(x=>{ if(!x.jname){ const j=[homeJ(), baseJ(), ...(typeof JEONGS!=='undefined'?JEONGS:[])].find(j=>j && j.id===x.jid); x.jname=(j&&j.name)||'우리 정'; } });
   return L; }
 function renderBusy(busy){ const pz=$('#plaza'); if(!pz) return; let el=$('#pzBusy');
-  if(!busy.length){ S.plazaBusy=[]; if(el) el.remove(); $$('.pz-fx.bz',pz).forEach(x=>x.remove()); return; }
+  if(!busy.length){ S.plazaBusy=[]; if(el) el.remove(); $$('.pz-fx.bz,.pz-ring-c',pz).forEach(x=>x.remove()); pz.classList.remove('pz-party'); return; }
   if(!el){ el=document.createElement('div'); el.id='pzBusy'; el.className='pz-busy'; el.setAttribute('role','status'); pz.appendChild(el); }
   const b=busy[0]; el.innerHTML=`<b>🎉 북적 사대!</b> <span>${esc(b.jname)} ${esc(b.slot)} 사대에 <b class="num">${b.ids.length}</b>명이 섰어요${busy.length>1?` <small>외 ${busy.length-1}곳</small>`:''}</span><button type="button" class="pz-busy-shot" data-pzshot>📸 공유</button>`; S.plazaBusy=busy;
   const sb=$('[data-pzshot]',el); if(sb) sb.onclick=e=>{ e.stopPropagation(); openPlazaShot(); };
   const tk=$('#pzTicker'); el.style.top = (tk && !tk.hidden) ? '46px' : '8px';
-  if(!$('.pz-fx.bz',pz)){ const fx=document.createElement('div'); fx.className='pz-fx bz'; fx.setAttribute('aria-hidden','true'); fx.innerHTML=Array.from({length:14},(_,i)=>`<i style="left:${(i*7.3+3)%96}%;--d:${(i%7)*0.55}s;--c:${['#E2463B','#F4B63B','#3E8A4F','#3552A0','#F2A7BE'][i%5]}"></i>`).join(''); pz.appendChild(fx); } }
+  if(!$('.pz-fx.bz',pz)){ const fx=document.createElement('div'); fx.className='pz-fx bz'; fx.setAttribute('aria-hidden','true'); fx.innerHTML=Array.from({length:18},(_,i)=>{ const k=['jung','rib','rib','tgt','rib','jung'][i%6]; return `<i class="${k}" style="left:${(i*5.7+2)%96}%;--d:${-(i%9)*0.6}s;--t:${3.6+(i%4)*0.5}s;--c:${['#E2463B','#F4B63B','#3E8A4F','#3552A0','#F2A7BE'][i%5]};--sw:${(i%2?1:-1)*(8+i%4*5)}px">${k==='jung'?'中':k==='tgt'?'🎯':''}</i>`; }).join(''); pz.appendChild(fx); }
+  pz.classList.add('pz-party');
+  { const key='sadae.bzPop.'+today()+'.'+b.jid+'.'+b.slot; if(!lsGet(key,false)){ lsSet(key,true); const pop=document.createElement('div'); pop.className='pz-pop'; pop.setAttribute('aria-hidden','true'); pop.innerHTML=Array.from({length:16},(_,i)=>{ const a=i/16*Math.PI*2, r=70+(i%3)*28; return `<i style="--x:${Math.round(Math.cos(a)*r)}px;--y:${Math.round(Math.sin(a)*r*0.7+30)}px;--c:${['#E2463B','#F4B63B','#3E8A4F','#3552A0','#F2A7BE'][i%5]}">${i%4===0?'中':''}</i>`; }).join(''); pz.appendChild(pop); setTimeout(()=>pop.remove(), 1600); } }
+  setTimeout(pzRing, 0); }
+// p135: 북적 사대 — 춤추는 사원을 가운데 과녁 둘레로 (강강술래)
+function pzRing(){ const pz=$('#plaza'); if(!pz || !pz.classList.contains('pz-party')) return; const F=$$('.pz-fig.dance',pz); if(!F.length) return;
+  const box=$('#plazaCrowd')||pz; if(!$('.pz-ring-c',box)){ const c=document.createElement('div'); c.className='pz-ring-c'; c.setAttribute('aria-hidden','true'); c.textContent='🎯'; box.appendChild(c); }
+  const R_=F.slice(0,10), n=R_.length, T=Math.max(14, n*2.6), bw=box.getBoundingClientRect(); box.style.setProperty('--rx', Math.round(Math.min(bw.width*0.36,150))+'px'); box.style.setProperty('--ry', Math.round(Math.max(40, Math.min(bw.height*0.2, 90)))+'px');
+  R_.forEach((f,i)=>{ f.classList.add('ring'); f.style.setProperty('--rt', T+'s'); f.style.setProperty('--ro', (-(i/n)*T).toFixed(2)+'s'); f.style.setProperty('--hop', (i*0.13).toFixed(2)+'s');
+    if(!f.querySelector('.pz-note')){ const s=document.createElement('span'); s.className='pz-note'; s.setAttribute('aria-hidden','true'); s.textContent=['♪','🎉','♫','✨'][i%4]; s.style.setProperty('--nd', (1.2+i*0.9)%5+'s'); f.appendChild(s); } }); }
+setTimeout(()=>{ if(typeof renderPlaza==='function'){ const _rp=renderPlaza; renderPlaza=function(...a){ const r=_rp.apply(this,a); try{ pzRing(); }catch(e){} return r; }; } }, 0);
 function openPlazaShot(){
   const opt=lsGet('sadae.pzShot',{bub:true,tag:true}) || {bub:true,tag:true};
   const sh=openSheet(`<h3>📸 광장 공유</h3><p class="tiny muted" style="margin:0">지금 광장 모습을 사진(PNG) 한 장으로 만들어요. 카톡 · SNS로 보내 보세요.</p>
