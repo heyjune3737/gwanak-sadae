@@ -1084,6 +1084,20 @@ svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:
 #saveRound{min-height:54px;font-size:15px;background:var(--indigo);color:var(--indigo-ink);border:2px solid var(--ink);box-shadow:var(--hard)}
 #saveRound.molgi{background:var(--gold);color:var(--gold-ink);border-color:var(--ink)}
 #saveRound:disabled{opacity:.55}
+/* p139 · 개량궁 · 각궁 */
+.bw-pick{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px}
+.bw-pick button{font:inherit;font-size:13px;padding:6px 10px;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer}
+.bw-pick button.on{background:var(--ink);color:var(--card);font-weight:700;box-shadow:2px 2px 0 var(--ink3)}
+.bw-pick button.gak.on{background:#8A5A2B;border-color:#8A5A2B;color:#fff}
+.bw-pick small{flex-basis:100%;font-size:10.5px;color:var(--ink3)}
+.bw-view{display:flex;border:2px solid var(--ink);background:var(--card);margin:0 0 10px}
+.bw-view button{flex:1;font:inherit;font-size:12.5px;padding:8px 2px;background:transparent;color:var(--ink);border:0;border-right:2px solid var(--ink);cursor:pointer;line-height:1.25}
+.bw-view button:last-child{border-right:0}.bw-view button small{display:block;font-size:10px;opacity:.75}
+.bw-view button.on{background:var(--ink);color:var(--card);font-weight:700}
+.rt-bw{display:block;font-style:normal;font-size:9.5px;line-height:1.2;margin-top:2px;padding:0 3px;border:1px solid var(--ink3);color:var(--ink2);width:max-content}
+.rt-bw.gak{border-color:#8A5A2B;color:#fff;background:#8A5A2B}
+.re-bw{display:flex;align-items:center;gap:6px;margin:10px 0 0;font-size:12.5px;font-weight:700}
+.re-bw button{font:inherit;font-size:12.5px;padding:5px 9px;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer}.re-bw button.on{background:var(--ink);color:var(--card)}
 /* p136 · 습사 메모 */
 :root{--memo-bg:#FFFBEA;--memo-line:#EADFB8;--memo-bar:#E9C46A;--memo-on:#E9C46A;--memo-hl:#FFE08A}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--memo-bg:#2E2A1F;--memo-line:#4A4230;--memo-bar:#C9A24A;--memo-on:#8A6D22;--memo-hl:#E9C46A}}
@@ -2051,6 +2065,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
         <button class="windbar" id="windBar" type="button"></button>
         <button class="goalbar free" id="goalBar" type="button"></button>
         <div class="restbar" id="restBar" hidden></div>
+        <div class="bw-pick" id="bwPick" role="radiogroup" aria-label="오늘 쏘는 활"></div>
         <div class="arrows" id="arrowSlots"></div>
         <div style="height:12px"></div>
         <div class="results" id="resultBtns"></div>
@@ -2070,6 +2085,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
       </div>
 
       <div id="recView" hidden>
+      <div class="bw-view" id="bwView" role="tablist" aria-label="활별로 보기"></div>
       <button type="button" class="btn block rs-open" data-share-open>📤 기록 공유 · 저장 <small>사진(PNG)</small></button>
       <div class="card" id="dayCard">
         <div class="dnav"><button type="button" class="btn sm" id="dPrev" aria-label="이전 날">◀</button><div class="dnav-t"><b id="dTitle"></b><span id="dSub"></span></div><button type="button" class="btn sm" id="dNext" aria-label="다음 날">▶</button></div>
@@ -2517,7 +2533,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.09e';
+const APP_VER = '2026.10.09f';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3645,6 +3661,7 @@ $('#saveRound').addEventListener('click', async ()=>{
   if(cw && (cw.r || cw.ms!=null)){ const ws=(cur.winds||[]).slice(0,n0); while(ws.length<n0) ws.push(null); ws.push({...(cw.r?{r:cw.r, l:cw.l||0}:{}), src:'a', ...(cw.ms!=null?{ms:cw.ms,deg:cw.deg,g:cw.g}:{}), ...(cw.wc!=null?{wc:cw.wc}:{}), ...(cw.t!=null?{t:cw.t}:{}), ...(cw.p!=null?{p:cw.p}:{})}); cur.winds=ws; }
   else if(cur.winds){ const ws=cur.winds.slice(0,n0); while(ws.length<n0) ws.push(null); ws.push(null); cur.winds=ws; }
   { const at=(Array.isArray(cur.at)?cur.at:[]).slice(0,n0); while(at.length<n0) at.push(null); at.push(Date.now()); cur.at=at; }
+  { const bw=(Array.isArray(cur.bw)?cur.bw:[]).slice(0,n0); while(bw.length<n0) bw.push(null); bw.push(bwSel()); cur.bw=bw; }
   { const mt=rmText(); if(mt || Array.isArray(cur.rm)){ const rm=(Array.isArray(cur.rm)?cur.rm:[]).slice(0,n0); while(rm.length<n0) rm.push(null); rm.push(mt||null); cur.rm=rm; } }
   cur.rounds=[...(cur.rounds||[]), arr]; cur.updatedAt=Date.now();
   { const G=currentGoal(), v=goalStore(); if(G) cur.goal={g:G.g, n:G.n}; else if(cur.goal && v.day && v.day.date===t && !v.day.g) cur.goal=null; }
@@ -3652,6 +3669,25 @@ $('#saveRound').addEventListener('click', async ()=>{
   if(ok){ rmClear(); const h=arr.filter(x=>x==='H').length; if(h===5){ try{ navigator.vibrate && navigator.vibrate([120,80,120,80,300]); }catch(e){} } S.round=[]; saveDraft(); showRoundPop(arr, cur.rounds.length, cur.rounds.reduce((a,r)=>a+hitsOf(r),0)); if(restDev()){ if(restCfg().auto) startRest(restCfg().min); else { audioOn(); renderRest(); } } }
 });
 const hitsOf = r => r.filter(x=>x==='H').length;
+// ===== p139 · 개량궁 · 각궁 =====
+const BOWS = ['개량궁','각궁'], BOW_L = {'개량궁':'🏹 개량궁(카본)','각궁':'🎋 각궁'}, BOW_S = {'개량궁':'개량','각궁':'각궁'};
+const normBow = b => b==='각궁' ? '각궁' : '개량궁';
+const myBow = () => normBow(S.me && S.me.bow);
+const bowOf = (day, k, fb) => { const b=day && Array.isArray(day.bw) ? day.bw[k] : null; return b ? normBow(b) : normBow(fb!==undefined ? fb : (S.me&&S.me.bow)); };
+const bwSel = () => { const v=lsGet('sadae.bowSel',''); return BOWS.includes(v) ? v : myBow(); };
+const bwViewSel = () => { const v=lsGet('sadae.bowView','all'); return (v==='all'||BOWS.includes(v)) ? v : 'all'; };
+function bowFilterDays(days, b){ return (days||[]).map(d=>{ const rs=d.rounds||[]; const keep=rs.map((r,k)=>bowOf(d,k)===b);
+    if(!keep.some(Boolean)) return {...d, rounds:[], winds:[], at:[], rm:[], bw:[]};
+    const f=a=>Array.isArray(a)?a.filter((x,k)=>keep[k]):a; return {...d, rounds:rs.filter((r,k)=>keep[k]), winds:f(d.winds), at:f(d.at), rm:f(d.rm), bw:rs.map((r,k)=>bowOf(d,k)).filter((x,k)=>keep[k])}; })
+    .filter(d=>(d.rounds&&d.rounds.length) || (d.memo||'').trim()); }
+function renderBowPick(){ const el=$('#bwPick'); if(!el) return; const v=bwSel();
+  el.innerHTML = BOWS.map(b=>`<button type="button" role="radio" aria-checked="${v===b}" data-bwp="${b}" class="${v===b?'on':''} ${b==='각궁'?'gak':''}">${BOW_L[b]}</button>`).join('') + `<small>바꾸기 전까지 계속 이 활로 기록돼요</small>`; }
+$('#bwPick').addEventListener('click', e=>{ const b=e.target.closest('[data-bwp]'); if(!b) return; lsSet('sadae.bowSel', b.dataset.bwp); renderBowPick(); toast(`${BOW_L[b.dataset.bwp]}으로 기록해요`); });
+function renderBowView(){ const el=$('#bwView'); if(!el) return; const v=bwViewSel(); const all=S.myDaysAll||S.myDays||[];
+  const n=b=>all.reduce((a,d)=>a+(d.rounds||[]).filter((r,k)=>b==='all'||bowOf(d,k)===b).length,0);
+  el.innerHTML = [['all','전체'],...BOWS.map(b=>[b,BOW_L[b]])].map(([k,l])=>`<button type="button" role="tab" aria-selected="${v===k}" data-bwv="${k}" class="${v===k?'on':''}">${l} <small>${n(k)}순</small></button>`).join(''); }
+$('#bwView').addEventListener('click', e=>{ const b=e.target.closest('[data-bwv]'); if(!b) return; lsSet('sadae.bowView', b.dataset.bwv); renderRecord(); });
+try{ Object.assign(UT_NAME, {'[data-bwp]':'표 기록 › 활 고르기(개량궁 · 각궁)', '[data-bwv]':'표 기록 › 기록 보기 활별로', '[data-rebw]':'표 기록 › 순 고치기 활'}); }catch(e){}
 // ===== p136 · 습사 메모 =====
 const rmText = () => { const v=(lsGet('sadae.rmDraft','')||'').trim(); return v.slice(0,80); };
 function rmSync(){ const L=$('#rmLine'), I=$('#rmIn'), B=$('#rmBtn'); if(!L||!I||!B) return; const v=lsGet('sadae.rmDraft','')||''; if(document.activeElement!==I) I.value=v; const open=!L.hidden;
@@ -3685,7 +3721,7 @@ function openJournal(){ let q='', f='all';
     <div id="jnList" class="jn-list"></div><div class="actions"><button class="btn ghost" type="button" id="jnClose">닫기</button></div>`);
   const hl=t=>{ const e=esc(t); if(!q) return e; const k=esc(q).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); return e.replace(new RegExp(k,'gi'), m=>`<mark>${m}</mark>`); };
   const draw=()=>{ const ql=q.toLowerCase(); let ym=''; let n=0;
-    const L=(S.myDays||[]).filter(d=>d.date && ((d.memo||'').trim() || (Array.isArray(d.rm)&&d.rm.some(Boolean)))).sort((a,b)=>b.date.localeCompare(a.date));
+    const L=(bwViewSel()==='all'?(S.myDays||[]):bowFilterDays(S.myDays,bwViewSel())).filter(d=>d.date && ((d.memo||'').trim() || (Array.isArray(d.rm)&&d.rm.some(Boolean)))).sort((a,b)=>b.date.localeCompare(a.date));
     const html=L.map(d=>{ const rs=(d.rounds||[]).filter(Array.isArray); const h=rs.reduce((a,r)=>a+hitsOf(r),0); const mo=rs.some(r=>hitsOf(r)===5);
       const rms=(Array.isArray(d.rm)?d.rm:[]).map((t,k)=>t?{k,t,h:rs[k]?hitsOf(rs[k]):0}:null).filter(Boolean); const dm=(d.memo||'').trim();
       if(f==='day' && !dm) return ''; if(f==='rm' && !rms.length) return ''; if(f==='mo' && !mo) return '';
@@ -4075,15 +4111,17 @@ async function makeShare(ids, kind){
     save(); };
 }
 document.addEventListener('click', e=>{ if(e.target.closest('[data-share-open]')) openShareSheet(); });
-function renderRecord(){
-  renderRoundInput();
+function renderRecord(){ if(S.recView!=='view' || bwViewSel()==='all'){ return renderRecord0(); }
+  const all=S.myDays; S.myDaysAll=all; S.myDays=bowFilterDays(all, bwViewSel()); try{ return renderRecord0(); } finally{ S.myDays=all; S.myDaysAll=null; } }
+function renderRecord0(){
+  renderRoundInput(); try{ renderBowPick(); renderBowView(); }catch(e){ console.warn('bow', e); }
   const t=today();
   const td = S.myDays.find(d=>d.date===t); const rounds=(td&&td.rounds)||[];
   const th=rounds.reduce((a,r)=>a+hitsOf(r),0), ta=rounds.length*5, tm=rounds.filter(r=>hitsOf(r)===5).length;
   $('#todaySum').innerHTML = ta ? `${th}/${ta}시 · <b>${Math.round(th/ta*100)}%</b> · 몰기 ${tm}` : '';
   $('#cardToday').hidden = !rounds.length;
   const tws=(td&&td.winds)||[];
-  $('#todayRounds').innerHTML = rounds.length ? roundTableHTML(rounds, tws, {del:true, ed:rounds.map((r,k)=>rdEditable(td,k)), rm:(td&&td.rm)||[]})
+  $('#todayRounds').innerHTML = rounds.length ? roundTableHTML(rounds, tws, {del:true, ed:rounds.map((r,k)=>rdEditable(td,k)), rm:(td&&td.rm)||[], day:td})
     : `<div class="muted">${S.me?'오늘 낸 순이 아직 없어요. 위에서 5시를 채우고 저장해 보세요.':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>`;
   $$('#todayRounds [data-del]').forEach(b=>b.addEventListener('click', ()=>confirmDelRound(+b.dataset.del)));
   $$('#todayRounds [data-edr]').forEach(b=>b.addEventListener('click', ()=>openRoundEdit(+b.dataset.edr)));
@@ -4134,6 +4172,7 @@ function openRoundEdit(k){
   const mins=()=>Math.max(1,Math.ceil((RD_EDIT_MS-(Date.now()-td.at[k]))/60e3));
   const sh=openSheet(`<h3>${k+1}순 고치기</h3><p class="tiny muted" style="margin:0 0 8px">기록 후 1시간 뒤까진 고칠 수 있어요 <span id="reLeft">(${mins()}분 남음)</span></p>
     <div class="arrows" id="reSlots"></div><div class="results" id="rePad"></div>
+    <div class="re-bw"><span>🏹 활</span>${BOWS.map(b=>`<button type="button" data-rebw="${b}" class="${bowOf(td,k)===b?'on':''}">${BOW_L[b]}</button>`).join('')}</div>
     <label class="re-memo"><span>📝 이 순 메모</span><input class="input" id="reMemo" maxlength="80" autocomplete="off" placeholder="(선택)" value="${esc((Array.isArray(td.rm)&&td.rm[k])||'')}"></label>
     <div class="actions"><button class="btn ghost" type="button" id="reCancel">취소</button><button class="btn pri" type="button" id="reSave">고친 대로 저장</button></div>`);
   const draw=()=>{ $('#reSlots',sh).innerHTML=arr.map((r,i)=>`<button type="button" class="arrow set ${rc(r)} ${i===cur?'cur':''}" data-ri="${i}" aria-label="${i+1}시 ${RES[r].l}"><span class="k">${r==='H'?'中':glyph(r)}</span><span>${i+1}시</span></button>`).join('');
@@ -4142,12 +4181,15 @@ function openRoundEdit(k){
   draw();
   $('#reSlots',sh).addEventListener('click',e=>{ const b=e.target.closest('[data-ri]'); if(!b) return; cur=+b.dataset.ri; draw(); });
   $('#rePad',sh).addEventListener('click',e=>{ const b=e.target.closest('[data-rv]'); if(!b) return; arr[cur]=b.dataset.rv; if(cur<4) cur++; draw(); });
+  let rbw=bowOf(td,k); $$('[data-rebw]',sh).forEach(b=>b.addEventListener('click',()=>{ rbw=b.dataset.rebw; $$('[data-rebw]',sh).forEach(x=>x.classList.toggle('on', x===b)); }));
   $('#reCancel',sh).addEventListener('click',closeSheet);
   $('#reSave',sh).addEventListener('click', async ()=>{
     const t=today(), p=`days/${S.me.id}_${t}`; const doc=await store.get(p);
     if(!doc || !Array.isArray(doc.rounds) || !doc.rounds[k] || !rdEditable({...doc,date:t},k)){ toast('저장하고 1시간이 지나 잠겼어요'); closeSheet(); renderRecord(); return; }
     const mt=($('#reMemo',sh).value||'').trim().slice(0,80); const om=(Array.isArray(doc.rm)&&doc.rm[k])||'';
-    if(JSON.stringify(doc.rounds[k])===JSON.stringify(arr) && mt===om){ closeSheet(); return; }
+    const obw=bowOf(doc,k);
+    if(JSON.stringify(doc.rounds[k])===JSON.stringify(arr) && mt===om && rbw===obw){ closeSheet(); return; }
+    if(rbw!==obw){ const bw=(Array.isArray(doc.bw)?doc.bw:[]).slice(0,doc.rounds.length); while(bw.length<doc.rounds.length) bw.push(null); bw[k]=rbw; doc.bw=bw; }
     doc.rounds[k]=arr; if(mt!==om){ const rm=(Array.isArray(doc.rm)?doc.rm:[]).slice(0,doc.rounds.length); while(rm.length<doc.rounds.length) rm.push(null); rm[k]=mt||null; doc.rm=rm; } doc.updatedAt=Date.now();
     const ok=await write(st=>st.set(p, doc)); if(ok){ closeSheet(); toast(`${k+1}순을 고쳤어요`); }
   });
@@ -4155,7 +4197,7 @@ function openRoundEdit(k){
 function confirmDelRound(i){
   const sh=openSheet(`<h3>${i+1}순 기록을 지울까요?</h3><p class="muted">지운 기록은 되돌릴 수 없어요.</p><div class="actions"><button class="btn ghost" id="cNo">취소</button><button class="btn red" id="cYes">지우기</button></div>`);
   $('#cNo',sh).addEventListener('click',closeSheet);
-  $('#cYes',sh).addEventListener('click', async ()=>{ const t=today(), p=`days/${S.me.id}_${t}`; const cur=await store.get(p); if(cur){ cur.rounds.splice(i,1); if(Array.isArray(cur.winds)) cur.winds.splice(i,1); if(Array.isArray(cur.at)) cur.at.splice(i,1); if(Array.isArray(cur.rm)) cur.rm.splice(i,1); cur.updatedAt=Date.now(); await write(st=> cur.rounds.length ? st.set(p,cur) : st.del(p)); } closeSheet(); });
+  $('#cYes',sh).addEventListener('click', async ()=>{ const t=today(), p=`days/${S.me.id}_${t}`; const cur=await store.get(p); if(cur){ cur.rounds.splice(i,1); if(Array.isArray(cur.winds)) cur.winds.splice(i,1); if(Array.isArray(cur.at)) cur.at.splice(i,1); if(Array.isArray(cur.rm)) cur.rm.splice(i,1); if(Array.isArray(cur.bw)) cur.bw.splice(i,1); cur.updatedAt=Date.now(); await write(st=> cur.rounds.length ? st.set(p,cur) : st.del(p)); } closeSheet(); });
 }
 
 /* =========================================================
@@ -4172,9 +4214,9 @@ const GRADES = [[39,'9단'],[37,'8단'],[35,'7단'],[33,'6단'],[31,'5단'],[30,
 const gradeFor = t => { const g=GRADES.find(([n])=>t>=n); return g?g[1]:null; };
 /* ---------- 순 기록 표 (시지표) — 기록 보기 · 입력 화면 오늘 칸 ---------- */
 function roundTableHTML(rs, winds, o={}){
-  const del=!!o.del; const ed=o.ed||null; let ch=0; const tot=rs.reduce((a,r)=>a+hitsOf(r),0); const RM=Array.isArray(o.rm)?o.rm:[];
+  const del=!!o.del; const ed=o.ed||null; let ch=0; const tot=rs.reduce((a,r)=>a+hitsOf(r),0); const RM=Array.isArray(o.rm)?o.rm:[]; const BW=o.day?rs.map((r,k)=>bowOf(o.day,k)):null; const bwShow=BW && (new Set(BW).size>1 || BW[0]!==myBow());
   return `<div class="rt ${del?'rt-del':''}"><div class="rt-h"><span>순</span><span>1시</span><span>2시</span><span>3시</span><span>4시</span><span>5시</span><span>중</span><span>누적</span>${del?'<span></span>':''}</div>${rs.map((r,k)=>{ const n=hitsOf(r); ch+=n; const pc=Math.round(ch/((k+1)*5)*100);
-    return `<div class="rt-r ${n===5?'molgi':''} ${n===0?'zero':''} ${n>0&&n<5?'hit':''} ${n===4?'s4':''}"><span class="rt-n">${ed?(ed[k]?`<button type="button" class="rt-ed" data-edr="${k}" aria-label="${k+1}순 고치기">${k+1}순 ✏️</button>`:`${k+1}순<i class="rt-lk" title="1시간이 지나 잠김">🔒</i>`):`${k+1}순`}${windLine((winds||[])[k])?'':windChip((winds||[])[k])}</span>${r.map(x=>`<span class="rt-d ${x==='H'?'H':''}">${x==='H'?'中':glyph(x)}</span>`).join('')}<span class="rt-s num">${n}<em>${n*20}%</em></span><span class="rt-c num">${ch}<small>· ${pc}%</small><i><b style="width:${pc}%"></b></i></span>${RM[k]?`<span class="rt-mm">📝 ${esc(RM[k])}</span>`:''}${del?`<button type="button" class="rt-x" data-del="${k}" aria-label="${k+1}순 지우기">✕</button>`:''}</div>${windLine((winds||[])[k])?`<div class="rt-w">${windChipB((winds||[])[k])}<span class="rt-wd">${esc(windDetail((winds||[])[k]))}</span><span class="rt-wx">${esc(wxLabel((winds||[])[k]))}</span></div>`:''}`; }).join('')}
+    return `<div class="rt-r ${n===5?'molgi':''} ${n===0?'zero':''} ${n>0&&n<5?'hit':''} ${n===4?'s4':''}"><span class="rt-n">${ed?(ed[k]?`<button type="button" class="rt-ed" data-edr="${k}" aria-label="${k+1}순 고치기">${k+1}순 ✏️</button>`:`${k+1}순<i class="rt-lk" title="1시간이 지나 잠김">🔒</i>`):`${k+1}순`}${bwShow?`<i class="rt-bw ${BW[k]==='각궁'?'gak':''}">${BOW_S[BW[k]]}</i>`:''}${windLine((winds||[])[k])?'':windChip((winds||[])[k])}</span>${r.map(x=>`<span class="rt-d ${x==='H'?'H':''}">${x==='H'?'中':glyph(x)}</span>`).join('')}<span class="rt-s num">${n}<em>${n*20}%</em></span><span class="rt-c num">${ch}<small>· ${pc}%</small><i><b style="width:${pc}%"></b></i></span>${RM[k]?`<span class="rt-mm">📝 ${esc(RM[k])}</span>`:''}${del?`<button type="button" class="rt-x" data-del="${k}" aria-label="${k+1}순 지우기">✕</button>`:''}</div>${windLine((winds||[])[k])?`<div class="rt-w">${windChipB((winds||[])[k])}<span class="rt-wd">${esc(windDetail((winds||[])[k]))}</span><span class="rt-wx">${esc(wxLabel((winds||[])[k]))}</span></div>`:''}`; }).join('')}
     ${RM.filter(Boolean).length?`<button type="button" class="rt-more" data-rmmore aria-expanded="false">📝 순 메모 ${RM.filter(Boolean).length}개 펼쳐 보기 ▾</button>`:''}
     <div class="rt-f"><span>${(winds||[]).some(w=>w&&(w.r||w.ms!=null))?'바람 세기 <span class="wsp ws1">약</span> <span class="wsp ws2">중</span> <span class="wsp ws3">강</span>':'中 관중 · 화살표 = 빗나간 방향'}</span><span>평균 ${rs.length?(tot/rs.length).toFixed(1):0}중</span></div></div>`;
 }
@@ -5063,10 +5105,10 @@ async function exportCSV(filename, rows){
 }
 const RES_KO = k => RES[k]?RES[k].l:k;
 function dayRows(days, withName){
-  const head=[...(withName?['사원']:[]),'날짜','순','1시','2시','3시','4시','5시','관중','몰기','바람(과녁 기준)','바람 세기','풍향','풍속(m/s)','돌풍(m/s)','바람 입력','순 메모','하루 일지'];
+  const head=[...(withName?['사원']:[]),'날짜','순','1시','2시','3시','4시','5시','관중','몰기','바람(과녁 기준)','바람 세기','풍향','풍속(m/s)','돌풍(m/s)','바람 입력','순 메모','하루 일지','활'];
   const rows=[head];
   const W = w => !w||!w.r ? ['','','','','',''] : [WREL[w.r]?WREL[w.r].l:w.r, w.r==='0'?'':(WLV[w.l]||''), w.deg!=null?`${compassOf(w.deg)}풍 ${w.deg}°`:'', w.ms!=null?w.ms:'', w.g!=null?w.g:'', w.src==='m'?'직접':'자동'];
-  days.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0).forEach(d=>{ const m=memberById(d.memberId); const ws=d.winds||[]; (d.rounds||[]).forEach((r,i)=>rows.push([...(withName?[m?m.name:d.memberId]:[]), d.date, i+1, ...r.map(RES_KO), hitsOf(r), hitsOf(r)===5?'몰기':'', ...W(ws[i]), (Array.isArray(d.rm)&&d.rm[i])||'', i===0?(d.memo||''):''])); });
+  days.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0).forEach(d=>{ const m=memberById(d.memberId); const ws=d.winds||[]; (d.rounds||[]).forEach((r,i)=>rows.push([...(withName?[m?m.name:d.memberId]:[]), d.date, i+1, ...r.map(RES_KO), hitsOf(r), hitsOf(r)===5?'몰기':'', ...W(ws[i]), (Array.isArray(d.rm)&&d.rm[i])||'', i===0?(d.memo||''):'', bowOf(d,i, m&&m.bow)])); });
   return rows;
 }
 $('#expMine').addEventListener('click',()=>{ if(!S.me){ openProfile(); return; } const days=S.myDays.filter(d=>d.rounds&&d.rounds.length); if(!days.length){ toast('내보낼 기록이 없어요'); return; } exportCSV(`표기록_${S.me.name}_${today()}.csv`, dayRows(days,false)); });
@@ -5564,6 +5606,21 @@ function renderGrowth(){
    기록 카드 — 그림으로 만들어 카톡 등에 공유
    ========================================================= */
 function shareLink(){ try{ if(typeof inviteLink==='function') return inviteLink(); }catch(e){} return /^https?:/.test(location.protocol) ? location.origin+location.pathname : ''; }
+// 캔버스용 결과 표시 — glyph()는 화면용 SVG 문자열이라 캔버스에 쓰면 코드가 글자로 찍힘
+function drawGlyph(c, k, cx, cy, size, col, F){
+  const a = RES[k] ? resArea(k) : 'x', deg = ARROW_DEG[a];
+  c.save();
+  if(deg!=null){
+    const sc = size/24 * (deg%90 ? 1.18 : 1);
+    c.translate(cx, cy); c.rotate(deg*Math.PI/180); c.scale(sc, sc); c.translate(-12, -12);
+    c.strokeStyle=col; c.lineWidth=3.4; c.lineCap='square'; c.lineJoin='miter';
+    c.beginPath(); c.moveTo(12,20.5); c.lineTo(12,5); c.moveTo(5.5,11.5); c.lineTo(12,5); c.lineTo(18.5,11.5); c.stroke();
+  } else {
+    const t = a==='h' ? RES.H.k : (a==='x' ? '?' : (RES[k]||{}).k || '?');
+    c.font=F(Math.round(size*0.95), true); c.fillStyle=col; c.textAlign='center'; c.textBaseline='middle'; c.fillText(t, cx, cy+1);
+  }
+  c.restore();
+}
 const loadImg = src => new Promise(r=>{ const i=new Image(); i.onload=()=>r(i); i.onerror=()=>r(null); i.src=src; });
 async function drawDayCard(day){
   const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const c=cv.getContext('2d');
@@ -5605,7 +5662,7 @@ async function drawDayCard(day){
     txt(`${i+1}순`, x0, y0+12, two?28:32, INK3, true);
     for(let k=0;k<5;k++){ const cx=x0+(two?92:110)+k*(rr*2+(two?12:18)), cy=y0; const hit=r[k]==='H';
       c.beginPath(); c.arc(cx,cy,rr,0,Math.PI*2); c.fillStyle=hit?RED:'#FFFFFF'; c.fill(); c.lineWidth=3; c.strokeStyle=hit?INK:LINE; c.stroke();
-      if(!hit && r[k]){ txt(glyph(r[k]), cx, cy+(two?9:11), two?22:28, INK3, true, 'center'); } }
+      if(!hit && r[k]){ drawGlyph(c, r[k], cx, cy, two?24:30, INK3, F); } }
     const hx=x0+(two?92:110)+5*(rr*2+(two?12:18))+(two?4:14);
     txt(`${hitsOf(r)}중`, hx, y0+12, two?28:34, INK, true); if(hitsOf(r)===5) txt('몰기', hx+(two?64:78), y0+12, two?24:28, RED, true); });
   if(more>0){ const i=shown.length; const col=two?Math.floor(i/maxRows):0, row=two?i%maxRows:i; txt(`… 외 ${more}순`, X+40+col*colW, top+row*rowH+rowH/2+12, 28, INK3, true); }
@@ -6440,7 +6497,8 @@ function renderMonthSum(){
       <span class="ms-best">가장 잘한 날 · ${o.best?`${+o.best.date.slice(5,7)}.${+o.best.date.slice(8)} · ${Math.round(o.best.rate*100)}%`:'—'}</span></button>`).join('')}</div>`;
   $$('[data-msd]',el).forEach(b=>b.onclick=()=>{ S.viewDate=b.dataset.msd; renderRecord(); window.scrollTo({top:0,behavior:'smooth'}); });
 }
-function renderDayView(){
+function renderDayView(){ if(bwViewSel()==='all') return renderDayView0(); const all=S.myDays; S.myDays=bowFilterDays(all, bwViewSel()); try{ return renderDayView0(); } finally{ S.myDays=all; } }
+function renderDayView0(){
   try{ renderMonthSum(); }catch(e){ console.warn('monthsum', e); }
   const L=recDays(); if(!S.viewDate) S.viewDate = L.includes(today()) ? today() : (L[L.length-1]||today());
   const d=(S.myDays||[]).find(x=>x.date===S.viewDate); const rs=((d&&d.rounds)||[]).filter(Array.isArray);
@@ -6452,7 +6510,7 @@ function renderDayView(){
   $('#dBody').innerHTML = !rs.length ? `<div class="muted d-empty">${S.me?'이 날은 기록이 없어요.<br><small>◀ ▶ 로 기록한 날을 넘겨 보세요</small>':'캐릭터를 고르면 내 기록이 쌓여요.'}</div>` : `
     <div class="dsum"><div class="dsum-big num">${h}<small>/${a}시</small></div><div class="dsum-side"><b class="num">${Math.round(h/a*100)}%</b><span>${rs.length}순${mo?` · 🎯 몰기 ${mo}`:''}</span></div></div>
     ${rs.length>=9?`<div class="dtag-w"><span class="dtag">9순 ${nineOf(rs)}중${gradeFor(nineOf(rs))?` · ${gradeFor(nineOf(rs))} 기준 도달`:''}</span></div>`:''}
-    ${roundTableHTML(rs, (d&&d.winds)||[], {rm:(d&&d.rm)||[]})}
+    ${roundTableHTML(rs, (d&&d.winds)||[], {rm:(d&&d.rm)||[], day:d})}
     ${S.me?dayBottomHTML(d, rs):''}
     <div class="drow"><button type="button" class="btn sm" id="dCard">📸 기록 카드</button>${S.viewDate===today()?'<button type="button" class="btn sm ghost" id="dMore">✍️ 이어서 입력</button>':''}</div>`;
   bindDayBottom();
