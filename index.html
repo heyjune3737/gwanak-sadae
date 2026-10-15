@@ -1889,8 +1889,27 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .room .shelf{top:31%}
 #roomInfo,.visit-info{display:block}
 .hopae{position:relative;margin:22px auto 0;max-width:320px;background:linear-gradient(#D9A066,#C88B50);border:3px solid #5A3A1E;border-radius:46px 46px 10px 10px;box-shadow:4px 4px 0 var(--ink);padding:30px 16px 14px;color:#2E1E10;text-align:center}
-.hopae .hp-hole{position:absolute;top:10px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--card);border:3px solid #5A3A1E}
-.hopae .hp-cord{position:absolute;top:-22px;left:50%;width:4px;height:26px;margin-left:-2px;background:#B8322A}
+.hopae .hp-hole{position:absolute;top:10px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--card);border:3px solid var(--hpb,#5A3A1E)}
+.hopae .hp-cord{position:absolute;top:-22px;left:50%;width:4px;height:26px;margin-left:-2px;background:var(--ts,#B8322A)}
+.hopae .hp-knot{position:absolute;top:-28px;left:50%;width:14px;height:10px;margin-left:-7px;background:var(--ts,#B8322A);border:2px solid rgba(0,0,0,.35);border-radius:3px}
+/* p146 · 호패 재질 */
+.hopae.m-jajak{background:linear-gradient(#F2E8D2,#E4D6B6);--hpb:#7E6A4A;border-color:#7E6A4A;color:#3A2E1C}
+.hopae.m-hwang{background:linear-gradient(#EDCB6E,#D9AE45);--hpb:#6B4E12;border-color:#6B4E12;color:#2E2408}
+.hopae.m-gak{background:linear-gradient(115deg,#4A3E36 0%,#2A221D 45%,#3A302A 60%,#211A16 100%);--hpb:#0F0D0B;border-color:#0F0D0B;color:#F1E6D2}
+.hopae.m-sang{background:linear-gradient(#FBF7EE,#ECE4D0);--hpb:#9C8C6C;border-color:#9C8C6C;color:#3A3326}
+.hopae .hp-ho{font-size:12px;margin:-6px 0 8px;opacity:.9}
+.hopae .hp-mt{font-family:var(--display);font-size:15px;margin-top:8px;letter-spacing:.12em;word-break:keep-all}
+.hp-sw{display:flex;gap:6px}.hp-sw button{flex:1;min-width:0;text-align:center;font-size:11px;border:0;background:none;padding:0;color:var(--ink);font-family:var(--body);cursor:pointer}
+.hp-sw .c{display:block;height:34px;border:2px solid var(--ink);margin-bottom:3px;position:relative}
+.hp-sw .on .c{outline:3px solid var(--red);outline-offset:2px}
+.hp-sw .lk{color:var(--ink2)}.hp-sw .lk .c{opacity:.55}.hp-sw .lk .c::after{content:'🔒';position:absolute;right:2px;bottom:0;font-size:12px}
+.hp-sw small{display:block;font-size:10px;color:var(--ink2);line-height:1.3}
+.hp-ts{display:flex;gap:10px;flex-wrap:wrap}.hp-ts button{width:30px;height:30px;border:2px solid var(--ink);border-radius:50%;padding:0;cursor:pointer}
+.hp-ts button.on{outline:3px solid var(--red);outline-offset:2px}
+.hp-ol{font-size:12.5px;font-weight:700;margin:14px 0 6px;display:flex;justify-content:space-between;gap:8px}.hp-ol small{font-weight:400;color:var(--ink2)}
+.hp-in{width:100%;box-sizing:border-box;border:2px solid var(--ink);background:var(--card2);color:var(--ink);padding:8px 10px;font-size:14px;font-family:var(--body)}
+.hp-src{font-size:10.5px;color:var(--ink2);margin-top:10px;line-height:1.5}
+.hp-prev .hopae{margin-top:30px}
 .hp-jn{font-size:12px;letter-spacing:.15em}.hp-nm{font-family:var(--display);font-size:26px;margin:2px 0 8px;line-height:1.2}
 .hp-row{display:flex;border-top:2px solid #5A3A1E;border-bottom:2px solid #5A3A1E;padding:8px 0}.hp-row>div{flex:1;min-width:0}.hp-row>div+div{border-left:1.5px dashed #5A3A1E}
 .hp-row small{display:block;font-size:10.5px;opacity:.8}.hp-row b{font-family:var(--display);font-size:17px;white-space:nowrap}
@@ -2213,7 +2232,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
         <div class="fold-sum" id="gakSum" hidden></div>
       </div>
       <div class="card" id="infoCard">
-        <div class="sec-head"><h2>🪪 내 정보</h2><button class="btn sm ghost" id="roomProfile">프로필 수정</button></div>
+        <div class="sec-head"><h2>🪪 내 정보</h2><span class="bd-act"><button class="btn sm" id="hpDeco" type="button">🪵 꾸미기</button><button class="btn sm ghost" id="roomProfile">프로필 수정</button></span></div>
         <div class="info" id="roomInfo"></div>
       </div>
       <div class="card" id="archCard">
@@ -2598,7 +2617,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.15f';
+const APP_VER = '2026.10.15g';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2756,6 +2775,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-10-15a', date:'10월 15일', title:'☔ 비 · 눈 배경 · 🏹 개량궁/각궁 나누기 · 🎋 각궁 돌보기 · 🪵 호패 꾸미기', body:'☔ 비 · 눈 오는 날 배경\n그 정에 지금 비나 눈이 오면 사대 · 광장 배경이 정마다 비 · 눈 그림으로 바뀌어요. 빗줄기 · 눈송이는 세기에 따라 3단계로 내려요(예: 약한 비 · 비 · 센 비). 배경 단추에 지금 날씨가 함께 보여요. 배경 그림을 직접 골라 두셨다면 그림은 그대로예요.\n\n🏹 개량궁 · 각궁 기록 나누기\n표 기록 입력판 위에서 [개량궁(카본) · 각궁]을 고르면 그 활로 기록돼요. 바꾸기 전까지 계속 유지돼요. 기록 보기 맨 위에서 [전체 · 개량궁 · 각궁]으로 따로 볼 수 있어요. 순위 · 배지 · 월보 · 대회는 지금처럼 합쳐서 셉니다. 지난 기록은 프로필에 적은 활로 봐요.\n\n🌡 각궁일 때 기온 · 습도\n표 기록에서 각궁을 고르면 정 근처의 기온 · 습도가 보이고, 각궁 순에는 습도도 함께 남아요.\n\n🎋 각궁 돌보기 (내 방)\n각궁을 쓰시는 분은 내 방 장비 아래에 새 칸이 생겨요. 오늘 기온 · 습도, 얹은 지 · 부린 지 · 점화장에 둔 지 며칠인지, 얹음 · 부림 · 점화장 · 메모 일지(그때 기온 · 습도 함께), 계절별 점화장 온도 · 습도, 각궁 얹는 순서 체크리스트를 볼 수 있어요. 설명은 관악정 국궁교본 7장에서 옮겼어요. 일지는 나만 봐요(관리자도 못 봐요).\n\n🪵 호패 꾸미기 (내 정보)\n내 정보 → 🪵 꾸미기에서 호패 재질 · 술 색 · 호(號) · 새김 한 줄을 고를 수 있어요. 재질은 잡목 → 자작목 → 황양목 → 뿔 → 상아 순서(태종 13년 호패 재질 규정)로, 단이 오르거나 배지를 모으면 열려요(자작목 1급 · 배지 3개 / 황양목 초단 · 8개 / 뿔 3단 · 15개 / 상아 5단 · 25개). 꾸민 호패는 방 구경 때도 보여요.'},
   {id:'2026-10-06a', date:'10월 6일', title:'📖 표 기록이 새로워졌어요 · 궁체 점검 · 공유 · 오늘의 한마디', body:'🔍 기록으로 보는 궁체 점검\n표 기록 → 📖 기록 보기에서 내 관중 기록으로 자세를 다시 살펴볼 곳을 짚어 줘요. 몇 번째 시를 낼 때 관중률이 낮은지, 관중하지 못한 후 다음 시는 어땠는지, 순이 거듭될수록 관중률이 달라지는지, 3중 이상 한 순은 얼마나 되는지 볼 수 있어요. 이번 달 · 전체로 바꿔 보고, 지난달보다 오르내린 만큼도 함께 보여요.\n\n🌬 바람 · 날씨 · 기온별\n순을 저장할 때 자동으로 남은 바람 · 날씨 · 기온별로 관중률을 비교하고, 관중하지 못한 살이 주로 어느 쪽으로 갔는지도 보여요. 바람 이름은 국궁교본을 따라 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 바뀌었어요(좌궁은 줌앞 · 줌뒤가 반대).\n\n📆 습사 달력 · 📚 쌓아온 기록\n달력에 몰기한 날은 ★로 표시돼요. 쌓아온 기록에서는 지금까지 쏜 순과 다음 고개(시수 100 · 300 · 500 …)까지 남은 시수를 볼 수 있어요.\n\n📤 기록 공유 · 저장\n기록 보기 맨 위 버튼으로 전체 파트 또는 고른 파트만 사진(PNG) 한 장으로 저장하고, 카톡 등으로 바로 보낼 수 있어요.\n\n📜 오늘의 국궁 한마디\n기록 보기 맨 아래에서 사대지기 오리가 날마다 국궁교본의 가르침이나 용어 하나를 전해 줘요.'},
   {id:'2026-10-05a', date:'10월 5일', title:'⏱ 휴식 타이머 · 🎯 단 도전 목표 · 분석 · 배지 새 단장', body:'⏱ 휴식 타이머\n표 기록에서 순을 저장하면 목표 칸 아래에 ‘⏱ 쉬기 [8분][10분][15분]’이 떠요. 시간을 누르면 쉬는 시간을 재고, 끝나면 소리로 알려 줘요(누를 때까지 반복, 최대 1분). ⚙에서 시간(직접 1~30분), ‘순 저장하면 저절로 시작’, 끝 소리(편경 · 가야금 · 대금 · 장구 · 사물 · 징 · 북 · 신호음 · 진동)를 고를 수 있어요. 화면이 꺼지면 소리가 안 날 수 있으니, 사대 옆에 폰을 두실 땐 ⚙의 ‘쉬는 동안 화면 켜 두기’를 켜 주세요.\n\n🎯 표 기록 — 단 도전 목표\n입력 화면 바람 칸 아래 ‘🎯 목표’를 누르면 1급(22중) · 초단(24중) ~ 9단(39중) 중 도전 목표를 정할 수 있어요(9순 45시, 협회 승급 · 입승단 기준 · 70세 이상 기준도 있어요). ‘내 기본 목표’는 바꾸기 전까지, ‘오늘만’은 오늘 하루만 적용돼요. 누르지 않으면 지금처럼 목표 없이 연습이에요. 쏘는 동안 ‘지금 17중 · 남은 3순에 9중 · 순당 3.0중’처럼 남은 필요 시수가 떠요.\n\n📖 기록 보기 — 표와 분석\n순마다 1~5시 · 중 · 그 순 관중률 · 누적이 한 줄에 보이고, 몰기는 금색, 0중은 빗금이에요. 9순을 채우면 ‘9순 28중 · 3단 기준 도달’처럼 알려 줘요. 목표를 정한 날은 표 아래에 합격 시수 판정 · 누적 페이스 그래프 · 최근 9순 10번 기록 · 맞춤 분석이, 목표 없는 날은 승단 사다리와 ‘짚을 점’(다음 단 도전 권유 · 많이 빗나간 방향의 교본 반구제기 발췌)이 나와요. 분석은 눌러서 펼쳐 보세요. 지난 기록은 그대로예요.\n\n🏆 순위 기준\n관중률 순위는 이번 달 5순 이상, 정심은 20순 이상이면 들어가요. 정심은 궁도 구계훈 ‘정심정기(正心正己)’의 뜻에 맞게, 기복 없이 고르게 맞히고 빗나가도 바른 궁체가 보이는 사원이 앞에 서도록 다듬었어요.\n\n🔄 새 기능이 안 보이면\n앱(또는 인터넷 창)을 완전히 닫았다가 다시 열어 주세요. 폰에서는 최근 앱 목록에서 위로 밀어 닫은 뒤 다시 열면 돼요. 안내 탭 맨 아래 버전이 ‘2026.10.04zd’ 이상이면 최신이에요.\n\n─ 아래는 같은 날 바뀐 배지 이야기예요 ─\n\n🎯 단계형 배지\n같은 종류의 배지를 한 칸으로 모아 동 → 은 → 금 → 옥으로 올라가요. 몰기 · 관중률은 실력 칸이라 그 위로 명궁 · 신궁까지 있어요. 칸마다 다음 단계까지 얼마 남았는지 막대로 보여요. 그동안 받은 배지는 새 단계로 그대로 옮겨졌어요. 🏯 정 순례(다른 정 습사) · 🌬 바람 궁사(바람 ‘강’일 때 쏜 순) 칸도 생겼어요.\n\n🎖 특별 · 한정 · 숨은 배지\n승단, 대회 입상(부별 1~3위), 이달의 표지(월보 표지 주인공), 🍂 사계절 궁사(한 해 사계절 모두 습사), 🏅 올해의 표지, 그리고 베타 기간(9/23~10/3)에 함께한 분만 받는 🧪 베타 테스터 배지가 있어요. 조건이 숨겨진 배지도 몇 개 있으니 찾아보세요. 월보 분야별 1위는 🎀 리본으로 남아요.\n\n🖼 방에 걸기\n내 방 배지 칸의 "🖼 방에 걸기"에서 서로 다른 배지 족자 · 월보 표지 액자를 벽에 3개까지 걸 수 있어요. 대회에서 입상하면 선반 트로피가 생겨요. 방 구경 온 사원에게도 보여요.\n\n👣 내 방 방문자\n내 방 위 TODAY · TOTAL은 내 방에 다녀간 사원 수예요(하루 한 사람 1번). 방 아래 ‘최근 다녀간 사원’은 나만 보여요.'},
   {id:'2026-10-04c', date:'10월 4일', title:'🐶🐱 강아지 · 고양이 6종씩 · 월보는 매달 1일에', body:'🐶 강아지 6종\n베레모 푸들 · 헤드폰 보더콜리 · 별망토 치와와 · 모자 쓴 달마시안 · 비옷 골든 · 탐정 바셋이 왔어요. 이제 강아지는 15종이에요.\n\n🐱 고양이 6종\n한복 삼색이 · 까만 아기 고양이 · 하얀 무사 · 오드아이 장모 · 나뭇잎 두건 · 삿갓 고양이가 왔어요. 고양이도 15종이에요.\n\n📏 크기가 조금씩 달라요\n사대·광장·내 방에서 강아지와 고양이가 덩치에 따라 조금 작게(0.92배) 또는 조금 크게(1.06배) 서요. 새 친구에는 고르기 화면에 NEW 표시가 붙어요. 위 오른쪽 내 캐릭터 → 동물 탭에서 바꿀 수 있어요.\n\n📰 사대 월보는 매달 1일에\n월보는 매달 1일에 지난달 기록을 담아 완성된 채로 나와요. 지금은 10월 창간호(베타 9/23~10/3)가 최신호이고, 11월호(10/4~10/31 기록)는 11월 1일에 나와요. 이번 달 실시간 순위는 광장 순위 카드에서 볼 수 있어요.'},
@@ -5017,6 +5037,47 @@ function gkStepsSheet(){ const key='sadae.gakSteps.'+today(); const done=lsGet(k
   const sh=openSheet(draw());
   const bind=()=>$$('[data-gks]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.gks; const k=done.indexOf(i); if(k<0) done.push(i); else done.splice(k,1); lsSet(key, done); sh.innerHTML='<div class="handle"></div>'+draw(); bind(); });
   bind(); }
+
+// ===== p146 · 🪵 호패 꾸미기 =====
+// 재질 순서: 태종 13년(1413) 호패 재질 규정 (한국민족문화대백과사전 「호패」) · 여는 조건은 앱 규칙(10-15 사용자 승인)
+const HP_M = [
+  {k:'jap',   n:'잡목',   old:'서인 이하',       g:null,   b:0},
+  {k:'jajak', n:'자작목', old:'7품 이하 관원',   g:'1급',  b:3},
+  {k:'hwang', n:'황양목', old:'5~6품',          g:'초단', b:8},
+  {k:'gak',   n:'뿔(각)', old:'4품 이상',        g:'3단',  b:15},
+  {k:'sang',  n:'상아',   old:'2품 이상',        g:'5단',  b:25},
+];
+const HP_TS = ['#B8322A','#2F6FA8','#3E7D4A','#C9A23A','#7A4A8C','#2A2A2A'];
+function hpOf(m){ const h=(m&&m.hp)||{}; return {m: HP_M.some(x=>x.k===h.m)?h.m:'jap', ts: HP_TS.includes(h.ts)?h.ts:HP_TS[0], ho:String(h.ho||'').slice(0,8), mt:String(h.mt||'').slice(0,10)}; }
+function hpBadgeN(mid, days){ try{ const T=badgeState(mid, days||[]); return T.sets.filter(x=>x.k>0).length+T.sp.length+T.hidden.length+T.ribbons.length+((T.monthly&&T.monthly.got)||[]).length+(T.mhid||[]).length; }catch(e){ return 0; } }
+function hpOpen(x, m, bn){ if(!x.g) return true; const gi=LADDER.indexOf((m&&m.grade)||''), ni=LADDER.indexOf(x.g); return (gi>=0 && gi>=ni) || bn>=x.b; }
+function openHopaeDeco(){
+  if(!S.me){ openProfile(); return; } const m=memberById(S.me.id)||S.me; const bn=hpBadgeN(S.me.id, S.myDays||[]); const cur=hpOf(m); const st={...cur};
+  const draw=()=>{ const pv={...m, hp:st};
+    return `<h3>🪵 호패 꾸미기</h3>
+    <div class="hp-prev">${hopaeHTML(pv).split('<div class="hp-lad">')[0]}</div>
+    <div class="hp-ol">재질<small>${esc(HP_M.find(x=>x.k===st.m).n)} · 단 또는 배지로 열려요 (받은 배지 ${bn}개)</small></div>
+    <div class="hp-sw">${HP_M.map(x=>{ const op=hpOpen(x,m,bn); return `<button type="button" data-hpm="${x.k}" class="${st.m===x.k?'on':''} ${op?'':'lk'}"><span class="c hopae m-${x.k}" style="margin:0;padding:0;box-shadow:none;border-radius:0;max-width:none"></span>${x.n}${op?'':`<small>${x.g} · 배지 ${x.b}</small>`}</button>`; }).join('')}</div>
+    <div class="hp-ol">술 색</div>
+    <div class="hp-ts">${HP_TS.map(c=>`<button type="button" data-hpt="${c}" class="${st.ts===c?'on':''}" style="background:${c}" aria-label="술 색"></button>`).join('')}</div>
+    <div class="hp-ol">호(號)<small>이름 아래 작게 · 비우면 안 보여요</small></div>
+    <input class="hp-in" id="hpHo" maxlength="8" value="${esc(st.ho)}" placeholder="예: 청송">
+    <div class="hp-ol">새김 한 줄<small>10자까지 · 비우면 안 보여요</small></div>
+    <input class="hp-in" id="hpMt" maxlength="10" value="${esc(st.mt)}" placeholder="예: 정심정기">
+    <button class="btn red block" type="button" id="hpSave" style="margin-top:16px">저장</button>
+    <div class="hp-src">재질 순서: 태종 13년(1413) 호패 재질 규정 — 한국민족문화대백과사전 「호패」<br>${HP_M.map(x=>`${x.n} ${x.old}`).join(' · ')}</div>`; };
+  const sh=openSheet(draw());
+  const bind=()=>{
+    $$('[data-hpm]').forEach(b=>b.onclick=()=>{ const x=HP_M.find(y=>y.k===b.dataset.hpm); if(!hpOpen(x,m,bn)){ toast(`${x.n}: ${x.g} 또는 받은 배지 ${x.b}개부터 열려요`); return; } st.m=x.k; redraw(); });
+    $$('[data-hpt]').forEach(b=>b.onclick=()=>{ st.ts=b.dataset.hpt; redraw(); });
+    $('#hpHo').oninput=e=>{ st.ho=e.target.value.slice(0,8); upd(); }; $('#hpMt').oninput=e=>{ st.mt=e.target.value.slice(0,10); upd(); };
+    $('#hpSave').onclick=async()=>{ const hp={m:st.m, ts:st.ts, ho:st.ho.trim(), mt:st.mt.trim()}; const x=HP_M.find(y=>y.k===hp.m); if(!hpOpen(x,m,bn)) hp.m='jap';
+      const ok=await write(s2=>s2.merge(`members/${S.me.id}`, {hp})); if(ok){ m.hp=hp; if(S.me) S.me.hp=hp; closeSheet(); try{ renderRoom(); }catch(e){} toast('호패를 바꿨어요'); } else toast('저장 못 했어요 · 다시 눌러 주세요'); };
+  };
+  const upd=()=>{ const p=sh.querySelector('.hp-prev'); if(p) p.innerHTML=hopaeHTML({...m, hp:st}).split('<div class="hp-lad">')[0]; };
+  const redraw=()=>{ const a=$('#hpHo').value, b2=$('#hpMt').value; st.ho=a; st.mt=b2; sh.innerHTML='<div class="handle"></div>'+draw(); bind(); };
+  bind();
+}
 // ===== p101 · 호패(號牌) + 승단 사다리 =====
 const LADDER = ['1급','초단','2단','3단','4단','5단','6단','7단','8단','9단'];
 function sinceText(since, t){ if(!/^\d{4}-\d{2}-\d{2}$/.test(since||'')) return null; const [y,m,d]=since.split('-').map(Number); const [Y,M,D]=t.split('-').map(Number);
@@ -5032,10 +5093,11 @@ function hopaeHTML(m, o={}){
   const need = next ? (GRADES.find(([,n])=>n===next)||[])[0] : null;
   let foot='';
   if(o.own){ const b=best9(o.days); foot = !next ? '가장 높은 단이에요' : need==null ? '' : b ? (b.h>=need ? `내 최고 9순 ${b.h}중(${fmtShort(b.date)}) · <b>${next} 기준을 넘었어요</b>` : `내 최고 9순 ${b.h}중(${fmtShort(b.date)}) · <b>${need-b.h}중 더</b>`) : '하루 9순을 쏜 날이 생기면 내 최고 기록과 견줘 봐요'; }
-  return `<div class="hopae"><span class="hp-cord"></span><span class="hp-hole"></span>
-    <div class="hp-jn">${esc(jn)}</div><div class="hp-nm">${esc(m.name||'사원')}</div>
+  const HP=hpOf(m);
+  return `<div class="hopae m-${HP.m}" style="--ts:${HP.ts}"><span class="hp-knot"></span><span class="hp-cord"></span><span class="hp-hole"></span>
+    <div class="hp-jn">${esc(jn)}</div><div class="hp-nm">${esc(m.name||'사원')}</div>${HP.ho?`<div class="hp-ho">호 · ${esc(HP.ho)}</div>`:''}
     <div class="hp-row"><div><small>단급</small><b>${esc(g)}</b></div><div><small>궁체</small><b>${esc(m.hand||'–')}</b></div><div><small>집궁</small><b>${st?st.dur:'–'}</b></div></div>
-    <div class="hp-ft">${st?`${st.date} 집궁 · ${st.days}일째`:(o.own?'프로필에서 집궁일(사대에서 정식으로 처음 활을 쏜 날)을 적어 주세요':'집궁일을 아직 적지 않았어요')}</div></div>
+    ${HP.mt?`<div class="hp-mt">${esc(HP.mt)}</div>`:''}<div class="hp-ft">${st?`${st.date} 집궁 · ${st.days}일째`:(o.own?'프로필에서 집궁일(사대에서 정식으로 처음 활을 쏜 날)을 적어 주세요':'집궁일을 아직 적지 않았어요')}</div></div>
   <div class="hp-lad"><div class="hp-lt"><b>승단 사다리</b><small>${next?`다음 ${next}${need!=null?` · 9순 ${need}중`:''}`:'최고 단'}</small></div>
     <div class="hp-steps">${cells.map(c=>`<span class="${c.me?'me':c.done?'done':c.nx?'nx':''}">${esc(c.l)}</span>`).join('')}${idx>=0&&idx+4<LADDER.length?'<span class="more">…</span>':''}</div>
     ${foot?`<div class="hp-foot">${foot}</div>`:''}</div>`;
@@ -5082,6 +5144,7 @@ function renderRoom(){
 }
 $('#gearEdit').addEventListener('click', ()=>{ if(!S.me){ openProfile(); return; } openGear(); });
 $('#roomProfile').addEventListener('click', openProfileDetail);
+$('#hpDeco').addEventListener('click', openHopaeDeco);
 $('#roomInfo').addEventListener('click', openProfileDetail); $('#roomInfo').style.cursor='pointer'; $('#roomInfo').title='눌러서 단급·집궁일 고치기';
 const CM_PER_CHI = 3.0303;
 function cmToJa(cm){ cm=+cm; if(!cm) return ''; const pun=Math.round(cm/CM_PER_CHI*10); const ja=Math.floor(pun/100), chi=Math.floor((pun%100)/10), p=pun%10; return `${ja}자${chi?chi+'치':''}${p?p+'푼':''}`; }
