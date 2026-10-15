@@ -63,6 +63,7 @@
  :root[data-theme="dark"]{--gw:#C99467;--gw-soft:#3E3328;--gl-bow:#C99467;--gl-arrow:#FF6B5E;--gl-kkakji:#FFD877;--gl-etc:#8FA8FF} 
  :root[data-theme="dark"]{--tint-a:#25304A;--tint-b:#34302A} 
  :root[data-theme="dark"]{--zebra:#30364D;--band:#3A3628} 
+ :root[data-theme="dark"]{--gk-sky:#1F2E3A;--gk-warm:#3A2F1E} 
  :root[data-theme="dark"]{--bv-off:#232838;--bv-got:#3B3524;--bv-s1:#4A2E36;--bv-s2:#2B3A50;--bv-s3:#24402C;--bv-s4:#2E3A63;--bv-s6:#3A3350} </style>
 </head>
 <body>
@@ -1852,6 +1853,37 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .dw-bub .dw-sign{display:block;text-align:right;margin-top:4px;font-family:var(--display);color:var(--ink);font-size:12px}
 /* p99 */
 .d-empty{padding:18px 8px;text-align:center;line-height:1.7;word-break:keep-all}.d-empty small{font-size:12.5px;color:var(--ink3)}
+
+/* p145 · 각궁 돌보기 */
+:root{--gk-sky:#E6EEF3;--gk-warm:#FBEFD8}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--gk-sky:#1F2E3A;--gk-warm:#3A2F1E} }
+:root[data-theme="dark"]{--gk-sky:#1F2E3A;--gk-warm:#3A2F1E}
+.gk-wx{border:2px solid var(--ink);background:var(--gk-sky);padding:10px 12px}
+.gk-wx small{display:block;font-size:11.5px;color:var(--ink2)}
+.gk-wx b{font-family:var(--display);font-size:22px}
+.gk-tip{font-size:13px;margin-top:6px;line-height:1.5;word-break:keep-all}
+.gk-now{display:flex;gap:10px;align-items:center;border:2px solid var(--ink);padding:10px 12px;margin-top:10px;background:var(--gold-soft)}
+.gk-now .ic{font-size:28px;flex:none}.gk-now .big{font-family:var(--display);font-size:22px;line-height:1.15}
+.gk-now small{display:block;font-size:11.5px;color:var(--ink2)}
+.gk-bw{border:0;background:none;padding:0;font-size:11.5px;color:var(--ink2);text-decoration:underline dotted;cursor:pointer;font-family:var(--body)}
+.gk-acts{display:flex;gap:6px;margin-top:8px}.gk-acts .btn{flex:1;padding:8px 0;font-size:13px;min-height:40px}
+.gk-log{margin-top:10px;border-top:2px solid var(--ink)}
+.gk-log button{display:flex;gap:8px;width:100%;font-size:12.5px;padding:7px 0;border:0;border-bottom:1px dashed var(--line2);background:none;align-items:baseline;text-align:left;color:var(--ink);font-family:var(--body);cursor:pointer}
+.gk-log em{font-style:normal;width:40px;color:var(--ink2);flex:none}.gk-log b{flex:none;width:44px}.gk-log span{color:var(--ink2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gk-more{display:block;margin:6px 0 0 auto;border:0;background:none;font-size:12px;color:var(--indigo);font-family:var(--body);cursor:pointer}
+.gk-box{border:2px dashed var(--ink);padding:9px 12px;margin-top:10px}
+.gk-box small{display:block;font-size:11.5px;color:var(--ink2)}.gk-box b{font-family:var(--display);font-size:17px;display:block;margin-top:2px}
+.gk-seg{display:flex;gap:2px;margin-top:7px}.gk-seg span{flex:1;text-align:center;font-size:11px;padding:3px 0;border:1.5px solid var(--line2);color:var(--ink2)}
+.gk-seg span.on{border-color:var(--ink);background:var(--gold-soft);color:var(--ink);font-weight:700}
+.gk-open{display:flex;justify-content:space-between;width:100%;margin-top:10px;border:2px solid var(--ink);background:var(--card);padding:9px 12px;font-size:14px;font-weight:700;font-family:var(--body);color:var(--ink);cursor:pointer}
+.gk-src{font-size:10.5px;color:var(--ink2);margin-top:8px;text-align:right}
+.gk-ck{display:flex;gap:10px;padding:8px 0;border:0;border-bottom:1px dashed var(--line2);font-size:13px;line-height:1.45;word-break:keep-all;width:100%;background:none;text-align:left;color:var(--ink);font-family:var(--body);cursor:pointer}
+.gk-ck .bx{flex:none;width:20px;height:20px;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.gk-ck.on .bx{background:var(--ink);color:var(--card)}.gk-ck.on .tx{color:var(--ink2);text-decoration:line-through}
+.gk-ck .tx b{display:block}.gk-ck .tx small{color:var(--ink2);font-size:11.5px}.gk-ck .tx small.w{color:var(--red)}
+.gk-in{width:100%;border:2px solid var(--ink);background:var(--card2);color:var(--ink);padding:9px 10px;font-size:14px;font-family:var(--body);box-sizing:border-box}
+.gk-names{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.gk-names button{border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:5px 10px;font-size:13px;font-family:var(--body);cursor:pointer}
+.gk-names button.on{background:var(--ink);color:var(--card);font-weight:700}
 /* p101 · 방 이름표 위로 · 호패 */
 .room .item.gtop{top:1.5%!important;flex-direction:column-reverse}
 .room .shelf{top:31%}
@@ -2174,6 +2206,11 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
         <div class="sec-head"><h2>🏹 장비 <small id="gearCount"></small></h2><span class="bd-act"><button class="btn sm" id="gearEdit">수정</button><button class="btn sm fold-btn" id="gearFold" type="button">접기 ▴</button></span></div>
         <div class="gear" id="gearGrid"></div>
         <div class="fold-sum" id="gearSum" hidden></div>
+      </div>
+      <div class="card" id="gakCard" hidden>
+        <div class="sec-head"><h2>🎋 각궁 돌보기</h2><button class="btn sm fold-btn" id="gakFold" type="button">접기 ▴</button></div>
+        <div id="gakBody"></div>
+        <div class="fold-sum" id="gakSum" hidden></div>
       </div>
       <div class="card" id="infoCard">
         <div class="sec-head"><h2>🪪 내 정보</h2><button class="btn sm ghost" id="roomProfile">프로필 수정</button></div>
@@ -2561,7 +2598,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.15e';
+const APP_VER = '2026.10.15f';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4880,6 +4917,106 @@ function openRoomTheme(){
 // 카드 접기 (기기에 기억) — hide: 접으면 숨길 것 · show: 접었을 때만 보일 것
 function applyFold(key, btn, hide, show, txt){ const f=lsGet(key,false)===true; (hide||[]).forEach(e=>{ if(e) e.hidden=f; }); (show||[]).forEach(e=>{ if(e) e.hidden=!f; });
   if(btn){ const [o,c]=txt||['접기 ▴','펼치기 ▾']; btn.textContent=f?c:o; btn.setAttribute('aria-expanded',String(!f)); btn.title=f?'펼치기':'접기'; btn.onclick=()=>{ lsSet(key,!f); applyFold(key,btn,hide,show,txt); }; } return f; }
+
+// ===== p145 · 🎋 각궁 돌보기 =====
+const GK_A = {on:'얹음', off:'부림', fire:'점화장', memo:'메모'};
+const GK_SEASON = m => (m>=3&&m<=5)?'spring':(m>=6&&m<=8)?'summer':(m>=9&&m<=11)?'autumn':'winter';
+// 관악정 국궁교본 7.1 점화장 온도관리(설정온도)
+const GK_FIRE = {spring:{l:'봄',t:'28℃',h:'25~30%'}, summer:{l:'여름',t:'32℃',h:'20~25%'}, autumn:{l:'가을',t:'28℃',h:'25~30%'}, winter:{l:'겨울',t:'24℃',h:'30~40%'}};
+// 관악정 국궁교본 7.3 각궁 얹는 법 (67~69쪽) 줄임
+const GK_STEPS = [
+  ['점화장에서 꺼내 완전히 식히기','점화된 채 올리면 풀 붙인 곳이 들뜰 수 있어요'],
+  ['무릎에 얹고 한두 번 펴 주기','점화장에서 오그라든 활 기지개 켜기'],
+  ['처음이면 도지개로 올리기','센 쪽부터 · 줌통 다음 삼삼이 부근'],
+  ['도지개 없이: 1/3 펴지면 다리 힘으로 줌 누르기','!손으로만 계속 당기면 활이 퉁그러질 수 있어요'],
+  ['시위 걸고 도고지 눌러 모양 잡기',''],
+  ['미립 살피기 · 줌통 · 목소','쏠렸으면 보궁 채워 불 쬐기 · 줌통이 올라왔으면 쬐어서 밟아 내리기 · 목소는 먼오금부터 발가락으로 자근자근 · 오금은 되도록 불 쬐지 않기'],
+  ['고자 방향 확인','우궁은 시위가 줌통 오른쪽으로 조금 (좌궁은 반대)'],
+  ['궁대로 W자 보궁 · 식을 때까지','대개 30분 안팎'],
+  ['사대에서 빈 활 한 번 당겨 확인','심고가 고자닢에 제대로 떨어지는지 · 너무 많이 당기지 않기'],
+];
+const gkDays = (a, b) => { const p=x=>{ const [y,m,d]=x.split('-').map(Number); return new Date(y,m-1,d); }; return Math.round((p(b)-p(a))/864e5); };
+function gkLog(){ const L=((S.gak||{}).log)||{}; return Object.entries(L).filter(([,v])=>v&&typeof v==='object'&&v.a).map(([id,v])=>({id,...v})).sort((x,y)=>(y.at||0)-(x.at||0)); }
+function gkNames(){ const g=(typeof gearOf==='function'?gearOf():{})||{}; const me=S.me&&memberById(S.me.id); const n=[]; const gn=(me&&me.bow==='각궁'&&g.bowName)?g.bowName:''; if(gn) n.push(gn);
+  gkLog().forEach(e=>{ if(e.bw && !n.includes(e.bw)) n.push(e.bw); }); return n; }
+function gkCur(){ const n=gkNames(); const c=lsGet('sadae.gakCur',''); return c && (n.includes(c)||!n.length) ? c : (n[0]||'내 각궁'); }
+function gkUses(){ if(!S.me) return false; const me=memberById(S.me.id)||S.me; if(me.bow==='각궁') return true; try{ if(bwSel()==='각궁') return true; }catch(e){}
+  if(gkLog().length) return true; return (S.myDays||[]).some(d=>Array.isArray(d.bw)&&d.bw.includes('각궁')); }
+function gkWxNow(){ const J=homeJ(); const w=S.windNow&&S.windNow[J.id];
+  if((!w || w.err || Date.now()-(w.at||0)>15*60e3) && typeof fetchWind==='function' && !(S._gkAsk)){ S._gkAsk=1; fetchWind(J.id).then(()=>{ S._gkAsk=0; try{ renderGak(); }catch(e){} }).catch(()=>{ S._gkAsk=0; }); }
+  return (w && !w.err) ? w : null; }
+async function gkAdd(a, note){ if(!S.me) return; const w=gkWxNow(); const id=Date.now().toString(36); const e={a, d:today(), at:Date.now(), bw:gkCur()};
+  if(note) e.note=String(note).slice(0,60); if(w && w.t!=null) e.t=w.t; if(w && w.rh!=null) e.rh=w.rh;
+  S.gak=deepMerge(S.gak||{}, {log:{[id]:e}}); renderGak();
+  const ok=await write(s2=>s2.merge(`gak/${S.me.id}`, {log:{[id]:e}})); toast(ok?`${GK_A[a]} 기록했어요`:'저장 못 했어요 · 다시 눌러 주세요'); }
+async function gkDel(id){ if(!S.me) return; const L={...((S.gak||{}).log||{})}; L[id]=null; S.gak={...(S.gak||{}), log:L}; renderGak(); await write(s2=>s2.merge(`gak/${S.me.id}`, {log:{[id]:null}})); toast('지웠어요'); }
+function gkState(){ const cur=gkCur(); const e=gkLog().find(x=>x.a!=='memo' && (x.bw||'')===cur); return e||null; }
+function renderGak(){
+  const card=$('#gakCard'); if(!card) return; const show=gkUses(); card.hidden=!show; if(!show) return;
+  const J=homeJ(); const t=today(); const mon=+t.slice(5,7); const se=GK_SEASON(mon); const w=gkWxNow();
+  const winterDry = se==='winter' && w && w.rh!=null && w.rh<=30;
+  const wxTxt = winterDry ? '겨울엔 바깥이 건조해 오히려 활의 습기가 빠져요. 점화하지 말고 방 안이나 옷장에 두기.'
+                          : '쏘는 동안 활에 습기가 스며들어요. 다 쏘면 점화장에 넣어 빼 주기 · 여름에 종일 쏜 활은 3일 넘게 걸린대요.';
+  const hh = w && w.at ? new Date(w.at).getHours() : null;
+  const wx = `<div class="gk-wx"><small>오늘 ${esc(J.name||'우리 정')}${hh!=null?` · ${hh}시`:''}</small>
+    <b>${w ? `${w.t!=null?`${w.t}℃`:''}${w.t!=null&&w.rh!=null?' · ':''}${w.rh!=null?`💧${w.rh}%`:''}` : '날씨 받는 중…'}</b>
+    <div class="gk-tip">${wxTxt}</div></div>`;
+  const cur=gkCur(); const st=gkState(); let big, sub, ic='🏹';
+  if(!st){ big='아직 기록이 없어요'; sub='얹거나 부릴 때 눌러 두면 날짜를 세어 줘요'; }
+  else { const n=gkDays(st.d, t); const md=fmtShort(st.d); const wx2=st.rh!=null?` · 그날 💧${st.rh}%`:'';
+    if(st.a==='on'){ big = n<=0 ? '오늘 얹었어요' : `얹은 지 ${n}일`; sub=`${md} 얹음${wx2}`; }
+    else if(st.a==='fire'){ ic='🔥'; big = n<=0 ? '오늘 점화장에' : `점화장에 둔 지 ${n}일`; sub=`${md} 점화장${wx2}`; }
+    else { big = n<=0 ? '오늘 부렸어요' : `부린 지 ${n}일`; sub=`${md} 부림${wx2}`; } }
+  const on = st && st.a==='on';
+  const L=gkLog().filter(x=>(x.bw||'')===cur);
+  const row=e=>`<button type="button" data-gkrow="${e.id}"><em>${fmtShort(e.d)}</em><b>${GK_A[e.a]}</b><span>${esc(e.note|| [e.t!=null?`${e.t}℃`:'', e.rh!=null?`💧${e.rh}%`:''].filter(Boolean).join(' · ') || '—')}</span></button>`;
+  const F=GK_FIRE[se];
+  $('#gakBody').innerHTML = `${wx}
+    <div class="gk-now"><span class="ic">${ic}</span><div style="flex:1;min-width:0"><button class="gk-bw" type="button" id="gkBw">${esc(cur)} ▾</button><div class="big">${big}</div><small>${esc(sub)}</small></div></div>
+    <div class="gk-acts"><button class="btn red" type="button" data-gka="${on?'off':'on'}">${on?'부렸어요':'얹었어요'}</button><button class="btn" type="button" data-gka="fire">🔥 점화장</button><button class="btn" type="button" data-gka="memo">📝 메모</button></div>
+    ${L.length?`<div class="gk-log">${L.slice(0,3).map(row).join('')}</div>${L.length>3?`<button class="gk-more" type="button" id="gkAll">지난 기록 ${L.length-3}개 ›</button>`:''}`:''}
+    <div class="gk-box"><small>점화장 맞추기 · 지금은 ${F.l}</small><b>${F.t} · 습도 ${F.h}</b>
+      <div class="gk-seg">${['spring','summer','autumn','winter'].map(k=>`<span class="${k===se?'on':''}">${GK_FIRE[k].l} ${GK_FIRE[k].t}</span>`).join('')}</div>
+      <div class="gk-tip" style="font-size:12px">발열체와 활은 20cm 넘게 띄워요 · 중요한 건 온도보다 습도</div></div>
+    <button class="gk-open" type="button" id="gkSteps"><span>📖 각궁 얹는 순서</span><span>›</span></button>
+    <div class="gk-src">관악정 국궁교본 7장 「각궁 다루는 방법」 · 일지는 나만 봐요</div>`;
+  const sum=$('#gakSum'); if(sum) sum.innerHTML=`<span><small>${esc(cur)}</small> ${esc(big)}</span>${w&&w.rh!=null?`<span><small>오늘</small> 💧${w.rh}%</span>`:''}`;
+  applyFold('sadae.gakFold', $('#gakFold'), [$('#gakBody')], [sum]);
+  $$('#gakBody [data-gka]').forEach(b=>b.onclick=()=>{ const a=b.dataset.gka; if(a==='memo') gkMemo(); else gkAdd(a); });
+  $$('#gakBody [data-gkrow]').forEach(b=>b.onclick=()=>gkRow(b.dataset.gkrow));
+  const all=$('#gkAll'); if(all) all.onclick=gkAllSheet;
+  $('#gkSteps').onclick=gkStepsSheet; $('#gkBw').onclick=gkBwSheet;
+}
+function gkMemo(){ const sh=openSheet(`<h3>📝 ${esc(gkCur())} 메모</h3>
+  <textarea class="gk-in" id="gkMemoIn" rows="3" maxlength="60" placeholder="예: 줌통 쬐고 밟아 내림"></textarea>
+  <div class="tiny muted" style="margin:4px 0 10px">60자까지 · 나만 봐요 · 그때 기온 · 습도도 같이 남아요</div>
+  <button class="btn red block" type="button" id="gkMemoOk">저장</button>`);
+  const i=$('#gkMemoIn'); setTimeout(()=>i&&i.focus(),50);
+  $('#gkMemoOk').onclick=()=>{ const v=(i.value||'').trim(); if(!v){ i.focus(); return; } closeSheet(); gkAdd('memo', v); }; }
+function gkRow(id){ const e=gkLog().find(x=>x.id===id); if(!e) return;
+  openSheet(`<h3>${fmtShort(e.d)} · ${GK_A[e.a]}</h3>
+  <div style="font-size:14px;line-height:1.6">${esc(e.bw||'')}${e.note?`<br>${esc(e.note)}`:''}${e.t!=null||e.rh!=null?`<br><span class="muted">${[e.t!=null?`🌡 ${e.t}℃`:'', e.rh!=null?`💧 ${e.rh}%`:''].filter(Boolean).join(' · ')}</span>`:''}</div>
+  <div style="display:flex;gap:8px;margin-top:14px"><button class="btn block" type="button" id="gkRowX">닫기</button><button class="btn red block" type="button" id="gkRowDel">이 기록 지우기</button></div>`);
+  $('#gkRowX').onclick=closeSheet; $('#gkRowDel').onclick=()=>{ closeSheet(); gkDel(id); }; }
+function gkAllSheet(){ const cur=gkCur(); const L=gkLog().filter(x=>(x.bw||'')===cur);
+  openSheet(`<h3>🎋 ${esc(cur)} 일지 <small class="muted">${L.length}개</small></h3>
+  <div class="gk-log" style="max-height:60vh;overflow:auto">${L.map(e=>`<button type="button" data-gkrow2="${e.id}"><em>${fmtShort(e.d)}</em><b>${GK_A[e.a]}</b><span>${esc(e.note|| [e.t!=null?`${e.t}℃`:'', e.rh!=null?`💧${e.rh}%`:''].filter(Boolean).join(' · ') || '—')}</span></button>`).join('')}</div>`);
+  $$('[data-gkrow2]').forEach(b=>b.onclick=()=>gkRow(b.dataset.gkrow2)); }
+function gkBwSheet(){ const n=gkNames(); const cur=gkCur();
+  openSheet(`<h3>🎋 어느 각궁?</h3>
+  <div class="gk-names">${(n.length?n:[cur]).map(x=>`<button type="button" data-gkn="${esc(x)}" class="${x===cur?'on':''}">${esc(x)}</button>`).join('')}</div>
+  <div class="tiny muted" style="margin:10px 0 4px">다른 각궁 이름 더하기</div>
+  <input class="gk-in" id="gkNewName" maxlength="16" placeholder="예: 송무궁 50호">
+  <button class="btn red block" type="button" id="gkNewOk" style="margin-top:10px">이 각궁으로</button>`);
+  $$('[data-gkn]').forEach(b=>b.onclick=()=>{ lsSet('sadae.gakCur', b.dataset.gkn); closeSheet(); renderGak(); });
+  $('#gkNewOk').onclick=()=>{ const v=($('#gkNewName').value||'').trim(); if(!v) return; lsSet('sadae.gakCur', v); closeSheet(); S.gakNew=v; renderGak(); toast(`${v} — 얹거나 부리면 일지가 시작돼요`); }; }
+function gkStepsSheet(){ const key='sadae.gakSteps.'+today(); const done=lsGet(key,[])||[];
+  const draw=()=>{ const n=done.length; return `<h3>📖 각궁 얹는 순서</h3>
+    <div class="tiny muted" style="margin-bottom:6px">관악정 국궁교본 7.3(67~69쪽) 줄임 · ${n}/${GK_STEPS.length} 했어요</div>
+    ${GK_STEPS.map(([b,sm],i)=>`<button type="button" class="gk-ck ${done.includes(i)?'on':''}" data-gks="${i}"><span class="bx">${done.includes(i)?'✓':''}</span><span class="tx"><b>${esc(b)}</b>${sm?`<small class="${sm[0]==='!'?'w':''}">${esc(sm.replace(/^!/,''))}</small>`:''}</span></button>`).join('')}`; };
+  const sh=openSheet(draw());
+  const bind=()=>$$('[data-gks]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.gks; const k=done.indexOf(i); if(k<0) done.push(i); else done.splice(k,1); lsSet(key, done); sh.innerHTML='<div class="handle"></div>'+draw(); bind(); });
+  bind(); }
 // ===== p101 · 호패(號牌) + 승단 사다리 =====
 const LADDER = ['1급','초단','2단','3단','4단','5단','6단','7단','8단','9단'];
 function sinceText(since, t){ if(!/^\d{4}-\d{2}-\d{2}$/.test(since||'')) return null; const [y,m,d]=since.split('-').map(Number); const [Y,M,D]=t.split('-').map(Number);
@@ -4939,6 +5076,8 @@ function renderRoom(){
   $('#roomInfo').innerHTML = me ? hopaeHTML(memberById(me.id)||me, {own:true, days:S.myDays||[]}) : '<div class="muted">캐릭터를 고르면 내 호패가 생겨요.</div>';
   renderVisitRow(room);
   if(me){ const b=document.createElement('button'); b.type='button'; b.className='bg-pill rm-pick'; b.textContent='🎨 방 꾸미기'; b.onclick=e=>{ e.stopPropagation(); openRoomTheme(); }; room.appendChild(b); }
+  if(S.me && S._gakSub!==S.me.id){ S._gakSub=S.me.id; sub({doc:'gak/'+S.me.id}, d=>{ S.gak=d||{}; try{ renderGak(); }catch(e){ console.warn('gak', e); } }); }
+  try{ renderGak(); }catch(e){ console.warn('gak', e); }
   renderArchive(); renderGrowth(); if(typeof renderRoomExtras==='function') renderRoomExtras();
 }
 $('#gearEdit').addEventListener('click', ()=>{ if(!S.me){ openProfile(); return; } openGear(); });
