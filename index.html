@@ -2561,7 +2561,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.15d';
+const APP_VER = '2026.10.15e';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3713,7 +3713,7 @@ function gakTip(t, rh){ if(t!=null && t<=5) return '추워요 · 활을 충분�
 function renderGakWx(){ const el=$('#gkWx'); if(!el) return; if(bwSel()!=='각궁'){ el.hidden=true; return; }
   const w=S.windNow[windJid()]; el.hidden=false;
   if(!w || w.err || (w.t==null && w.rh==null)){ el.innerHTML='<b>🎋 각궁</b><span>기온 · 습도를 받는 중이에요</span>'; return; }
-  el.innerHTML=`<b>🎋 각궁</b><span class="v">${w.t!=null?`🌡 ${w.t}℃`:''}${w.rh!=null?` · 💧 습도 ${w.rh}%`:''}</span><small>${esc(gakTip(w.t, w.rh))} · 정 근처 날씨</small>`; }
+  el.innerHTML=`<b>🎋 각궁</b><span class="v">${w.t!=null?`🌡 ${w.t}℃`:''}${w.rh!=null?` · 💧 습도 ${w.rh}%`:''}</span><small>정 근처 날씨</small>`; }
 function renderBowPick(){ try{ renderGakWx(); }catch(e){} const el=$('#bwPick'); if(!el) return; const v=bwSel();
   el.innerHTML = BOWS.map(b=>`<button type="button" role="radio" aria-checked="${v===b}" data-bwp="${b}" class="${v===b?'on':''} ${b==='각궁'?'gak':''}">${BOW_L[b]}</button>`).join('') + `<small>바꾸기 전까지 계속 이 활로 기록돼요</small>`; }
 $('#bwPick').addEventListener('click', e=>{ const b=e.target.closest('[data-bwp]'); if(!b) return; lsSet('sadae.bowSel', b.dataset.bwp); renderBowPick(); toast(`${BOW_L[b.dataset.bwp]}으로 기록해요`); });
