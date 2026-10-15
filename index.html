@@ -2533,7 +2533,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.09f';
+const APP_VER = '2026.10.15a';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -5606,22 +5606,13 @@ function renderGrowth(){
    기록 카드 — 그림으로 만들어 카톡 등에 공유
    ========================================================= */
 function shareLink(){ try{ if(typeof inviteLink==='function') return inviteLink(); }catch(e){} return /^https?:/.test(location.protocol) ? location.origin+location.pathname : ''; }
-// 캔버스용 결과 표시 — glyph()는 화면용 SVG 문자열이라 캔버스에 쓰면 코드가 글자로 찍힘
-function drawGlyph(c, k, cx, cy, size, col, F){
-  const a = RES[k] ? resArea(k) : 'x', deg = ARROW_DEG[a];
-  c.save();
-  if(deg!=null){
-    const sc = size/24 * (deg%90 ? 1.18 : 1);
-    c.translate(cx, cy); c.rotate(deg*Math.PI/180); c.scale(sc, sc); c.translate(-12, -12);
-    c.strokeStyle=col; c.lineWidth=3.4; c.lineCap='square'; c.lineJoin='miter';
-    c.beginPath(); c.moveTo(12,20.5); c.lineTo(12,5); c.moveTo(5.5,11.5); c.lineTo(12,5); c.lineTo(18.5,11.5); c.stroke();
-  } else {
-    const t = a==='h' ? RES.H.k : (a==='x' ? '?' : (RES[k]||{}).k || '?');
-    c.font=F(Math.round(size*0.95), true); c.fillStyle=col; c.textAlign='center'; c.textBaseline='middle'; c.fillText(t, cx, cy+1);
-  }
-  c.restore();
-}
 const loadImg = src => new Promise(r=>{ const i=new Image(); i.onload=()=>r(i); i.onerror=()=>r(null); i.src=src; });
+// 캔버스용 글리프: 화살표는 선으로, 나머지는 글자로
+function cvGlyph(c, k, cx, cy, size, col, F){ const a=resArea(k); const deg=ARROW_DEG[a];
+  if(deg==null){ const t=({h:RES.H.k, x:'?'})[a] || (RES[k]&&RES[k].k) || '?'; c.font=F(size,true); c.fillStyle=col; c.textAlign='center'; c.textBaseline='middle'; c.fillText(t, cx, cy+1); c.textBaseline='alphabetic'; return; }
+  const sc=size/24*(deg%90?1.18:1); c.save(); c.translate(cx,cy); c.rotate(deg*Math.PI/180); c.scale(sc,sc); c.translate(-12,-12);
+  c.strokeStyle=col; c.lineWidth=3.4; c.lineCap='square'; c.lineJoin='miter';
+  c.beginPath(); c.moveTo(12,20.5); c.lineTo(12,5); c.moveTo(5.5,11.5); c.lineTo(12,5); c.lineTo(18.5,11.5); c.stroke(); c.restore(); }
 async function drawDayCard(day){
   const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const c=cv.getContext('2d');
   try{ await Promise.all([document.fonts.load('700 40px Galmuri11'), document.fonts.load('400 40px Galmuri11')]); }catch(e){}
@@ -5662,7 +5653,7 @@ async function drawDayCard(day){
     txt(`${i+1}순`, x0, y0+12, two?28:32, INK3, true);
     for(let k=0;k<5;k++){ const cx=x0+(two?92:110)+k*(rr*2+(two?12:18)), cy=y0; const hit=r[k]==='H';
       c.beginPath(); c.arc(cx,cy,rr,0,Math.PI*2); c.fillStyle=hit?RED:'#FFFFFF'; c.fill(); c.lineWidth=3; c.strokeStyle=hit?INK:LINE; c.stroke();
-      if(!hit && r[k]){ drawGlyph(c, r[k], cx, cy, two?24:30, INK3, F); } }
+      if(!hit && r[k]){ cvGlyph(c, r[k], cx, cy, two?22:28, INK3, F); } }
     const hx=x0+(two?92:110)+5*(rr*2+(two?12:18))+(two?4:14);
     txt(`${hitsOf(r)}중`, hx, y0+12, two?28:34, INK, true); if(hitsOf(r)===5) txt('몰기', hx+(two?64:78), y0+12, two?24:28, RED, true); });
   if(more>0){ const i=shown.length; const col=two?Math.floor(i/maxRows):0, row=two?i%maxRows:i; txt(`… 외 ${more}순`, X+40+col*colW, top+row*rowH+rowH/2+12, 28, INK3, true); }
