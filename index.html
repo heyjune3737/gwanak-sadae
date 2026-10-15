@@ -1085,6 +1085,28 @@ svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:
 #saveRound{min-height:54px;font-size:15px;background:var(--indigo);color:var(--indigo-ink);border:2px solid var(--ink);box-shadow:var(--hard)}
 #saveRound.molgi{background:var(--gold);color:var(--gold-ink);border-color:var(--ink)}
 #saveRound:disabled{opacity:.55}
+/* p142 · 비 · 눈 */
+.wx-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:140}
+.wx-fx::before{content:'';position:absolute;inset:0;background:linear-gradient(rgba(40,52,72,.34),rgba(40,52,72,.12) 55%,rgba(40,52,72,0) 80%)}
+.wx-fx.storm::before{background:linear-gradient(rgba(25,30,48,.5),rgba(25,30,48,.2) 60%,rgba(25,30,48,.05))}
+.wx-fx.snow::before{background:linear-gradient(rgba(225,232,242,.32),rgba(225,232,242,.08) 60%,rgba(225,232,242,0))}
+.wx-fx.rain i,.wx-fx.storm i{position:absolute;top:-24px;width:1.5px;height:16px;background:linear-gradient(rgba(220,235,255,0),rgba(220,235,255,.85));transform:rotate(14deg);animation:wx-rain var(--d) linear var(--dl) infinite}
+.wx-fx.storm i{height:20px;width:2px}
+.wx-fx.lv1::before{opacity:.55}.wx-fx.rain.lv3::before{background:linear-gradient(rgba(35,45,65,.5),rgba(35,45,65,.22) 60%,rgba(35,45,65,.05))}.wx-fx.snow.lv3::before{background:linear-gradient(rgba(235,240,248,.5),rgba(235,240,248,.2) 60%,rgba(235,240,248,.05))}
+.wx-fx.rain.lv1 i{height:11px;opacity:.75}.wx-fx.rain.lv3 i{height:22px;width:2px;transform:rotate(18deg)}.wx-fx.storm.lv3 i{height:24px;transform:rotate(20deg)}
+.wx-fx.lv3::after{content:'';position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(rgba(200,215,235,0),rgba(200,215,235,.18))}
+@keyframes wx-rain{to{top:110%;margin-left:-30px}}
+.wx-fx.snow i{position:absolute;top:-10px;width:var(--s);height:var(--s);background:#fff;box-shadow:0 0 3px rgba(255,255,255,.9);animation:wx-snow var(--d) linear var(--dl) infinite}
+@keyframes wx-snow{0%{top:-10px;transform:translateX(0)}50%{transform:translateX(var(--x))}100%{top:105%;transform:translateX(0)}}
+.wx-flash{position:absolute;inset:0;background:#fff;opacity:0;animation:wx-flash 7s steps(1) infinite}
+@keyframes wx-flash{0%,90%,93%,100%{opacity:0}91%{opacity:.32}94%{opacity:.14}}
+.pz-party .wx-fx{z-index:149}
+.scene > .wx-fx{z-index:2}
+#plaza.wx-on #pzPill{z-index:160}
+#plaza.wx-on .pz-fx:not(.bz){display:none}
+.calm-fx .wx-fx i,.calm-fx .wx-flash{display:none}
+@media (prefers-reduced-motion:reduce){.wx-fx i,.wx-flash{display:none}}
+.pz-shooting .wx-fx i{animation-play-state:paused!important}
 /* p139 · 개량궁 · 각궁 */
 .gk-wx{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:-4px 0 10px;padding:7px 10px;border:2px solid #8A5A2B;background:color-mix(in srgb,#8A5A2B 12%,var(--card));color:var(--ink)}
 .gk-wx[hidden]{display:none}.gk-wx b{font-size:12.5px;color:#8A5A2B}.gk-wx .v{font-family:var(--display);font-size:15px}.gk-wx small{flex-basis:100%;font-size:11.5px;color:var(--ink2)}
@@ -2539,7 +2561,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.15b';
+const APP_VER = '2026.10.15c';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -6579,14 +6601,35 @@ const JEONG_ART = {"gwanak":{"scene":{"spring":"data:image/png;base64,iVBORw0KGg
 const BG_ORDER = ['auto','spring','summer','autumn','winter','dusk'];
 const BG_LABEL = {auto:'자동', spring:'봄', summer:'여름', autumn:'가을', winter:'겨울', dusk:'해질녘'};
 function autoBg(){ const d=new Date(), m=d.getMonth()+1, h=d.getHours(); if(h>=17 && h<20) return 'dusk'; return (m===12||m<=2)?'winter':(m>=3&&m<=5)?'spring':(m>=9&&m<=11)?'autumn':'summer'; }
+// ===== p142 · 비 · 눈 =====
+// 날씨 코드(WMO) → 종류 · 세기 1(약) 2(보통) 3(강) · 강수량(mm/h)이 많으면 한 단계 올림
+const WX_LV = {51:1,53:1,56:1,61:1,80:1, 55:2,57:2,63:2,66:2,81:2, 65:3,67:3,82:3, 71:1,77:1,85:1, 73:2, 75:3,86:3, 95:2,96:3,99:3};
+const wxKindOf = wc => { if(S.wxForce) return S.wxForce.replace(/\d/,''); if(wc==null) return ''; if(wc>=95) return 'storm'; if((wc>=51&&wc<=67)||(wc>=80&&wc<=82)) return 'rain'; if((wc>=71&&wc<=77)||wc===85||wc===86) return 'snow'; return ''; };
+const wxLvOf = w => { if(S.wxForce){ const m=S.wxForce.match(/\d/); return m?+m[0]:2; } if(!w) return 0; let lv=WX_LV[w.wc]||1; const p=+w.p||0; if(p>=8) lv=3; else if(p>=3 && lv<2) lv=2; return Math.min(3,lv); };
+const WX_IC = {rain:'🌧', storm:'⛈', snow:'❄️'};
+const WX_NM = {rain:['','약한 비','비','센 비'], storm:['','뇌우','뇌우','센 뇌우'], snow:['','약한 눈','눈','많은 눈']};
+function wxKindFor(jid){ const w=S.windNow[jid]; if(!S.wxForce && (!w || w.err || Date.now()-(w.at||0)>15*60e3)){ if(JEONG_GEO[jid] && !(S.wxAsk||{})[jid]){ (S.wxAsk=S.wxAsk||{})[jid]=1; fetchWind(jid).then(()=>{ S.wxAsk[jid]=0; try{ applySceneArt(); if(S.tab==='plaza') applyPlazaArt(); }catch(e){} }); } }
+  const k=wxKindOf(w && !w.err ? w.wc : null); return k ? {k, lv:wxLvOf(w && !w.err ? w : null)||1} : null; }
+function applyWxFx(el, wx){ if(!el) return; let fx=el.querySelector(':scope > .wx-fx'); const kind=wx?wx.k:'', lv=wx?wx.lv:0;
+  el.classList.toggle('wx-on', !!kind); el.dataset.wx=kind?kind+lv:'';
+  if(!kind){ if(fx) fx.remove(); return; }
+  if(fx && fx.dataset.k===kind+lv) return;
+  if(!fx){ fx=document.createElement('div'); fx.className='wx-fx'; fx.setAttribute('aria-hidden','true'); el.appendChild(fx); }
+  fx.dataset.k=kind+lv; fx.className='wx-fx '+kind+' lv'+lv;
+  const n = kind==='snow' ? [0,14,32,60][lv] : kind==='storm' ? [0,60,75,95][lv] : [0,18,44,80][lv];
+  const sp = kind==='snow' ? [0,1.25,1,0.75][lv] : [0,1.2,1,0.82][lv];   // 세면 더 빨리
+  fx.innerHTML = Array.from({length:n},(_,i)=>{ const l=(i*37+11)%100, d=(kind==='snow' ? 5+(i*13%7) : 0.55+(i*7%5)*0.09)*sp, dl=-((i*53)%97)/97*d, sz=kind==='snow' ? (2.5+(i%3)*1.3)*(lv===3?1.35:lv===1?0.85:1) : 0;
+    return `<i style="left:${l}%;--d:${d.toFixed(2)}s;--dl:${dl.toFixed(2)}s;${sz?`--s:${sz}px;--x:${(i%2?1:-1)*(6+i%5*4)}px`:''}"></i>`; }).join('') + (kind==='storm'?'<b class="wx-flash"></b>':''); }
 function applySceneArt(){
   const sc=$('#scene'); if(!sc) return; const j=viewJ(); const A=JEONG_ART[j.id];
   let pill=$('#bgPill'); if(!pill){ pill=document.createElement('button'); pill.type='button'; pill.id='bgPill'; pill.className='bg-pill'; sc.appendChild(pill);
     pill.addEventListener('click',e=>{ e.stopPropagation(); const jj=viewJ(); const k='sadae.bg.'+jj.id; const cur=lsGet(k,'auto'); const A2=JEONG_ART[jj.id]||{scene:{}}; const L=BG_ORDER.filter(x=>x==='auto'||A2.scene[x]); const nx=L[(L.indexOf(cur)+1)%L.length]; lsSet(k,nx); applySceneArt(); toast(`배경: ${BG_LABEL[nx]}${nx==='auto'?` (${BG_LABEL[autoBg()]})`:''}`); }); }
   if(!A){ sc.classList.remove('art'); sc.style.backgroundImage=''; pill.hidden=true; return; }
   const pick=lsGet('sadae.bg.'+j.id,'auto'); const key= pick==='auto' ? autoBg() : pick;
-  sc.classList.add('art'); sc.style.backgroundImage=`url(${A.scene[key]||A.scene.summer})`;
-  pill.hidden=false; pill.textContent = `🖼 ${pick==='auto'?'자동·':''}${BG_LABEL[key]}`; pill.title='눌러서 배경 바꾸기';
+  const wx=wxKindFor(j.id); const wk=wx&&wx.k; const wart=wk && pick==='auto' && A.scene[wk==='storm'?'rain':wk];
+  sc.classList.add('art'); sc.style.backgroundImage=`url(${wart||A.scene[key]||A.scene.summer})`;
+  pill.hidden=false; pill.textContent = `🖼 ${pick==='auto'?'자동·':''}${BG_LABEL[key]}${wk?` · ${WX_IC[wk]} ${WX_NM[wk][wx.lv]}`:''}`; pill.title='눌러서 배경 바꾸기';
+  applyWxFx(sc, wx);
 }
 // 광장: 계절(봄·여름·가을·겨울) × 시간(낮·해질녘·밤). 자동 = 달력·시계, 🖼 로 직접 고르기(기기마다 기억)
 const PZ_S = ['spring','summer','autumn','winter'], PZ_T = ['day','dusk','night'];
@@ -6616,6 +6659,7 @@ function applyPlazaArt(){
   let pill=$('#pzPill'); if(!pill){ pill=document.createElement('button'); pill.type='button'; pill.id='pzPill'; pill.className='bg-pill pz-pill'; pill.addEventListener('click',e=>{ e.stopPropagation(); openPzBg(); }); pz.appendChild(pill); }
   pill.hidden=!url; pill.textContent=`🖼 ${pk.s0==='auto'&&pk.t0==='auto'?'자동·':''}${PZ_SL[pk.s]} ${PZ_TL[pk.t]}`;
   pzFx(pz, url?pk.s:'', pk.t);
+  { const wx=url?wxKindFor(homeJ().id):null; applyWxFx(pz, wx); if(wx) pill.textContent+=` · ${WX_IC[wx.k]} ${WX_NM[wx.k][wx.lv]}`; }
   pz.classList.toggle('pz-night', !!url && pk.t==='night');
   if(url){ pz.classList.add('art'); pz.style.backgroundImage=`url(${url})`;
     // 광장이 세로로 길어지면 그림은 위에 폭 맞춰 두고, 아래는 그림 맨 아래 잔디색으로 이어 칠함
