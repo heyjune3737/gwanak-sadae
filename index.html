@@ -54,6 +54,7 @@
   --wall:#3B3326; --floor:#5A4128; --floor2:#4A351F; --wood:#6B4A2E;
   --hard:3px 3px 0 #000; --hard4:4px 4px 0 #000;
 }
+:root[data-theme="dark"] .gk-wx b{color:#E0A96D}
 :root[data-theme="dark"]{--memo-bg:#2E2A1F;--memo-line:#4A4230;--memo-bar:#C9A24A;--memo-on:#8A6D22;--memo-hl:#E9C46A}
 :root[data-theme="dark"]{--wind-bg:#2B5878;--wind-bd:#8CC4EA;--wind-ink:#EEF6FC;--wind-ink2:#C4DDF0;--wind-go:#CFE8FA}
 :root[data-theme="dark"] .tabbar{background-color:#2B2824!important;background-image:radial-gradient(rgba(255,240,200,.05) .6px,transparent .7px),repeating-linear-gradient(115deg,transparent 0 7px,rgba(255,240,200,.05) 7px 7.6px,transparent 7.6px 19px),repeating-linear-gradient(28deg,transparent 0 11px,rgba(255,240,200,.05) 11px 11.5px,transparent 11.5px 27px)!important;border-top-color:#E8DCC0!important}
@@ -1085,6 +1086,10 @@ svg.gl{width:1em;height:1em;display:inline-block;vertical-align:-.14em;overflow:
 #saveRound.molgi{background:var(--gold);color:var(--gold-ink);border-color:var(--ink)}
 #saveRound:disabled{opacity:.55}
 /* p139 · 개량궁 · 각궁 */
+.gk-wx{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:-4px 0 10px;padding:7px 10px;border:2px solid #8A5A2B;background:color-mix(in srgb,#8A5A2B 12%,var(--card));color:var(--ink)}
+.gk-wx[hidden]{display:none}.gk-wx b{font-size:12.5px;color:#8A5A2B}.gk-wx .v{font-family:var(--display);font-size:15px}.gk-wx small{flex-basis:100%;font-size:11.5px;color:var(--ink2)}
+:root[data-theme="dark"] .gk-wx b{color:#E0A96D}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .gk-wx b{color:#E0A96D}}
 .bw-pick{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px}
 .bw-pick button{font:inherit;font-size:13px;padding:6px 10px;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer}
 .bw-pick button.on{background:var(--ink);color:var(--card);font-weight:700;box-shadow:2px 2px 0 var(--ink3)}
@@ -2066,6 +2071,7 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
         <button class="goalbar free" id="goalBar" type="button"></button>
         <div class="restbar" id="restBar" hidden></div>
         <div class="bw-pick" id="bwPick" role="radiogroup" aria-label="오늘 쏘는 활"></div>
+        <div class="gk-wx" id="gkWx" hidden></div>
         <div class="arrows" id="arrowSlots"></div>
         <div style="height:12px"></div>
         <div class="results" id="resultBtns"></div>
@@ -2533,7 +2539,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.15a';
+const APP_VER = '2026.10.15b';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3658,7 +3664,7 @@ $('#saveRound').addEventListener('click', async ()=>{
   const t=today(), p=`days/${S.me.id}_${t}`;
   const cur = (await store.get(p)) || {memberId:S.me.id, date:t, rounds:[]};
   const n0=(cur.rounds||[]).length; { const jw=S.windNow[windJid()]; if(!jw || jw.err || Date.now()-(jw.at||0)>15*60e3){ try{ await Promise.race([fetchWind(windJid(), true), new Promise(r=>setTimeout(r,2500))]); }catch(e){} } } const cw=currentWind();
-  if(cw && (cw.r || cw.ms!=null)){ const ws=(cur.winds||[]).slice(0,n0); while(ws.length<n0) ws.push(null); ws.push({...(cw.r?{r:cw.r, l:cw.l||0}:{}), src:'a', ...(cw.ms!=null?{ms:cw.ms,deg:cw.deg,g:cw.g}:{}), ...(cw.wc!=null?{wc:cw.wc}:{}), ...(cw.t!=null?{t:cw.t}:{}), ...(cw.p!=null?{p:cw.p}:{})}); cur.winds=ws; }
+  if(cw && (cw.r || cw.ms!=null)){ const ws=(cur.winds||[]).slice(0,n0); while(ws.length<n0) ws.push(null); ws.push({...(cw.r?{r:cw.r, l:cw.l||0}:{}), src:'a', ...(cw.ms!=null?{ms:cw.ms,deg:cw.deg,g:cw.g}:{}), ...(cw.wc!=null?{wc:cw.wc}:{}), ...(cw.t!=null?{t:cw.t}:{}), ...(cw.p!=null?{p:cw.p}:{}), ...(cw.rh!=null && bwSel()==='각궁'?{rh:cw.rh}:{})}); cur.winds=ws; }
   else if(cur.winds){ const ws=cur.winds.slice(0,n0); while(ws.length<n0) ws.push(null); ws.push(null); cur.winds=ws; }
   { const at=(Array.isArray(cur.at)?cur.at:[]).slice(0,n0); while(at.length<n0) at.push(null); at.push(Date.now()); cur.at=at; }
   { const bw=(Array.isArray(cur.bw)?cur.bw:[]).slice(0,n0); while(bw.length<n0) bw.push(null); bw.push(bwSel()); cur.bw=bw; }
@@ -3680,7 +3686,13 @@ function bowFilterDays(days, b){ return (days||[]).map(d=>{ const rs=d.rounds||[
     if(!keep.some(Boolean)) return {...d, rounds:[], winds:[], at:[], rm:[], bw:[]};
     const f=a=>Array.isArray(a)?a.filter((x,k)=>keep[k]):a; return {...d, rounds:rs.filter((r,k)=>keep[k]), winds:f(d.winds), at:f(d.at), rm:f(d.rm), bw:rs.map((r,k)=>bowOf(d,k)).filter((x,k)=>keep[k])}; })
     .filter(d=>(d.rounds&&d.rounds.length) || (d.memo||'').trim()); }
-function renderBowPick(){ const el=$('#bwPick'); if(!el) return; const v=bwSel();
+// 각궁: 기온 · 습도 한 줄
+function gakTip(t, rh){ if(t!=null && t<=5) return '추워요 · 활을 충분히 녹인 뒤 얹으세요'; if(rh!=null && rh>=80) return '습해요 · 활이 무를 수 있어요. 얹은 뒤 모양을 한 번 더 보세요'; if(rh!=null && rh<=35) return '건조해요 · 활이 뻣뻣할 수 있어요. 천천히 얹으세요'; return '각궁 쏘기 무난한 날씨예요'; }
+function renderGakWx(){ const el=$('#gkWx'); if(!el) return; if(bwSel()!=='각궁'){ el.hidden=true; return; }
+  const w=S.windNow[windJid()]; el.hidden=false;
+  if(!w || w.err || (w.t==null && w.rh==null)){ el.innerHTML='<b>🎋 각궁</b><span>기온 · 습도를 받는 중이에요</span>'; return; }
+  el.innerHTML=`<b>🎋 각궁</b><span class="v">${w.t!=null?`🌡 ${w.t}℃`:''}${w.rh!=null?` · 💧 습도 ${w.rh}%`:''}</span><small>${esc(gakTip(w.t, w.rh))} · 정 근처 날씨</small>`; }
+function renderBowPick(){ try{ renderGakWx(); }catch(e){} const el=$('#bwPick'); if(!el) return; const v=bwSel();
   el.innerHTML = BOWS.map(b=>`<button type="button" role="radio" aria-checked="${v===b}" data-bwp="${b}" class="${v===b?'on':''} ${b==='각궁'?'gak':''}">${BOW_L[b]}</button>`).join('') + `<small>바꾸기 전까지 계속 이 활로 기록돼요</small>`; }
 $('#bwPick').addEventListener('click', e=>{ const b=e.target.closest('[data-bwp]'); if(!b) return; lsSet('sadae.bowSel', b.dataset.bwp); renderBowPick(); toast(`${BOW_L[b.dataset.bwp]}으로 기록해요`); });
 function renderBowView(){ const el=$('#bwView'); if(!el) return; const v=bwViewSel(); const all=S.myDaysAll||S.myDays||[];
@@ -3772,9 +3784,9 @@ async function fetchWind(jid, force){
 }
 async function fetchWind0(jid, geo, c){
   try{
-    const u=`https://api.open-meteo.com/v1/forecast?latitude=${geo[0]}&longitude=${geo[1]}&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m,precipitation&wind_speed_unit=ms&timezone=Asia%2FSeoul`;
+    const u=`https://api.open-meteo.com/v1/forecast?latitude=${geo[0]}&longitude=${geo[1]}&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m,precipitation,relative_humidity_2m&wind_speed_unit=ms&timezone=Asia%2FSeoul`;
     const r=await fetch(u); const j=await r.json(); const cu=j&&j.current; if(!cu || typeof cu.wind_speed_10m!=='number') throw new Error('no data');
-    const w={at:Date.now(), ms:+cu.wind_speed_10m.toFixed(1), deg:Math.round(cu.wind_direction_10m), g:+(cu.wind_gusts_10m||0).toFixed(1), ...(typeof cu.weather_code==='number'?{wc:cu.weather_code}:{}), ...(typeof cu.temperature_2m==='number'?{t:Math.round(cu.temperature_2m)}:{}), ...(typeof cu.precipitation==='number'?{p:+cu.precipitation.toFixed(1)}:{})};
+    const w={at:Date.now(), ms:+cu.wind_speed_10m.toFixed(1), deg:Math.round(cu.wind_direction_10m), g:+(cu.wind_gusts_10m||0).toFixed(1), ...(typeof cu.weather_code==='number'?{wc:cu.weather_code}:{}), ...(typeof cu.temperature_2m==='number'?{t:Math.round(cu.temperature_2m)}:{}), ...(typeof cu.precipitation==='number'?{p:+cu.precipitation.toFixed(1)}:{}), ...(typeof cu.relative_humidity_2m==='number'?{rh:Math.round(cu.relative_humidity_2m)}:{})};
     S.windNow[jid]=w; lsSet('sadae.wind.'+jid, w); return w;
   }catch(e){ S.windNow[jid] = c && !c.err ? c : {err:true, at:Date.now()}; return S.windNow[jid].err?null:S.windNow[jid]; }
 }
@@ -3782,19 +3794,19 @@ async function fetchWind0(jid, geo, c){
 function windManual(){ const m=lsGet('sadae.windman', null); return (m && m.date===today() && WREL[m.r]) ? m : null; }
 function currentWind(){
   const jid=windJid(), w=S.windNow[jid], b=bearingOf(jid), man=windManual();
-  const auto = (w && !w.err) ? {ms:w.ms, deg:w.deg, g:w.g, l:wLevel(w.ms), r: wLevel(w.ms)===0?'0' : (b!=null? wRelOf(w.deg,b) : null), ...(w.wc!=null?{wc:w.wc}:{}), ...(w.t!=null?{t:w.t}:{}), ...(w.p!=null?{p:w.p}:{})} : null;
+  const auto = (w && !w.err) ? {ms:w.ms, deg:w.deg, g:w.g, l:wLevel(w.ms), r: wLevel(w.ms)===0?'0' : (b!=null? wRelOf(w.deg,b) : null), ...(w.wc!=null?{wc:w.wc}:{}), ...(w.t!=null?{t:w.t}:{}), ...(w.p!=null?{p:w.p}:{}), ...(w.rh!=null?{rh:w.rh}:{})} : null;
   if(auto) return {...auto, src:'a'};   // 2026-10-06 손으로 고르기 없앰 — 늘 자동
   return null;
 }
 const WX = c => c==null ? null : c===0 ? ['☀️','맑음'] : c<=2 ? ['🌤','구름 조금'] : c===3 ? ['☁️','흐림'] : c<=48 ? ['🌫','안개'] : c<=57 ? ['🌦','이슬비'] : c<=67 ? ['🌧','비'] : c<=77 ? ['❄️','눈'] : c<=82 ? ['🌧','소나기'] : c<=86 ? ['🌨','눈발'] : ['⛈','뇌우'];
-const wxLabel = w => { const x=w&&WX(w.wc); return x ? `${x[0]} ${x[1]}${w.t!=null?` ${w.t}℃`:''}` : (w&&w.t!=null?`${w.t}℃`:''); };
+const wxLabel = w => { const x=w&&WX(w.wc); const rh=w&&w.rh!=null?` 💧${w.rh}%`:''; return (x ? `${x[0]} ${x[1]}${w.t!=null?` ${w.t}℃`:''}` : (w&&w.t!=null?`${w.t}℃`:'')) + rh; };
 const WSV = w => !w ? 1 : (w.r==='0' ? 1 : Math.max(1, Math.min(3, +w.l || (w.ms!=null ? Math.max(1,wLevel(w.ms)) : 1))));
 const windChipB = w => !w ? '' : `<span class="wsp ws${WSV(w)}">${w.r ? (w.r==='0' ? '· 바람 없음' : `${WREL[w.r].k} ${WREL[w.r].l} ${WLV[WSV(w)]}`) : `🌬 ${WLV[WSV(w)]}`}</span>`;
 const windDetail = w => !w || w.ms==null ? '' : `${w.deg!=null?compassOf(w.deg)+'풍 ':''}${w.ms}m/s${w.g>w.ms+1?` · 돌풍 ${w.g}`:''}`;
 const windLine = w => { if(!w) return ''; const a=[]; if(w.r) a.push(`${WREL[w.r].k} ${windLabel(w)}`); if(w.ms!=null) a.push(`${w.deg!=null?compassOf(w.deg)+'풍 ':''}${w.ms}m/s${w.g>w.ms+1?` · 돌풍 ${w.g}`:''}`); const x=wxLabel(w); return (a.length?'🌬 '+a.join(' · '):'') + (x?(a.length?'  ':'')+x:''); };
 const windLabel = w => !w || !w.r ? '' : (w.r==='0' ? '바람 없음' : `${WREL[w.r].l} ${WLV[w.l]||''}`.trim());
 const windChip = w => !w || !w.r ? '' : `<span class="wchip w-${w.r}" title="${esc(windLabel(w))}${w.ms!=null?` · ${w.ms}m/s`:''}">${WREL[w.r].k}${w.r==='0'?'':WLV[w.l]||''}</span>`;
-function renderWindBar(){
+function renderWindBar(){ try{ renderGakWx(); }catch(e){}
   const el=$('#windBar'); if(!el) return; const jid=windJid(); const w=S.windNow[jid]; const cw=currentWind(); const b=bearingOf(jid);
   let main, sub, wx='';
   if(cw && (cw.r || cw.ms!=null)){ main = cw.r ? (cw.r==='0' ? '· 바람 없음' : `${WREL[cw.r].k} ${WREL[cw.r].l} · ${WLV[WSV(cw)]}`) : `🌬 ${WLV[WSV(cw)]} 바람`; sub=windDetail(cw) + (b==null&&!cw.r?' · 과녁 방향은 관리자가 정해요':''); const x=WX(cw.wc); wx = x||cw.t!=null ? `<span class="wb-wx"><i>${x?x[0]:'🌡'}</i><b>${x?x[1]+' ':''}${cw.t!=null?cw.t+'℃':''}</b></span>` : ''; }
@@ -3902,9 +3914,9 @@ const WXL = {sun:['☀️','맑음'], cloud:['☁️','흐림'], rain:['🌧','�
 const WXN = {sun:'맑은 날', cloud:'흐린 날', rain:'비 오는 날', snow:'눈 오는 날'};
 const TPL = {c:['🥶','10℃ 아래'], m:['🙂','10~20℃'], w:['🥵','20℃ 위']};
 function wxStatsHTML(mdays){
-  const R=roundsOf(mdays); const wg={}, xg={}, tg={}; let any=0, H=0;
+  const R=roundsOf(mdays); const wg={}, xg={}, tg={}, hg={}; let any=0, H=0;
   const add=(g,k,r)=>{ const o=g[k]||(g[k]={n:0,h:0,m:{F:0,B:0,S:0,O:0}}); o.n++; o.h+=hitsOf(r); const a=missAgg(Object.fromEntries(MISS_KEYS.map(q=>[q,r.filter(x=>x===q).length]))); ['F','B','S','O'].forEach(q=>o.m[q]+=a[q]); };
-  for(const x of R){ H+=hitsOf(x.r); const w=x.w; if(!w) continue; any++; if(w.r) add(wg,w.r,x.r); const gx=WXG(w.wc); if(gx) add(xg,gx,x.r); if(w.t!=null) add(tg, w.t<10?'c':w.t<20?'m':'w', x.r); }
+  for(const x of R){ H+=hitsOf(x.r); const w=x.w; if(!w) continue; any++; if(w.r) add(wg,w.r,x.r); const gx=WXG(w.wc); if(gx) add(xg,gx,x.r); if(w.t!=null) add(tg, w.t<10?'c':w.t<20?'m':'w', x.r); if(w.rh!=null) add(hg, w.rh<40?'d':w.rh<70?'n':'h', x.r); }
   const head=`<div class="mr-h"><h2>🌬 바람 · 날씨별</h2><span class="tiny muted">이번 달</span></div><p class="hb-lead">순을 저장할 때 바람 · 날씨 · 기온이 자동으로 남아요.</p>`;
   if(!any) return head+'<div class="hb-empty">순을 저장할 때 바람 · 날씨가 함께 남아요. 쌓이면 여기서 비교할 수 있어요.</div>';
   const avg=R.length?Math.round(H/(R.length*5)*100):0; const ML={F:'앞났어요',B:'뒤났어요',S:'코 박았어요',O:'넘었어요'};
@@ -3914,11 +3926,13 @@ function wxStatsHTML(mdays){
   const r1=rows(wg, WREL_ORDER, k=>[WREL[k].k, WREL[k].l], (k,l)=>k==='0'?'바람 없을 때 낸 순':`${l}에 낸 순`);
   const r2=rows(xg, ['sun','cloud','rain','snow'], k=>WXL[k], k=>`${WXN[k]} 낸 순`);
   const r3=rows(tg, ['c','m','w'], k=>TPL[k], (k,l)=>`${l}에서 낸 순`);
+  const r4=rows(hg, ['d','n','h'], k=>({d:['🏜','습도 40% 아래'], n:['🙂','40~70%'], h:['💧','70% 위']})[k], (k,l)=>`각궁 · ${l}에서 낸 순`);
   const best=cand.sort((a,b)=>b.v-a.v)[0]; const nox=['sun','cloud','rain','snow'].filter(k=>!xg[k]).map(k=>`${WXL[k][0]} ${WXN[k]}`);
   return head + (best?`<div class="wx-best"><span class="ic">🏆</span><span class="t"><small>이번 달 관중률이 가장 높았던 조건</small><b>${best.ic==='·'?'':best.ic+' '}${best.t} · ${best.v}%</b><small>5순 이상 쏜 조건끼리 비교해요</small></span></div>`:'')
     + (r1?`<div class="wx-g">🌬 바람<span>관중률 · 순</span></div><div class="hb-rows">${r1}</div>`:'')
     + (r2?`<div class="wx-g">🌦 날씨<span>관중률 · 순</span></div><div class="hb-rows">${r2}</div>`:'')
     + (r3?`<div class="wx-g">🌡 기온<span>순을 저장할 때 정 근처 기온이에요</span></div><div class="hb-rows">${r3}</div>`:'')
+    + (r4?`<div class="wx-g">💧 습도<span>각궁으로 쏜 순만 · 정 근처 습도</span></div><div class="hb-rows">${r4}</div>`:'')
     + `<p class="wx-foot">${nox.length?nox.join(' · ')+'은 아직 기록이 없어요.<br>':''}세로 점선은 이번 달 평균 관중률(${avg}%)이에요. 4순 이하로 쏜 조건은 흐리게 보여요.</p>`;
 }
 
