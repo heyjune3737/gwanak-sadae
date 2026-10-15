@@ -1906,6 +1906,8 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .cab-it.empty .st{opacity:.3}.cab-it.empty small{color:var(--cb-empty)}
 .cab-it.pick .md{outline:3px solid var(--red);outline-offset:2px}
 .cab-note{font-size:12px;color:var(--ink2);margin:6px 0 10px}
+.cab-pop{margin:6px 0 2px;background:var(--card);color:var(--ink);border:2px solid #2A1A0E;padding:8px 10px;font-size:12.5px;line-height:1.55;word-break:keep-all}
+.cab-pop b{font-size:14px}.cab-pop .f1{display:block;margin-top:2px}.cab-pop small{display:block;color:var(--ink2);font-size:11.5px}
 .hh-first{margin:10px 0 0;border:2px solid var(--ink);background:var(--gold-soft);padding:8px 10px;font-size:13px;color:var(--ink)}
 .hh-first small{display:block;color:var(--ink2);font-size:11.5px;margin-top:2px}
 /* p148 · 오늘 정 화면 색 단추 */
@@ -2646,7 +2648,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.15i';
+const APP_VER = '2026.10.15j';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -5129,7 +5131,18 @@ function renderCab(){ const w=$('#cabWrap'); if(!w) return; if(!S.me){ w.innerHT
 function cabTip(id, mid){ const c=hidCat(id); if(!c) return; const f=hidFirstOf(id, mid); const mine=S.me&&mid===S.me.id; const jn=memberJ(memberById(mid)||{}).name||'우리 정';
   const n=String(id).startsWith('mh:')?0:hidFinders(id, mid).length;
   toast(`${c.ic} ${c.t}${mine?` — ${c.d}`:''}${f?` · 🥇 ${jn} 첫 발견 ${f.name}`:''}${n>1?` · ${n}명이 찾았어요`:''}`); }
-document.addEventListener('click', e=>{ const b=e.target.closest && e.target.closest('[data-cab]'); if(!b || b.closest('.cab-edit')) return; cabTip(b.dataset.cab, b.dataset.cabm); });
+function cabPopHTML(id, mid){ const c=hidCat(id); if(!c) return ''; const owner=memberById(mid)||{}; const jn=memberJ(owner).name||'우리 정';
+  const F=hidFinders(id, mid); const f=hidFirstOf(id, mid); const me=S.me&&S.me.id; const iHave=!!(me && F.some(x=>x.id===me));
+  const names=F.map(x=>x.id===me?'나':x.name).filter(Boolean); const shown=names.slice(0,5).join(' · ')+(names.length>5?` 외 ${names.length-5}명`:'');
+  const fd=f?new Date(f.at):null;
+  return `<b>${c.ic} ${esc(c.t)}</b>`
+    + (f?`<span class="f1">🥇 ${esc(jn)} 첫 발견 · ${esc(f.id===me?'나':f.name||'')} (${fd.getMonth()+1}월 ${fd.getDate()}일)</span>`:'')
+    + `<span class="f1">${F.length?`${esc(jn)}에서 ${F.length}명이 찾았어요 · ${esc(shown)}`:'찾은 기록이 아직 없어요'}</span>`
+    + (iHave?`<small>조건: ${esc(c.d)}</small>`:'<small>조건은 찾으면 공개돼요 · 힌트는 내 방 배지판에서</small>'); }
+document.addEventListener('click', e=>{ const b=e.target.closest && e.target.closest('[data-cab]'); if(!b || b.closest('.cab-edit')) return;
+  const cab=b.closest('.cab'); if(!cab) return; let p=cab.querySelector('.cab-pop'); const key=b.dataset.cab;
+  if(p && p.dataset.k===key){ p.remove(); return; } if(!p){ p=document.createElement('div'); p.className='cab-pop'; cab.querySelector('.cab-in').after(p); }
+  p.dataset.k=key; p.innerHTML=cabPopHTML(key, b.dataset.cabm); });
 function openCabEdit(){ if(!S.me) return; const m=memberById(S.me.id)||S.me; const ids=cabIds(m, true); let pick=null;
   const sh=openSheet(''); sh.classList.add('sheet-tall');
   const draw=()=>{ sh.innerHTML=`<div class="handle"></div><h3>✎ 진열장 배치</h3><p class="cab-note">바꿀 배지 두 개를 차례로 누르면 자리가 바뀌어요. 방 구경 온 사원에게도 이 순서로 보여요.</p>
@@ -6705,7 +6718,7 @@ function renderPlaza(){
   const reps={}, top=[]; for(const m of all){ if(m.re && byId[m.re] && !byId[m.re].re) (reps[m.re]=reps[m.re]||[]).push(m); else top.push(m); }
   Object.values(reps).forEach(L=>L.sort((a,b)=>(a.at||0)-(b.at||0)));
   const pzNm=id=>{ const x=memberById(id); return (x&&x.name)||'사원'; };
-  const C=$('#plazaChat'); let lastDay=''; const PER=15, pages=Math.max(1,Math.ceil(top.length/PER)); if(!S.pzPage||S.pzPage>pages) S.pzPage=1;
+  const C=$('#plazaChat'); let lastDay=''; const PER=10, pages=Math.max(1,Math.ceil(top.length/PER)); if(!S.pzPage||S.pzPage>pages) S.pzPage=1;
   const pgOf=id=>{ const i=top.findIndex(x=>x.id===id); return i<0?1:Math.floor(i/PER)+1; };
   const pzMsg=(m0,rootDay)=>{ const mm=memberById(m0.from)||{}; const pn=rootDay&&byId[m0.re]?pzNm(byId[m0.re].from):'';
     const m = pn ? {...m0, text:(pzStripAt(m0.text, pn)||m0.text)} : m0;
@@ -6716,7 +6729,7 @@ function renderPlaza(){
   C.innerHTML = top.length ? fresh.map(f=>`<button type="button" class="pz-newre" data-pzjump="${esc(f.rid)}">💬 <b>${esc(pzNm(f.last.from))}</b> 님이 ${esc(pzNm(byId[f.rid].from))} 님 글에 답글 · ${hhmm(f.last.at)}<span>보기 ›</span></button>`).join('') + top.map((m,i)=>{ const pg=Math.floor(i/PER)+1; let head=''; if(m.day!==lastDay || i%PER===0){ lastDay=m.day; head=`<div class="pz-day">${pzDayLabel(m.day)}</div>`; }
       const R_=reps[m.id]||[];
       return `<div class="pz-item" data-pg="${pg}" ${pg!==S.pzPage?'hidden':''}>${head}${pzMsg(m,'')}${R_.length?`<div class="pz-reps">${R_.slice(0,PZ_REP_SHOW).map(r=>pzMsg(r,m.day)).join('')}${R_.length>PZ_REP_SHOW?(()=>{ const op=S.pzRepOpen.has(m.id); return `<div class="pz-reps-more" ${op?'':'hidden'}>${R_.slice(PZ_REP_SHOW).map(r=>pzMsg(r,m.day)).join('')}</div><button type="button" class="pz-repmore" data-pzrm="${esc(m.id)}" aria-expanded="${op}">${op?'답글 접기 ▴':`💬 답글 ${R_.length-PZ_REP_SHOW}개 더 보기 ▾`}</button>`; })():''}</div>`:''}</div>`; }).join('')
-      + (pages>1 ? `<div class="pz-pager" role="navigation" aria-label="한마디 페이지"><button type="button" data-pzpg="prev" aria-label="이전 페이지">‹</button>${Array.from({length:pages},(_,k)=>`<button type="button" data-pzpg="${k+1}" class="${k+1===S.pzPage?'on':''}">${k+1}</button>`).join('')}<button type="button" data-pzpg="next" aria-label="다음 페이지">›</button></div><div class="pz-pgnote tiny muted">최근 7일 한마디 ${all.length}개 · 한 쪽에 글 ${PER}개(답글은 원글 아래)</div>` : '')
+      + (pages>=1 ? `<div class="pz-pager" role="navigation" aria-label="한마디 페이지"><button type="button" data-pzpg="prev" aria-label="이전 페이지">‹</button>${Array.from({length:pages},(_,k)=>`<button type="button" data-pzpg="${k+1}" class="${k+1===S.pzPage?'on':''}">${k+1}</button>`).join('')}<button type="button" data-pzpg="next" aria-label="다음 페이지">›</button></div><div class="pz-pgnote tiny muted">최근 7일 한마디 ${all.length}개 · 한 쪽에 글 ${PER}개(답글은 원글 아래)</div>` : '')
     : '<div class="muted">아직 조용해요. 첫 인사를 남겨 보세요 👋</div>';
   $$('[data-pzrm]',C).forEach(b=>b.addEventListener('click',()=>{ const id=b.dataset.pzrm; const box=b.previousElementSibling; const op=!S.pzRepOpen.has(id); if(op) S.pzRepOpen.add(id); else S.pzRepOpen.delete(id);
     if(box) box.hidden=!op; b.setAttribute('aria-expanded',String(op)); b.textContent = op?'답글 접기 ▴':`💬 답글 ${box?box.children.length:''}개 더 보기 ▾`; }));
