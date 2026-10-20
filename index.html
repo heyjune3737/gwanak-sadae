@@ -732,6 +732,7 @@ td.total{font-family:var(--display);font-size:16px}
 /* ===================== 1안 · 모바일 다듬기 (보이는 것만 변경) ===================== */
 body{font-size:15.5px}
 .input,select.input{font-size:16px;min-height:46px}
+select.input{padding-right:30px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
 .btn{min-height:44px}
 .btn.sm{min-height:38px;padding:7px 12px}
 .chip{min-height:40px;padding:8px 14px;display:inline-flex;align-items:center;justify-content:center}
@@ -1779,6 +1780,26 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 :root[data-theme="dark"]{--rp-loss:#E8706B;--rp-gain:#82B06B;--rp-grid:#333B34;--rp-h1:#3E5A35;--rp-h2:#2C3B2A;--rp-h3:#4A2E2C;--rp-h4:#6A3633}
 #rpBody{display:flex;flex-direction:column;gap:14px}
 #rpBody .card{color:var(--ink)}
+.rp-pb{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rp-pb>div{border:2px solid var(--ink);padding:8px 9px;background:var(--card);min-width:0}
+.rp-pb small{display:block;font-size:11.5px;color:var(--ink2)}.rp-pb b{display:block;font-family:var(--display);font-size:22px;margin:2px 0}.rp-pb em{font-style:normal;font-size:11px;color:var(--ink2)}
+.rp-pb>div.new{border-color:var(--rp-gain)}.rp-pb>div.new em{color:var(--rp-gain);font-weight:700}
+.rp-dl{border:0;background:none;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.rp-plg{display:flex;gap:14px;font-size:12px;color:var(--ink2);margin:2px 0 8px}.rp-plg i,.rp-pdir i{display:inline-block;width:12px;height:8px;margin-right:5px;vertical-align:0}
+.rp-plg i.me,.rp-pr i.me{background:var(--indigo)}.rp-plg i.gp,.rp-pr i.gp{background:var(--rp-gain)}
+.rp-pr{display:grid;grid-template-columns:84px 1fr 62px;gap:6px;align-items:center;font-size:12.5px;margin-bottom:7px}
+.rp-pr .l{color:var(--ink2);line-height:1.25}.rp-pr .b{display:flex;flex-direction:column;gap:2px}.rp-pr .b i{display:block;height:7px;min-width:2px}
+.rp-pr .v{text-align:right;line-height:1.15}.rp-pr .v b{display:block;font-family:var(--display);font-size:13.5px}.rp-pr .v b.g{color:var(--rp-gain)}
+.rp-pch{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}.rp-pch button{display:flex;align-items:center;gap:6px;border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:4px 8px 4px 4px;font-family:inherit;cursor:pointer;text-align:left}
+.rp-pch button.on{background:var(--ink);color:var(--card)}.rp-pch .av svg{width:26px;height:31px;display:block}.rp-pch b{display:block;font-size:13px}.rp-pch small{display:block;font-size:11px;opacity:.85}
+.rp-pgo{margin:0 0 10px}
+.rp-jlg{display:flex;gap:12px;font-size:11.5px;color:var(--ink2);margin-bottom:8px}.rp-jlg i,.rp-js i{display:inline-block}.rp-jlg i{width:12px;height:8px;margin-right:4px}
+.rp-jlg i.h,.rp-js i.h{background:var(--indigo)}.rp-jlg i.g,.rp-js i.g{background:var(--rp-gain)}.rp-jlg i.k,.rp-js i.k{background:#C98A2E}
+.rp-js{display:grid;grid-template-columns:40px 1fr 34px;gap:8px;align-items:center;margin-bottom:6px;font-size:12.5px}.rp-js .m{color:var(--ink2)}.rp-js .s{display:flex;height:16px;border:1.5px solid var(--ink);background:var(--rp-grid)}.rp-js .s i{height:100%}
+.rp-js b{font-family:var(--display);font-size:15px;text-align:right}
+.rp-pdir{display:flex;gap:12px;align-items:center;margin-top:10px;border-top:1.5px dashed var(--rp-grid);padding-top:10px}.rp-pdir svg{flex:0 0 128px;width:128px;height:136px}
+.rp-pdir .t{display:flex;flex-direction:column;gap:4px;font-size:12.5px}.rp-pdir .t b{font-family:var(--display);font-size:15px}.rp-pdir small{font-size:11.5px;color:var(--ink2)}
+.rp-pdir i.me{background:none;border-top:2.5px solid var(--rp-loss);height:0}.rp-pdir i.gp{height:0;background:none;border-top:2.5px dashed var(--rp-gain)}
 .rp-head h2{margin:0 0 6px;font-family:var(--display);font-size:22px}
 .rp-sum{font-size:13.5px;line-height:1.55;margin:0 0 10px;word-break:keep-all}.rp-sum b{font-family:var(--display);font-size:18px}
 .rp-chips{display:flex;gap:6px;flex-wrap:wrap}.rp-chips+.rp-chips{margin-top:6px}
@@ -2697,7 +2718,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21a';
+const APP_VER = '2026.10.21b';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2855,6 +2876,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-10-21a', date:'10월 21일', title:'📈 리포트 새 카드 · 성장 · 최고 기록 · 정심 · 같은 쪽으로 나는 사원', body:'📈 리포트에 새 카드\n• 요즘 늘고 있나요? — 습사한 날마다 관중률과 최근 5번 평균 흐름\n• 처음보다 얼마나 늘었나요? — 첫 기록 달부터 달마다 관중률\n• 내 최고 기록은? — 하루 9순 최고 · 하루 관중률 최고 · 몰기 · 연속 관중 · 연속 습사 (새로 세우면 초록)\n• 정심 점수가 나아지고 있나요? — 순위의 정심 점수(관중 · 고름 · 낙점)를 달마다\n• 나처럼 ○○이 많은데 더 잘 맞히는 사원은? — 불 방향이 나와 같은 사원 중 관중률이 높은 사원과 숫자 · 그림 비교, 그 사원 방 · 방명록으로 바로 가기 (순위에서 숨긴 사원은 빠져요)\n\n기온 · 순 사이 쉬는 시간 · 주별 연습량 카드는 뺐어요.'},
   {id:'2026-10-20b', date:'10월 20일', title:'🏯 충주 탄금정 · 👤 친선 대회 궁사님(미가입)', body:'🏯 충주 탄금정\n소속 정에 충주 탄금정이 생겼어요. 사대 · 광장 배경은 탄금대의 송림과 남한강, 열두대 절벽 위 2층 누각 탄금정을 따서 그렸고, 계절 · 해질녘 · 밤 · 비 · 눈 그림도 함께 있어요. 날씨 · 바람은 탄금대 공원 기준이에요.\n\n👤 친선 대회에 궁사님(미가입) 넣기\n앱에 가입하지 않은 분도 친선 대회에 함께할 수 있어요. 새 대회 → 참가 사원 고르기에서 ＋ 궁사님을 누르면 궁사님 1, 2…로 들어가고, 이름과 소속 정을 바로 고칠 수 있어요. 📋 명단 붙여넣기로 한 줄에 한 명씩 한꺼번에 넣을 수도 있어요(예: 홍길동 황학정).\n\n대회를 만든 뒤에도 대회 화면의 👤 궁사님 추가 · 고치기에서 더하거나 뺄 수 있어요(대회 만든 사람 · 관리자). 점수는 기록 맡은 분이 넣어요.\n\n궁사님은 그 대회 순위표에만 들어가고, 배지 · 월보 · 순위 · 친선 칭호에는 들어가지 않아요. 궁사님이 있는 대회는 정식 대회로 바꿀 수 없어요.'},
   {id:'2026-10-15c', date:'10월 15일', title:'📈 리포트 탭 · 🗄 배지 진열장 · ☔ 비 · 눈 배경 · 🎋 각궁 돌보기 외', body:'📈 리포트 탭\n아래 탭에 📈 리포트가 생겼어요(표 기록 바로 옆). 내 표 기록을 질문별로 모아 보여 줘요.\n\n• 하루 9순 쏘면 몇 중이 나오나요? (막대를 누르면 그날 기록표)\n• 순을 거듭할수록 덜 맞나요?\n• 한 순에서 몇 번째 화살이 가장 안 맞나요?\n• 안 맞은 화살은 주로 어디로 가나요?\n• 네 발 다 맞힌 순, 몰기로 끝낸 적은요?\n• 그날 첫 순은 어땠나요?\n• 어떤 바람에서 가장 못 맞히나요?\n• 추운 날엔 덜 맞나요?\n• 순 사이에 덜 쉬면 덜 맞나요?\n• 많이 쏜 주에 더 잘 맞았나요?\n• 순마다 고르게 맞히나요?\n\n기간(최근 30일 · 90일 · 올해 · 전체)을 고를 수 있고, 개량궁과 각궁을 둘 다 쓰면 활별로도 볼 수 있어요.\n\n🧹 표 기록 정리\n표 기록의 「궁체 점검」 · 「바람 · 날씨별」 카드는 리포트로 옮겼어요. 「쌓아온 기록」에는 다음 고개만 남겼어요.\n\n🗄 숨은 배지 진열장 (내 방)\n내 방 그림 바로 아래에 진열장이 생겼어요. 찾은 숨은 배지와 이달의 숨은 배지가 찾은 순서대로 놓여요. ✎ 배치에서 두 칸을 차례로 누르면 자리가 바뀌어요. 방 구경 온 사원에게도 이 순서로 보여요.\n\n🥇 첫 발견자\n우리 정에서 숨은 배지를 처음 찾은 사람의 이름이 힌트 창과 배지판에 보여요. 조건은 그대로 숨겨져요. 첫 발견 배지는 진열장에서 금테로 빛나요. 찾은 시각이 기록되기 전부터 갖고 있던 배지는, 앱을 열면 습사 기록(순 저장 시각)으로 찾은 때를 되살려 함께 견줘요.\n\n🌙 화면 색 바로 바꾸기\n오늘 정 화면 맨 위 📍 정 이름 옆 단추로 밝게 · 어둡게를 바로 바꿀 수 있어요.\n\n☔ 비 · 눈 오는 날 배경\n그 정에 지금 비나 눈이 오면 사대 · 광장 배경이 정마다 비 · 눈 그림으로 바뀌어요. 빗줄기 · 눈송이는 세기에 따라 3단계로 내려요(예: 약한 비 · 비 · 센 비). 배경 단추에 지금 날씨가 함께 보여요. 배경 그림을 직접 골라 두셨다면 그림은 그대로예요.\n\n🏹 개량궁 · 각궁 기록 나누기\n표 기록 입력판 위에서 [개량궁(카본) · 각궁]을 고르면 그 활로 기록돼요. 바꾸기 전까지 계속 유지돼요. 기록 보기 맨 위에서 [전체 · 개량궁 · 각궁]으로 따로 볼 수 있어요. 순위 · 배지 · 월보 · 대회는 지금처럼 합쳐서 셉니다. 지난 기록은 프로필에 적은 활로 봐요.\n\n🌡 각궁일 때 기온 · 습도\n표 기록에서 각궁을 고르면 정 근처의 기온 · 습도가 보이고, 각궁 순에는 습도도 함께 남아요.\n\n🎋 각궁 돌보기 (내 방)\n각궁을 쓰시는 분은 내 방 장비 아래에 새 칸이 생겨요. 오늘 기온 · 습도, 얹은 지 · 부린 지 · 점화장에 둔 지 며칠인지, 얹음 · 부림 · 점화장 · 메모 일지(그때 기온 · 습도 함께), 계절별 점화장 온도 · 습도, 각궁 얹는 순서 체크리스트를 볼 수 있어요. 설명은 관악정 국궁교본 7장에서 옮겼어요. 일지는 나만 봐요(관리자도 못 봐요).\n\n🪵 호패 꾸미기 (내 정보)\n내 정보 → 🪵 꾸미기에서 호패 재질 · 술 색 · 호(號) · 새김 한 줄을 고를 수 있어요. 재질은 잡목 → 자작목 → 황양목 → 뿔 → 상아 순서(태종 13년 호패 재질 규정)로, 단이 오르거나 배지를 모으면 열려요(자작목 1급 · 배지 15개 / 황양목 초단 · 30개 / 뿔 3단 · 50개 / 상아 5단 · 75개). 꾸민 호패는 방 구경 때도 보여요.'},
   {id:'2026-10-06a', date:'10월 6일', title:'📖 표 기록이 새로워졌어요 · 궁체 점검 · 공유 · 오늘의 한마디', body:'🔍 기록으로 보는 궁체 점검\n표 기록 → 📖 기록 보기에서 내 관중 기록으로 자세를 다시 살펴볼 곳을 짚어 줘요. 몇 번째 시를 낼 때 관중률이 낮은지, 관중하지 못한 후 다음 시는 어땠는지, 순이 거듭될수록 관중률이 달라지는지, 3중 이상 한 순은 얼마나 되는지 볼 수 있어요. 이번 달 · 전체로 바꿔 보고, 지난달보다 오르내린 만큼도 함께 보여요.\n\n🌬 바람 · 날씨 · 기온별\n순을 저장할 때 자동으로 남은 바람 · 날씨 · 기온별로 관중률을 비교하고, 관중하지 못한 살이 주로 어느 쪽으로 갔는지도 보여요. 바람 이름은 국궁교본을 따라 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 바뀌었어요(좌궁은 줌앞 · 줌뒤가 반대).\n\n📆 습사 달력 · 📚 쌓아온 기록\n달력에 몰기한 날은 ★로 표시돼요. 쌓아온 기록에서는 지금까지 쏜 순과 다음 고개(시수 100 · 300 · 500 …)까지 남은 시수를 볼 수 있어요.\n\n📤 기록 공유 · 저장\n기록 보기 맨 위 버튼으로 전체 파트 또는 고른 파트만 사진(PNG) 한 장으로 저장하고, 카톡 등으로 바로 보낼 수 있어요.\n\n📜 오늘의 국궁 한마디\n기록 보기 맨 아래에서 사대지기 오리가 날마다 국궁교본의 가르침이나 용어 하나를 전해 줘요.'},
@@ -4156,6 +4178,9 @@ function renderReport(){
     + (hasGak&&hasGae?`<div class="rp-chips">${[['all','활 전체'],['개량궁','개량궁'],['각궁','각궁']].map(([k,l])=>`<button type="button" data-rpbow="${k}" class="${k===bw?'on':''}">${l}</button>`).join('')}</div>`:'');
   const head=`<div class="card rp-head"><h2>📈 내 리포트</h2><p class="rp-sum">${N?`${RP_SPAN[per]} <b>${N}순</b>, ${N*5}시 가운데 <b>${Hs}시</b>를 맞혔어요 · 관중률 <b>${avg}%</b>`:`${RP_SPAN[per]} 남긴 순이 없어요.`}</p>${chips}</div>`;
   const C=[];
+  try{ C.push(...rpTrendCards(BASE, days, per)); }catch(e){ console.warn('rp trend', e); }
+  try{ C.push(rpBestCard(BASE)); }catch(e){ console.warn('rp best', e); }
+  try{ C.push(rpJsCard(BASE)); }catch(e){ console.warn('rp js', e); }
   // ① 9순 쏜 날
   { const G=rpNextGrade(); const tg=G[0], gn=G[1];
     const nine=days.map(d=>{ const rs=(d.rounds||[]).filter(r=>Array.isArray(r)&&r.length===5); return rs.length>=9?{date:d.date, h:rs.slice(0,9).reduce((a,r)=>a+hitsOf(r),0)}:null; }).filter(Boolean).sort((a,b)=>a.date<b.date?-1:1);
@@ -4203,6 +4228,7 @@ function renderReport(){
       const body=`<div class="rp-dir">${svg}<div class="t"><div class="big">${lt} ${v}%</div>${dl?`<div class="d">${dl}</div>`:''}<div class="o">${rest.slice(0,2).join('<br>')}${rest.length>2?`<br><span style="color:var(--ink2);font-size:11.5px">${rest.slice(2).join(' · ')}</span>`:''}</div></div></div>`
         +`<div class="rp-lg"><span><i></i>${per==='year'?'올해':per==='all'?'전체':'이번 '+per+'일'}</span>${pm?`<span><i class="p"></i>그 전 ${per}일</span>`:''}</div>`;
       C.push(rpCard(q,'',body,xN?`방향 없이 적은 불 ${xN}시는 빼고 셌어요`:'')); } }
+  try{ const pc=rpPeerCard(); if(pc) C.push(pc); }catch(e){ console.warn('rp peer', e); }
   // ⑤ 몰기 마무리
   { const f4=R.filter(x=>x.r.slice(0,4).every(a=>a==='H')); const mo=f4.filter(x=>x.r[4]==='H').length; const rest=R.filter(x=>!x.r.slice(0,4).every(a=>a==='H')); const rv=rpPc(rest.filter(x=>x.r[4]==='H').length, rest.length);
     const c1 = !f4.length ? `<div class="card rp-c"><div class="rp-q">🏁 몰기로 끝낸 순</div><div class="rp-big">0 <small>/ 0</small></div><div class="rp-cap">아직 없어요</div></div>`
@@ -4229,10 +4255,109 @@ function renderReport(){
     C.push(rpCard('순마다 고르게 맞히나요?',a,body,'')); }
   el.innerHTML=head+C.join(''); rpBind(el);
 }
+// ---------- p163 · 흐름 · 성장 · 최고 기록 · 같은 쪽으로 나는 사원 ----------
+const rpDayRate = d => { const rs=(d.rounds||[]).filter(r=>Array.isArray(r)&&r.length===5); return rs.length?{date:d.date, n:rs.length, h:rs.reduce((a,r)=>a+hitsOf(r),0)}:null; };
+function rpTrendCards(BASE, days, per){
+  const out=[];
+  // 요즘 흐름
+  { const D=days.map(rpDayRate).filter(Boolean).sort((a,b)=>a.date<b.date?-1:1); const q='요즘 늘고 있나요?';
+    if(D.length<6) out.push(rpCard(q,'',rpEmpty('습사한 날이 6일 넘게 쌓이면 보여요',`이 기간에 ${D.length}일`),''));
+    else { const k=Math.min(5, Math.floor(D.length/2)); const avg=L=>rpPc(L.reduce((a,x)=>a+x.h,0), L.reduce((a,x)=>a+x.n,0)*5);
+      const now=avg(D.slice(-k)), prev=avg(D.slice(-2*k,-k)); const dv=now-prev;
+      const a=`최근 ${k}번 습사 평균은 <b>${now}%</b>로, 그 전 ${k}번(<b>${prev}%</b>)`+(dv>0?`보다 <b>${dv}%p</b> 올랐어요.`:dv<0?`보다 <b>${-dv}%p</b> 내려갔어요.`:`과 같아요.`);
+      const S=D.slice(-20), n=S.length, x0=40, x1=328, X=i=>n<2?x0:x0+(x1-x0)*i/(n-1);
+      const vs=S.map(x=>rpPc(x.h,x.n*5)); const top=Math.min(100, Math.max(60, Math.ceil((Math.max(...vs)+5)/20)*20)); const Y=v=>118-v/top*100;
+      const ma=S.map((x,i)=>{ const all=D.slice(0, D.length-n+i+1).slice(-5); return all.length>=Math.min(5,k)?avg(all):null; });
+      const grid=[0.25,0.5,0.75,1].map(f=>Math.round(top*f)).map(v=>`<line x1="${x0-12}" y1="${Y(v)}" x2="336" y2="${Y(v)}" stroke="var(--rp-grid)"/><text x="${x0-14}" y="${Y(v)+3}" font-size="10" fill="var(--ink2)" text-anchor="end">${v}%</text>`).join('');
+      const lab=[0, Math.floor((n-1)/2), n-1].filter((v,i,a)=>a.indexOf(v)===i).map(i=>`<text x="${X(i)}" y="134" font-size="10" fill="var(--ink2)" text-anchor="middle">${rpSD(S[i].date)}</text>`).join('');
+      const svg=`<svg viewBox="0 0 340 140" width="100%" aria-label="습사일별 관중률">${grid}<polyline points="${S.map((x,i)=>`${X(i)},${Y(vs[i])}`).join(' ')}" fill="none" stroke="var(--ink2)" stroke-width="1.5" stroke-dasharray="3 3"/>`
+        +`<polyline points="${ma.map((v,i)=>v==null?'':`${X(i)},${Y(v)}`).filter(Boolean).join(' ')}" fill="none" stroke="var(--indigo)" stroke-width="3.5"/>`
+        +S.map((x,i)=>`<circle cx="${X(i)}" cy="${Y(vs[i])}" r="4" fill="var(--ink2)" data-rpday="${x.date}" style="cursor:pointer"><title>${rpMD(x.date)} ${vs[i]}%</title></circle>`).join('')+lab+`</svg>`;
+      out.push(rpCard(q,a,svg,`점 = 그날 관중률 · 굵은 선 = 최근 5번 평균 · 점을 누르면 그날 기록표${D.length>20?' · 최근 20일만':''}`)); } }
+  // 성장률 (첫 기록부터)
+  { const M={}; BASE.forEach(d=>{ const r=rpDayRate(d); if(!r) return; const k=d.date.slice(0,7); const o=M[k]||(M[k]={n:0,h:0}); o.n+=r.n; o.h+=r.h; });
+    const ks=Object.keys(M).sort(); const q='처음보다 얼마나 늘었나요?'; const ml=k=>(ks[0].slice(0,4)!==ks[ks.length-1].slice(0,4)?`${k.slice(2,4)}년 `:'')+`${+k.slice(5)}월`;
+    if(ks.length<2) out.push(rpCard(q,'',rpEmpty('두 달째부터 보여요',ks.length?`${ml(ks[0])} 기록만 있어요`:''),''));
+    else { const f=ks[0], l=ks[ks.length-1]; const vf=rpPc(M[f].h,M[f].n*5), vl=rpPc(M[l].h,M[l].n*5), dv=vl-vf;
+      const a=`첫 기록 달(${ml(f)}) <b>${vf}%</b>에서 ${l===today().slice(0,7)?'이번 달':ml(l)} <b>${vl}%</b>까지, `+(dv>0?`<b>${dv}%p</b> 올랐어요.`:dv<0?`<b>${-dv}%p</b> 내려갔어요.`:'같아요.');
+      const show=ks.slice(-6); out.push(rpCard(q,a,rpCmp(show.map(k=>[ml(k), M[k].h, M[k].n*5])),`달마다 쏜 시 전체의 관중률 · 기간 단추와 상관없이 첫 기록부터${ks.length>6?' · 최근 6달만':''}`)); } }
+  return out; }
+function rpBestCard(BASE){
+  const D=BASE.filter(d=>(d.rounds||[]).some(r=>Array.isArray(r)&&r.length===5)).sort((a,b)=>a.date<b.date?-1:1);
+  if(!D.length) return rpCard('내 최고 기록은?','',rpEmpty('표 기록이 쌓이면 보여요',''),'');
+  const rs=d=>(d.rounds||[]).filter(r=>Array.isArray(r)&&r.length===5);
+  let b9=null, br=null, bm=null, bs={n:0}, mo=0, moLast=null, run=null;
+  D.forEach(d=>{ const R=rs(d); const h=R.reduce((a,r)=>a+hitsOf(r),0);
+    if(R.length>=9){ const v=R.slice(0,9).reduce((a,r)=>a+hitsOf(r),0); if(!b9||v>=b9.v) b9={v,date:d.date}; }
+    if(R.length>=3){ const v=rpPc(h,R.length*5); if(!br||v>=br.v) br={v,date:d.date}; }
+    const m=R.filter(r=>hitsOf(r)===5).length; if(m){ mo+=m; moLast=d.date; if(!bm||m>=bm.v) bm={v:m,date:d.date}; }
+    let c=0, st=0; R.forEach((r,i)=>r.forEach(x=>{ if(x==='H'){ if(!c) st=i; c++; if(c>=bs.n) bs={n:c,date:d.date,a:st+1,b:i+1}; } else c=0; })); });
+  { let best=null, cur=null; D.forEach(d=>{ if(cur && dstr(new Date(new Date(cur.to+'T00:00').getTime()+864e5))===d.date){ cur.to=d.date; cur.n++; } else cur={from:d.date,to:d.date,n:1}; if(!best||cur.n>=best.n) best={...cur}; }); run=best; }
+  const wk=dstr(new Date(Date.now()-6*864e5)); const nw=d=>d&&d>=wk;
+  const cell=(t,v,em,d)=>`<div class="${nw(d)?'new':''}"><small>${t}</small><b>${v}</b><em>${d?`<button type="button" class="rp-dl" data-rpday="${d}">${em}</button>`:em}${nw(d)?' · 새 기록':''}</em></div>`;
+  const body=`<div class="rp-pb">`
+    + cell('하루 9순 최고', b9?`${b9.v}중`:'–', b9?rpMD(b9.date):'아직 9순 쏜 날이 없어요', b9&&b9.date)
+    + cell('하루 관중률 최고', br?`${br.v}%`:'–', br?rpMD(br.date):'3순 넘게 쏜 날부터', br&&br.date)
+    + cell('하루 몰기 최다', bm?`${bm.v}번`:'0번', bm?rpMD(bm.date):'아직 없어요', bm&&bm.date)
+    + cell('연속 관중 최장', bs.n?`${bs.n}시`:'0시', bs.n?`${rpMD(bs.date)} ${bs.a===bs.b?bs.a+'순':bs.a+'~'+bs.b+'순'}`:'아직 없어요', bs.n?bs.date:null)
+    + cell('몰기 (지금까지)', `${mo}번`, moLast?`마지막 ${rpMD(moLast)}`:'아직 없어요', moLast)
+    + cell('연속 습사 최장', `${run.n}일`, run.n>1?`${rpMD(run.from)} ~ ${rpMD(run.to)}`:rpMD(run.from), null)
+    + `</div>`;
+  return rpCard('내 최고 기록은?','',body,'지금까지 표 기록 전체에서 · 날짜를 누르면 그날 기록표'); }
+function rpPeerStat(days, from){
+  const R=rpRounds(days.filter(d=>d.date>=from)); if(R.length<20) return null;
+  const m={}; let H=0; R.forEach(x=>{ H+=x.h; x.r.forEach(a=>{ if(a&&a!=='H'&&a!=='X') m[a]=(m[a]||0)+1; }); });
+  const dirN=Object.values(m).reduce((a,b)=>a+b,0); if(!dirN) return null; const top=Object.keys(m).sort((a,b)=>m[b]-m[a])[0];
+  const ds=new Set(R.map(x=>x.date)).size; const E=R.filter(x=>x.i<3), Lt=R.filter(x=>x.i>=6); const pr=L=>L.length?rpPc(L.reduce((a,x)=>a+x.h,0),L.length*5):null;
+  return {n:R.length, rate:rpPc(H,R.length*5), top, m, dirN, share:k=>rpPc(m[k]||0,dirN), days:ds, perWeek:Math.round(ds/(90/7)*10)/10, perDay:Math.round(R.length/ds*10)/10, early:pr(E), late:pr(Lt), fifth:rpPc(R.filter(x=>x.r[4]==='H').length,R.length)}; }
+function rpPeerCard(){
+  if(!S.me) return ''; const from=rpDay(89); const J=homeJ().id;
+  const me=rpPeerStat((S.myDaysAll||S.myDays||[]).filter(d=>d&&d.date), from);
+  if(!me) return rpCard('나와 같은 쪽으로 나는 사원은?','',rpEmpty('최근 90일에 20순 넘게 쏘면 보여요',''),'');
+  const lt=RES[me.top].l; const q=`나처럼 ${lt}${josa(lt,'이','가')} 많은데 더 잘 맞히는 사원은?`;
+  const peers=(S.members||[]).filter(x=>x&&x.id&&x.name&&x.id!==S.me.id&&x.id!==HUB_BOT&&!x.rankHide).map(x=>{ const p=rpPeerStat(allDaysOf(x.id), from); return p?{...p, id:x.id, name:x.name, jn:memberJ(x).name||'', char:x.char}:null; }).filter(p=>p&&p.top===me.top);
+  const better=peers.filter(p=>p.rate>me.rate);
+  if(!peers.length) return rpCard(q,`최근 90일에 ${lt}${josa(lt,'이','가')} 가장 많은 사원은 아직 나뿐이에요.`,'','최근 90일에 20순 넘게 쏜 사원끼리 · 순위에서 숨긴 사원은 빠져요');
+  if(!better.length) return rpCard(q,`${lt}${josa(lt,'이','가')} 가장 많은 사원 <b>${peers.length+1}명</b> 가운데 내 관중률이 가장 높아요.`,'','최근 90일에 20순 넘게 쏜 사원끼리 · 순위에서 숨긴 사원은 빠져요');
+  better.sort((x,y)=>y.rate-x.rate); const P=better.find(x=>x.id===S.rpPeer)||better[0];
+  const G={rate:P.rate, share:P.share(me.top), perWeek:P.perWeek, perDay:P.perDay, early:P.early, late:P.late, fifth:P.fifth};
+  const a=`최근 90일에 ${lt}${josa(lt,'이','가')} 가장 많은 사원 <b>${peers.length+1}명</b>(나 포함) 가운데 나보다 관중률이 높은 사원이 <b>${better.length}명</b> 있어요.`;
+  const chips=`<div class="rp-pch">${better.map(x=>`<button type="button" data-rppeer="${esc(x.id)}" class="${x.id===P.id?'on':''}"><span class="av">${charSVG(x.char||DEFAULT_CHAR)}</span><span><b>${esc(x.name)}</b><small>${esc(x.jn)} · ${x.rate}%</small></span></button>`).join('')}</div>`
+    + `<button type="button" class="btn sm rp-pgo" data-room="${esc(P.id)}">🏠 ${esc(P.name)} 님 방 · 방명록 가기</button>`;
+  const row=(lab,v1,v2,u,mx)=>{ if(v1==null||v2==null) return ''; const M=mx||Math.max(v1,v2,1)*1.15; return `<div class="rp-pr"><span class="l">${lab}</span><span class="b"><i class="me" style="width:${Math.min(100,v1/M*100)}%"></i><i class="gp" style="width:${Math.min(100,v2/M*100)}%"></i></span><span class="v"><b>${v1}${u}</b><b class="g">${v2}${u}</b></span></div>`; };
+  const bars=`<div class="rp-plg"><span><i class="me"></i>나</span><span><i class="gp"></i>${esc(P.name)} (${esc(P.jn)})</span></div>`
+    + row('관중률',me.rate,G.rate,'%',100) + row(`불 중 ${lt}`,me.share(me.top),G.share,'%',100) + row('주에 습사한 날',me.perWeek,G.perWeek,'일',7) + row('하루 평균 순',me.perDay,G.perDay,'순')
+    + row('1~3순째',me.early,G.early,'%',100) + row('7순째부터',me.late,G.late,'%',100) + row('다섯 번째 화살',me.fifth,G.fifth,'%',100);
+  // 불 방향 겹친 과녁 (나 = 빨강 실선 · 그들 = 초록 점선)
+  const AX=['O','BO','B','BS','S','FS','F','FO'].map(k=>[k, ARROW_DEG[resArea(k)]]); const fR=resSide('F')==='r';
+  const gm={}; Object.keys(P.m).forEach(k=>gm[k]=P.share(k));
+  const sh1=k=>me.share(k)/100, sh2=k=>(gm[k]||0)/100; const tp=Math.max(...AX.map(([k])=>Math.max(sh1(k),sh2(k))))||1;
+  const pt=(f,deg)=>{ const r=6+52*f/tp, an=deg*Math.PI/180; return `${(70+r*Math.sin(an)).toFixed(1)},${(70-r*Math.cos(an)).toFixed(1)}`; };
+  const poly=f=>AX.map(([k,d])=>pt(f(k),d)).join(' ');
+  const radar=`<svg class="rp-pradar" viewBox="-2 -6 144 156" aria-label="불 방향 비교"><circle cx="70" cy="70" r="58" fill="none" stroke="var(--rp-grid)" stroke-width="2"/><circle cx="70" cy="70" r="30" fill="none" stroke="var(--rp-grid)" stroke-width="2"/><line x1="70" y1="8" x2="70" y2="132" stroke="var(--rp-grid)" stroke-width="2"/><line x1="8" y1="70" x2="132" y2="70" stroke="var(--rp-grid)" stroke-width="2"/>`
+    +`<polygon points="${poly(sh2)}" fill="none" stroke="var(--rp-gain)" stroke-width="2.2" stroke-dasharray="4 3"/><polygon points="${poly(sh1)}" fill="var(--rp-loss)" fill-opacity=".2" stroke="var(--rp-loss)" stroke-width="2.4"/><rect x="64" y="64" width="12" height="12" fill="var(--red)" stroke="var(--ink)" stroke-width="1.5"/>`
+    +`<text x="70" y="7" text-anchor="middle" font-size="10" fill="var(--ink2)">넘어감</text><text x="70" y="146" text-anchor="middle" font-size="10" fill="var(--ink2)">코박음</text><text x="139" y="67" text-anchor="end" font-size="10" fill="var(--ink2)">${fR?'앞남':'뒤남'}</text><text x="1" y="67" font-size="10" fill="var(--ink2)">${fR?'뒤남':'앞남'}</text></svg>`;
+  const radarBox=`<div class="rp-pdir">${radar}<div class="t"><b>불 방향</b><span><i class="me"></i>나</span><span><i class="gp d"></i>${esc(P.name)}</span><small>안 맞은 화살 가운데 방향별 비율</small></div></div>`;
+  return rpCard(q,a,chips+bars+radarBox,'최근 90일에 20순 넘게 쏜 사원끼리 · 가장 많이 나는 방향이 같은 사원 · 순위에서 숨긴 사원은 빠져요 · 이름을 누르면 그 사원과 비교'); }
+function rpJsCard(BASE){
+  const M={}; BASE.forEach(d=>{ const rs=(d.rounds||[]).filter(r=>Array.isArray(r)&&r.length===5); if(!rs.length) return; const k=d.date.slice(0,7); const o=M[k]||(M[k]={n:0,h:0,rs:[],miss:{}});
+    rs.forEach(r=>{ const h=hitsOf(r); o.n++; o.h+=h; o.rs.push(h); r.forEach(x=>{ if(x&&x!=='H') o.miss[x]=(o.miss[x]||0)+1; }); }); });
+  const ks=Object.keys(M).sort().filter(k=>M[k].n>=20); const q='정심 점수가 나아지고 있나요?';
+  const basis='정심 = 관중률 50 + 고름 30(가장 못 쏜 순 20%의 평균 중수) + 낙점 20(빗나간 방향별 감점) · 순위의 정심과 같은 계산 · 한 달에 20순 넘게 쏜 달만';
+  if(!ks.length) return rpCard(q,'',rpEmpty('한 달에 20순 넘게 쏘면 보여요',''),basis);
+  const ml=k=>`${+k.slice(5)}월`; const J=ks.map(k=>({k, ...jeongsimOf(M[k].h,M[k].n,M[k].rs,M[k].miss)}));
+  const f=J[0], l=J[J.length-1]; let a;
+  if(J.length<2) a=`${ml(l.k)} 정심 점수는 <b>${l.t}점</b>이에요. 다음 달부터 비교돼요.`;
+  else { const dv=l.t-f.t; const parts=[['관중',l.hr-f.hr],['고름',l.go-f.go],['낙점',l.nk-f.nk]].sort((x,y)=>y[1]-x[1]);
+    a=`${ml(f.k)} <b>${f.t}점</b>에서 ${ml(l.k)} <b>${l.t}점</b>으로 `+(dv>0?`<b>${dv}점</b> 올랐어요.`:dv<0?`<b>${-dv}점</b> 내려갔어요.`:'같아요.')+(dv!==0?` 가장 많이 ${dv>0?'오른':'내려간'} 건 <b>${(dv>0?parts[0]:parts[2])[0]}</b>이에요.`:''); }
+  const show=J.slice(-6); const bar=x=>`<div class="rp-js"><span class="m">${ml(x.k)}</span><span class="s"><i class="h" style="width:${x.hr}%"></i><i class="g" style="width:${x.go}%"></i><i class="k" style="width:${x.nk}%"></i></span><b>${x.t}</b></div>`;
+  const body=`<div class="rp-jlg"><span><i class="h"></i>관중 50</span><span><i class="g"></i>고름 30</span><span><i class="k"></i>낙점 20</span></div>${show.map(bar).join('')}`;
+  return rpCard(q,a,body,basis); }
 function rpBind(el){
   $$('[data-rpper]',el).forEach(b=>b.onclick=()=>{ S.rpPer=b.dataset.rpper; lsSet('sadae.rpPer',S.rpPer); renderReport(); });
   $$('[data-rpbow]',el).forEach(b=>b.onclick=()=>{ S.rpBow=b.dataset.rpbow; lsSet('sadae.rpBow',S.rpBow); renderReport(); });
   $$('[data-rpday]',el).forEach(b=>b.onclick=()=>openDayView(b.dataset.rpday));
+  $$('[data-rppeer]',el).forEach(b=>b.onclick=()=>{ S.rpPeer=b.dataset.rppeer; renderReport(); });
 }
 // ===== p95 · 오늘의 국궁 한마디 (관악정 국궁교본 V1.71 수록 글) =====
 const DW_SRC={j:'국궁교본 5.2 집궁제원칙', g:'국궁교본 2.3.3 궁도 9계훈', s:'국궁교본 6.5 심담 14요', b:'국궁교본 6.6 불가필중', t:'국궁교본 용어 풀이'};
@@ -4868,7 +4993,7 @@ function openNewComp(){
     <div class="field"><label for="ncName">대회 이름</label><input class="input" id="ncName" maxlength="30" value="${kind==='official'?(new Date().getMonth()+1)+'월 월례회':'친선 내기'}"></div>
     <div class="row">
       <div class="field grow"><label for="ncDate">날짜</label><input class="input" id="ncDate" type="date" value="${today()}"></div>
-      <div class="field grow"><label for="ncRc">순수</label><select class="input" id="ncRc"><option value="3" selected>3순 (15시) · 월례회</option><option value="5">5순 (25시) · 친선</option><option value="9">9순 (45시) · 승단</option><option value="1">1순 (5시)</option><option value="2">2순 (10시)</option><option value="4">4순 (20시)</option><option value="6">6순 (30시)</option><option value="10">10순 (50시) · 일획</option></select></div>
+      <div class="field grow"><label for="ncRc">순수</label><select class="input" id="ncRc"><option value="3" selected>3순 · 월례회</option><option value="5">5순 · 친선</option><option value="9">9순 · 승단</option><option value="1">1순</option><option value="2">2순</option><option value="4">4순</option><option value="6">6순</option><option value="10">10순 · 일획</option></select></div>
     </div>
     <div><div class="muted" style="margin-bottom:6px" id="ncRuleLabel">동점 규칙 (협회 경기규칙 제6조 · 고정)</div><div class="rule-list" id="ncRules"></div></div>
     <div><div class="muted" style="margin-bottom:6px">참가 사원 <b id="ncCnt">0명</b> <span class="tiny">— 누르면 넣고 빼기</span></div><div class="nc-quick" id="ncQuick"><button type="button" class="chip" data-qp="att">🏹 오늘 사대 온 사원</button><button type="button" class="chip" data-qp="me">나</button><button type="button" class="chip" data-qp="all">모두</button><button type="button" class="chip" data-qp="none">모두 빼기</button></div><div class="member-pick" id="ncMembers">${allMembers.map(m=>`<button type="button" class="mp" data-m="${m.id}">${charSVG(m.char)}<span>${esc(m.name)}</span></button>`).join('')}</div></div>
