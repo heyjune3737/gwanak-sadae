@@ -2697,7 +2697,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.20b';
+const APP_VER = '2026.10.21a';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4181,8 +4181,8 @@ function renderReport(){
   // ③ 몇 번째 화살
   { const sh=[0,1,2,3,4].map(k=>R.filter(x=>x.r[k]==='H').length); const vs=sh.map(h=>rpPc(h,N)); const lo=Math.min(...vs), hi=Math.max(...vs);
     const nm=v=>[0,1,2,3,4].filter(k=>vs[k]===v).map(k=>RP_NTH[k]).join(' · ');
-    const a= hi-lo<5 ? `다섯 화살 모두 <b>${lo}~${hi}%</b>로 비슷하게 맞혔어요.` : `${nm(lo)} 화살이 <b>${lo}%</b>로 가장 낮고, ${nm(hi)} 화살이 <b>${hi}%</b>로 가장 높아요.`;
-    C.push(rpCard('한 순에서 몇 번째 화살이 가장 안 맞나요?',a,rpCmp(sh.map((h,k)=>[RP_NTH[k],h,N])),'')); }
+    const a= hi-lo<5 ? `다섯 화살 모두 <b>${lo}~${hi}%</b>로 비슷하게 맞혔어요.` : `${nm(hi)} 화살이 <b>${hi}%</b>로 가장 잘 맞고, ${nm(lo)} 화살이 <b>${lo}%</b>로 가장 안 맞아요.`;
+    C.push(rpCard('한 순에서 몇 번째 화살이 잘 맞나요?',a,rpCmp(sh.map((h,k)=>[RP_NTH[k],h,N])),'')); }
   // ④ 안 맞은 화살 방향
   { const cnt=R2=>{ const m={}; R2.forEach(x=>x.r.forEach(a=>{ if(a&&a!=='H') m[a]=(m[a]||0)+1; })); return m; };
     const m=cnt(R); const keys=MISS_KEYS.filter(k=>k!=='X'&&m[k]).sort((a,b)=>m[b]-m[a]); const dirN=keys.reduce((a,k)=>a+m[k],0); const xN=m.X||0;
@@ -4222,30 +4222,6 @@ function renderReport(){
       const cl=v=>v-avg>=10?'c1':v-avg>=4?'c2':avg-v>=10?'c4':avg-v>=4?'c3':'c0';
       const grid=`<div class="rp-heat"><div></div><div class="h">약</div><div class="h">중</div><div class="h">강</div>${rows.map(r=>`<div class="rh">${WREL[r].k} ${WREL[r].l}</div>`+[1,2,3].map(l=>{ const o=cell[r+l]; if(!o||o[1]<10) return `<div class="na">${o?`<small>${o[1]}시</small>`:'–'}</div>`; const v=rpPc(o[0],o[1]); return `<div class="${cl(v)}">${v}%<small>${o[1]}시</small></div>`; }).join('')).join('')}</div>`;
       C.push(rpCard(q,a,grid,`초록 = 평균(${avg}%)보다 높음 · 빨강 = 낮음`)); } }
-  // ⑦ 기온
-  { const g=[[0,0],[0,0],[0,0]]; R.forEach(x=>{ const t=x.w&&x.w.t; if(t==null) return; const k=t<5?0:t<15?1:2; g[k][0]+=x.h; g[k][1]+=5; });
-    const L=['5℃ 아래','5~15℃','15℃ 이상']; const has=[0,1,2].filter(k=>g[k][1]); const q='추운 날엔 덜 맞나요?';
-    if(!has.length) C.push(rpCard(q,'',rpEmpty('기온 기록이 아직 없어요',''),''));
-    else { const a=has.length<2?`이 기간에는 ${L[has[0]]}에서만 쐈어요.`:`${L[has[0]]}에서 쏜 순은 <b>${rpPc(...g[has[0]])}%</b>, ${L[has[has.length-1]]}에서 쏜 순은 <b>${rpPc(...g[has[has.length-1]])}%</b>를 맞혔어요.`;
-      C.push(rpCard(q,a,rpCmp(has.map(k=>[L[k],g[k][0],g[k][1]])),'')); } }
-  // ⑧ 순 사이 간격
-  { const G=R.filter(x=>x.at&&x.pa).map(x=>({m:(x.at-x.pa)/6e4, h:x.h})).filter(x=>x.m>=1&&x.m<=120).sort((a,b)=>a.m-b.m);
-    const q='순 사이에 덜 쉬면 덜 맞나요?';
-    if(G.length<9) C.push(rpCard(q,'',rpEmpty('비교할 순이 아직 적어요',''),''));
-    else { let c1=Math.round(G[Math.floor(G.length/3)].m), c2=Math.round(G[Math.floor(G.length*2/3)].m); if(c2<=c1) c2=c1+1;
-      const g=[[0,0],[0,0],[0,0]]; G.forEach(x=>{ const k=x.m<c1?0:x.m<=c2?1:2; g[k][0]+=x.h; g[k][1]+=5; });
-      const L=[`${c1}분 안 됨`,`${c1}~${c2}분`,`${c2}분 넘게`]; const has=[0,1,2].filter(k=>g[k][1]);
-      const a=`앞 순을 쏘고 ${c1}분이 안 돼서 쏜 순은 <b>${rpPc(...g[0])}%</b>, ${c2}분 넘게 쉬고 쏜 순은 <b>${rpPc(...g[2])}%</b>를 맞혔어요.`;
-      C.push(rpCard(q,g[0][1]&&g[2][1]?a:'',rpCmp(has.map(k=>[L[k],g[k][0],g[k][1]])),'')); } }
-  // ⑨ 주별 연습량
-  { const wk={}; R.forEach(x=>{ const [y,mo,d]=x.date.split('-').map(Number); const dt=new Date(y,mo-1,d); dt.setDate(dt.getDate()-((dt.getDay()+6)%7)); const k=dstr(dt); const o=wk[k]||(wk[k]={n:0,h:0}); o.n++; o.h+=x.h; });
-    const W=Object.keys(wk).sort().map(k=>({k, ...wk[k], v:rpPc(wk[k].h, wk[k].n*5)})); const q='많이 쏜 주에 더 잘 맞았나요?';
-    if(W.length<2) C.push(rpCard(q,'',rpEmpty('두 주 넘게 쌓이면 보여요',''),''));
-    else { const mx=W.reduce((p,x)=>x.n>=p.n?x:p), mn=W.reduce((p,x)=>x.n<=p.n?x:p);
-      const a = mx.n===mn.n ? `주마다 쏜 순이 ${mx.n}순으로 같았어요.` : `가장 많이 쏜 주(${rpSD(mx.k)}주 · ${mx.n}순)는 <b>${mx.v}%</b>, 가장 적게 쏜 주(${rpSD(mn.k)}주 · ${mn.n}순)는 <b>${mn.v}%</b>를 맞혔어요.`;
-      const S8=W.slice(-8), n=S8.length, cw=340/n, bmax=Math.max(...S8.map(x=>x.n)); const yv=v=>14+(100-v)*0.3;
-      const svg=`<svg viewBox="0 0 340 130" aria-label="주별 순 수와 관중률">${S8.map((x,i)=>{ const bh=Math.max(4,x.n/bmax*58); const cx=cw*i+cw/2; return `<rect x="${cx-Math.min(22,cw*0.32)}" y="${112-bh}" width="${Math.min(44,cw*0.64)}" height="${bh}" fill="var(--rp-grid)" stroke="var(--ink2)"/><text x="${cx}" y="${108}" font-size="10.5" text-anchor="middle" fill="var(--ink)">${x.n}순</text><text x="${cx}" y="126" font-size="10" text-anchor="middle" fill="var(--ink2)">${rpSD(x.k)}주</text>`; }).join('')}<polyline points="${S8.map((x,i)=>`${cw*i+cw/2},${yv(x.v)}`).join(' ')}" fill="none" stroke="var(--red)" stroke-width="2.5"/>${S8.map((x,i)=>`<circle cx="${cw*i+cw/2}" cy="${yv(x.v)}" r="3" fill="var(--red)"/><text x="${cw*i+cw/2}" y="${yv(x.v)-6}" font-size="10.5" font-weight="700" text-anchor="middle" fill="var(--red)">${x.v}%</text>`).join('')}</svg>`;
-      C.push(rpCard(q,a,`<div class="rp-wk">${svg}</div>`,'')); } }
   // ⑩ 고른 정도
   { const dist=[0,0,0,0,0,0]; R.forEach(x=>dist[x.h]++); const mx=Math.max(...dist); const k=dist.lastIndexOf(mx); const LB=['0중','1중','2중','3중','4중','몰기'];
     const a=(k===5?`${N}순 가운데 <b>몰기가 ${mx}번</b>으로 가장 많아요.`:`${N}순 가운데 <b>${k}중 한 순이 ${mx}번</b>으로 가장 많고, `)+(k===5?'':`몰기는 ${dist[5]}번 · 0중은 ${dist[0]}번이에요.`);
