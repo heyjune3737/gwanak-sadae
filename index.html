@@ -1472,6 +1472,11 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .rk-tabs{display:flex;gap:3px;overflow-x:auto;scrollbar-width:none;margin:0 0 6px}.rk-tabs::-webkit-scrollbar{display:none}
 .rk-tabs button{flex:1 0 auto;font:inherit;font-size:12px;padding:4px 5px;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer;white-space:nowrap}
 .rk-tabs button.on{background:var(--ink);color:var(--card)}
+.hl-sw{display:flex;gap:0;margin:0 0 12px;border:2px solid var(--ink)}.hl-sw button{flex:1;font:inherit;font-size:14px;font-weight:700;padding:9px 6px;background:var(--card);color:var(--ink);border:0;cursor:pointer}.hl-sw button.on{background:var(--ink);color:var(--card)}
+.hl-card .hl-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.hl-h h2{margin:0;font-family:var(--display);font-size:20px}
+.hl-per,.hl-scope{display:flex;gap:4px}.hl-per button,.hl-scope button{font:inherit;font-size:12.5px;padding:4px 10px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}.hl-per button.on,.hl-scope button.on{background:var(--ink);color:var(--card);font-weight:700}
+.hl-scope{margin:0 0 8px}.hl-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 0 8px}.hl-nav b{font-family:var(--display);font-size:16px}.hl-nav button{font:inherit;font-size:18px;width:34px;height:30px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}.hl-nav button:disabled{opacity:.35;cursor:default}
+.hl-desc{font-size:12px;color:var(--ink2);margin:2px 0 6px;line-height:1.5}.hl-empty{font-size:13px;color:var(--ink2);padding:10px 0;margin:0}
 .rk-prog{height:3px;background:var(--line2);margin-bottom:6px;overflow:hidden}.rk-prog i{display:block;height:100%;width:0;background:var(--red)}.rk-prog.run i{animation:rkprog 5s linear forwards}@keyframes rkprog{to{width:100%}}
 .rk-desc{font-size:11.5px;color:var(--ink2);margin:0 0 6px;line-height:1.45}
 .rk-row{display:flex;align-items:center;gap:8px;padding:6px 4px;border-top:1px dashed var(--line2);cursor:pointer}
@@ -2718,7 +2723,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21b';
+const APP_VER = '2026.10.21c';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2876,7 +2881,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
-  {id:'2026-10-21a', date:'10월 21일', title:'📈 리포트 새 카드 · 성장 · 최고 기록 · 정심 · 같은 쪽으로 나는 사원', body:'📈 리포트에 새 카드\n• 요즘 늘고 있나요? — 습사한 날마다 관중률과 최근 5번 평균 흐름\n• 처음보다 얼마나 늘었나요? — 첫 기록 달부터 달마다 관중률\n• 내 최고 기록은? — 하루 9순 최고 · 하루 관중률 최고 · 몰기 · 연속 관중 · 연속 습사 (새로 세우면 초록)\n• 정심 점수가 나아지고 있나요? — 순위의 정심 점수(관중 · 고름 · 낙점)를 달마다\n• 나처럼 ○○이 많은데 더 잘 맞히는 사원은? — 불 방향이 나와 같은 사원 중 관중률이 높은 사원과 숫자 · 그림 비교, 그 사원 방 · 방명록으로 바로 가기 (순위에서 숨긴 사원은 빠져요)\n\n기온 · 순 사이 쉬는 시간 · 주별 연습량 카드는 뺐어요.'},
+  {id:'2026-10-21b', date:'10월 21일', title:'🏆 순위관 · 📈 리포트 새 카드', body:'🏆 순위관 (소식 탭)\n소식 탭 위에서 [📰 사대 월보 | 🏆 순위관]을 고를 수 있어요. 순위관에서는 이달 · 반기(상반기 1~6월 · 하반기 7~12월) · 누적 순위를 모든 정 또는 우리 정으로 볼 수 있어요. 광장 순위 카드 아래 \'반기 · 누적 순위 보기\'로도 갈 수 있어요.\n• 🚀 최근 활약 — 관중률이 바로 앞 기간(같은 날 수)보다 오른 만큼 (두 기간 모두 이달 5순 · 반기 20순 이상)\n• 🔥 최근 열심 — 습사한 날이 바로 앞 기간보다 늘어난 만큼 (같으면 늘어난 시수)\n광장 순위의 모든 정 / 우리 정 보기도 이제 기억해요.\n\n📰 정별 월보\n새 정은 첫 사원이 들어온 다음 달에 그 정의 창간호가 나와요. 그다음 호부터는 가입 10명 + 그 호에 표 기록 3명이 넘으면 나와요.\n\n📈 리포트에 새 카드\n• 요즘 늘고 있나요? — 습사한 날마다 관중률과 최근 5번 평균 흐름\n• 처음보다 얼마나 늘었나요? — 첫 기록 달부터 달마다 관중률\n• 내 최고 기록은? — 하루 9순 최고 · 하루 관중률 최고 · 몰기 · 연속 관중 · 연속 습사 (새로 세우면 초록)\n• 정심 점수가 나아지고 있나요? — 순위의 정심 점수(관중 · 고름 · 낙점)를 달마다\n• 나처럼 ○○이 많은데 더 잘 맞히는 사원은? — 불 방향이 나와 같은 사원 중 관중률이 높은 사원과 숫자 · 그림 비교, 그 사원 방 · 방명록으로 바로 가기 (순위에서 숨긴 사원은 빠져요)\n\n기온 · 순 사이 쉬는 시간 · 주별 연습량 카드는 뺐어요.'},
   {id:'2026-10-20b', date:'10월 20일', title:'🏯 충주 탄금정 · 👤 친선 대회 궁사님(미가입)', body:'🏯 충주 탄금정\n소속 정에 충주 탄금정이 생겼어요. 사대 · 광장 배경은 탄금대의 송림과 남한강, 열두대 절벽 위 2층 누각 탄금정을 따서 그렸고, 계절 · 해질녘 · 밤 · 비 · 눈 그림도 함께 있어요. 날씨 · 바람은 탄금대 공원 기준이에요.\n\n👤 친선 대회에 궁사님(미가입) 넣기\n앱에 가입하지 않은 분도 친선 대회에 함께할 수 있어요. 새 대회 → 참가 사원 고르기에서 ＋ 궁사님을 누르면 궁사님 1, 2…로 들어가고, 이름과 소속 정을 바로 고칠 수 있어요. 📋 명단 붙여넣기로 한 줄에 한 명씩 한꺼번에 넣을 수도 있어요(예: 홍길동 황학정).\n\n대회를 만든 뒤에도 대회 화면의 👤 궁사님 추가 · 고치기에서 더하거나 뺄 수 있어요(대회 만든 사람 · 관리자). 점수는 기록 맡은 분이 넣어요.\n\n궁사님은 그 대회 순위표에만 들어가고, 배지 · 월보 · 순위 · 친선 칭호에는 들어가지 않아요. 궁사님이 있는 대회는 정식 대회로 바꿀 수 없어요.'},
   {id:'2026-10-15c', date:'10월 15일', title:'📈 리포트 탭 · 🗄 배지 진열장 · ☔ 비 · 눈 배경 · 🎋 각궁 돌보기 외', body:'📈 리포트 탭\n아래 탭에 📈 리포트가 생겼어요(표 기록 바로 옆). 내 표 기록을 질문별로 모아 보여 줘요.\n\n• 하루 9순 쏘면 몇 중이 나오나요? (막대를 누르면 그날 기록표)\n• 순을 거듭할수록 덜 맞나요?\n• 한 순에서 몇 번째 화살이 가장 안 맞나요?\n• 안 맞은 화살은 주로 어디로 가나요?\n• 네 발 다 맞힌 순, 몰기로 끝낸 적은요?\n• 그날 첫 순은 어땠나요?\n• 어떤 바람에서 가장 못 맞히나요?\n• 추운 날엔 덜 맞나요?\n• 순 사이에 덜 쉬면 덜 맞나요?\n• 많이 쏜 주에 더 잘 맞았나요?\n• 순마다 고르게 맞히나요?\n\n기간(최근 30일 · 90일 · 올해 · 전체)을 고를 수 있고, 개량궁과 각궁을 둘 다 쓰면 활별로도 볼 수 있어요.\n\n🧹 표 기록 정리\n표 기록의 「궁체 점검」 · 「바람 · 날씨별」 카드는 리포트로 옮겼어요. 「쌓아온 기록」에는 다음 고개만 남겼어요.\n\n🗄 숨은 배지 진열장 (내 방)\n내 방 그림 바로 아래에 진열장이 생겼어요. 찾은 숨은 배지와 이달의 숨은 배지가 찾은 순서대로 놓여요. ✎ 배치에서 두 칸을 차례로 누르면 자리가 바뀌어요. 방 구경 온 사원에게도 이 순서로 보여요.\n\n🥇 첫 발견자\n우리 정에서 숨은 배지를 처음 찾은 사람의 이름이 힌트 창과 배지판에 보여요. 조건은 그대로 숨겨져요. 첫 발견 배지는 진열장에서 금테로 빛나요. 찾은 시각이 기록되기 전부터 갖고 있던 배지는, 앱을 열면 습사 기록(순 저장 시각)으로 찾은 때를 되살려 함께 견줘요.\n\n🌙 화면 색 바로 바꾸기\n오늘 정 화면 맨 위 📍 정 이름 옆 단추로 밝게 · 어둡게를 바로 바꿀 수 있어요.\n\n☔ 비 · 눈 오는 날 배경\n그 정에 지금 비나 눈이 오면 사대 · 광장 배경이 정마다 비 · 눈 그림으로 바뀌어요. 빗줄기 · 눈송이는 세기에 따라 3단계로 내려요(예: 약한 비 · 비 · 센 비). 배경 단추에 지금 날씨가 함께 보여요. 배경 그림을 직접 골라 두셨다면 그림은 그대로예요.\n\n🏹 개량궁 · 각궁 기록 나누기\n표 기록 입력판 위에서 [개량궁(카본) · 각궁]을 고르면 그 활로 기록돼요. 바꾸기 전까지 계속 유지돼요. 기록 보기 맨 위에서 [전체 · 개량궁 · 각궁]으로 따로 볼 수 있어요. 순위 · 배지 · 월보 · 대회는 지금처럼 합쳐서 셉니다. 지난 기록은 프로필에 적은 활로 봐요.\n\n🌡 각궁일 때 기온 · 습도\n표 기록에서 각궁을 고르면 정 근처의 기온 · 습도가 보이고, 각궁 순에는 습도도 함께 남아요.\n\n🎋 각궁 돌보기 (내 방)\n각궁을 쓰시는 분은 내 방 장비 아래에 새 칸이 생겨요. 오늘 기온 · 습도, 얹은 지 · 부린 지 · 점화장에 둔 지 며칠인지, 얹음 · 부림 · 점화장 · 메모 일지(그때 기온 · 습도 함께), 계절별 점화장 온도 · 습도, 각궁 얹는 순서 체크리스트를 볼 수 있어요. 설명은 관악정 국궁교본 7장에서 옮겼어요. 일지는 나만 봐요(관리자도 못 봐요).\n\n🪵 호패 꾸미기 (내 정보)\n내 정보 → 🪵 꾸미기에서 호패 재질 · 술 색 · 호(號) · 새김 한 줄을 고를 수 있어요. 재질은 잡목 → 자작목 → 황양목 → 뿔 → 상아 순서(태종 13년 호패 재질 규정)로, 단이 오르거나 배지를 모으면 열려요(자작목 1급 · 배지 15개 / 황양목 초단 · 30개 / 뿔 3단 · 50개 / 상아 5단 · 75개). 꾸민 호패는 방 구경 때도 보여요.'},
   {id:'2026-10-06a', date:'10월 6일', title:'📖 표 기록이 새로워졌어요 · 궁체 점검 · 공유 · 오늘의 한마디', body:'🔍 기록으로 보는 궁체 점검\n표 기록 → 📖 기록 보기에서 내 관중 기록으로 자세를 다시 살펴볼 곳을 짚어 줘요. 몇 번째 시를 낼 때 관중률이 낮은지, 관중하지 못한 후 다음 시는 어땠는지, 순이 거듭될수록 관중률이 달라지는지, 3중 이상 한 순은 얼마나 되는지 볼 수 있어요. 이번 달 · 전체로 바꿔 보고, 지난달보다 오르내린 만큼도 함께 보여요.\n\n🌬 바람 · 날씨 · 기온별\n순을 저장할 때 자동으로 남은 바람 · 날씨 · 기온별로 관중률을 비교하고, 관중하지 못한 살이 주로 어느 쪽으로 갔는지도 보여요. 바람 이름은 국궁교본을 따라 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 바뀌었어요(좌궁은 줌앞 · 줌뒤가 반대).\n\n📆 습사 달력 · 📚 쌓아온 기록\n달력에 몰기한 날은 ★로 표시돼요. 쌓아온 기록에서는 지금까지 쏜 순과 다음 고개(시수 100 · 300 · 500 …)까지 남은 시수를 볼 수 있어요.\n\n📤 기록 공유 · 저장\n기록 보기 맨 위 버튼으로 전체 파트 또는 고른 파트만 사진(PNG) 한 장으로 저장하고, 카톡 등으로 바로 보낼 수 있어요.\n\n📜 오늘의 국궁 한마디\n기록 보기 맨 아래에서 사대지기 오리가 날마다 국궁교본의 가르침이나 용어 하나를 전해 줘요.'},
@@ -6502,6 +6507,7 @@ async function refreshRank(force){
   try{ const [cur, prev] = await Promise.all([rankFetch(from, t), y>=from ? rankFetch(from, y) : Promise.resolve({members:[]})]); S.rank.cur=cur; S.rank.prev=prev; S.rank.at = cur.local ? 0 : Date.now(); }
   finally{ S.rank.busy=false; } renderRank();
 }
+S.plazaMine = !!lsGet('sadae.plazaMine', false);
 function rankList(data, c){ const hj=homeJ().id; return ((data&&data.members)||[]).filter(o=>c.ok(o) && memberById(o.mid) && (!S.plazaMine || memberJ(memberById(o.mid)).id===hj)).sort((a,b)=>c.v(b)-c.v(a)); }
 /* ---- 차분하게 보기: 움직임을 사람이 고름 (기기마다) ---- */
 const CALM_KEYS=[['rank','순위 자동 넘김','5초마다 다음 순위로 넘어가요'],['fx','꽃잎·낙엽·눈 흩날림','광장에 계절 효과가 내려요'],['ticker','광장 위 소식 띠','📰 사대 월보 한 줄'],['bub','말풍선 효과','새 한마디가 톡 튀어나와요'],['walk','캐릭터 걸음','광장 사원들이 걸어 다녀요']];
@@ -6552,10 +6558,11 @@ function renderRank(){
     ${prog}
     <div class="rk-dr"><button type="button" class="rk-nav" data-rknav="-1" aria-label="이전 순위">‹</button><p class="rk-desc">${c.ic} ${esc(c.d)}</p><button type="button" class="rk-nav" data-rknav="1" aria-label="다음 순위">›</button></div>
     ${!S.rank.cur ? '<div class="tiny muted" style="padding:10px 0">순위를 불러오는 중…</div>' : L.length ? L.slice(0,S.rank.more?10:5).map((o,i)=>row(o,i)).join('') + (myI>=(S.rank.more?10:5)?row(L[myI],myI,true):'') + (L.length>5?`<button type="button" class="rk-more" id="rkMore" aria-expanded="${S.rank.more}">${S.rank.more?'5위까지만 ▴':`더 보기 · 10위까지 (${Math.min(10,L.length)}명) ▾`}</button>`:'') : `<div class="tiny muted" style="padding:10px 0">${c.id==='rate'||c.id==='jeongsim'?'이번 달 '+(c.id==='rate'?'5순':'20순')+'을 넘긴 사원이 아직 없어요':'아직 이번 달 기록이 없어요'}</div>`}
-    <div class="rk-foot"><span>${M}월 1일 ~ 오늘 · 매달 1일 새로 시작${S.plazaMine?` · ${esc(homeJ().name)}만`:''}</span>${S.me&&store.kind==='remote'&&store.token?`<button type="button" class="linkbtn tiny" id="rkHide">${hidden?'숨김 중 · 다시 보이기':'랭킹에서 나 숨기기'}</button>`:''}</div>`;
+    <button type="button" class="rk-more" id="rkHall">🏆 반기 · 누적 순위 보기 ›</button><div class="rk-foot"><span>${M}월 1일 ~ 오늘 · 매달 1일 새로 시작${S.plazaMine?` · ${esc(homeJ().name)}만`:''}</span>${S.me&&store.kind==='remote'&&store.token?`<button type="button" class="linkbtn tiny" id="rkHide">${hidden?'숨김 중 · 다시 보이기':'랭킹에서 나 숨기기'}</button>`:''}</div>`;
   $$('[data-rk]',el).forEach(b=>b.onclick=()=>{ S.rank.cat=+b.dataset.rk; S.rank.el=0; S.rank.pausedUntil=Date.now()+30e3; renderRank(); });
   $$('[data-rknav]',el).forEach(b=>b.onclick=()=>rkGo(+b.dataset.rknav));
   $('#rkFold',el).onclick=()=>{ S.rank.fold=true; lsSet('sadae.rkFold',true); renderRank(); };
+  { const hb=$('#rkHall',el); if(hb) hb.onclick=()=>{ S.newsView='hall'; lsSet('sadae.newsView','hall'); S.hall.per='half'; lsSet('sadae.hallPer','half'); setTab('news'); }; }
   const mb=$('#rkMore',el); if(mb) mb.onclick=()=>{ S.rank.more=!S.rank.more; S.rank.el=0; renderRank(); };
   const pp=$('#rkPP',el); if(pp) pp.onclick=()=>{ S.rank.stop=!S.rank.stop; lsSet('sadae.rkStop',S.rank.stop); if(!S.rank.stop) S.rank.pausedUntil=0; renderRank(); };
   const hb=$('#rkHide',el); if(hb) hb.onclick=async()=>{ const v=!hidden; const ok=await write(st=>st.merge('members/'+S.me.id,{rankHide:v, updatedAt:Date.now()})); if(ok){ toast(v?'랭킹에서 나를 숨겼어요. 다른 사원에게 내 순위가 안 보여요':'랭킹에 다시 보여요'); setTimeout(()=>refreshRank(true),800); } };
@@ -6675,9 +6682,10 @@ function magData(ym, scope){
     else if(k.startsWith('guestbook/')){ for(const v of Object.values(x.entries)) if(v&&(v.text||v.secret)&&v.at&&inS(v.from)){ const dt=dayOf(v.at); if(dt>=from&&dt<=to) act.gb++; } } }
   act.members=(S.members||[]).filter(m=>m&&m.name&&inS(m.id)&&magJoinedBy(m,to)).length;
   // 정별 현황 (전체 월보에서만): 가입 · 기록 사원 · 습사 · 관중
-  const jst={}; if(scope==='all'){ for(const m of (S.members||[])){ if(!m||!m.name||!magJoinedBy(m,to)) continue; const j=memberJ(m); const o=jst[j.id]||(jst[j.id]={id:j.id, name:j.name, hanja:j.hanja||j.name, members:0, rec:0, days:0, n:0, h:0, mo:0});
-      o.members++; const a=A.by[m.id]; if(a&&a.n){ o.rec++; o.days+=a.days; o.n+=a.n; o.h+=a.h; o.mo+=a.mo; } }
-    for(const o of Object.values(jst)) o.ok = o.members>=MAG_JMIN.members && o.rec>=MAG_JMIN.rec; }
+  const jst={}; if(scope==='all'){ for(const m of (S.members||[])){ if(!m||!m.name||!magJoinedBy(m,to)) continue; const j=memberJ(m); const o=jst[j.id]||(jst[j.id]={id:j.id, name:j.name, hanja:j.hanja||j.name, members:0, rec:0, days:0, n:0, h:0, mo:0, first:0});
+      o.members++; if(m.joinedAt && m.id!==HUB_BOT && (!o.first || +m.joinedAt<o.first)) o.first=+m.joinedAt; const a=A.by[m.id]; if(a&&a.n){ o.rec++; o.days+=a.days; o.n+=a.n; o.h+=a.h; o.mo+=a.mo; } }
+    for(const o of Object.values(jst)){ o.founding = o.id!==DEFAULT_J.id && !!o.first && ym>MAG_START && ymAdd(dstr(new Date(o.first)).slice(0,7),1)===ym && o.rec>=1;
+      o.ok = (o.members>=MAG_JMIN.members && o.rec>=MAG_JMIN.rec) || o.founding; } }
   const ev=[]; const nm=id=>(memberById(id)||{}).name||'사원';
   // 승단 (단급이 바뀐 날)
   for(const m of (S.members||[])){ if(!m||!m.name||!m.gradeHist||!inS(m.id)) continue; const ks=Object.keys(m.gradeHist).filter(k=>k>=from&&k<=to).sort(); if(!ks.length) continue;
@@ -6769,8 +6777,71 @@ function renderNewsExtra(el, Tym){
     bw.disabled=true; const ok=await write(st=>st.merge('guestbook/'+f.id,{entries:{[uid()]:{from:S.me.id, text:'📮 오늘 사대 고마워요! 관악정 화이팅! 🏹', at:Date.now(), clap:key}}}));
     bw.disabled=false; if(ok){ toast('관리자 방명록에 응원을 남겼어요 📮'); renderNews(); } };
 }
+// ===== p164 · 🏆 순위관 =====
+const hallSwitchHTML = cur => `<div class="hl-sw" role="tablist"><button type="button" data-nv="mag" class="${cur==='mag'?'on':''}">📰 사대 월보</button><button type="button" data-nv="hall" class="${cur==='hall'?'on':''}">🏆 순위관</button></div>`;
+function hallSwitchBind(el){ $$('[data-nv]',el).forEach(b=>b.onclick=()=>{ S.newsView=b.dataset.nv; lsSet('sadae.newsView',S.newsView); renderNews(); scrollTo({top:0}); }); }
+S.hall = {per:lsGet('sadae.hallPer','month'), cat:0, hk:null, data:{}, at:{}, busy:{}};
+const HALL_START = '2026-09-23';
+const hallHalfOf = d => d.slice(0,4)+(+d.slice(5,7)<=6?'-1':'-2');
+const hallHalfRange = hk => { const y=hk.slice(0,4); return hk.endsWith('-1') ? [y+'-01-01', y+'-06-30'] : [y+'-07-01', y+'-12-31']; };
+const hallHalfPrev = hk => hk.endsWith('-2') ? hk.slice(0,4)+'-1' : (+hk.slice(0,4)-1)+'-2';
+const hallHalfNext = hk => hk.endsWith('-1') ? hk.slice(0,4)+'-2' : (+hk.slice(0,4)+1)+'-1';
+const hallHalfName = hk => `${hk.slice(0,4)} ${hk.endsWith('-1')?'상반기':'하반기'}`;
+const hallShift = (d, n) => dstr(new Date(new Date(d+'T12:00:00').getTime()+n*864e5));
+const hallDays = (a, b) => Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5)+1;
+// 기간: [from, to] · 바로 앞 기간은 같은 날 수
+function hallRanges(){
+  const T=today(), per=S.hall.per;
+  if(per==='all') return {cur:[HALL_START,T], prev:null, label:`${magMD(HALL_START)}부터 지금까지`};
+  if(per==='month'){ const from=T.slice(0,8)+'01'; const n=hallDays(from,T); const pf=ymAdd(T.slice(0,7),-1)+'-01'; const pl=ymLast(ymAdd(T.slice(0,7),-1)); const pt=hallShift(pf,n-1)>pl?pl:hallShift(pf,n-1);
+    return {cur:[from,T], prev:[pf,pt], label:`${+T.slice(5,7)}월 1일 ~ 오늘`, plabel:`지난달 같은 날짜까지(${magMD(pf)}~${magMD(pt)})`}; }
+  const hk=S.hall.hk||hallHalfOf(T); const [hf,hl]=hallHalfRange(hk); const to=hl<T?hl:T; const n=hallDays(hf,to); const [pf,pl]=hallHalfRange(hallHalfPrev(hk)); const pt=hallShift(pf,n-1)>pl?pl:hallShift(pf,n-1);
+  return {cur:[hf<HALL_START?HALL_START:hf,to], prev:[pf,pt], hk, label:`${hallHalfName(hk)} · ${magMD(hf)} ~ ${hl<T?magMD(hl):'오늘'}`, plabel:`${hallHalfName(hallHalfPrev(hk))} 같은 날 수(${magMD(pf)}~${magMD(pt)})`}; }
+async function hallLoad(key, from, to){ if(S.hall.busy[key] || (S.hall.data[key] && Date.now()-(S.hall.at[key]||0)<5*60e3)) return; S.hall.busy[key]=true;
+  try{ S.hall.data[key]=await rankFetch(from, to); S.hall.at[key]=S.hall.data[key].local?0:Date.now(); }catch(e){} finally{ S.hall.busy[key]=false; } if(S.tab==='news' && S.newsView==='hall') renderNews(); }
+const HALL_EXTRA = [
+  {id:'rise', t:'최근 활약', ic:'🚀', d:'관중률이 바로 앞 기간보다 오른 만큼 (두 기간 모두 기준 순 이상)', big:o=>[`+${o.rise}`,'%p'], sub:o=>`${o.prate}% → ${o.rate}%`},
+  {id:'busy', t:'최근 열심', ic:'🔥', d:'습사한 날이 바로 앞 기간보다 늘어난 만큼 (같으면 늘어난 시수)', big:o=>[`+${o.dd}`,'일'], sub:o=>`${o.pdays}일 → ${o.days}일 · 시수 ${o.dn>=0?'+':''}${o.dn*5}`},
+];
+function renderHall(el){
+  const per=S.hall.per; const RG=hallRanges(); const kc=`${RG.cur[0]}_${RG.cur[1]}`, kp=RG.prev?`${RG.prev[0]}_${RG.prev[1]}`:null;
+  if(!S.hall.data[kc] || Date.now()-(S.hall.at[kc]||0)>=5*60e3) hallLoad(kc, ...RG.cur); if(kp && (!S.hall.data[kp] || Date.now()-(S.hall.at[kp]||0)>=5*60e3)) hallLoad(kp, ...RG.prev);
+  const cats=[...RK_CATS.map(c=>({...c, base:1})), ...(per==='all'?[]:HALL_EXTRA)]; if(S.hall.cat>=cats.length) S.hall.cat=0; const c=cats[S.hall.cat];
+  const hj=homeJ().id; const okM=id=>{ const m=memberById(id); return m && !m.rankHide && id!==HUB_BOT && (!S.plazaMine || memberJ(m).id===hj); };
+  const cur=S.hall.data[kc], prev=kp?S.hall.data[kp]:null;
+  let L=null;
+  if(cur){ const M=((cur.members||[])).filter(o=>okM(o.mid));
+    if(c.base){ const need = c.id==='rate' ? (per==='month'?5:20) : null; L=M.filter(o=>c.ok(o) && (need==null || o.n>=need)).sort((a,b)=>c.v(b)-c.v(a)); }
+    else if(prev){ const P={}; (prev.members||[]).forEach(o=>P[o.mid]=o); const need=per==='month'?5:20;
+      if(c.id==='rise') L=M.map(o=>{ const p=P[o.mid]; if(!p||o.n<need||p.n<need) return null; const rate=Math.round(o.h/(o.n*5)*100), prate=Math.round(p.h/(p.n*5)*100); return rate>prate?{...o, rate, prate, rise:rate-prate}:null; }).filter(Boolean).sort((a,b)=>b.rise-a.rise||b.rate-a.rate);
+      else L=M.map(o=>{ const p=P[o.mid]; if(!p||!p.days||!o.days) return null; const dd=o.days-p.days, dn=o.n-p.n; return (dd>0||(dd===0&&dn>0))?{...o, pdays:p.days, dd, dn}:null; }).filter(Boolean).sort((a,b)=>b.dd-a.dd||b.dn-a.dn); } }
+  const row=(o,i,mine)=>{ const m=memberById(o.mid)||{}; const [b,u]=c.big(o); return `<div class="rk-row ${i===0&&!mine?'top1':''} ${mine?'rk-me':''}" data-room="${esc(o.mid)}"><span class="rk-n">${mine||i>2?(i+1):['🥇','🥈','🥉'][i]}</span><span class="rk-av">${charSVG(m.char||DEFAULT_CHAR)}</span><span class="rk-nm"><b>${esc(m.name||'사원')}${S.me&&o.mid===S.me.id?' (나)':''}</b><small>${esc(memberJ(m).name||'')} · ${esc(c.sub(o))}</small></span><span class="rk-v"><b class="num">${b}</b><small>${u}</small></span></div>`; };
+  const myI = S.me && L ? L.findIndex(o=>o.mid===S.me.id) : -1; const lim=S.hall.more?30:10;
+  const T=today(); const hk=RG.hk; const canNext = hk && hallHalfNext(hk) <= hallHalfOf(T); const canPrev = hk && hallHalfRange(hk)[0] > HALL_START;
+  const list = !cur || (!c.base && kp && !prev) ? '<div class="tiny muted" style="padding:12px 0">순위를 불러오는 중…</div>'
+    : (!c.base && RG.prev && RG.prev[1] < HALL_START) ? `<p class="hl-empty">비교할 지난 기간 기록이 없어요. ${hallHalfName(hallHalfNext(hallHalfOf(HALL_START)))}부터 나와요.</p>`
+    : !L.length ? `<p class="hl-empty">아직 이 부문에 든 사원이 없어요.</p>`
+    : L.slice(0,lim).map((o,i)=>row(o,i)).join('') + (myI>=lim?row(L[myI],myI,true):'') + (L.length>10?`<button type="button" class="rk-more" id="hlMore">${S.hall.more?'접기 ▴':`30위까지 보기 (${L.length}명) ▾`}</button>`:'');
+  el.innerHTML = `${hallSwitchHTML('hall')}<div class="card hl-card">
+    <div class="hl-h"><h2>🏆 순위관</h2><div class="hl-per">${[['month','이달'],['half','반기'],['all','누적']].map(([k,t])=>`<button type="button" data-hp="${k}" class="${per===k?'on':''}">${t}</button>`).join('')}</div></div>
+    ${hk?`<div class="hl-nav"><button type="button" data-hh="-1" ${canPrev?'':'disabled'} aria-label="지난 반기">‹</button><b>${hallHalfName(hk)}</b><button type="button" data-hh="1" ${canNext?'':'disabled'} aria-label="다음 반기">›</button></div>`:''}
+    <div class="hl-scope"><button type="button" data-hs="all" class="${S.plazaMine?'':'on'}">🌏 모든 정</button><button type="button" data-hs="mine" class="${S.plazaMine?'on':''}">🏯 ${esc(homeJ().name)}</button></div>
+    <div class="rk-tabs">${cats.map((x,i)=>`<button type="button" data-hc="${i}" class="${i===S.hall.cat?'on':''}">${x.ic} ${x.t}</button>`).join('')}</div>
+    <p class="hl-desc">${c.ic} ${esc(c.d.replace('이번 달', per==='month'?'이번 달':per==='half'?'이번 반기':'지금까지'))}${c.id==='rate'?` · ${per==='month'?5:20}순 이상`:''}${c.id==='rise'?` · ${per==='month'?5:20}순 이상`:''}</p>
+    ${list}
+    <div class="rk-foot"><span>${esc(RG.label)}${!c.base&&RG.plabel?`<br>비교: ${esc(RG.plabel)}`:''} · 순위에서 숨긴 사원은 빠져요</span></div>
+  </div>`;
+  hallSwitchBind(el);
+  $$('[data-hp]',el).forEach(b=>b.onclick=()=>{ S.hall.per=b.dataset.hp; lsSet('sadae.hallPer',S.hall.per); S.hall.more=false; renderNews(); });
+  $$('[data-hh]',el).forEach(b=>b.onclick=()=>{ const k=RG.hk; S.hall.hk = +b.dataset.hh<0 ? hallHalfPrev(k) : hallHalfNext(k); S.hall.more=false; renderNews(); });
+  $$('[data-hs]',el).forEach(b=>b.onclick=()=>{ S.plazaMine=b.dataset.hs==='mine'; lsSet('sadae.plazaMine',S.plazaMine); renderNews(); });
+  $$('[data-hc]',el).forEach(b=>b.onclick=()=>{ S.hall.cat=+b.dataset.hc; S.hall.more=false; renderNews(); });
+  const mb=$('#hlMore',el); if(mb) mb.onclick=()=>{ S.hall.more=!S.hall.more; renderNews(); };
+  $$('[data-room]',el).forEach(b=>b.onclick=()=>{ if(typeof openRoom==='function') openRoom(b.dataset.room); });
+}
 function renderNews(){
-  const el=$('#view-news'); if(!el) return; const T=today(), Tym=magCurYM(); const ym=S.mag.ym||Tym; const Y=+ym.slice(0,4), M=+ym.slice(5);
+  const el=$('#view-news'); if(!el) return;
+  if((S.newsView||lsGet('sadae.newsView','mag'))==='hall'){ S.newsView='hall'; renderHall(el); return; } const T=today(), Tym=magCurYM(); const ym=S.mag.ym||Tym; const Y=+ym.slice(0,4), M=+ym.slice(5);
   if(ym===Tym){ lsSet('sadae.magSeen', Tym); renderNewsDot(); }
   if(ym===MAG_EXTRA){ renderNewsExtra(el, Tym); return; }
   const dAll=magData(ym,'all'); const JS=dAll.jst; const myJ=homeJ();
@@ -6821,7 +6892,7 @@ function renderNews(){
   const jl = Object.values(JS).sort((a,b)=>b.members-a.members||b.rec-a.rec);
   const pctJ = (a,b) => b ? Math.round(a/b*100) : 0;
   const jeongNewsHTML = jl.length ? `<div class="mz-jl">${jl.map(o=>`<div class="mz-jr ${o.id===myJ.id?'me':''}"><span class="pl"><b>${esc(o.hanja)}</b></span><div class="grow"><b>${esc(o.name)}</b>${o.id===myJ.id?' <small>(우리 정)</small>':''}<span>사원 ${o.members}명 · 표 기록 ${o.rec}명 · 습사 ${o.days}번</span></div>${o.ok?`<button type="button" class="mz-jgo" data-scope="${esc(o.id)}">📰 ${esc(o.name)} 월보 ▸</button>`:`<span class="mz-jprog">월보까지<br>가입 <b>${Math.min(o.members,MAG_JMIN.members)}/${MAG_JMIN.members}</b> · 기록 <b>${Math.min(o.rec,MAG_JMIN.rec)}/${MAG_JMIN.rec}</b></span>`}</div>`).join('')}</div>
-    <p class="mz-tip">가입 사원 ${MAG_JMIN.members}명 + 그 호에 표를 기록한 사원 ${MAG_JMIN.rec}명이 넘으면 그 정의 월보가 따로 나와요</p>` : '<p class="mz-empty">아직 정 소식이 없어요.</p>';
+    <p class="mz-tip">가입 사원 ${MAG_JMIN.members}명 + 그 호에 표를 기록한 사원 ${MAG_JMIN.rec}명이 넘으면 그 정의 월보가 따로 나와요 · 새 정은 첫 사원이 들어온 다음 달에 창간호가 나와요</p>` : '<p class="mz-empty">아직 정 소식이 없어요.</p>';
   const vsCats = [['🙋','참여율','표 기록 사원 ÷ 가입 사원', o=>o.rec/o.members, o=>pctJ(o.rec,o.members)+'%'], ['📅','1인당 습사','습사한 날 ÷ 표 기록 사원', o=>o.days/o.rec, o=>(o.days/o.rec).toFixed(1)+'일'], ['🎯','관중률','정 사원 전체 관중 ÷ 쏜 화살', o=>o.n?o.h/(o.n*5):0, o=>(o.n?Math.round(o.h/(o.n*5)*100):0)+'%']];
   const vsHTML = vsOn ? `<div class="mz-hof">${vsCats.map(([ic,t,dsc,v,show])=>{ const L=VS.slice().sort((a,b)=>v(b)-v(a)).slice(0,3); return `<div class="mz-hofc"><h3><span>${ic} ${t}</span></h3><ol>${L.map((o,i)=>`<li><span class="md">${['🥇','🥈','🥉'][i]}</span><span class="nm">${esc(o.name)}<small>사원 ${o.members}명</small></span><b class="num">${show(o)}</b></li>`).join('')}</ol><p class="mz-tip" style="margin:0;padding:0 7px 6px">${dsc}</p></div>`; }).join('')}</div><p class="mz-tip">표 기록 사원 ${MAG_JMIN.rec}명이 넘는 정 ${VS.length}곳이 겨뤘어요 · 사원 수가 달라도 공평하게 1인당·비율로 비교해요</p>` : '';
   const vsRank = (id) => { if(!vsOn) return null; const L=VS.slice().sort((a,b)=>b.rec/b.members-a.rec/a.members); const i=L.findIndex(o=>o.id===id); return i<0?null:i+1; };
@@ -6830,12 +6901,12 @@ function renderNews(){
   const scopeBar = `<div class="mz-scope ${other?'three':''}" role="tablist"><button type="button" role="tab" data-scope="all" class="${scope==='all'?'on':''}">🏯 전체 월보</button><button type="button" role="tab" data-scope="${esc(myJ.id)}" class="${scope===myJ.id?'on':''} ${JS[myJ.id]&&JS[myJ.id].ok?'':'wait'}">${esc(myJ.name)} 월보${JS[myJ.id]&&JS[myJ.id].ok?'':' · 준비 중'}</button>${other?`<button type="button" role="tab" data-scope="${esc(SJ.id)}" class="on">${esc(SJ.name)} 월보</button>`:''}</div>`;
   // 지난 호
   const NT = (typeof NOTICES!=='undefined' && NOTICES.length) ? NOTICES[0] : null;
-  el.innerHTML = `
+  el.innerHTML = `${hallSwitchHTML('mag')}
   ${ym!==Tym?`<button type="button" class="mz-backbar" data-mag="${Tym}">← 최신호(${+Tym.slice(5)}월호)로</button>`:''}
   ${scopeBar}
   <article class="mz">
     <div class="mz-mast"><div class="t">${SJ?`${esc(SJ.hanja)}月報<small>${esc(SJ.name)} 월보 · 사대 월보 정별판</small>`:'射臺月報<small>사대 월보</small>'}</div></div>
-    <div class="mz-meta"><span>${Y}년 ${M}월호 · ${no>0?(no===1?'창간호':'제'+no+'호'):'준비호'}</span><span>${d.wide?(d.cur?`베타 기록 · ${magMD(T)} 현재`:'베타 기록 · 확정'):(d.cur?`${magMD(d.from)}부터 · ${magMD(T)} 현재`:`${magMD(d.from)} ~ ${magMD(d.end)} 기록`)}</span></div>
+    <div class="mz-meta"><span>${Y}년 ${M}월호 · ${SJ&&SJ.founding?esc(SJ.name)+' 창간호':(no>0?(no===1?'창간호':'제'+no+'호'):'준비호')}</span><span>${d.wide?(d.cur?`베타 기록 · ${magMD(T)} 현재`:'베타 기록 · 확정'):(d.cur?`${magMD(d.from)}부터 · ${magMD(T)} 현재`:`${magMD(d.from)} ~ ${magMD(d.end)} 기록`)}</span></div>
     <div class="mz-cover" style="${art?`background-image:url(${art})`:''}">
       <div class="hl"><span class="k">${d.wide?'창간호 표지 · '+(SJ?esc(SJ.name)+' ':'')+'베타 성실왕':DM+'월 표지 · '+(SJ?esc(SJ.name)+' ':'')+'성실왕'}</span><h1>${king?(d.wide?`베타 ${BD}일 중<br>${king.days}일 사대에 선<br>${esc(km.name)} 사원`:`${phrase}<br>${king.days}일 습사,<br>${esc(km.name)} 사원`):`${DM}월의<br>기록이<br>비어 있어요`}</h1></div>
       ${king?`<div class="hero" data-room="${esc(king.mid)}">${charSVG(km.char||DEFAULT_CHAR)}</div>`:''}
@@ -6864,7 +6935,7 @@ function renderNews(){
   $$('[data-scope]',el).forEach(b=>b.onclick=()=>{ const sc=b.dataset.scope; const o=JS[sc];
     if(sc!=='all' && !(o&&o.ok)){ toast(`${o?o.name:myJ.name} 월보는 가입 ${MAG_JMIN.members}명 + 이번 호 표 기록 ${MAG_JMIN.rec}명이 되면 나와요 (지금 ${o?o.members:0}명 · 기록 ${o?o.rec:0}명)`); return; }
     S.mag.scope=sc; S.mag.more=false; renderNews(); scrollTo({top:0}); });
-  $$('[data-tab-go]',el).forEach(b=>b.onclick=()=>setTab(b.dataset.tabGo));
+  $$('[data-tab-go]',el).forEach(b=>b.onclick=()=>setTab(b.dataset.tabGo)); hallSwitchBind(el);
   const mb=$('#mzMore',el); if(mb) mb.onclick=()=>{ S.mag.more=!S.mag.more; renderNews(); };
   $$('[data-clap]',el).forEach(b=>b.onclick=async()=>{ const key=b.dataset.clap, mid=b.dataset.cmid;
     if(!S.me){ toast('캐릭터를 먼저 골라 주세요'); return; } if(mid===S.me.id){ toast('내 소식에는 박수를 받을 수만 있어요 🙂'); return; }
@@ -6990,7 +7061,7 @@ function renderPlaza(){
   const memAll=mem; const hjId=homeJ().id; const nMine=memAll.filter(m=>memberJ(m).id===hjId).length;
   if(S.plazaMine && nMine) mem=memAll.filter(m=>memberJ(m).id===hjId);
   const PF=$('#plazaFilter'); if(PF){ PF.innerHTML = memAll.length>nMine && nMine ? `<button type="button" data-pf="all" class="${S.plazaMine?'':'on'}">🌏 모든 정 <b class="num">${memAll.length}</b></button><button type="button" data-pf="mine" class="${S.plazaMine?'on':''}">🏯 ${esc(homeJ().name)} <b class="num">${nMine}</b></button><button type="button" class="pz-all" data-pf="list">👥 모두 보기</button><button type="button" class="pz-shotb" data-pf="shot">📸 공유</button>` : `<button type="button" class="pz-all" data-pf="list">👥 사원 모두 보기</button><button type="button" class="pz-shotb" data-pf="shot">📸 광장 공유</button>`;
-    $$('[data-pf]',PF).forEach(b=>b.onclick=()=>{ const v=b.dataset.pf; if(v==='list'){ openPlazaList(); return; } if(v==='shot'){ openPlazaShot(); return; } S.plazaMine = v==='mine'; renderPlaza(); renderRank(); }); }
+    $$('[data-pf]',PF).forEach(b=>b.onclick=()=>{ const v=b.dataset.pf; if(v==='list'){ openPlazaList(); return; } if(v==='shot'){ openPlazaShot(); return; } S.plazaMine = v==='mine'; lsSet('sadae.plazaMine', S.plazaMine); renderPlaza(); renderRank(); }); }
   const score=m=>(S.me&&m.id===S.me.id?1e15:0)+(lastMsg[m.id]?lastMsg[m.id].at:0)+(attBy[m.id]?1e12:0)+(m.updatedAt||0)/1e3;
   const PZ0=$('#plaza'); const top00 = PZ0 && PZ0.classList.contains('art') ? Math.round((PZ0.clientWidth||360)*(+PZ0.dataset.ratio||0.95)*0.40) : 118;
   const capN = Math.max(12, Math.floor((960 - top00 - 70)/86)*4);   // 광장 최대 높이(960px)에 들어가는 사람 수 — 넘치면 오늘 활동한 사원 먼저
