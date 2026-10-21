@@ -2771,7 +2771,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21h';
+const APP_VER = '2026.10.21i';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3305,12 +3305,12 @@ function renderGate(){
   if(!st){ if(g) g.remove(); document.body.classList.remove('gated'); return; }
   if(!g){ g=document.createElement('div'); g.id='gate'; document.body.appendChild(g); }
   document.body.classList.add('gated');
-  const j=lsGet('sadae.inviteJ',null)||(store.pub&&store.pub.jeong)||{hanja:'冠岳亭',name:'관악정'};
+  const inv=lsGet('sadae.inviteJ',null); const j=inv&&inv.name ? inv : {hanja:'射臺', name:''};   // 10-21: 초대 링크의 정이면 그 궁패, 아니면 射臺
   const me=S.me; const who = me ? `<div class="gate-me"><span class="gate-ch">${charSVG(me.char)}</span><b>${esc(me.name)}</b></div>` : '';
   const body = st==='pending' ? `<h2>승인을 기다리는 중</h2>${who}<p>가입 신청이 들어갔어요.<br>정 관리자가 승인하면 사대에 설 수 있어요.</p>
       <button class="btn pri block" id="gRe">승인됐는지 확인</button><button class="btn ghost block" id="gOut">다른 이름으로 들어가기</button>`
     : st==='blocked' ? `<h2>이용이 제한됐어요</h2>${who}<p>정 관리자에게 문의해 주세요.</p><button class="btn ghost block" id="gOut">나가기</button>`
-    : `<h2>오늘 사대</h2><p>${esc(j.name||'')} 사원 전용이에요.<br>가입 신청 후 관리자가 승인하면 쓸 수 있어요.</p>
+    : `<h2>오늘 사대</h2><p><b>${j.name?esc(j.name)+' ':''}궁사님, 어서 오세요!</b><br>여러 정 궁사들이 함께 쓰는<br>활터 기록장이에요.<br>가입 신청 후 관리자가 승인하면<br>바로 쓸 수 있어요.</p>
       ${me?`<button class="btn pri block" id="gClaim">${esc(me.name)} 캐릭터로 가입 신청</button>`:`<button class="btn pri block" id="gNew">처음이에요 · 가입 신청</button>`}
       <button class="btn ghost block" id="gIn">이미 가입했어요 · 불러오기</button>`;
   g.innerHTML=`<div class="gate-card"><span class="plaque"><span class="hj">${esc(j.hanja||j.name||'')}</span></span>${body}<button class="linkbtn" id="gHow" style="margin-top:4px">📱 앱으로 설치하는 방법</button>${betaHTML(false)}</div>`;
