@@ -113,6 +113,10 @@
 .info-btns{display:flex;flex-direction:column;gap:8px;margin-top:10px}.th-seg{display:flex;border:2px solid var(--ink);background:var(--card)}.th-seg button{flex:1;font:inherit;font-size:13px;padding:9px 2px;background:transparent;color:var(--ink);border:0;border-right:2px solid var(--ink);cursor:pointer}.th-seg button:last-child{border-right:0}.th-seg button.on{background:var(--ink);color:var(--card);font-weight:700}.ok-line{color:var(--green);font-weight:600}
 .pin-in{letter-spacing:.5em;font-size:20px;text-align:center;max-width:180px}
 #approveBox{position:fixed;inset:0;z-index:40;background:rgba(27,31,46,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.toast{z-index:70!important}   /* 10-21: 시트(30) · 첫 화면(25) 위로 — 뒤에 가려 안 보이던 안내가 보이게 */
+.sh-err{margin:0;padding:8px 10px;border:2px solid var(--red);background:var(--card);color:var(--red);font-size:13px;font-weight:700;line-height:1.4}.sh-err[hidden]{display:none}
+.sh-err.shake{animation:sh-shake .35s ease}@keyframes sh-shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.sh-err.shake{animation:none}}
 #gate{position:fixed;inset:0;z-index:25;background:var(--bg);background-image:linear-gradient(rgba(42,34,51,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(42,34,51,.06) 1px,transparent 1px);background-size:24px 24px;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
 body.gated{overflow:hidden}
 .gate-card{width:100%;max-width:360px;background:var(--card);border:2px solid var(--ink);box-shadow:var(--hard4);padding:22px 18px;display:flex;flex-direction:column;gap:12px;align-items:stretch;text-align:center}
@@ -2777,7 +2781,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21l';
+const APP_VER = '2026.10.21m';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2802,6 +2806,8 @@ async function registerMe(m, pin, real){
   if((r.status||'pending')==='pending'){ notifyAdmin(r.mid); pushSend('signup', r.mid); }
   return r.status||'pending';
 }
+// 10-21 사용자 의견: 비밀번호가 틀려도 아무것도 안 뜸(토스트가 시트 뒤에 가려짐) → 시트 안에 빨간 줄로 바로 보여 줌 + 살짝 흔듦
+function shErr(sh, sel, t){ const e=sh&&sh.querySelector(sel); if(!e){ if(t) toast(t); return; } e.textContent=t||''; e.hidden=!t; if(t){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); try{ navigator.vibrate&&navigator.vibrate(60); }catch(x){} } }
 const pinInput = (id, ph) => `<input class="input pin-in" id="${id}" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="${ph||'••••'}">`;
 const onlyDigits = el => el && el.addEventListener('input',()=>{ el.value=el.value.replace(/\D/g,'').slice(0,4); });
 // 다른 폰에서 쓰던 캐릭터 불러오기
@@ -2809,16 +2815,18 @@ function openLogin(name){
   const sh=openSheet(`<h3>내 캐릭터 불러오기</h3><p class="muted" style="margin:0">다른 폰에서 만든 캐릭터의 이름과 비밀번호 4자리를 넣으면 기록이 그대로 이어져요.</p>
     <div class="field"><label for="lgName">이름</label><input class="input" id="lgName" maxlength="12" value="${esc(name||'')}" placeholder="예: 홍길동" autocomplete="off"></div>
     <div class="field"><label for="lgPin">비밀번호</label>${pinInput('lgPin')}</div>
+    <p class="sh-err" id="lgErr" role="alert" hidden></p>
     <button class="linkbtn" id="lgForgot" style="align-self:flex-start">🔑 비밀번호를 잊었어요</button>
     <div class="actions"><button class="btn ghost" id="lgCancel">닫기</button><button class="btn pri" id="lgGo">불러오기</button></div>`);
   $('#lgForgot',sh).addEventListener('click',()=>openResetRequest($('#lgName',sh).value.trim()));
   onlyDigits($('#lgPin',sh)); setTimeout(()=>{ const f=name?$('#lgPin',sh):$('#lgName',sh); f&&f.focus(); },120);
   $('#lgCancel',sh).addEventListener('click',closeSheet);
+  const err=t=>shErr(sh,'#lgErr',t);
   const go=async()=>{ const nm=$('#lgName',sh).value.trim(), pin=$('#lgPin',sh).value;
-    if(!nm){ toast('이름을 적어 주세요'); return; } if(!/^\d{4}$/.test(pin)){ toast('비밀번호 숫자 4자리를 넣어 주세요'); return; }
-    const btn=$('#lgGo',sh); btn.disabled=true;
-    const r=await pinRpc('sadae_login',{p_name:nm, p_pin:pin}); btn.disabled=false;
-    if(r.error){ toast(r.error==='net'?'인터넷 연결을 확인해 주세요':PIN_ERR(r)); if(r.error==='wrong_pin'){ $('#lgPin',sh).value=''; $('#lgPin',sh).focus(); } return; }
+    if(!nm){ err('이름을 적어 주세요'); return; } if(!/^\d{4}$/.test(pin)){ err('비밀번호 숫자 4자리를 넣어 주세요'); return; }
+    const btn=$('#lgGo',sh); btn.disabled=true; const bt0=btn.textContent; btn.textContent='확인하는 중…'; err('');
+    const r=await pinRpc('sadae_login',{p_name:nm, p_pin:pin}); btn.disabled=false; btn.textContent=bt0;
+    if(r.error){ err(r.error==='net'?'인터넷 연결을 확인해 주세요':PIN_ERR(r)); if(r.error==='wrong_pin'||r.error==='locked'){ $('#lgPin',sh).value=''; $('#lgPin',sh).focus(); } return; }
     if(r.need_code){ closeSheet(); openDevCode(r, nm); return; }
     await finishLogin(r, nm); };
   $('#lgGo',sh).addEventListener('click',go); $('#lgPin',sh).addEventListener('keydown',e=>{ if(e.key==='Enter') go(); });
@@ -2862,12 +2870,14 @@ function openResetRequest(name){
     <div class="field"><label for="rsName">이름</label><input class="input" id="rsName" maxlength="12" value="${esc(name||'')}" placeholder="예: 홍길동" autocomplete="off"></div>
     <div class="field"><label for="rsPin">새 비밀번호</label>${pinInput('rsPin')}</div>
     <div class="field"><label for="rsPin2">한 번 더</label>${pinInput('rsPin2')}</div>
+    <p class="sh-err" id="rsErr" role="alert" hidden></p>
     <div class="actions"><button class="btn ghost" id="rsCancel">닫기</button><button class="btn pri" id="rsGo">요청하기</button></div>`);
   onlyDigits($('#rsPin',sh)); onlyDigits($('#rsPin2',sh)); $('#rsCancel',sh).addEventListener('click',closeSheet);
   $('#rsGo',sh).addEventListener('click',async()=>{ const nm=$('#rsName',sh).value.trim(), p1=$('#rsPin',sh).value, p2=$('#rsPin2',sh).value;
-    if(!nm){ toast('이름을 적어 주세요'); return; } if(!/^\d{4}$/.test(p1)){ toast('새 비밀번호 숫자 4자리를 넣어 주세요'); return; } if(p1!==p2){ toast('두 번 넣은 비밀번호가 달라요'); return; }
-    const bt=$('#rsGo',sh); bt.disabled=true; const r=await pinRpc('sadae_reset_request',{p_name:nm, p_pin:p1}); bt.disabled=false;
-    if(r.error){ toast(r.error==='net'?'인터넷 연결을 확인해 주세요':PIN_ERR(r)); return; }
+    const err=t=>shErr(sh,'#rsErr',t);
+    if(!nm){ err('이름을 적어 주세요'); return; } if(!/^\d{4}$/.test(p1)){ err('새 비밀번호 숫자 4자리를 넣어 주세요'); return; } if(p1!==p2){ err('두 번 넣은 비밀번호가 달라요'); return; }
+    const bt=$('#rsGo',sh); bt.disabled=true; err(''); const r=await pinRpc('sadae_reset_request',{p_name:nm, p_pin:p1}); bt.disabled=false;
+    if(r.error){ err(r.error==='net'?'인터넷 연결을 확인해 주세요':PIN_ERR(r)); return; }
     fnCall({op:'notify_reset', space:store.space, mid:r.mid}).catch(()=>{});
     closeSheet(); openSheet(`<h3>요청했어요 🙏</h3><p>관리자가 승인하면 <b>새 비밀번호</b>로 "이미 가입했어요 → 불러오기" 하세요.</p><div class="actions"><button class="btn pri" onclick="closeSheet()">확인</button></div>`); });
 }
@@ -2889,11 +2899,18 @@ function openPinChange(){
   const sh=openSheet(`<h3>비밀번호 바꾸기</h3>
     <div class="field"><label for="pcOld">지금 비밀번호</label>${pinInput('pcOld')}</div>
     <div class="field"><label for="pcNew">새 비밀번호</label>${pinInput('pcNew')}</div>
+    <div class="field"><label for="pcNew2">새 비밀번호 한 번 더</label>${pinInput('pcNew2')}</div>
+    <p class="sh-err" id="pcErr" role="alert" hidden></p>
     <div class="actions"><button class="btn ghost" id="pcCancel">닫기</button><button class="btn pri" id="pcGo">바꾸기</button></div>`);
-  onlyDigits($('#pcOld',sh)); onlyDigits($('#pcNew',sh)); $('#pcCancel',sh).addEventListener('click',closeSheet);
-  $('#pcGo',sh).addEventListener('click',async()=>{ const o=$('#pcOld',sh).value, n=$('#pcNew',sh).value; if(!/^\d{4}$/.test(o)||!/^\d{4}$/.test(n)){ toast('숫자 4자리씩 넣어 주세요'); return; }
-    const r=await pinRpc('sadae_pin_change',{p_token:store.token, p_old:o, p_new:n});
-    if(r.ok){ closeSheet(); toast('비밀번호를 바꿨어요'); } else toast(r.error==='wrong_pin'?'지금 비밀번호가 달라요':r.error==='login'?'다시 불러오기가 필요해요':'잠시 후 다시 해 주세요'); });
+  onlyDigits($('#pcOld',sh)); onlyDigits($('#pcNew',sh)); onlyDigits($('#pcNew2',sh)); $('#pcCancel',sh).addEventListener('click',closeSheet);
+  const err=t=>shErr(sh,'#pcErr',t);
+  $('#pcGo',sh).addEventListener('click',async()=>{ const o=$('#pcOld',sh).value, n=$('#pcNew',sh).value, n2=$('#pcNew2',sh).value;
+    if(!/^\d{4}$/.test(o)){ err('지금 비밀번호 숫자 4자리를 넣어 주세요'); return; } if(!/^\d{4}$/.test(n)){ err('새 비밀번호 숫자 4자리를 넣어 주세요'); return; }
+    if(n!==n2){ err('새 비밀번호 두 번이 서로 달라요'); $('#pcNew2',sh).value=''; $('#pcNew2',sh).focus(); return; } if(n===o){ err('지금 비밀번호와 같아요. 다른 숫자로 정해 주세요'); return; }
+    const btn=$('#pcGo',sh); btn.disabled=true; err('');
+    const r=await pinRpc('sadae_pin_change',{p_token:store.token, p_old:o, p_new:n}); btn.disabled=false;
+    if(r.ok){ closeSheet(); toast('🔑 비밀번호를 바꿨어요. 다른 폰에선 새 비밀번호로 불러오기 하세요'); }
+    else { err(r.error==='wrong_pin'?'지금 비밀번호가 달라요':r.error==='login'?'다시 불러오기가 필요해요':r.error==='net'?'인터넷 연결을 확인해 주세요':'잠시 후 다시 해 주세요'); if(r.error==='wrong_pin'){ $('#pcOld',sh).value=''; $('#pcOld',sh).focus(); } } });
 }
 async function logoutHere(){
   if(store.pending.length && !confirm('아직 올라가지 않은 기록이 있어요. 그래도 로그아웃할까요?')) return;
