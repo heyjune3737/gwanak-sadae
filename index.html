@@ -2819,7 +2819,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21w';
+const APP_VER = '2026.10.21x';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3866,11 +3866,13 @@ function renderHub(){
 }
 // p167 · 타정은 지금 — 다른 정 사대 소식 한 줄 (같은 정 · 같은 시간대 등록 수로 문구 단계)
 const OJ_T = n => n>=8?3:n>=5?2:n>=3?1:0;
-function ojLine(name, slot, n){ const ni=SLOTS.indexOf(slotNow()), i=SLOTS.indexOf(slot), t=OJ_T(n); const ic=['🏹','🔥','🎉','🏮'][t];
+const OJ_OPEN=5, OJ_CLOSE=22;   // p180: 사대 여는 때 ~ 닫는 때 (밤 10시)
+const ojNi = () => { const h=new Date().getHours(); return h>=OJ_CLOSE ? SLOTS.length : h<OJ_OPEN ? -1 : SLOTS.indexOf(slotNow()); };
+function ojLine(name, slot, n){ const ni=ojNi(), i=SLOTS.indexOf(slot), t=OJ_T(n); const ic=['🏹','🔥','🎉','🏮'][t];
   if(i===ni) return [ic, [`${name} 사대에 지금 ${n}명이 활을 내고 있어요`,`${name} 사대가 지금 뜨겁습니다!`,`${name} 사대가 지금 북적입니다!`,`${name} 사대에 낭만이 가득합니다!`][t]];
   if(i>ni) return [ic, [`오늘 ${slot}, ${name} 사대에 ${n}명이 올 예정이에요`,`오늘 ${slot}, ${name} 사대가 뜨거워질 예정이에요!`,`오늘 ${slot}, ${name} 사대가 북적일 예정이에요!`,`오늘 ${slot}, ${name} 사대에 낭만이 가득할 예정이에요!`][t]];
   return [ic, [`오늘 ${slot}, ${name} 사대에 ${n}명이 다녀갔어요`,`오늘 ${slot}, ${name} 사대가 뜨거웠어요`,`오늘 ${slot}, ${name} 사대가 북적였어요`,`오늘 ${slot}, ${name} 사대에 낭만이 가득했어요`][t]]; }
-function ojLines(){ const hj=homeJ().id, vj=viewJ().id, t=today(), ni=SLOTS.indexOf(slotNow()); const fav=new Set(typeof favJIds==='function'?favJIds():[]);
+function ojLines(){ const hj=homeJ().id, vj=viewJ().id, t=today(), ni=ojNi(); const fav=new Set(typeof favJIds==='function'?favJIds():[]);
   const jn=(id,fb)=>{ const j=(typeof jById==='function'&&jById(id)); return (j&&j.name)||fb||id; }; const out=[];
   const g={}; attEntries().forEach(e=>{ if(!e||e.id===HUB_BOT||!e.slot) return; const j=entryJid(e); if(j===hj||j===vj) return; const k=j+'|'+e.slot; (g[k]=g[k]||{j, slot:e.slot, n:0, nm:e.jname}).n++; });
   Object.values(g).forEach(x=>{ const i=SLOTS.indexOf(x.slot); const [ic,tx]=ojLine(jn(x.j,x.nm), x.slot, x.n); out.push({j:x.j, ic, tx, w:(i===ni?1000:i>ni?500:0)+(fav.has(x.j)?300:0)+x.n*10+OJ_T(x.n)}); });
