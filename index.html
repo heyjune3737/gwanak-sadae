@@ -2129,6 +2129,10 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .pz-shooting .pz-fx.bz i{animation:none!important;transform:rotate(30deg)}.pz-shooting .pz-fx.bz i:nth-child(3n){top:18%}.pz-shooting .pz-fx.bz i:nth-child(3n+1){top:34%}.pz-shooting .pz-fx.bz i:nth-child(3n+2){top:52%}
 .ps-nobub .pz-bub{display:none!important}
 .ps-notag .pz-tag{visibility:hidden}
+/* p171 · 말풍선 B안 */
+html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!important;color:#2A2233!important;border-radius:10px;font-weight:700;padding:3px 9px;box-shadow:2px 2px 0 rgba(42,34,51,.35)}
+/* p171 · 말풍선 B안 */
+html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!important;color:#2A2233!important;border-radius:12px;padding:3px 9px!important;font-weight:400;box-shadow:2px 2px 0 rgba(42,34,51,.35)}
 /* p168 · 우리 정만 */
 .pz-jo{flex:none;font:inherit;font-size:12px;padding:0 8px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap}
 .pz-jo.on{background:var(--ink);color:var(--card)}.pz-jo:disabled{cursor:default;opacity:.85}.pz-jo[hidden]{display:none}
@@ -2781,7 +2785,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21m';
+const APP_VER = '2026.10.21n';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
