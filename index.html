@@ -2146,6 +2146,20 @@ html body #plaza .pz-bub.best{border-color:#D9822B!important;border-width:2px!im
 .vn-head{margin:14px 0 6px;font-weight:700;font-size:14px}.vn-head small{display:block;font-weight:400;font-size:11.5px;color:var(--ink3)}
 .jitem.vn .grow{display:flex;flex-direction:column;align-items:flex-start;gap:2px}.vn-sub{font-size:11px;color:var(--ink3);line-height:1.35;text-align:left}
 .vn-link{display:block;font-size:11.5px;margin:-2px 0 6px 4px;color:var(--ink2);text-decoration:underline;text-underline-offset:2px}
+/* p189 · 다른 연습 */
+.px-slim{display:flex;justify-content:flex-end;margin:-6px 4px 12px}.px-slim button{font:inherit;font-size:12.5px;border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:3px 10px;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
+.px-acts{display:flex;flex-direction:column;gap:6px;margin:8px 0}.px-acts.row{flex-direction:row}.px-acts.row .grow{flex:1}
+.px-f{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:center;margin:8px 0;font-size:14px}.px-f .u{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.px-f .u input{width:72px}
+.px-ch{display:flex;flex-wrap:wrap;gap:5px}.px-ch button{font:inherit;font-size:13px;padding:4px 9px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}.px-ch button.on{background:var(--ink);color:var(--card)}.px-ch button:disabled{opacity:.5;cursor:default}
+.px-ch.sm button{font-size:12px;padding:2px 7px}
+.px-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:8px 0}.px-sum div{border:2px solid var(--ink);background:var(--card2);padding:6px;text-align:center}.px-sum b{display:block;font-size:16px}.px-sum small{font-size:11px;color:var(--ink3)}
+.px-near{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12.5px;margin:0 0 8px;align-items:baseline}.px-near small{flex-basis:100%;color:var(--ink3)}.px-near span small{flex-basis:auto}
+.px-list{margin-top:8px}.px-it{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);border:2px solid var(--ink);background:var(--card);padding:7px 10px;margin:0 0 7px;cursor:pointer}.px-it .t{display:flex;justify-content:space-between;font-weight:700}.px-it .s,.px-it .m{display:block;font-size:12.5px;margin-top:2px}.px-it .s{color:var(--ink2)}
+.px-tag{display:inline-block;font-size:11px;border:1.5px solid var(--ink);padding:0 4px;margin-left:4px;font-weight:400}
+.px-row{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px;border:2px dashed var(--ink3);background:var(--card);color:var(--ink);font:inherit;font-size:14px;margin:4px 0 12px;cursor:pointer}.px-row .ic{font-size:20px}.px-row b{flex:1;text-align:left}.px-row small{display:block;font-weight:400;font-size:12px;color:var(--ink3)}
+#nearBar{margin:0 0 8px}.nb-m{width:56px!important;padding:2px 6px!important;font-size:13px!important}.nb-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.nb-band{margin-top:6px;background:#2F6E3E;color:#fff;font-size:12.5px;padding:4px 8px;line-height:1.4}
+.card.near-on{outline:4px solid #3E8A4F;outline-offset:-2px}.card.near-on #goalBar{display:none!important}.card.near-in #windBar{display:none!important}
 /* p173 · 사대지기 말풍선 */
 html body #plaza .pz-bub.bot{background:#FFFFFF!important;border-color:#3E8A4F!important;color:#1F3A26!important;border-width:2px}
 html body #plaza .pz-bub.bot::after{border-top-color:#3E8A4F!important}
@@ -2824,7 +2838,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.22h';
+const APP_VER = '2026.10.22i';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2995,7 +3009,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
-  {id:'2026-10-22a', date:'10월 22일', title:'🎯 체험 국궁장 · 난지국궁장', body:'오늘 탭 위 📍 정 이름을 누르면 목록 아래에 🎯 체험 국궁장 칸이 생겼어요.\n\n소속 정이 아닌 활터예요. 가는 날만 골라 시간대를 누르면 그날 기록이 그곳 사대에 남아요.\n\n첫 번째로 난지국궁장(난지한강공원 · 가양대교 옆)이 들어왔어요. 이용 요금과 안내는 목록의 링크(서울시 미래한강본부)에서 볼 수 있어요.'},
+  {id:'2026-10-22a', date:'10월 22일', title:'🎯 체험 국궁장 · 🏠 다른 연습 일지', body:'🏠 다른 연습 일지\n주살 · 실내 · 근사 · 궁체 교정처럼 145m 과녁이 아닌 연습도 적을 수 있어요. 오늘 정 「오늘 나는」 아래 「🏠 오늘은 다른 연습했어요」를 누르면 켜고 바로 적어요 (안내 탭 → 🏠 다른 연습에서 켜고 끄기). 근사는 표 기록에서 거리(3 · 8 · 10 · 15m 또는 직접)를 고르고 지금처럼 낙점까지 남겨요. 145m 기록 · 관중률 · 순위와는 섞이지 않고, 일지는 나만 봐요.\n\n🎯 체험 국궁장 · 난지국궁장\n오늘 탭 위 📍 정 이름을 누르면 목록 아래에 🎯 체험 국궁장 칸이 생겼어요.\n\n소속 정이 아닌 활터예요. 가는 날만 골라 시간대를 누르면 그날 기록이 그곳 사대에 남아요.\n\n첫 번째로 난지국궁장(난지한강공원 · 가양대교 옆)이 들어왔어요. 이용 요금과 안내는 목록의 링크(서울시 미래한강본부)에서 볼 수 있어요.'},
   {id:'2026-10-21j', date:'10월 21일', title:'🎉 10월 20~21일 업데이트 모음', body:'🚩 광장 정별 모임\n모든 정 보기에서 사원들이 정마다 깃발 아래 모여요. 🌀 섞이기 · 🚩 모이기로 바꿀 수 있어요.\n\n⭐ 관심정\n우리 정 보기에서 관심정을 2곳까지 고르면 소속 정 마당 옆으로 넘겨 그 정 마당을 구경해요.\n\n🔒 광장 한마디 우리 정만\n한마디 칸 왼쪽 단추를 누르면 같은 정 사원에게만 보이는 글로 남겨요.\n\n🏯 타정은 지금\n오늘 정 화면 위에 다른 정 사대 소식이 한 줄씩 떠요. 누르면 그 정 사대를 구경해요.\n\n🏆 순위관 · 📈 리포트\n소식 탭에 반기 · 누적 순위와 최근 활약 · 최근 열심이 생겼어요. 리포트에는 성장 · 최고 기록 · 정심 · 비슷한 사원 비교 카드가 더해졌어요.\n\n🏯 충주 탄금정 · 👤 궁사님\n소속 정에 탄금정이 생겼어요. 친선 대회에는 가입하지 않은 궁사님도 넣을 수 있어요.'},
   {id:'2026-10-15c', date:'10월 15일', title:'📈 리포트 탭 · 🗄 배지 진열장 · ☔ 비 · 눈 배경 · 🎋 각궁 돌보기 외', body:'📈 리포트 탭\n아래 탭에 📈 리포트가 생겼어요(표 기록 바로 옆). 내 표 기록을 질문별로 모아 보여 줘요.\n\n• 하루 9순 쏘면 몇 중이 나오나요? (막대를 누르면 그날 기록표)\n• 순을 거듭할수록 덜 맞나요?\n• 한 순에서 몇 번째 화살이 가장 안 맞나요?\n• 안 맞은 화살은 주로 어디로 가나요?\n• 네 발 다 맞힌 순, 몰기로 끝낸 적은요?\n• 그날 첫 순은 어땠나요?\n• 어떤 바람에서 가장 못 맞히나요?\n• 추운 날엔 덜 맞나요?\n• 순 사이에 덜 쉬면 덜 맞나요?\n• 많이 쏜 주에 더 잘 맞았나요?\n• 순마다 고르게 맞히나요?\n\n기간(최근 30일 · 90일 · 올해 · 전체)을 고를 수 있고, 개량궁과 각궁을 둘 다 쓰면 활별로도 볼 수 있어요.\n\n🧹 표 기록 정리\n표 기록의 「궁체 점검」 · 「바람 · 날씨별」 카드는 리포트로 옮겼어요. 「쌓아온 기록」에는 다음 고개만 남겼어요.\n\n🗄 숨은 배지 진열장 (내 방)\n내 방 그림 바로 아래에 진열장이 생겼어요. 찾은 숨은 배지와 이달의 숨은 배지가 찾은 순서대로 놓여요. ✎ 배치에서 두 칸을 차례로 누르면 자리가 바뀌어요. 방 구경 온 사원에게도 이 순서로 보여요.\n\n🥇 첫 발견자\n우리 정에서 숨은 배지를 처음 찾은 사람의 이름이 힌트 창과 배지판에 보여요. 조건은 그대로 숨겨져요. 첫 발견 배지는 진열장에서 금테로 빛나요. 찾은 시각이 기록되기 전부터 갖고 있던 배지는, 앱을 열면 습사 기록(순 저장 시각)으로 찾은 때를 되살려 함께 견줘요.\n\n🌙 화면 색 바로 바꾸기\n오늘 정 화면 맨 위 📍 정 이름 옆 단추로 밝게 · 어둡게를 바로 바꿀 수 있어요.\n\n☔ 비 · 눈 오는 날 배경\n그 정에 지금 비나 눈이 오면 사대 · 광장 배경이 정마다 비 · 눈 그림으로 바뀌어요. 빗줄기 · 눈송이는 세기에 따라 3단계로 내려요(예: 약한 비 · 비 · 센 비). 배경 단추에 지금 날씨가 함께 보여요. 배경 그림을 직접 골라 두셨다면 그림은 그대로예요.\n\n🏹 개량궁 · 각궁 기록 나누기\n표 기록 입력판 위에서 [개량궁(카본) · 각궁]을 고르면 그 활로 기록돼요. 바꾸기 전까지 계속 유지돼요. 기록 보기 맨 위에서 [전체 · 개량궁 · 각궁]으로 따로 볼 수 있어요. 순위 · 배지 · 월보 · 대회는 지금처럼 합쳐서 셉니다. 지난 기록은 프로필에 적은 활로 봐요.\n\n🌡 각궁일 때 기온 · 습도\n표 기록에서 각궁을 고르면 정 근처의 기온 · 습도가 보이고, 각궁 순에는 습도도 함께 남아요.\n\n🎋 각궁 돌보기 (내 방)\n각궁을 쓰시는 분은 내 방 장비 아래에 새 칸이 생겨요. 오늘 기온 · 습도, 얹은 지 · 부린 지 · 점화장에 둔 지 며칠인지, 얹음 · 부림 · 점화장 · 메모 일지(그때 기온 · 습도 함께), 계절별 점화장 온도 · 습도, 각궁 얹는 순서 체크리스트를 볼 수 있어요. 설명은 관악정 국궁교본 7장에서 옮겼어요. 일지는 나만 봐요(관리자도 못 봐요).\n\n🪵 호패 꾸미기 (내 정보)\n내 정보 → 🪵 꾸미기에서 호패 재질 · 술 색 · 호(號) · 새김 한 줄을 고를 수 있어요. 재질은 잡목 → 자작목 → 황양목 → 뿔 → 상아 순서(태종 13년 호패 재질 규정)로, 단이 오르거나 배지를 모으면 열려요(자작목 1급 · 배지 15개 / 황양목 초단 · 30개 / 뿔 3단 · 50개 / 상아 5단 · 75개). 꾸민 호패는 방 구경 때도 보여요.'},
   {id:'2026-10-06a', date:'10월 6일', title:'📖 표 기록이 새로워졌어요 · 궁체 점검 · 공유 · 오늘의 한마디', body:'🔍 기록으로 보는 궁체 점검\n표 기록 → 📖 기록 보기에서 내 관중 기록으로 자세를 다시 살펴볼 곳을 짚어 줘요. 몇 번째 시를 낼 때 관중률이 낮은지, 관중하지 못한 후 다음 시는 어땠는지, 순이 거듭될수록 관중률이 달라지는지, 3중 이상 한 순은 얼마나 되는지 볼 수 있어요. 이번 달 · 전체로 바꿔 보고, 지난달보다 오르내린 만큼도 함께 보여요.\n\n🌬 바람 · 날씨 · 기온별\n순을 저장할 때 자동으로 남은 바람 · 날씨 · 기온별로 관중률을 비교하고, 관중하지 못한 살이 주로 어느 쪽으로 갔는지도 보여요. 바람 이름은 국궁교본을 따라 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 바뀌었어요(좌궁은 줌앞 · 줌뒤가 반대).\n\n📆 습사 달력 · 📚 쌓아온 기록\n달력에 몰기한 날은 ★로 표시돼요. 쌓아온 기록에서는 지금까지 쏜 순과 다음 고개(시수 100 · 300 · 500 …)까지 남은 시수를 볼 수 있어요.\n\n📤 기록 공유 · 저장\n기록 보기 맨 위 버튼으로 전체 파트 또는 고른 파트만 사진(PNG) 한 장으로 저장하고, 카톡 등으로 바로 보낼 수 있어요.\n\n📜 오늘의 국궁 한마디\n기록 보기 맨 아래에서 사대지기 오리가 날마다 국궁교본의 가르침이나 용어 하나를 전해 줘요.'},
@@ -3103,12 +3117,12 @@ function renderInfo(){
   </div>
   <div class="card info-card"><div class="sec-head"><h2>내 계정</h2></div>
     ${loggedIn?`<div class="row" style="align-items:center;gap:10px"><span style="width:48px;display:block">${charSVG(S.me.char)}</span><div class="grow"><b>${esc(S.me.name)}</b>${who.admin?' <span class="adm-tag">관리자</span>':''}<br><span class="tiny muted">소속 ${esc(homeJ().name)} · 이 기기에 로그인돼 있어요</span></div></div>
-      <div class="info-btns"><button class="btn pri" id="inNoti">🔔 알림 · 폰 알림 설정</button><button class="btn ghost" id="inJeong">소속 정 바꾸기</button>${who.admin?`<button class="btn pri" id="inAdmin">사원 관리${who.pending?` (대기 ${who.pending})`:''}</button>`:''}<button class="btn ghost" id="inPin">비밀번호 바꾸기</button><button class="btn ghost" id="inInvite">사원 초대 링크 복사</button><button class="btn red" id="inOut">이 기기에서 로그아웃</button></div>`
+      <div class="info-btns"><button class="btn pri" id="inNoti">🔔 알림 · 폰 알림 설정</button><button class="btn ghost" id="inJeong">소속 정 바꾸기</button><button class="btn ghost" id="inPx">🏠 다른 연습</button>${who.admin?`<button class="btn pri" id="inAdmin">사원 관리${who.pending?` (대기 ${who.pending})`:''}</button>`:''}<button class="btn ghost" id="inPin">비밀번호 바꾸기</button><button class="btn ghost" id="inInvite">사원 초대 링크 복사</button><button class="btn red" id="inOut">이 기기에서 로그아웃</button></div>`
      :`<p class="tiny muted">이 기기엔 로그인된 캐릭터가 없어요.</p><button class="btn pri block" id="inLogin">캐릭터 불러오기</button>`}
   </div>
   <p class="tiny muted" style="text-align:center;margin:8px 0 0">오늘 사대 · 웹앱 ${esc(APP_VER)}</p>`;
   const on=(id,f)=>{ const b=el.querySelector(id); if(b) b.addEventListener('click',f); };
-  on('#inAdmin',openAdmin); on('#inNoti',openNoti); on('#inJeong',openJeong); on('#inPin',openPinChange); on('#inOut',logoutHere); on('#inLogin',()=>openLogin('')); bindInstall(el);
+  on('#inAdmin',openAdmin); on('#inNoti',openNoti); on('#inJeong',openJeong); on('#inPx',openPxSetting); on('#inPin',openPinChange); on('#inOut',logoutHere); on('#inLogin',()=>openLogin('')); bindInstall(el);
   el.querySelectorAll('[data-th]').forEach(b=>b.addEventListener('click',()=>{ applyTheme(b.dataset.th); el.querySelectorAll('[data-th]').forEach(x=>x.classList.toggle('on', x===b)); toast(b.dataset.th==='dark'?'어둡게 바꿨어요':'밝게 바꿨어요'); }));
   on('#inInvite',async()=>{ try{ await navigator.clipboard.writeText(inviteLink()); toast('초대 링크를 복사했어요. 단톡방 공지에 올려 주세요'); }catch(x){ toast('주소를 길게 눌러 복사하세요'); } });
   try{ lsSet('sadae.noticeSeen', NOTICES[0].id); }catch(x){} renderInfoDot();
@@ -3783,6 +3797,122 @@ function openProfileDetail(){
     closeSheet(); toast('저장했어요');
   });
 }
+
+/* =========================================================
+   p189 · 🏠 다른 연습 일지 (145m 기록과 따로 · 나만 봄)
+   ========================================================= */
+const PX_K = {juksal:['🪢','주살'], near:['🎯','근사'], form:['🧘','궁체 교정'], empty:['💪','빈 활'], etc:['📝','기타']};
+const PX_M = [3, 8, 10, 15];
+const pxMe = () => (S.me && store && store.docs && store.docs['members/'+S.me.id]) || {};
+const pxOn = () => !!(S.me && pxMe().pxOn);
+const pxHidden = () => !!(S.me && pxMe().pxHide);
+const pxPath = y => `px/${S.me.id}_${y}`;
+function pxAll(){ if(!S.me) return []; const D=(store&&store.docs)||{}; const out=[]; const pre='px/'+S.me.id+'_';
+  for(const k in D){ if(!k.startsWith(pre)) continue; const E=(D[k]&&D[k].e)||{}; for(const [id,x] of Object.entries(E)) if(x&&x.date) out.push({...x, id, y:k.slice(pre.length)}); }
+  return out.sort((a,b)=>String(b.date).localeCompare(String(a.date)) || (+b.at||0)-(+a.at||0)); }
+const pxNum = (v, lo, hi) => { const n=Math.round(+v); return Number.isFinite(n) && String(v).trim()!=='' ? Math.max(lo, Math.min(hi, n)) : null; };
+const pxRounds = x => Array.isArray(x.r) ? x.r.length : (+x.n||0);
+const pxHits = x => Array.isArray(x.r) ? x.r.reduce((a,r)=>a+(Array.isArray(r)?r.filter(v=>v==='H').length:0),0) : null;
+function pxLabel(x){ const K=PX_K[x.k]||PX_K.etc; const bits=[]; if(x.m) bits.push(x.m+'m'); if(x.min) bits.push(x.min+'분'); const n=pxRounds(x); if(n) bits.push(n+'순');
+  return `${K[0]} ${K[1]}${bits.length?' · '+bits.join(' · '):''}`; }
+async function pxPref(patch){ if(!S.me) return false; const ok=await write(st=>st.merge('members/'+S.me.id, patch)); try{ renderToday(); }catch(e){} try{ renderRoundInput(); }catch(e){} return ok; }
+async function pxSave(y, id, val){ const ok=await write(st=>st.merge(pxPath(y), {e:{[id]:val}})); try{ renderToday(); }catch(e){} try{ renderRoundInput(); }catch(e){} return ok; }
+
+// 오늘 정: '오늘 나는' 카드 바로 아래 (카드 안 문구는 그대로)
+function pxLine(){ const card=$('#attCard'); let el=$('#pxLine'); if(!card) return;
+  if(!S.me || (!pxOn() && pxHidden())){ if(el) el.remove(); return; }
+  if(!el){ el=document.createElement('div'); el.id='pxLine'; el.className='px-slim'; card.after(el); }
+  const td=pxOn() ? pxAll().filter(x=>x.date===today()) : [];
+  const lab = !td.length ? '🏠 오늘은 다른 연습했어요 ›' : td.length===1 ? `🏠 오늘 ${(PX_K[td[0].k]||PX_K.etc)[1]}${td[0].k==='near'&&td[0].m?' '+td[0].m+'m':''} ${td[0].min?td[0].min+'분':pxRounds(td[0])?pxRounds(td[0])+'순':''} 기록함 ›`.replace(/  +/g,' ') : `🏠 오늘 다른 연습 ${td.length}개 기록함 ›`;
+  el.innerHTML=`<button type="button">${esc(lab)}</button>`;
+  el.firstChild.onclick = () => !pxOn() ? openPxOnboard() : (td.length ? openPxJournal() : openPxEdit()); }
+
+function openPxOnboard(){ const sh=openSheet(`<h3>🏠 다른 연습도 기록해 볼까요?</h3>
+  <p style="margin:0 0 8px">주살 · 실내 · 근사 · 궁체 교정처럼 <b>145m 과녁이 아닌 연습</b>을 따로 적는 연습 일지예요.</p>
+  <ul class="tiny" style="margin:0 0 10px;padding-left:18px;line-height:1.7"><li>145m 기록 · 관중률 · 순위 · 배지와는 <b>섞이지 않아요</b></li><li>근사는 표 기록에서 지금처럼 낙점까지 (3 · 8 · 10 · 15m 또는 직접)</li><li>일지는 <b>나만</b> 봐요</li></ul>
+  <div class="px-acts"><button class="btn pri block" id="pxYes" type="button">켜고 바로 기록하기</button><button class="btn ghost block" id="pxNo" type="button">괜찮아요</button></div>
+  <p class="tiny muted" style="margin:8px 0 0;text-align:center">'괜찮아요'를 누르면 이 단추는 숨겨요. 나중에 <b>안내 탭 → 🏠 다른 연습</b>에서 켤 수 있어요.</p>`);
+  $('#pxYes',sh).onclick=async()=>{ const ok=await pxPref({pxOn:true, pxHide:false}); if(ok){ closeSheet(); openPxEdit(); } };
+  $('#pxNo',sh).onclick=async()=>{ const ok=await pxPref({pxHide:true}); closeSheet(); if(ok) toast('숨겼어요 · 안내 탭 → 🏠 다른 연습에서 켤 수 있어요'); }; }
+
+function openPxSetting(){ if(!S.me){ toast('캐릭터를 먼저 불러와 주세요'); return; } const on=pxOn();
+  const sh=openSheet(`<h3>🏠 다른 연습</h3><p style="margin:0 0 10px">주살 · 실내 · 근사 · 궁체 교정처럼 145m 과녁이 아닌 연습을 따로 적어요. 145m 기록 · 순위와 섞이지 않고, 일지는 나만 봐요.</p>
+    <p class="tiny muted" style="margin:0 0 10px">켜면 오늘 정 '오늘 나는' 아래에 기록 단추, 표 기록에 근사 칸과 연습 일지가 생겨요.</p>
+    <div class="px-acts"><button class="btn ${on?'ghost':'pri'} block" id="pxTog" type="button">${on?'끄기':'켜기'}</button>${on?'<button class="btn block" id="pxJr" type="button">📒 연습 일지 보기</button>':''}<button class="btn ghost block" id="pxX" type="button">닫기</button></div>`);
+  $('#pxTog',sh).onclick=async()=>{ const ok=await pxPref(on?{pxOn:false}:{pxOn:true, pxHide:false}); if(ok){ closeSheet(); toast(on?'다른 연습을 껐어요 · 적어 둔 일지는 그대로 있어요':'켰어요 · 오늘 정과 표 기록에서 볼 수 있어요'); } };
+  const jr=$('#pxJr',sh); if(jr) jr.onclick=()=>{ closeSheet(); openPxJournal(); }; $('#pxX',sh).onclick=closeSheet; }
+
+// 기록 시트 (새로 · 고치기)
+function openPxEdit(x0){ if(!S.me) return; const last=lsGet('sadae.pxLast', null)||{}; const x = (x0&&x0.id) ? {...x0} : {k:'juksal', env:'in', ...last, date:today(), ...(x0||{})}; const fromNear=!!(x0 && Array.isArray(x0.r));
+  const st={k:x.k, env:x.env||'in'};
+  const chips=(name, L, cur)=>`<div class="px-ch" data-g="${name}">${L.map(([v,t])=>`<button type="button" data-v="${v}" class="${cur===v?'on':''}" ${fromNear&&name==='k'?'disabled':''}>${t}</button>`).join('')}</div>`;
+  const sh=openSheet(`<h3>${x0&&x0.id?'✎ 다른 연습 고치기':'＋ 다른 연습 기록'}</h3>
+    <div class="px-f"><span>날짜</span><input class="input" id="pxD" type="date" value="${esc(x.date)}" max="${today()}" ${fromNear?'disabled':''}></div>
+    <div class="px-f"><span>종류</span>${chips('k', Object.entries(PX_K).map(([k,v])=>[k, v[0]+' '+v[1]]), st.k)}</div>
+    <div class="px-f"><span>환경</span>${chips('env', [['in','🏠 실내'],['out','🌳 야외']], st.env)}</div>
+    <div class="px-f"><span>거리</span><div class="u"><input class="input" id="pxM" inputmode="numeric" value="${x.m!=null?esc(x.m):''}" ${fromNear?'disabled':''}> m <span class="px-ch sm">${PX_M.map(m=>`<button type="button" data-m="${m}" ${fromNear?'disabled':''}>${m}</button>`).join('')}</span></div></div>
+    <div class="px-f"><span>시간</span><div class="u"><input class="input" id="pxMin" inputmode="numeric" value="${x.min!=null?esc(x.min):''}"> 분</div></div>
+    <div class="px-f"><span>휴식</span><div class="u"><input class="input" id="pxRest" inputmode="numeric" value="${x.rest!=null?esc(x.rest):''}"> 분마다</div></div>
+    <div class="px-f"><span>순 수</span><div class="u">${fromNear?`<b>${pxRounds(x)}순</b> <small class="muted">· 낙점 기록 ${pxHits(x)}중</small>`:`<input class="input" id="pxN" inputmode="numeric" value="${x.n!=null?esc(x.n):''}"> 순`}</div></div>
+    <div class="px-f" style="align-items:start"><span>메모</span><textarea class="input" id="pxMemo" rows="2" maxlength="200" placeholder="특이사항 (나만 봐요)">${esc(x.memo||'')}</textarea></div>
+    <p class="tiny muted" style="margin:0">비워 둔 칸은 안 적어도 돼요 · 145m 기록 · 순위와 따로 모여요</p>
+    <div class="actions">${x0&&x0.id?'<button class="btn ghost" id="pxDel" type="button">지우기</button>':''}<button class="btn ghost" id="pxCancel" type="button">취소</button><button class="btn pri" id="pxOk" type="button">저장</button></div>`);
+  $$('.px-ch[data-g] button',sh).forEach(b=>b.onclick=()=>{ const g=b.parentElement.dataset.g; st[g]=b.dataset.v; $$('button',b.parentElement).forEach(o=>o.classList.toggle('on', o===b)); });
+  $$('[data-m]',sh).forEach(b=>b.onclick=()=>{ $('#pxM',sh).value=b.dataset.m; });
+  $('#pxCancel',sh).onclick=closeSheet;
+  const del=$('#pxDel',sh); if(del){ let sure=false; del.onclick=async()=>{ if(!sure){ sure=true; del.textContent='한 번 더 누르면 지워요'; return; } const ok=await pxSave(x0.y, x0.id, null); if(ok){ closeSheet(); toast('지웠어요'); } }; }
+  $('#pxOk',sh).onclick=async()=>{ const date=fromNear ? x0.date : ($('#pxD',sh).value||today()); if(!/^\d{4}-\d{2}-\d{2}$/.test(date) || date>today()){ toast('날짜를 확인해 주세요'); return; }
+    const v={date, k:st.k, env:st.env, m:fromNear?x0.m:pxNum($('#pxM',sh).value,0,300), min:pxNum($('#pxMin',sh).value,0,600), rest:pxNum($('#pxRest',sh).value,0,180),
+      memo:String($('#pxMemo',sh).value||'').trim().slice(0,200), at:Date.now()};
+    if(!fromNear) v.n=pxNum($('#pxN',sh).value,0,300);
+    if(fromNear){ v.r=x0.r; if(x0.w) v.w=x0.w; if(x0.ta) v.ta=x0.ta; }
+    const y=date.slice(0,4); const id=(x0&&x0.id&&x0.y===y) ? x0.id : 'p'+uid();
+    if(x0&&x0.id&&x0.y!==y) await pxSave(x0.y, x0.id, null);
+    const ok=await pxSave(y, id, v); if(ok){ if(!fromNear) lsSet('sadae.pxLast', {k:v.k, env:v.env, m:v.m, min:v.min, rest:v.rest, n:v.n}); closeSheet(); toast('🏠 다른 연습을 적었어요'); } };
+}
+
+// 연습 일지
+function openPxJournal(){ if(!S.me) return; const L=pxAll(); const ym=today().slice(0,7); const M=L.filter(x=>String(x.date).startsWith(ym));
+  const mins=M.reduce((a,x)=>a+(+x.min||0),0), rounds=M.reduce((a,x)=>a+pxRounds(x),0);
+  const hm=m=>m>=60?`${Math.floor(m/60)}시간${m%60?' '+(m%60)+'분':''}`:`${m}분`;
+  const byM={}; L.filter(x=>Array.isArray(x.r)).forEach(x=>{ const k=x.m||0; const o=(byM[k]=byM[k]||{h:0,n:0}); o.h+=pxHits(x); o.n+=x.r.length*5; });
+  const near=Object.entries(byM).sort((a,b)=>+a[0]-+b[0]).map(([m,o])=>`<span>${m}m <b>${Math.round(o.h/Math.max(1,o.n)*100)}%</b> <small>(${o.h}/${o.n}시)</small></span>`).join('');
+  const last=lsGet('sadae.pxLast', null);
+  const it=x=>{ const K=PX_K[x.k]||PX_K.etc; const sub=[x.m?x.m+'m':'', x.min?x.min+'분':'', pxRounds(x)?pxRounds(x)+'순':'', x.rest?x.rest+'분마다 휴식':'', Array.isArray(x.r)?`${pxHits(x)}/${x.r.length*5}시 관중`:''].filter(Boolean).join(' · ');
+    return `<button type="button" class="px-it" data-pxi="${esc(x.y)}|${esc(x.id)}"><span class="t"><span>${K[0]} ${K[1]} <span class="px-tag">${x.env==='out'?'야외':'실내'}</span></span><span>${esc(x.date.slice(5).replace('-','/'))}</span></span>${sub?`<span class="s">${esc(sub)}</span>`:''}${x.memo?`<span class="m">📝 ${esc(x.memo)}</span>`:''}</button>`; };
+  const sh=openSheet(`<h3>🏠 다른 연습 일지</h3><p class="muted" style="margin:0">145m 기록 · 순위와는 따로 모여요. 일지는 나만 봐요.</p>
+    <div class="px-sum"><div><b>${M.length}회</b><small>이번 달</small></div><div><b>${hm(mins)}</b><small>연습 시간</small></div><div><b>${rounds}순</b><small>낸 순</small></div></div>
+    ${near?`<div class="px-near"><small>🎯 근사 거리별 관중률</small>${near}</div>`:''}
+    <div class="px-acts row"><button class="btn pri grow" id="pxNew" type="button">＋ 기록하기</button>${last?`<button class="btn grow" id="pxSame" type="button">↻ 지난번과 같게</button>`:''}</div>
+    <div class="px-list">${L.slice(0,40).map(it).join('') || '<p class="muted">아직 적은 연습이 없어요. ＋ 기록하기로 첫 연습을 적어 보세요.</p>'}</div>
+    <div class="actions"><button class="btn ghost" id="pxJx" type="button">닫기</button></div>`);
+  $('#pxNew',sh).onclick=()=>{ closeSheet(); openPxEdit(); };
+  const sm=$('#pxSame',sh); if(sm) sm.onclick=()=>{ closeSheet(); openPxEdit({...last}); };
+  $('#pxJx',sh).onclick=closeSheet;
+  $$('[data-pxi]',sh).forEach(b=>b.onclick=()=>{ const [y,id]=b.dataset.pxi.split('|'); const x=L.find(z=>z.y===y&&z.id===id); if(x){ closeSheet(); openPxEdit(x); } }); }
+
+// 표 기록: 근사 칸 · 맨 아래 일지 한 줄
+S.near = lsGet('sadae.near', null) || {on:false, m:8, env:'in'};
+const nearOn = () => pxOn() && !!S.near.on;
+function pxRecUI(){ const card=$('#windBar') && $('#windBar').closest('.card'); const rin=$('#recInput'); if(!card||!rin) return;
+  let bar=$('#nearBar'); let row=$('#pxRec');
+  if(!pxOn()){ if(bar) bar.remove(); if(row) row.remove(); card.classList.remove('near-on','near-in'); return; }
+  if(!bar){ bar=document.createElement('div'); bar.id='nearBar'; card.insertBefore(bar, card.firstChild); }
+  const N=S.near, on=!!N.on; card.classList.toggle('near-on', on); card.classList.toggle('near-in', on && N.env==='in');
+  const td=pxAll().filter(x=>x.date===today() && Array.isArray(x.r)); const tr=td.reduce((a,x)=>a+x.r.length,0), th=td.reduce((a,x)=>a+pxHits(x),0);
+  bar.innerHTML=`<div class="nb-row"><span class="px-ch"><button type="button" data-nb="145" class="${on?'':'on'}">🎯 145m</button><button type="button" data-nb="near" class="${on?'on':''}">근사</button></span>
+    ${on?`<span class="px-ch sm">${PX_M.map(m=>`<button type="button" data-nm="${m}" class="${+N.m===m?'on':''}">${m}</button>`).join('')}${S.nearEditM?`<input class="input nb-m" id="nbM" inputmode="numeric" maxlength="3" placeholder="m" value="${PX_M.includes(+N.m)?'':esc(N.m)}">`:`<button type="button" data-nm="x" class="${PX_M.includes(+N.m)?'':'on'}">${PX_M.includes(+N.m)?'✎ 직접':esc(N.m)+'m ✎'}</button>`}</span>
+    <span class="px-ch sm"><button type="button" data-ne="in" class="${N.env==='in'?'on':''}">🏠 실내</button><button type="button" data-ne="out" class="${N.env==='out'?'on':''}">🌳 야외</button></span>`:''}</div>
+    ${on?`<div class="nb-band">근사 ${esc(N.m)}m · ${N.env==='in'?'실내 (바람 기록 없음)':'야외'} — 145m 기록 · 순위와 따로 저장돼요${tr?` · 오늘 ${tr}순 ${th}중`:''}</div>`:''}`;
+  const keep=()=>{ lsSet('sadae.near', S.near); renderRoundInput(); };
+  $$('[data-nb]',bar).forEach(b=>b.onclick=()=>{ S.near.on = b.dataset.nb==='near'; keep(); });
+  $$('[data-nm]',bar).forEach(b=>b.onclick=()=>{ if(b.dataset.nm==='x'){ S.nearEditM=true; renderRoundInput(); const i=$('#nbM'); if(i) i.focus(); return; } S.nearEditM=false; S.near.m=+b.dataset.nm; keep(); });
+  { const i=$('#nbM',bar); if(i){ const done=()=>{ const v=pxNum(i.value,1,300); S.nearEditM=false; if(v) S.near.m=v; keep(); }; i.onchange=done; i.onkeydown=e=>{ if(e.key==='Enter') done(); }; } }
+  $$('[data-ne]',bar).forEach(b=>b.onclick=()=>{ S.near.env=b.dataset.ne; keep(); });
+  if(!row){ row=document.createElement('button'); row.type='button'; row.id='pxRec'; row.className='px-row'; rin.appendChild(row); row.onclick=openPxJournal; }
+  const ym=today().slice(0,7); const M=pxAll().filter(x=>String(x.date).startsWith(ym)); const mins=M.reduce((a,x)=>a+(+x.min||0),0), rounds=M.reduce((a,x)=>a+pxRounds(x),0);
+  row.innerHTML=`<span class="ic">🏠</span><b>다른 연습 일지<small>${M.length?`이번 달 ${M.length}회${mins?` · ${mins>=60?Math.floor(mins/60)+'시간 '+(mins%60?mins%60+'분':''):mins+'분'}`:''}${rounds?` · ${rounds}순`:''}`:'주살 · 실내 · 근사 · 궁체 교정 — 나만 봐요'}</small></b><span>›</span>`; }
+
 function setMe(m){ S.me=m; lsSet('sadae.me',m); resub(subDays, daysQuery()); renderAll(); if(typeof renderNoti==='function') renderNoti(); }
 
 /* =========================================================
@@ -4003,6 +4133,7 @@ function renderToday(){
   $$('.att[data-att] [data-react]').forEach(b=>b.addEventListener('click', async ()=>{ const target=b.closest('.att').dataset.att; const em=b.dataset.react||null; reactOpen=null;
     const ok=await write(st=>st.merge('attendance/'+t, {entries:{[target]:{reactions:{[S.me.id]:em}}}})); if(ok&&em) toast(`${em} 응원을 보냈어요`); }));
   try{ renderHub(); }catch(e){}
+  try{ pxLine(); }catch(e){ console.warn('pxLine', e); }
 }
 
 /* =========================================================
@@ -4018,6 +4149,7 @@ function renderRoundInput(){
   { const mo = n===5 && S.round.every(r=>r==='H'); if(mo && !S.molgiBuzz){ try{ navigator.vibrate && navigator.vibrate([40,60,40,60,160]); }catch(e){} } S.molgiBuzz=mo; }
   $('#saveRound').classList.toggle('molgi', n===5 && S.round.every(r=>r==='H'));
   renderGoalBar(); renderRest();
+  try{ pxRecUI(); }catch(e){ console.warn('pxRecUI', e); }
 }
 $('#arrowSlots').addEventListener('click', e=>{ const b=e.target.closest('.arrow'); if(!b) return; const i=+b.dataset.i; if(S.round[i]){ S.round[i]=null; } saveDraft(); });
 $('#resultBtns').addEventListener('click', e=>{ if(e.target.closest('#undoArrow')){ for(let i=4;i>=0;i--){ if(S.round[i]){ S.round[i]=null; break; } } saveDraft(); return; } const b=e.target.closest('.res'); if(!b||!b.dataset.r) return; const i=S.round.findIndex((r,ix)=>!r && ix<5); const idx = i===-1 ? (S.round.length<5?S.round.length:-1) : i; if(idx===-1){ toast('5시가 다 찼어요. 순 저장을 눌러주세요'); return; } S.round[idx]=b.dataset.r; saveDraft(); });
@@ -4040,6 +4172,15 @@ $('#saveRound').addEventListener('click', async ()=>{
   if(ok){ rmClear(); const h=arr.filter(x=>x==='H').length; if(h===5){ try{ navigator.vibrate && navigator.vibrate([120,80,120,80,300]); }catch(e){} } S.round=[]; saveDraft(); showRoundPop(arr, cur.rounds.length, cur.rounds.reduce((a,r)=>a+hitsOf(r),0)); if(restDev()){ if(restCfg().auto) startRest(restCfg().min); else { audioOn(); renderRest(); } } }
 });
 const hitsOf = r => r.filter(x=>x==='H').length;
+$('#saveRound').addEventListener('click', async e=>{ if(!nearOn()) return; e.stopImmediatePropagation(); e.preventDefault();
+  if(!S.me) return; const arr=[0,1,2,3,4].map(i=>S.round[i]); if(arr.some(x=>!x)) return;
+  const t=today(), y=t.slice(0,4), N=S.near, id=`n${t.replace(/-/g,'')}_${N.m}_${N.env}`;
+  const cur=(((store.docs||{})[pxPath(y)]||{}).e||{})[id] || {date:t, k:'near', env:N.env, m:+N.m, r:[], ta:[]};
+  const v={...cur, r:[...(cur.r||[]), arr], ta:[...(cur.ta||[]), Date.now()], at:Date.now()};
+  if(N.env==='out'){ try{ const cw=currentWind(); const w=(cur.w||[]).slice(0,(cur.r||[]).length); while(w.length<(cur.r||[]).length) w.push(null); w.push(cw?{...(cw.r?{r:cw.r,l:cw.l||0}:{}), ...(cw.ms!=null?{ms:cw.ms,deg:cw.deg}:{})}:null); v.w=w; }catch(e){} }
+  const ok=await pxSave(y, id, v);
+  if(ok){ const h=hitsOf(arr); if(h===5){ try{ navigator.vibrate && navigator.vibrate([120,80,120,80,300]); }catch(e){} } S.round=[]; saveDraft(); toast(`🎯 근사 ${N.m}m ${v.r.length}순째 · ${h}중 (145m 기록과 따로)`); }
+}, true);
 // ===== p139 · 개량궁 · 각궁 =====
 const BOWS = ['개량궁','각궁'], BOW_L = {'개량궁':'🏹 개량궁(카본)','각궁':'🎋 각궁'}, BOW_S = {'개량궁':'개량','각궁':'각궁'};
 const normBow = b => b==='각궁' ? '각궁' : '개량궁';
