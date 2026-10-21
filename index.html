@@ -2133,10 +2133,10 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .pz-shooting .pz-bub.jo{display:none!important}   /* 📸 공유 사진에는 우리 정만 말풍선을 빼요 */
 /* p167 · 타정은 지금 */
 #ojStrip[hidden]{display:none}
-.oj-strip{display:flex;align-items:center;gap:7px;width:100%;margin:0 0 10px;padding:7px 10px;background:var(--gold-soft);border:2px solid var(--ink);font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.oj-strip{display:flex;align-items:center;gap:7px;width:100%;min-height:53px;margin:0 0 10px;padding:7px 10px;background:var(--gold-soft);border:2px solid var(--ink);font:inherit;color:var(--ink);text-align:left;cursor:pointer}
 .oj-h{font-size:10.5px;font-weight:700;background:var(--ink);color:var(--card);padding:1px 5px;white-space:nowrap}
 .oj-strip.quiet .oj-h{background:var(--red);color:#fff}
-.oj-ic{font-size:15px;white-space:nowrap}.oj-tx{flex:1;min-width:0;font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.oj-ic{font-size:15px;white-space:nowrap}.oj-tx{flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.35;white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
 .oj-n{font-size:10.5px;color:var(--ink2)}.oj-go{font-size:16px}
 .oj-strip.flash{animation:oj-flash .6s ease-in-out 4}
 @keyframes oj-flash{50%{box-shadow:0 0 0 4px rgba(244,182,59,.9);transform:scale(1.015)}}
@@ -2777,7 +2777,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21j';
+const APP_VER = '2026.10.21k';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
