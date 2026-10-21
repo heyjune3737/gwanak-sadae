@@ -2130,6 +2130,14 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .ps-nobub .pz-bub{display:none!important}
 .ps-notag .pz-tag{visibility:hidden}
 .wcomp button.sure{outline:3px solid var(--red);outline-offset:1px}
+/* p177 · 말풍선 하나씩 */
+#plazaCrowd.bub-rot .pz-bub:not(.bot){display:none}
+#plazaCrowd.bub-rot .pz-bub:not(.bot).on{display:block;animation:bub-in .35s ease-out}
+#plazaCrowd.bub-rot .pz-bub.lv1,#plazaCrowd.bub-rot .pz-bub.lv2,#plazaCrowd.bub-rot .pz-bub.lv3{margin-bottom:2px}
+#plazaCrowd.bub-rot .pz-bub.lv1::before,#plazaCrowd.bub-rot .pz-bub.lv2::before,#plazaCrowd.bub-rot .pz-bub.lv3::before{display:none}
+#plazaCrowd.bub-rot .pz-fig.bub-on{z-index:900!important}
+@keyframes bub-in{from{opacity:0}to{opacity:1}}
+.calm-bub #plazaCrowd .pz-bub.on{animation:none!important}
 /* p173 · 사대지기 말풍선 */
 html body #plaza .pz-bub.bot{background:#FFFFFF!important;border-color:#3E8A4F!important;color:#1F3A26!important;border-width:2px}
 html body #plaza .pz-bub.bot::after{border-top-color:#3E8A4F!important}
@@ -2808,7 +2816,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21s';
+const APP_VER = '2026.10.21t';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7252,6 +7260,13 @@ function pzBotSay(){ const f=document.querySelector(`#plazaCrowd .pz-fig[data-ro
   if(!b){ b=document.createElement('span'); b.className='pz-bub bot r'; f.insertBefore(b, f.firstChild); }
   const paint=()=>{ if(S.botSay.k>=L.length) S.botSay.k=0; const x=L[S.botSay.k]; b.textContent=x.tx; b.classList.toggle('go', !!x.go); b.onclick = x.go ? (e=>{ e.stopPropagation(); setTab(x.go); }) : null; };
   paint(); if(L.length>1) S.botSay.t=setInterval(()=>{ if(S.tab!=='plaza'||document.hidden) return; S.botSay.k=(S.botSay.k+1)%L.length; paint(); }, 8000); }
+// p177 · 말풍선 돌아가며 하나씩
+S.bubRot={k:0,t:null,key:''};
+function pzBubRotate(box){ clearInterval(S.bubRot.t); if(!box) return;
+  const L=[...box.querySelectorAll('.pz-bub:not(.bot)')]; box.classList.toggle('bub-rot', L.length>0);
+  if(!L.length) return; const key=L.map(b=>b.textContent).join('|'); if(key!==S.bubRot.key){ S.bubRot.key=key; const p=L.findIndex(b=>b.classList.contains('pop')); S.bubRot.k = p>=0 ? p : 0; }
+  const show=()=>{ L.forEach((b,i)=>{ const on=i===S.bubRot.k%L.length; b.classList.toggle('on', on); const f=b.closest('.pz-fig'); if(f) f.classList.toggle('bub-on', on); }); };
+  show(); if(L.length>1) S.bubRot.t=setInterval(()=>{ if(S.tab!=='plaza'||document.hidden) return; S.bubRot.k=(S.bubRot.k+1)%L.length; show(); }, 6000); }
 function renderPlaza(){
   const box=$('#plazaCrowd'); if(!box) return; applyPlazaArt(); renderRank(); refreshRank(); renderTicker();
   { const pz=$('#plaza'); let cp=$('#pzCalm'); if(pz && !cp){ cp=document.createElement('button'); cp.type='button'; cp.id='pzCalm'; cp.className='bg-pill pz-calm'; cp.addEventListener('click',e=>{ e.stopPropagation(); openCalm(); }); pz.appendChild(cp); } applyCalm(); }
@@ -7345,6 +7360,7 @@ function renderPlaza(){
     return `<div class="pz-fig ${isMe?'me':''} ${dancer.has(m.id)?'dance':''}" data-room="${esc(m.id)}" style="left:${x.toFixed(1)}%;top:${POS[m.id].bot?'30px':y.toFixed(1)+'%'};z-index:${POS[m.id].bot?140:Math.round(y)+(bub?100+(bubLv[m.id]||0)*10:0)};--dur:${dur.toFixed(1)}s;--dx:${dx}px;--dl:${delay.toFixed(1)}s;--dd:${(-hashN(m.id+'dd',12)/10).toFixed(1)}s" title="${esc(m.name)} · ${esc(memberJ(m).name)}">${bub}<span class="pz-walk"><span class="pz-ch">${charSVG(m.char||DEFAULT_CHAR)}</span></span>${mark?`<span class="pz-mk">${mark}</span>`:''}<span class="pz-tag">${esc(m.name)}</span></div>`; }).join('') + (more>0?`<button type="button" class="pz-more" onclick="openPlazaList()">외 ${more}명 보기</button>`:'') + pzExtra;
   $$('[data-pzlist]',box).forEach(b=>b.onclick=e=>{ e.stopPropagation(); openPlazaList(b.dataset.pzlist||null); });
   try{ pzBotSay(); }catch(e){ console.warn('botsay',e); }
+  try{ pzBubRotate(box); }catch(e){ console.warn('bubrot',e); }
   if(pzWalk){ const F=$$('.pz-fig[data-room]',box).filter(f=>pzOld[f.dataset.room]); const nw=F.map(f=>[f.style.left,f.style.top]);
     F.forEach(f=>{ const o=pzOld[f.dataset.room]; f.style.left=o[0]; f.style.top=o[1]; }); void box.offsetWidth;
     box.classList.add('pz-going'); F.forEach((f,i)=>{ f.style.transitionDelay=(i%7*0.05).toFixed(2)+'s'; f.style.left=nw[i][0]; f.style.top=nw[i][1]; });
