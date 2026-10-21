@@ -2125,6 +2125,32 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .pz-shooting .pz-fx.bz i{animation:none!important;transform:rotate(30deg)}.pz-shooting .pz-fx.bz i:nth-child(3n){top:18%}.pz-shooting .pz-fx.bz i:nth-child(3n+1){top:34%}.pz-shooting .pz-fx.bz i:nth-child(3n+2){top:52%}
 .ps-nobub .pz-bub{display:none!important}
 .ps-notag .pz-tag{visibility:hidden}
+/* p166 · 광장 정별 무리 · 관심정 마당 */
+.pz-flag{position:absolute;left:10px;z-index:150;display:flex;align-items:center;gap:6px;font-size:12px;background:var(--card);color:var(--ink);border:2px solid var(--ink);padding:1px 7px 1px 5px;pointer-events:none;animation:pz-flagin .6s ease-out both}
+.pz-flag.home{background:var(--gold-soft)}.pz-flag b{font-weight:700}.pz-flag em{font-style:normal;font-size:11px}
+@keyframes pz-flagin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.pz-gmore{position:absolute;width:50px;height:50px;margin-left:-25px;margin-top:-58px;font:inherit;font-family:var(--display);font-size:17px;line-height:1;background:var(--card);color:var(--ink);border:2px solid var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.pz-gmore small{font-family:var(--body);font-size:10.5px;margin-top:2px}
+.pz-restj{left:8px;right:auto!important}
+.pz-going .pz-fig{transition:left 1.1s ease-in-out,top 1.1s ease-in-out}
+.pz-slide-l{animation:pz-sl .35s ease-out}.pz-slide-r{animation:pz-sr .35s ease-out}
+@keyframes pz-sl{from{transform:translateX(40px);opacity:.2}to{transform:none;opacity:1}}@keyframes pz-sr{from{transform:translateX(-40px);opacity:.2}to{transform:none;opacity:1}}
+.pz-jtabs{display:flex;gap:6px;flex-wrap:wrap;margin:-6px 0 12px}
+.pz-jtabs button{font:inherit;font-size:12.5px;padding:3px 10px;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer}
+.pz-jtabs button b{font-family:var(--display);color:var(--red)}.pz-jtabs button.on{background:var(--ink);color:var(--card)}.pz-jtabs button.on b{color:inherit}
+.pz-jtabs .pz-fjadd{border-style:dashed}
+.pz-jarrow{position:absolute;top:50%;z-index:420;width:30px;height:46px;margin-top:-23px;font:inherit;font-size:22px;line-height:1;background:var(--card);color:var(--ink);border:2px solid var(--ink);cursor:pointer;padding:0}
+.pz-jarrow.l{left:4px}.pz-jarrow.r{right:4px}.pz-jarrow[hidden]{display:none}
+.pz-chatf{display:flex;gap:6px;margin:0 0 10px}.pz-chatf[hidden]{display:none}
+.pz-chatf button{font:inherit;font-size:13px;padding:4px 12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+.pz-chatf button.on{background:var(--ink);color:var(--card)}
+.fj-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.fj-it{font:inherit;text-align:left;padding:8px 10px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+.fj-it b{display:block}.fj-it small{color:var(--ink2);font-size:11.5px}
+.fj-it.on{background:var(--ink);color:var(--card)}.fj-it.on small{color:var(--card)}
+.room-favj{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin-top:10px;font-size:13px}.room-favj[hidden]{display:none}
+.room-favj small{flex-basis:100%;font-size:11.5px}
+.pz-fig.me .pz-tag{background:#B3261E!important;color:#fff!important}   /* 내 이름표: 북적 사대(금빛)·어둡게에서도 읽히게 */
 /* p108 · 광장 한마디 반응 */
 .pz-rx{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:4px}
 .pz-rxc,.pz-rxadd{font:inherit;font-size:12px;line-height:1;min-height:26px;padding:3px 7px;background:var(--card);color:var(--ink);border:1.5px solid var(--line2);cursor:pointer;white-space:nowrap}
@@ -2731,7 +2757,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21e';
+const APP_VER = '2026.10.21f';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2889,7 +2915,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
-  {id:'2026-10-21b', date:'10월 21일', title:'🏆 순위관 · 📈 리포트 새 카드', body:'🏆 순위관 (소식 탭)\n소식 탭 위에서 [📰 사대 월보 | 🏆 순위관]을 고를 수 있어요. 순위관에서는 이달 · 반기(상반기 1~6월 · 하반기 7~12월) · 누적 순위를 모든 정 또는 우리 정으로 볼 수 있어요. 광장 순위 카드 아래 \'반기 · 누적 순위 보기\'로도 갈 수 있어요.\n• 🚀 최근 활약 — 최근 2주 관중률이 그 전 2주보다 오른 만큼 (두 기간 모두 5순 이상)\n• 🔥 최근 열심 — 최근 2주 습사한 날이 그 전 2주보다 늘어난 만큼 (같으면 늘어난 시수)\n광장 순위의 모든 정 / 우리 정 보기도 이제 기억해요.\n\n📰 정별 월보\n새 정은 첫 사원이 들어온 다음 달에 그 정의 창간호가 나와요. 그다음 호부터는 가입 10명 + 그 호에 표 기록 3명이 넘으면 나와요.\n\n📈 리포트에 새 카드\n• 요즘 늘고 있나요? — 습사한 날마다 관중률과 최근 5번 평균 흐름\n• 처음보다 얼마나 늘었나요? — 첫 기록 달부터 달마다 관중률\n• 내 최고 기록은? — 하루 9순 최고 · 하루 관중률 최고 · 몰기 · 연속 관중 · 연속 습사 (새로 세우면 초록)\n• 정심 점수가 나아지고 있나요? — 순위의 정심 점수(관중 · 고름 · 낙점)를 달마다\n• 나처럼 ○○이 많은데 더 잘 맞히는 사원은? — 불 방향이 나와 같은 사원 중 관중률이 높은 사원과 숫자 · 그림 비교, 그 사원 방 · 방명록으로 바로 가기 (순위에서 숨긴 사원은 빠져요)\n\n기온 · 순 사이 쉬는 시간 · 주별 연습량 카드는 뺐어요.'},
+  {id:'2026-10-21f', date:'10월 21일', title:'🏆 순위관 · 📈 리포트 새 카드 · 🚩 광장 정별 모임', body:'🚩 광장 정별 모임\n여러 정 사원이 함께 있을 때 광장 \'모든 정\' 보기에서는 사원들이 정마다 깃발 아래 모여 서요. 내 소속 정이 맨 위, 그 아래로 사원이 많은 정 3곳이 서고, 무리마다 오늘 활동한 사원이 앞에 서요. 🌀 섞이기를 누르면 걸어가서 한데 섞이고, 🚩 모이기를 누르면 다시 모여요.\n\n⭐ 관심정\n\'우리 정\' 보기에서 ＋ 관심정으로 다른 정을 2곳까지 고르면, 소속 정 마당 옆으로 넘겨(‹ › 또는 옆으로 밀기) 그 정 마당을 구경할 수 있어요. 마당 그림도 그 정 것으로 바뀌어요. 내 방 \'내 정보\' 아래에서도 고를 수 있어요.\n\n💬 광장 한마디는 [🌏 모든 정 | 🏯 우리 정]으로 걸러 볼 수 있어요.\n\n🏆 순위관 (소식 탭)\n소식 탭 위에서 [📰 사대 월보 | 🏆 순위관]을 고를 수 있어요. 순위관에서는 이달 · 반기(상반기 1~6월 · 하반기 7~12월) · 누적 순위를 모든 정 또는 우리 정으로 볼 수 있어요. 광장 순위 카드 아래 \'반기 · 누적 순위 보기\'로도 갈 수 있어요.\n• 🚀 최근 활약 — 최근 2주 관중률이 그 전 2주보다 오른 만큼 (두 기간 모두 5순 이상)\n• 🔥 최근 열심 — 최근 2주 습사한 날이 그 전 2주보다 늘어난 만큼 (같으면 늘어난 시수)\n광장 순위의 모든 정 / 우리 정 보기도 이제 기억해요.\n\n📰 정별 월보\n새 정은 첫 사원이 들어온 다음 달에 그 정의 창간호가 나와요. 그다음 호부터는 가입 10명 + 그 호에 표 기록 3명이 넘으면 나와요.\n\n📈 리포트에 새 카드\n• 요즘 늘고 있나요? — 습사한 날마다 관중률과 최근 5번 평균 흐름\n• 처음보다 얼마나 늘었나요? — 첫 기록 달부터 달마다 관중률\n• 내 최고 기록은? — 하루 9순 최고 · 하루 관중률 최고 · 몰기 · 연속 관중 · 연속 습사 (새로 세우면 초록)\n• 정심 점수가 나아지고 있나요? — 순위의 정심 점수(관중 · 고름 · 낙점)를 달마다\n• 나처럼 ○○이 많은데 더 잘 맞히는 사원은? — 불 방향이 나와 같은 사원 중 관중률이 높은 사원과 숫자 · 그림 비교, 그 사원 방 · 방명록으로 바로 가기 (순위에서 숨긴 사원은 빠져요)\n\n기온 · 순 사이 쉬는 시간 · 주별 연습량 카드는 뺐어요.'},
   {id:'2026-10-20b', date:'10월 20일', title:'🏯 충주 탄금정 · 👤 친선 대회 궁사님(미가입)', body:'🏯 충주 탄금정\n소속 정에 충주 탄금정이 생겼어요. 사대 · 광장 배경은 탄금대의 송림과 남한강, 열두대 절벽 위 2층 누각 탄금정을 따서 그렸고, 계절 · 해질녘 · 밤 · 비 · 눈 그림도 함께 있어요. 날씨 · 바람은 탄금대 공원 기준이에요.\n\n👤 친선 대회에 궁사님(미가입) 넣기\n앱에 가입하지 않은 분도 친선 대회에 함께할 수 있어요. 새 대회 → 참가 사원 고르기에서 ＋ 궁사님을 누르면 궁사님 1, 2…로 들어가고, 이름과 소속 정을 바로 고칠 수 있어요. 📋 명단 붙여넣기로 한 줄에 한 명씩 한꺼번에 넣을 수도 있어요(예: 홍길동 황학정).\n\n대회를 만든 뒤에도 대회 화면의 👤 궁사님 추가 · 고치기에서 더하거나 뺄 수 있어요(대회 만든 사람 · 관리자). 점수는 기록 맡은 분이 넣어요.\n\n궁사님은 그 대회 순위표에만 들어가고, 배지 · 월보 · 순위 · 친선 칭호에는 들어가지 않아요. 궁사님이 있는 대회는 정식 대회로 바꿀 수 없어요.'},
   {id:'2026-10-15c', date:'10월 15일', title:'📈 리포트 탭 · 🗄 배지 진열장 · ☔ 비 · 눈 배경 · 🎋 각궁 돌보기 외', body:'📈 리포트 탭\n아래 탭에 📈 리포트가 생겼어요(표 기록 바로 옆). 내 표 기록을 질문별로 모아 보여 줘요.\n\n• 하루 9순 쏘면 몇 중이 나오나요? (막대를 누르면 그날 기록표)\n• 순을 거듭할수록 덜 맞나요?\n• 한 순에서 몇 번째 화살이 가장 안 맞나요?\n• 안 맞은 화살은 주로 어디로 가나요?\n• 네 발 다 맞힌 순, 몰기로 끝낸 적은요?\n• 그날 첫 순은 어땠나요?\n• 어떤 바람에서 가장 못 맞히나요?\n• 추운 날엔 덜 맞나요?\n• 순 사이에 덜 쉬면 덜 맞나요?\n• 많이 쏜 주에 더 잘 맞았나요?\n• 순마다 고르게 맞히나요?\n\n기간(최근 30일 · 90일 · 올해 · 전체)을 고를 수 있고, 개량궁과 각궁을 둘 다 쓰면 활별로도 볼 수 있어요.\n\n🧹 표 기록 정리\n표 기록의 「궁체 점검」 · 「바람 · 날씨별」 카드는 리포트로 옮겼어요. 「쌓아온 기록」에는 다음 고개만 남겼어요.\n\n🗄 숨은 배지 진열장 (내 방)\n내 방 그림 바로 아래에 진열장이 생겼어요. 찾은 숨은 배지와 이달의 숨은 배지가 찾은 순서대로 놓여요. ✎ 배치에서 두 칸을 차례로 누르면 자리가 바뀌어요. 방 구경 온 사원에게도 이 순서로 보여요.\n\n🥇 첫 발견자\n우리 정에서 숨은 배지를 처음 찾은 사람의 이름이 힌트 창과 배지판에 보여요. 조건은 그대로 숨겨져요. 첫 발견 배지는 진열장에서 금테로 빛나요. 찾은 시각이 기록되기 전부터 갖고 있던 배지는, 앱을 열면 습사 기록(순 저장 시각)으로 찾은 때를 되살려 함께 견줘요.\n\n🌙 화면 색 바로 바꾸기\n오늘 정 화면 맨 위 📍 정 이름 옆 단추로 밝게 · 어둡게를 바로 바꿀 수 있어요.\n\n☔ 비 · 눈 오는 날 배경\n그 정에 지금 비나 눈이 오면 사대 · 광장 배경이 정마다 비 · 눈 그림으로 바뀌어요. 빗줄기 · 눈송이는 세기에 따라 3단계로 내려요(예: 약한 비 · 비 · 센 비). 배경 단추에 지금 날씨가 함께 보여요. 배경 그림을 직접 골라 두셨다면 그림은 그대로예요.\n\n🏹 개량궁 · 각궁 기록 나누기\n표 기록 입력판 위에서 [개량궁(카본) · 각궁]을 고르면 그 활로 기록돼요. 바꾸기 전까지 계속 유지돼요. 기록 보기 맨 위에서 [전체 · 개량궁 · 각궁]으로 따로 볼 수 있어요. 순위 · 배지 · 월보 · 대회는 지금처럼 합쳐서 셉니다. 지난 기록은 프로필에 적은 활로 봐요.\n\n🌡 각궁일 때 기온 · 습도\n표 기록에서 각궁을 고르면 정 근처의 기온 · 습도가 보이고, 각궁 순에는 습도도 함께 남아요.\n\n🎋 각궁 돌보기 (내 방)\n각궁을 쓰시는 분은 내 방 장비 아래에 새 칸이 생겨요. 오늘 기온 · 습도, 얹은 지 · 부린 지 · 점화장에 둔 지 며칠인지, 얹음 · 부림 · 점화장 · 메모 일지(그때 기온 · 습도 함께), 계절별 점화장 온도 · 습도, 각궁 얹는 순서 체크리스트를 볼 수 있어요. 설명은 관악정 국궁교본 7장에서 옮겼어요. 일지는 나만 봐요(관리자도 못 봐요).\n\n🪵 호패 꾸미기 (내 정보)\n내 정보 → 🪵 꾸미기에서 호패 재질 · 술 색 · 호(號) · 새김 한 줄을 고를 수 있어요. 재질은 잡목 → 자작목 → 황양목 → 뿔 → 상아 순서(태종 13년 호패 재질 규정)로, 단이 오르거나 배지를 모으면 열려요(자작목 1급 · 배지 15개 / 황양목 초단 · 30개 / 뿔 3단 · 50개 / 상아 5단 · 75개). 꾸민 호패는 방 구경 때도 보여요.'},
   {id:'2026-10-06a', date:'10월 6일', title:'📖 표 기록이 새로워졌어요 · 궁체 점검 · 공유 · 오늘의 한마디', body:'🔍 기록으로 보는 궁체 점검\n표 기록 → 📖 기록 보기에서 내 관중 기록으로 자세를 다시 살펴볼 곳을 짚어 줘요. 몇 번째 시를 낼 때 관중률이 낮은지, 관중하지 못한 후 다음 시는 어땠는지, 순이 거듭될수록 관중률이 달라지는지, 3중 이상 한 순은 얼마나 되는지 볼 수 있어요. 이번 달 · 전체로 바꿔 보고, 지난달보다 오르내린 만큼도 함께 보여요.\n\n🌬 바람 · 날씨 · 기온별\n순을 저장할 때 자동으로 남은 바람 · 날씨 · 기온별로 관중률을 비교하고, 관중하지 못한 살이 주로 어느 쪽으로 갔는지도 보여요. 바람 이름은 국궁교본을 따라 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 바뀌었어요(좌궁은 줌앞 · 줌뒤가 반대).\n\n📆 습사 달력 · 📚 쌓아온 기록\n달력에 몰기한 날은 ★로 표시돼요. 쌓아온 기록에서는 지금까지 쏜 순과 다음 고개(시수 100 · 300 · 500 …)까지 남은 시수를 볼 수 있어요.\n\n📤 기록 공유 · 저장\n기록 보기 맨 위 버튼으로 전체 파트 또는 고른 파트만 사진(PNG) 한 장으로 저장하고, 카톡 등으로 바로 보낼 수 있어요.\n\n📜 오늘의 국궁 한마디\n기록 보기 맨 아래에서 사대지기 오리가 날마다 국궁교본의 가르침이나 용어 하나를 전해 줘요.'},
@@ -5557,6 +5583,8 @@ function renderRoom(){
   // 내 정보
   let since=''; if(me&&me.since){ const d=Math.floor((new Date(t)-new Date(me.since))/86400000); since = d>=0? `D+${d}` : ''; }
   $('#roomInfo').innerHTML = me ? hopaeHTML(memberById(me.id)||me, {own:true, days:S.myDays||[]}) : '<div class="muted">캐릭터를 고르면 내 호패가 생겨요.</div>';
+  { let fj=$('#roomFavJ'); if(!fj){ fj=document.createElement('div'); fj.id='roomFavJ'; fj.className='room-favj'; $('#roomInfo').after(fj); }
+    fj.hidden=!me; if(me){ const L=favJIds().map(jById); fj.innerHTML=`<span>⭐ 관심정</span><b>${L.length?L.map(j=>esc(j.name)).join(' · '):'<span class="muted">없음</span>'}</b><button type="button" class="btn sm ghost" id="roomFavJBtn">${L.length?'바꾸기':'고르기'}</button><small class="muted">광장 '우리 정'에서 넘겨 봐요 · ${PZ_FAV_MAX}곳까지</small>`; $('#roomFavJBtn').onclick=openFavJ; } }
   renderVisitRow(room);
   if(me){ const b=document.createElement('button'); b.type='button'; b.className='bg-pill rm-pick'; b.textContent='🎨 방 꾸미기'; b.onclick=e=>{ e.stopPropagation(); openRoomTheme(); }; room.appendChild(b); }
   if(S.me && S._gakSub!==S.me.id){ S._gakSub=S.me.id; sub({doc:'gak/'+S.me.id}, d=>{ S.gak=d||{}; try{ renderGak(); }catch(e){ console.warn('gak', e); } }); }
@@ -6454,9 +6482,9 @@ function hhmm(ms){ const d=new Date(ms||0); const h=d.getHours(); return `${h<12
 function othersDay(mid, date){ const D=(store&&store.docs)||{}; const d=D['days/'+mid+'_'+date]; return d ? dayBrief({...d, date:d.date||date}) : null; }
 function allDaysOf(mid){ const D=(store&&store.docs)||{}; const out=[]; const pre='days/'+mid+'_'; for(const k in D){ if(k.startsWith(pre) && D[k]) out.push({...D[k], date:D[k].date||k.slice(pre.length)}); } return out; }
 // 광장 사원 모두 (정별)
-function openPlazaList(){
+function openPlazaList(onlyJ){
   const all=(S.members||[]).filter(m=>m&&m.name); const byJ={}; all.forEach(m=>{ const j=memberJ(m).name; (byJ[j]=byJ[j]||[]).push(m); });
-  const hj=homeJ().name; const keys=Object.keys(byJ).sort((a,b)=>(b===hj)-(a===hj) || byJ[b].length-byJ[a].length);
+  const hj=homeJ().name; const oj=onlyJ && jById(onlyJ); const keys=Object.keys(byJ).filter(k=>!oj || k===oj.name).sort((a,b)=>(b===hj)-(a===hj) || byJ[b].length-byJ[a].length);
   const cell=m=>`<button class="rs" data-room="${esc(m.id)}"><span class="rs-ch">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name)}</b><small>${esc(m.grade||'신사')}</small></button>`;
   const sh=openSheet(`<h3>👥 광장 사원 모두 <small class="muted">${all.length}명</small></h3><p class="tiny muted" style="margin:0">누르면 그 사원의 방에 놀러 가요</p>
     ${keys.map(k=>`<div class="adm-h" style="margin-top:8px">${esc(k)} <b>${byJ[k].length}</b></div><div class="roster">${byJ[k].sort((a,b)=>String(a.name).localeCompare(String(b.name),'ko')).map(cell).join('')}</div>`).join('')}
@@ -6516,6 +6544,28 @@ async function refreshRank(force){
   finally{ S.rank.busy=false; } renderRank();
 }
 S.plazaMine = !!lsGet('sadae.plazaMine', false);
+S.pzMix = !!lsGet('sadae.pzMix', false);          // p166: 모든 정 보기에서 섞여 서기(기본 = 정별로 모임)
+S.pzJ = lsGet('sadae.pzJ', null);                 // p166: 우리 정 보기에서 보고 있는 마당(소속정 · 관심정)
+S.pzChatMine = !!lsGet('sadae.pzChatMine', false);// p166: 광장 한마디 우리 정 글만
+const PZ_FAV_MAX = 2;
+function jById(id){ if(!id) return null; const j=JEONGS.find(x=>x.id===id); if(j) return jBrief(j); const m=(S.members||[]).find(x=>x&&x.jeong&&x.jeong.id===id); return m?jBrief(m.jeong):null; }
+function favJIds(){ const m=S.me&&memberById(S.me.id); const L=Array.isArray(m&&m.favJ)?m.favJ:[]; const hj=homeJ().id; return [...new Set(L.map(String))].filter(id=>id!==hj && jById(id)).slice(0,PZ_FAV_MAX); }
+function pzJList(){ return [homeJ(), ...favJIds().map(jById)]; }
+function pzArtJ(){ if(!S.plazaMine) return homeJ(); const L=pzJList(); return L.find(j=>j.id===S.pzJ)||homeJ(); }
+function openFavJ(){
+  if(!S.me){ openProfile(); return; }
+  const hj=homeJ().id; const cnt={}; (S.members||[]).forEach(m=>{ if(m&&m.name){ const j=memberJ(m); cnt[j.id]=(cnt[j.id]||0)+1; } });
+  const ids=[...new Set([...JEONGS.map(j=>j.id), ...Object.keys(cnt)])].filter(id=>id!==hj && jById(id)).sort((a,b)=>(cnt[b]||0)-(cnt[a]||0) || jById(a).name.localeCompare(jById(b).name,'ko'));
+  let sel=favJIds();
+  const sh=openSheet(`<h3>⭐ 관심정 <small class="muted">${PZ_FAV_MAX}곳까지</small></h3><p class="tiny muted" style="margin:0">광장 '우리 정' 보기에서 소속정 옆으로 넘겨 그 정 마당을 구경해요.</p>
+    <div class="fj-list">${ids.map(id=>`<button type="button" class="fj-it" data-fj="${esc(id)}"><b>${esc(jById(id).name)}</b><small>사원 ${cnt[id]||0}명</small></button>`).join('')}</div>
+    <div class="actions"><button class="btn ghost" id="fjClose" type="button">닫기</button><button class="btn pri" id="fjSave" type="button">저장</button></div>`);
+  const paint=()=>$$('[data-fj]',sh).forEach(b=>{ const on=sel.includes(b.dataset.fj); b.classList.toggle('on',on); b.setAttribute('aria-pressed',String(on)); });
+  paint();
+  $$('[data-fj]',sh).forEach(b=>b.onclick=()=>{ const id=b.dataset.fj; if(sel.includes(id)) sel=sel.filter(x=>x!==id); else { if(sel.length>=PZ_FAV_MAX){ toast(`관심정은 ${PZ_FAV_MAX}곳까지예요. 하나를 먼저 빼 주세요`); return; } sel=[...sel,id]; } paint(); });
+  $('#fjClose',sh).onclick=closeSheet;
+  $('#fjSave',sh).onclick=async()=>{ const ok=await write(st=>st.merge('members/'+S.me.id,{favJ:sel, updatedAt:Date.now()})); if(ok){ const mm=memberById(S.me.id); if(mm) mm.favJ=sel.slice(); closeSheet(); toast(sel.length?`⭐ 관심정: ${sel.map(id=>jById(id).name).join(' · ')}`:'관심정을 비웠어요'); if(S.tab==='plaza') renderPlaza(); if(typeof renderRoom==='function') renderRoom(); } };
+}
 function rankList(data, c){ const hj=homeJ().id; return ((data&&data.members)||[]).filter(o=>c.ok(o) && memberById(o.mid) && (!S.plazaMine || memberJ(memberById(o.mid)).id===hj)).sort((a,b)=>c.v(b)-c.v(a)); }
 /* ---- 차분하게 보기: 움직임을 사람이 고름 (기기마다) ---- */
 const CALM_KEYS=[['rank','순위 자동 넘김','5초마다 다음 순위로 넘어가요'],['fx','꽃잎·낙엽·눈 흩날림','광장에 계절 효과가 내려요'],['ticker','광장 위 소식 띠','📰 사대 월보 한 줄'],['bub','말풍선 효과','새 한마디가 톡 튀어나와요'],['walk','캐릭터 걸음','광장 사원들이 걸어 다녀요']];
@@ -6970,7 +7020,7 @@ function renderBusy(busy){ const pz=$('#plaza'); if(!pz) return; let el=$('#pzBu
   { const key='sadae.bzPop.'+today()+'.'+b.jid+'.'+b.slot; if(!lsGet(key,false)){ lsSet(key,true); const pop=document.createElement('div'); pop.className='pz-pop'; pop.setAttribute('aria-hidden','true'); pop.innerHTML=Array.from({length:16},(_,i)=>{ const a=i/16*Math.PI*2, r=70+(i%3)*28; return `<i style="--x:${Math.round(Math.cos(a)*r)}px;--y:${Math.round(Math.sin(a)*r*0.7+30)}px;--c:${['#E2463B','#F4B63B','#3E8A4F','#3552A0','#F2A7BE'][i%5]}">${i%4===0?'中':''}</i>`; }).join(''); pz.appendChild(pop); setTimeout(()=>pop.remove(), 1600); } }
   setTimeout(pzRing, 0); }
 // p135: 북적 사대 — 춤추는 사원을 가운데 과녁 둘레로 (강강술래)
-function pzRing(){ const pz=$('#plaza'); if(!pz || !pz.classList.contains('pz-party')) return; const F=$$('.pz-fig.dance',pz); if(!F.length) return;
+function pzRing(){ const pz=$('#plaza'); if(!pz || !pz.classList.contains('pz-party')) return; if($('#plazaCrowd.pz-grouped')) return;   // p166: 정별로 모여 있을 땐 강강술래 쉼 const F=$$('.pz-fig.dance',pz); if(!F.length) return;
   const box=$('#plazaCrowd')||pz; if(!$('.pz-ring-c',box)){ const c=document.createElement('div'); c.className='pz-ring-c'; c.setAttribute('aria-hidden','true'); c.textContent='🎯'; box.appendChild(c); }
   const R_=F.slice(0,10), n=R_.length, T=Math.max(14, n*2.6), bw=box.getBoundingClientRect(); box.style.setProperty('--rx', Math.round(Math.min(bw.width*0.36,150))+'px'); box.style.setProperty('--ry', Math.round(Math.max(40, Math.min(bw.height*0.2, 90)))+'px');
   R_.forEach((f,i)=>{ f.classList.add('ring'); f.style.setProperty('--rt', T+'s'); f.style.setProperty('--ro', (-(i/n)*T).toFixed(2)+'s'); f.style.setProperty('--hop', (i*0.13).toFixed(2)+'s');
@@ -7058,6 +7108,9 @@ function pzRxHTML(m){ const by=pzRxOf(m); const own=S.me&&m.from===S.me.id; cons
   const pick=`<div class="pz-rxpick" hidden>${PZ_RX.map(([k,ic,lab])=>`<button type="button" class="${mine===k?'on':''}" data-pzrx="${k}" data-pzid="${esc(m.id)}" data-pzday="${day}" aria-label="${lab}"><span>${ic}</span><small>${lab}</small></button>`).join('')}</div>`;
   return `<div class="pz-rx" data-mine="${esc(mine)}">${chips}<button type="button" class="pz-rxadd" data-pzrxopen aria-expanded="false" aria-label="반응 남기기">${mine?'바꾸기':'＋반응'}</button>${pick}</div>`; }
 setTimeout(()=>{ if(typeof renderPlaza==='function'){ const _rp=renderPlaza; renderPlaza=function(...a){ const r=_rp.apply(this,a); setTimeout(pzEmoScan, 80); return r; }; } }, 0);
+function pzGoJ(id, dir){ const L=pzJList(); const a=L.findIndex(j=>j.id===S.pzJ), b=L.findIndex(j=>j.id===id); if(b<0) return; S.pzJ=id; lsSet('sadae.pzJ', id);
+  applyPlazaArt(); renderPlaza(); const box=$('#plazaCrowd'); if(box && S.calm && S.calm.walk!==false){ box.classList.remove('pz-slide-l','pz-slide-r'); void box.offsetWidth; box.classList.add((dir||(b>a?1:-1))>0?'pz-slide-l':'pz-slide-r'); } }
+function pzStepJ(d){ const L=pzJList(); const k=L.findIndex(j=>j.id===S.pzJ); const n=k+d; if(n<0||n>=L.length) return; pzGoJ(L[n].id, d); }
 function renderPlaza(){
   const box=$('#plazaCrowd'); if(!box) return; applyPlazaArt(); renderRank(); refreshRank(); renderTicker();
   { const pz=$('#plaza'); let cp=$('#pzCalm'); if(pz && !cp){ cp=document.createElement('button'); cp.type='button'; cp.id='pzCalm'; cp.className='bg-pill pz-calm'; cp.addEventListener('click',e=>{ e.stopPropagation(); openCalm(); }); pz.appendChild(cp); } applyCalm(); }
@@ -7068,21 +7121,59 @@ function renderPlaza(){
   let mem=(S.members||[]).filter(m=>m&&m.name);
   if(S.me && !mem.some(m=>m.id===S.me.id)) mem=[...mem, S.me];
   const memAll=mem; const hjId=homeJ().id; const nMine=memAll.filter(m=>memberJ(m).id===hjId).length;
-  if(S.plazaMine && nMine) mem=memAll.filter(m=>memberJ(m).id===hjId);
-  const PF=$('#plazaFilter'); if(PF){ PF.innerHTML = memAll.length>nMine && nMine ? `<button type="button" data-pf="all" class="${S.plazaMine?'':'on'}">🌏 모든 정 <b class="num">${memAll.length}</b></button><button type="button" data-pf="mine" class="${S.plazaMine?'on':''}">🏯 ${esc(homeJ().name)} <b class="num">${nMine}</b></button><button type="button" class="pz-all" data-pf="list">👥 모두 보기</button><button type="button" class="pz-shotb" data-pf="shot">📸 공유</button>` : `<button type="button" class="pz-all" data-pf="list">👥 사원 모두 보기</button><button type="button" class="pz-shotb" data-pf="shot">📸 광장 공유</button>`;
-    $$('[data-pf]',PF).forEach(b=>b.onclick=()=>{ const v=b.dataset.pf; if(v==='list'){ openPlazaList(); return; } if(v==='shot'){ openPlazaShot(); return; } S.plazaMine = v==='mine'; lsSet('sadae.plazaMine', S.plazaMine); renderPlaza(); renderRank(); }); }
+  const multi = memAll.length>nMine && nMine;
+  // p166: 우리 정 보기 = 고른 마당(소속정 · 관심정)의 사원 · 모든 정 보기 = 소속정 + 사원 많은 다른 정 3곳(정별 무리)
+  const pzL = pzJList(); if(!pzL.some(j=>j.id===S.pzJ)) S.pzJ=hjId; const pzJ = S.plazaMine ? (pzL.find(j=>j.id===S.pzJ)||homeJ()) : homeJ();
+  let groups=null, restJ=[];
+  if(S.plazaMine){ if(pzJ.id!==hjId || nMine) mem=memAll.filter(m=>memberJ(m).id===pzJ.id); }
+  else if(multi){ const byJ={}; memAll.forEach(m=>{ const j=memberJ(m); (byJ[j.id]=byJ[j.id]||{j:jBrief(j),L:[]}).L.push(m); });
+    const others=Object.values(byJ).filter(g=>g.j.id!==hjId).sort((a,b)=>b.L.length-a.L.length || a.j.name.localeCompare(b.j.name,'ko'));
+    groups=[byJ[hjId], ...others.slice(0,3)].filter(Boolean); restJ=others.slice(3); mem=groups.flatMap(g=>g.L); }
+  const PF=$('#plazaFilter'); if(PF){ PF.innerHTML = multi || pzL.length>1 ? `<button type="button" data-pf="all" class="${S.plazaMine?'':'on'}">🌏 모든 정 <b class="num">${memAll.length}</b></button><button type="button" data-pf="mine" class="${S.plazaMine?'on':''}">🏯 우리 정 <b class="num">${nMine}</b></button>${groups?`<button type="button" class="pz-mix" data-pf="mix" aria-pressed="${S.pzMix}">${S.pzMix?'🚩 모이기':'🌀 섞이기'}</button>`:''}<button type="button" class="pz-all" data-pf="list">👥 모두 보기</button><button type="button" class="pz-shotb" data-pf="shot">📸 공유</button>` : `<button type="button" class="pz-all" data-pf="list">👥 사원 모두 보기</button><button type="button" class="pz-shotb" data-pf="shot">📸 광장 공유</button>`;
+    $$('[data-pf]',PF).forEach(b=>b.onclick=()=>{ const v=b.dataset.pf; if(v==='list'){ openPlazaList(); return; } if(v==='shot'){ openPlazaShot(); return; }
+      if(v==='mix'){ S.pzMix=!S.pzMix; lsSet('sadae.pzMix', S.pzMix); S.pzAnim=true; renderPlaza(); return; }
+      const nv = v==='mine'; if(nv===S.plazaMine) return; S.plazaMine = nv; lsSet('sadae.plazaMine', S.plazaMine); applyPlazaArt(); renderPlaza(); renderRank(); }); }
+  // p166: 우리 정 보기 = 마당 넘기기 단추(소속정 · 관심정 · ＋ 관심정)
+  { let TB=$('#pzJTabs'); if(!TB && PF){ TB=document.createElement('div'); TB.id='pzJTabs'; TB.className='pz-jtabs'; PF.after(TB); }
+    const cand = (S.members||[]).some(m=>m&&m.name&&memberJ(m).id!==hjId);
+    if(TB){ TB.hidden = !S.plazaMine || (!cand && pzL.length<2) || !S.me;
+      if(!TB.hidden){ const cntJ=id=>memAll.filter(m=>memberJ(m).id===id).length;
+        TB.innerHTML = pzL.map((j,i)=>`<button type="button" data-pzj="${esc(j.id)}" class="${j.id===pzJ.id?'on':''}" aria-pressed="${j.id===pzJ.id}">${i?'⭐':'🏯'} ${esc(j.name)} <b class="num">${cntJ(j.id)}</b></button>`).join('')
+          + `<button type="button" class="pz-fjadd" data-pzj="+">${pzL.length-1<PZ_FAV_MAX?'＋ 관심정':'✎ 관심정'}</button>`;
+        $$('[data-pzj]',TB).forEach(b=>b.onclick=()=>{ const id=b.dataset.pzj; if(id==='+'){ openFavJ(); return; } if(id===S.pzJ) return; pzGoJ(id); }); } } }
   const score=m=>(S.me&&m.id===S.me.id?1e15:0)+(lastMsg[m.id]?lastMsg[m.id].at:0)+(attBy[m.id]?1e12:0)+(m.updatedAt||0)/1e3;
   const PZ0=$('#plaza'); const top00 = PZ0 && PZ0.classList.contains('art') ? Math.round((PZ0.clientWidth||360)*(+PZ0.dataset.ratio||0.95)*0.40) : 118;
-  const capN = Math.max(12, Math.floor((960 - top00 - 70)/86)*4);   // 광장 최대 높이(960px)에 들어가는 사람 수 — 넘치면 오늘 활동한 사원 먼저
-  const shown=mem.slice().sort((a,b)=>score(b)-score(a)).slice(0,Math.min(42,capN)); const more=mem.length-shown.length;
-  // 자리: 사람 수에 맞춘 모눈 + 흔들림. 날짜 · 8시간 단위(0·8·16시, 하루 3번)로 섞임(같은 시간대엔 다시 그려도 같은 자리). 한 줄 최대 4명(2026-10-05), 줄이 늘면 광장이 세로로 커짐(최대 960px)
   const pzSeed = t + '_' + Math.floor(new Date().getHours()/8); S.plazaSeed = pzSeed;
+  let shown, more, order; const POS={}; let pzExtra='', pzGB=null; box.classList.toggle('pz-grouped', !!(groups && !S.pzMix));
+  if(groups && !S.pzMix){
+    // p166: 정별 무리 — 소속정 맨 위(최대 15명) · 다른 정 3곳(최대 10명) · 한 줄 5명 · 넘치면 마지막 칸 '＋N명'
+    const COLS=5, FL=30, RW=84; let y=4; const fl=[], pos=[]; shown=[]; pzGB=[];
+    const bpool=[...msgs, ...plazaMsgs(S.plazaY).sort((a,b)=>(b.at||0)-(a.at||0))].filter(m=>m && Date.now()-(m.at||0)<24*3600e3);
+    groups.forEach((g,gi)=>{ const L=g.L.slice().sort((a,b)=>score(b)-score(a)); const cap=gi===0?15:10; const over=L.length>cap; const sh=over?L.slice(0,cap-1):L; const rows=Math.ceil((sh.length+(over?1:0))/COLS);
+      // 무리마다 말풍선 하나(가장 최근 한마디) · 그 사원은 앞줄 둘째 자리 · 깃발과 안 겹치게 무리 위를 조금 띄움
+      const bm=bpool.find(m=>sh.some(x=>x.id===m.from)); let EX=0; if(bm){ const bi=sh.findIndex(x=>x.id===bm.from); const [bx]=sh.splice(bi,1); sh.splice(Math.min(1,sh.length),0,bx); pzGB.push([bm.from,bm]); EX=26; }
+      fl.push({j:g.j, n:g.L.length, a:g.L.filter(m=>attBy[m.id]).length, y, home:gi===0});
+      const at=i=>{ const r=Math.floor(i/COLS), c=i%COLS; const jx=(hashN(g.j.id+i+pzSeed,100)/100-.5)*0.22, jy=hashN(g.j.id+i+pzSeed+'y',9)-4; return {x:Math.min(93,Math.max(7,((c+.5+jx+(r%2?.22:-.06))/COLS)*100)), py:y+FL+EX+64+r*RW+jy}; };
+      sh.forEach((m,i)=>{ pos.push([m.id, at(i)]); shown.push(m); });
+      if(over){ const p=at(sh.length); fl[fl.length-1].more={n:L.length-sh.length, ...p}; }
+      y+=FL+EX+rows*RW+12; });
+    const BH=y; const PZ=PZ0; if(PZ){ PZ.style.height=(top00+BH+54)+'px'; box.style.top=top00+'px'; box.style.bottom='54px'; }
+    pos.forEach(([id,p])=>POS[id]={x:p.x, y:p.py/BH*100});
+    pzExtra = fl.map(f=>`<div class="pz-flag ${f.home?'home':''}" style="top:${(f.y/BH*100).toFixed(2)}%"><span>🚩 ${esc(f.j.name)}</span><b class="num">${f.n}명</b>${f.a?`<em>🏹 ${f.a}</em>`:''}</div>`
+      + (f.more?`<button type="button" class="pz-gmore" data-pzlist="${esc(f.j.id)}" style="left:${f.more.x.toFixed(1)}%;top:${(f.more.py/BH*100).toFixed(2)}%;z-index:${Math.round(f.more.py/BH*100)}">＋${f.more.n}<small>명 더</small></button>`:'')).join('');
+    more=0; order=shown;
+  } else {
+  const capN = Math.max(12, Math.floor((960 - top00 - 70)/86)*4);   // 광장 최대 높이(960px)에 들어가는 사람 수 — 넘치면 오늘 활동한 사원 먼저
+  shown=mem.slice().sort((a,b)=>score(b)-score(a)).slice(0,Math.min(42,capN)); more=mem.length-shown.length;
+  // 자리: 사람 수에 맞춘 모눈 + 흔들림. 날짜 · 8시간 단위(0·8·16시, 하루 3번)로 섞임(같은 시간대엔 다시 그려도 같은 자리). 한 줄 최대 4명(2026-10-05), 줄이 늘면 광장이 세로로 커짐(최대 960px)
   const n=shown.length, cols=Math.min(4, Math.max(3, Math.ceil(Math.sqrt(n*1.5)))), rows=Math.max(1, Math.ceil(n/cols));
   const PZ=$('#plaza'); if(PZ){ const W=PZ.clientWidth||360; const imgH = PZ.classList.contains('art') ? W*(+PZ.dataset.ratio||0.95) : 380; const top0 = PZ.classList.contains('art') ? Math.round(imgH*0.40) : 118;
     const H = Math.max(380, Math.min(960, top0 + rows*86 + 70)); PZ.style.height = H+'px'; box.style.top = top0+'px'; box.style.bottom = '54px'; }
-  const order=shown.slice().sort((a,b)=>hashN(a.id+pzSeed,9973)-hashN(b.id+pzSeed,9973));
-  const POS={}; order.forEach((m,i)=>{ const r=Math.floor(i/cols), c=i%cols; const jx=(hashN(m.id+pzSeed+'x',100)/100-.5)*0.3, jy=(hashN(m.id+pzSeed+'y',100)/100-.5)*0.3;
+  order=shown.slice().sort((a,b)=>hashN(a.id+pzSeed,9973)-hashN(b.id+pzSeed,9973));
+  order.forEach((m,i)=>{ const r=Math.floor(i/cols), c=i%cols; const jx=(hashN(m.id+pzSeed+'x',100)/100-.5)*0.3, jy=(hashN(m.id+pzSeed+'y',100)/100-.5)*0.3;
     POS[m.id]={x:Math.min(90, Math.max(10, ((c+.5+jx+(r%2?.35:0))/cols)*100)), y:rows===1?70:Math.min(100, Math.max(14, 12+((r+.5+jy*.7)/rows)*88))}; });
+  }
+  if(restJ.length) pzExtra += `<button type="button" class="pz-more pz-restj" data-pzlist="">다른 정 ${restJ.length}곳 · ${restJ.reduce((a,g)=>a+g.L.length,0)}명 ›</button>`;
   // 말풍선 (p109 · 10-07 사용자 결정): ① 24시간 안 반응 · 답글 많은 글 → ② 최근 3시간 글 → ③ 10시간 안 아직 안 뜬 글 · 최대 7명 · 서로 겹치면 비켜 섬
   const bubbleOf=new Set(), bubLv={}, bubMsg={}; let newestBub=null;
   { const now=Date.now(), H=3600e3; const pool=[...msgs, ...plazaMsgs(S.plazaY)].filter(m=>m && now-(m.at||0) < 24*H);
@@ -7092,18 +7183,33 @@ function renderPlaza(){
     const A1=pool.filter(m=>eng(m)>0).sort((a,b)=>eng(b)-eng(a)||(b.at||0)-(a.at||0));
     const A2=pool.filter(m=>now-(m.at||0)<3*H).sort((a,b)=>(b.at||0)-(a.at||0));
     const A3=pool.filter(m=>now-(m.at||0)<10*H && !seen.includes(m.id)).sort((a,b)=>(a.at||0)-(b.at||0));
-    for(const m of [...A1, ...A2, ...A3]){ if(bubbleOf.size>=7) break; const p=POS[m.from]; if(!p || bubbleOf.has(m.from)) continue;
+    if(pzGB) pzGB.forEach(([f,m])=>{ bubbleOf.add(f); bubLv[f]=0; bubMsg[f]=m; if(!newestBub || (m.at||0)>(newestBub.at||0)) newestBub=m; });
+    for(const m of (pzGB?[]:[...A1, ...A2, ...A3])){ if(bubbleOf.size>=7) break; const p=POS[m.from]; if(!p || bubbleOf.has(m.from)) continue;
       let lv=0; for(const o of bubbleOf){ if(Math.abs(POS[o].x-p.x)<50 && Math.abs(POS[o].y-p.y)<30) lv=Math.max(lv,bubLv[o]+1); }
       bubLv[m.from]=Math.min(lv,3); bubbleOf.add(m.from); bubMsg[m.from]=m; if(!newestBub || (m.at||0)>(newestBub.at||0)) newestBub=m; }
     const ids=Object.values(bubMsg).map(m=>m.id).filter(id=>!seen.includes(id)); if(ids.length) lsSet('sadae.pzBubSeen', [...seen, ...ids].slice(-300)); }
   const bubKey=newestBub?newestBub.id||String(newestBub.at):''; const popNew = bubKey && S.plazaBubKey!==undefined && S.plazaBubKey!==bubKey; S.plazaBubKey=bubKey;
+  const pzOld = {}; const pzWalk = S.pzAnim && S.calm && S.calm.walk!==false && !matchMedia('(prefers-reduced-motion: reduce)').matches; S.pzAnim=false;
+  if(pzWalk) $$('.pz-fig[data-room]',box).forEach(f=>{ pzOld[f.dataset.room]=[f.style.left, f.style.top]; });
   box.innerHTML = order.map((m,i)=>{ const {x,y}=POS[m.id];
     const dur=6+hashN(m.id+'d',60)/10, dx=(hashN(m.id+'w',2)?1:-1)*(10+hashN(m.id+'k',18)), delay=-hashN(m.id+'l',50)/10;
     const isMe=S.me&&m.id===S.me.id; const a=attBy[m.id]; const td=othersDay(m.id,t)||(isMe?(()=>{ const d=(S.myDays||[]).find(x=>x.date===t); return d?dayBrief(d):null; })():null);
     const mark = td&&td.mo ? '🎯' : a ? '🏹' : '';
     const bt=String(bubbleOf.has(m.id)?bubMsg[m.id].text:''); const bub = bt ? `<span class="pz-bub ${x<28?'l':x>72?'r':''} ${bubLv[m.id]?'lv'+bubLv[m.id]:''} ${popNew&&newestBub.from===m.id?'pop':''}">${esc(bt.slice(0,18))}${bt.length>18?'…':''}</span>` : '';
-    return `<div class="pz-fig ${isMe?'me':''} ${dancer.has(m.id)?'dance':''}" data-room="${esc(m.id)}" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;z-index:${Math.round(y)+(bub?100+(bubLv[m.id]||0)*10:0)};--dur:${dur.toFixed(1)}s;--dx:${dx}px;--dl:${delay.toFixed(1)}s;--dd:${(-hashN(m.id+'dd',12)/10).toFixed(1)}s" title="${esc(m.name)} · ${esc(memberJ(m).name)}">${bub}<span class="pz-walk"><span class="pz-ch">${charSVG(m.char||DEFAULT_CHAR)}</span></span>${mark?`<span class="pz-mk">${mark}</span>`:''}<span class="pz-tag">${esc(m.name)}</span></div>`; }).join('') + (more>0?`<button type="button" class="pz-more" onclick="openPlazaList()">외 ${more}명 보기</button>`:'');
-  const nAtt=att.length; $('#plazaCount').innerHTML = `사원 <b class="num">${mem.length}</b>명${nAtt?` · 오늘 활터에 <b class="num">${nAtt}</b>명`:''}`;
+    return `<div class="pz-fig ${isMe?'me':''} ${dancer.has(m.id)?'dance':''}" data-room="${esc(m.id)}" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;z-index:${Math.round(y)+(bub?100+(bubLv[m.id]||0)*10:0)};--dur:${dur.toFixed(1)}s;--dx:${dx}px;--dl:${delay.toFixed(1)}s;--dd:${(-hashN(m.id+'dd',12)/10).toFixed(1)}s" title="${esc(m.name)} · ${esc(memberJ(m).name)}">${bub}<span class="pz-walk"><span class="pz-ch">${charSVG(m.char||DEFAULT_CHAR)}</span></span>${mark?`<span class="pz-mk">${mark}</span>`:''}<span class="pz-tag">${esc(m.name)}</span></div>`; }).join('') + (more>0?`<button type="button" class="pz-more" onclick="openPlazaList()">외 ${more}명 보기</button>`:'') + pzExtra;
+  $$('[data-pzlist]',box).forEach(b=>b.onclick=e=>{ e.stopPropagation(); openPlazaList(b.dataset.pzlist||null); });
+  if(pzWalk){ const F=$$('.pz-fig[data-room]',box).filter(f=>pzOld[f.dataset.room]); const nw=F.map(f=>[f.style.left,f.style.top]);
+    F.forEach(f=>{ const o=pzOld[f.dataset.room]; f.style.left=o[0]; f.style.top=o[1]; }); void box.offsetWidth;
+    box.classList.add('pz-going'); F.forEach((f,i)=>{ f.style.transitionDelay=(i%7*0.05).toFixed(2)+'s'; f.style.left=nw[i][0]; f.style.top=nw[i][1]; });
+    clearTimeout(S.pzGoT); S.pzGoT=setTimeout(()=>{ box.classList.remove('pz-going'); F.forEach(f=>f.style.transitionDelay=''); }, 1700); }
+  const nAtt=att.length; $('#plazaCount').innerHTML = S.plazaMine && pzJ.id!==hjId ? `${esc(pzJ.name)} 사원 <b class="num">${mem.length}</b>명` : `사원 <b class="num">${groups?memAll.length:mem.length}</b>명${nAtt?` · 오늘 활터에 <b class="num">${nAtt}</b>명`:''}`;
+  // p166: 우리 정 보기 · 관심정 있으면 ‹ › 와 옆으로 밀기
+  { const PZ=$('#plaza'); const L=S.plazaMine?pzL:[]; const k=L.findIndex(j=>j.id===pzJ.id);
+    let la=$('#pzJPrev'), ra=$('#pzJNext'); if(PZ && !la){ la=document.createElement('button'); la.type='button'; la.id='pzJPrev'; la.className='pz-jarrow l'; la.textContent='‹'; la.setAttribute('aria-label','이전 정 마당'); ra=document.createElement('button'); ra.type='button'; ra.id='pzJNext'; ra.className='pz-jarrow r'; ra.textContent='›'; ra.setAttribute('aria-label','다음 정 마당'); PZ.append(la,ra);
+      la.addEventListener('click',e=>{ e.stopPropagation(); pzStepJ(-1); }); ra.addEventListener('click',e=>{ e.stopPropagation(); pzStepJ(1); });
+      let sx=null, sy=0; PZ.addEventListener('touchstart',e=>{ if(!S.plazaMine||pzJList().length<2) return; const p=e.touches[0]; sx=p.clientX; sy=p.clientY; },{passive:true});
+      PZ.addEventListener('touchend',e=>{ if(sx==null) return; const p=e.changedTouches[0]; const dx=p.clientX-sx, dy=p.clientY-sy; sx=null; if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.5) pzStepJ(dx<0?1:-1); },{passive:true}); }
+    if(la){ la.hidden = !(L.length>1 && k>0); ra.hidden = !(L.length>1 && k<L.length-1); } }
   // 글쓰기
   const W=$('#plazaWrite');
   if(!S.me){ W.innerHTML='<p class="tiny muted" style="margin:0 0 8px">캐릭터를 만들면 광장에 한마디를 남길 수 있어요.</p>'; }
@@ -7125,6 +7231,10 @@ function renderPlaza(){
   const reps={}, top=[]; for(const m of all){ if(m.re && byId[m.re] && !byId[m.re].re) (reps[m.re]=reps[m.re]||[]).push(m); else top.push(m); }
   Object.values(reps).forEach(L=>L.sort((a,b)=>(a.at||0)-(b.at||0)));
   const pzNm=id=>{ const x=memberById(id); return (x&&x.name)||'사원'; };
+  { let cf=$('#pzChatF'); const ok = multi && !!$('#pzChatCard'); if(!cf && ok){ cf=document.createElement('div'); cf.id='pzChatF'; cf.className='pz-chatf'; const hd=$('#pzChatCard .sec-head'); if(hd) hd.after(cf); }
+    if(cf){ cf.hidden=!ok; cf.innerHTML=`<button type="button" data-pcf="all" class="${S.pzChatMine?'':'on'}" aria-pressed="${!S.pzChatMine}">🌏 모든 정</button><button type="button" data-pcf="mine" class="${S.pzChatMine?'on':''}" aria-pressed="${S.pzChatMine}">🏯 ${esc(homeJ().name)}</button>`;
+      $$('[data-pcf]',cf).forEach(b=>b.onclick=()=>{ const v=b.dataset.pcf==='mine'; if(v===S.pzChatMine) return; S.pzChatMine=v; lsSet('sadae.pzChatMine',v); S.pzPage=1; renderPlaza(); }); }
+    if(ok && S.pzChatMine){ const mineMsg=m=>{ const x=memberById(m.from); return x && memberJ(x).id===hjId; }; for(let i=top.length-1;i>=0;i--) if(!mineMsg(top[i])) top.splice(i,1); } }
   const C=$('#plazaChat'); let lastDay=''; const PER=10, pages=Math.max(1,Math.ceil(top.length/PER)); if(!S.pzPage||S.pzPage>pages) S.pzPage=1;
   const pgOf=id=>{ const i=top.findIndex(x=>x.id===id); return i<0?1:Math.floor(i/PER)+1; };
   const pzMsg=(m0,rootDay)=>{ const mm=memberById(m0.from)||{}; const pn=rootDay&&byId[m0.re]?pzNm(byId[m0.re].from):'';
@@ -7137,7 +7247,7 @@ function renderPlaza(){
       const R_=reps[m.id]||[];
       return `<div class="pz-item" data-pg="${pg}" ${pg!==S.pzPage?'hidden':''}>${head}${pzMsg(m,'')}${R_.length?`<div class="pz-reps">${R_.slice(0,PZ_REP_SHOW).map(r=>pzMsg(r,m.day)).join('')}${R_.length>PZ_REP_SHOW?(()=>{ const op=S.pzRepOpen.has(m.id); return `<div class="pz-reps-more" ${op?'':'hidden'}>${R_.slice(PZ_REP_SHOW).map(r=>pzMsg(r,m.day)).join('')}</div><button type="button" class="pz-repmore" data-pzrm="${esc(m.id)}" aria-expanded="${op}">${op?'답글 접기 ▴':`💬 답글 ${R_.length-PZ_REP_SHOW}개 더 보기 ▾`}</button>`; })():''}</div>`:''}</div>`; }).join('')
       + (pages>=1 ? `<div class="pz-pager" role="navigation" aria-label="한마디 페이지"><button type="button" data-pzpg="prev" aria-label="이전 페이지">‹</button>${Array.from({length:pages},(_,k)=>`<button type="button" data-pzpg="${k+1}" class="${k+1===S.pzPage?'on':''}">${k+1}</button>`).join('')}<button type="button" data-pzpg="next" aria-label="다음 페이지">›</button></div><div class="pz-pgnote tiny muted">최근 7일 한마디 ${all.length}개 · 한 쪽에 글 ${PER}개(답글은 원글 아래)</div>` : '')
-    : '<div class="muted">아직 조용해요. 첫 인사를 남겨 보세요 👋</div>';
+    : (multi && S.pzChatMine ? `<div class="muted">최근 7일 ${esc(homeJ().name)} 한마디가 없어요. 첫 인사를 남겨 보세요 👋</div>` : '<div class="muted">아직 조용해요. 첫 인사를 남겨 보세요 👋</div>');
   $$('[data-pzrm]',C).forEach(b=>b.addEventListener('click',()=>{ const id=b.dataset.pzrm; const box=b.previousElementSibling; const op=!S.pzRepOpen.has(id); if(op) S.pzRepOpen.add(id); else S.pzRepOpen.delete(id);
     if(box) box.hidden=!op; b.setAttribute('aria-expanded',String(op)); b.textContent = op?'답글 접기 ▴':`💬 답글 ${box?box.children.length:''}개 더 보기 ▾`; }));
   const pzGo=n=>{ S.pzPage=n; $$('.pz-item',C).forEach(x=>x.hidden = +x.dataset.pg!==n); $$('[data-pzpg]',C).forEach(x=>x.classList.toggle('on', x.dataset.pzpg===String(n))); };
@@ -7364,8 +7474,8 @@ function pzFx(pz, season, tod){
   fx.innerHTML = kind ? Array.from({length: kind==='fly'?10:16},(_,i)=>{ const l=(i*61%97), d=(7+(i*37%9)), dl=-(i*53%11); return `<i class="${kind}" style="left:${l}%;--d:${d}s;--dl:${dl}s;--x:${(i%2?1:-1)*(10+i%5*6)}px"></i>`; }).join('') : '';
 }
 function applyPlazaArt(){
-  const pz=$('#plaza'); if(!pz) return; const A=JEONG_ART[homeJ().id];
-  const pk=pzPick(); const wx0 = A && A.pz ? wxKindFor(homeJ().id) : null;
+  const pz=$('#plaza'); if(!pz) return; const AJ=JEONG_ART[pzArtJ().id] ? pzArtJ() : homeJ(); const A=JEONG_ART[AJ.id];
+  const pk=pzPick(); const wx0 = A && A.pz ? wxKindFor(AJ.id) : null;
   const wurl = wx0 && pk.s0==='auto' ? (wx0.k==='snow' ? A.pz[`snow_${pk.t}`] : A.pz[`rain_${pk.s}_${pk.t}`]) : null;   // p143: 비·눈 그림
   const url = A && A.pz ? (wurl || A.pz[`${pk.s}_${pk.t}`] || A.pz.summer_day) : null;
   let pill=$('#pzPill'); if(!pill){ pill=document.createElement('button'); pill.type='button'; pill.id='pzPill'; pill.className='bg-pill pz-pill'; pill.addEventListener('click',e=>{ e.stopPropagation(); openPzBg(); }); pz.appendChild(pill); }
