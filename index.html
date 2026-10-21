@@ -2819,7 +2819,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.22b';
+const APP_VER = '2026.10.22c';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -6039,7 +6039,7 @@ const BSETS = [
   {id:'cover', ic:'📰', t:'표지 스타', u:'번',     T:[1,6,12,36], v:g=>coverInfo(g.mid).n, d:'사대 월보 표지(성실왕)에 오른 횟수 · 정별 월보 포함', mag:false},
   {id:'tour',  ic:'🏯', t:'정 순례',  u:'곳',      T:[2,4,6,8], v:g=>tourCount(g.mid), d:'습사 등록한 서로 다른 정 (소속 정 포함 · 8곳 = 서울 8정 순례)', mag:false},
   {id:'wind',  ic:'🌬', t:'바람 궁사', u:'순',     T:[10,50,100,300], v:g=>g.windStrong||0, d:"바람 '강'일 때 쏜 순 (표 기록 위 바람 칸)"},
-  {id:'rain',  ic:'🌧', t:'비 궁사',  u:'순',      T:[10,30,100,300], v:g=>g.rainN||0, d:'비 오는 날 쏜 순 (순 저장 때 자동으로 남은 날씨)', nw:1},
+  {id:'rain',  ic:'🌧', t:'우천 궁사',  u:'순',      T:[10,30,100,300], v:g=>g.rainN||0, d:'비 오는 날 쏜 순 (순 저장 때 자동으로 남은 날씨)', nw:1},
   {id:'cold',  ic:'🥶', t:'한파 궁사', u:'순',     T:[5,20,50,100], v:g=>g.coldN||0, d:'기온 0℃ 아래에서 쏜 순', hint:'0℃ 아래', nw:1},
   {id:'hot',   ic:'🥵', t:'폭염 궁사', u:'순',     T:[5,20,50,100], v:g=>g.hotN||0, d:'기온 30℃ 위에서 쏜 순', hint:'30℃ 위', nw:1},
   {id:'kind',  ic:'🧩', t:'함께',     u:'번',      T:[10,100,300,1000], v:g=>kindCount(g.mid), d:'다른 사원 방명록에 남긴 글 + 보낸 응원', mag:false},
@@ -6050,7 +6050,7 @@ function guideBadges(mid){ const L=(S.members||[]).filter(m=>m&&m.id&&m.name&&m.
   const J=memberJ(me).id; const rank=L.filter(m=>memberJ(m).id===J).sort((a,b)=>(+a.joinedAt)-(+b.joinedAt)||String(a.id).localeCompare(String(b.id))).findIndex(m=>m.id===mid);
   const ym=dstr(new Date(+me.joinedAt)).slice(0,7);
   const OJ=(((store&&store.docs)||{})['settings/badges']||{}).ojakgyo; const ojList=Array.isArray(OJ)?OJ:[];
-  return {guide: rank>=0 && rank<3, rank, vanguard: J!==baseJ().id && ym==='2026-10', ojakgyo: rank===0 || ojList.includes(mid)}; }
+  return {guide: rank>=0 && rank<3, rank, vanguard: J!==baseJ().id && ym==='2026-10', ojakgyo: ojList.includes(mid)}; }
 function romanceCount(mid){ const D=(store&&store.docs)||{}; let n=0; for(const k in D){ if(!k.startsWith('attendance/')) continue; const E=(D[k]&&D[k].entries)||{}; const me=E[mid]; if(!me||!me.slot) continue; const j=entryJid(me);
     if(Object.entries(E).filter(([id,e])=>e&&id!==HUB_BOT&&e.slot===me.slot&&entryJid(e)===j).length>=8) n++; } return n; }
 const setTier = (set, g) => { let k=0; set.T.forEach((x,i)=>{ if(set.v(g,i+1)>=x) k=i+1; }); return k; };
@@ -6133,7 +6133,7 @@ const HIDDEN = [
   {id:'holiday',ic:'🎑', t:'명절 사대',  d:'설 · 추석 당일 습사', c:'날씨 · 때', h:['모두 고향 갈 때','설이나 한가위 당일']},
   {id:'crowd',  ic:'👯', t:'북적 사대',  d:'같은 시간대 사대에 6명 이상과 함께', c:'함께', h:['혼자가 아니야','한 시간대에 여섯 명 넘게']},
   {id:'guide',  ic:'🧭', t:'길잡이',  d:'소속 정에서 첫 번째 ~ 세 번째로 가입한 궁사', c:'함께', h:['뒤따라올 이들을 위해','우리 정에서 가장 먼저 온 셋']},
-  {id:'ojakgyo',ic:'🌉', t:'오작교', d:'여러 정을 이어 준 궁사 · 각 정의 첫 가입자, 그리고 개발자가 특별히 드려요', c:'함께', h:['까치와 까마귀가 놓은 다리','정과 정 사이를 이어 준']},
+  {id:'ojakgyo',ic:'🌉', t:'오작교', d:'많은 사원을 오늘 사대로 이어 준 궁사 · 개발자가 특별히 드려요', c:'함께', h:['까치와 까마귀가 놓은 다리','사람과 사람을 이어 준']},
   {id:'vanguard',ic:'🛶', t:'선발대', d:'2026년 10월, 여러 정이 함께 쓰기 시작한 달에 가입한 타정 궁사', c:'함께', h:['먼저 와 본 사람들','다른 정에서 시월에']},
   {id:'romance',ic:'🏮', t:'낭만 궁사',  d:'같은 정 · 같은 시간대 사대에 8명 이상 함께 (찾으면 배지 칸에서 동 · 은 · 금 · 옥으로 올라가요)', c:'함께', h:['정이 넘치는 사대','한 시간대에 여덟 명 넘게']},
   {id:'shoot',  ic:'⚖️', t:'비교전',     d:'공식 대회에서 동점으로 비교전까지', c:'함께', h:['승부는 끝나지 않았다','같은 점수, 한 순 더']},
