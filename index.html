@@ -2807,7 +2807,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21p';
+const APP_VER = '2026.10.21q';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4142,7 +4142,7 @@ const windChip = w => !w || !w.r ? '' : `<span class="wchip w-${w.r}" title="${e
 function renderWindBar(){ try{ renderGakWx(); }catch(e){}
   const el=$('#windBar'); if(!el) return; const jid=windJid(); const w=S.windNow[jid]; const cw=currentWind(); const b=bearingOf(jid);
   let main, sub, wx='';
-  if(cw && (cw.r || cw.ms!=null)){ main = cw.r ? (cw.r==='0' ? '· 바람 없음' : `${WREL[cw.r].k} ${WREL[cw.r].l} · ${WLV[WSV(cw)]}`) : `🌬 ${WLV[WSV(cw)]} 바람`; sub=windDetail(cw) + (b==null&&!cw.r?' · 과녁 방향은 관리자가 정해요':''); const x=WX(cw.wc); wx = x||cw.t!=null ? `<span class="wb-wx"><i>${x?x[0]:'🌡'}</i><b>${x?x[1]+' ':''}${cw.t!=null?cw.t+'℃':''}</b></span>` : ''; }
+  if(cw && (cw.r || cw.ms!=null)){ main = cw.r ? (cw.r==='0' ? '· 바람 없음' : `${WREL[cw.r].k} ${WREL[cw.r].l} · ${WLV[WSV(cw)]}`) : `🌬 ${WLV[WSV(cw)]} 바람`; sub=windDetail(cw) + (b==null&&!cw.r?' · 눌러서 과녁 방향을 정해 주세요':''); const x=WX(cw.wc); wx = x||cw.t!=null ? `<span class="wb-wx"><i>${x?x[0]:'🌡'}</i><b>${x?x[1]+' ':''}${cw.t!=null?cw.t+'℃':''}</b></span>` : ''; }
   else if(w===undefined){ main='바람 불러오는 중…'; sub=''; }
   else { main='바람 정보를 못 받았어요'; sub='잠시 뒤 다시 받아요'; }
   el.innerHTML = `<span class="wb-row"><span class="wb-wind ws${cw?WSV(cw):1}"><b>${esc(main)}</b>${sub?`<small>${esc(sub)}</small>`:''}</span>${wx}</span><span class="wb-foot"><span>순 저장 때 자동 기록</span><span class="wb-go">자세히 ›</span></span>`;
@@ -4153,18 +4153,21 @@ function openWindSheet(){
   const jid=windJid(); const jn=(JEONGS.find(j=>j.id===jid)||windJ()).name; const w=S.windNow[jid]; const b=bearingOf(jid); const cw=currentWind()||{};
   let pr=cw.r||null, pl=cw.l||1;
   const by = S.windSet&&S.windSet.by&&S.windSet.by[jid]; const byName = by ? ((memberById(by)||{}).name||'사원') : '';
+  const byAt = S.windSet&&S.windSet.at&&S.windSet.at[jid]; const canB = !!S.me && (isAdminNow() || homeJ().id===jid);   // p174: 그 정 소속 사원 · 관리자
   const sh=openSheet(`<h3>🌬 지금 바람</h3>
     <div class="card flat" style="padding:10px 12px">${w && !w.err ? `<b>${esc(jn)} · ${esc(windLine(cw.ms!=null?cw:w))}</b><br><span class="tiny muted">${new Date(w.at).toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit'})} 기준 · 날씨 정보 Open-Meteo.com</span>` : `<span class="tiny muted">${JEONG_GEO[jid]?'날씨 정보를 불러오지 못했어요. 잠시 뒤 다시 받아요.':'이 정은 위치 정보가 없어 바람을 자동으로 받을 수 없어요.'}</span>`}</div>
     <p class="tiny muted" style="margin:8px 2px 0">순을 저장할 때 이 바람 · 날씨가 그 순에 자동으로 남아요. 같은 정 · 같은 시각이면 모두 같은 값이에요. (세기: 약 ~3m/s · 중 ~6m/s · 강 6m/s 넘게)</p>
-    <details class="notice" ${b==null&&isAdminNow()?'open':''} ${isAdminNow()?'':'hidden'}><summary>🎯 ${esc(jn)} 과녁 방향 ${b!=null?`<span class="tiny muted">· ${compassOf(b)}쪽 (${b}°)${byName?' · '+esc(byName)+' 님이 정함':''}</span>`:'<span class="tiny" style="color:var(--red)">· 아직 안 정함</span>'}</summary>
-      <p class="tiny" style="margin:6px 0">사대에서 과녁이 어느 쪽에 있나요? 한 번만 정하면 정 사원 모두에게 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 자동으로 보여요.</p>
+    <details class="notice" ${b==null&&canB?'open':''}><summary>🎯 ${esc(jn)} 과녁 방향 ${b!=null?`<span class="tiny muted">· ${compassOf(b)}쪽 (${b}°)${byName?' · '+esc(byName)+' 님이 정함':''}${byAt?` · ${+new Date(byAt).getMonth()+1}/${new Date(byAt).getDate()}`:''}</span>`:'<span class="tiny" style="color:var(--red)">· 아직 안 정함</span>'}</summary>
+      ${canB ? `<p class="tiny" style="margin:6px 0">사대에서 과녁이 어느 쪽에 있나요? ${esc(jn)} 사원 누구나 정할 수 있고, 한 번 정하면 ${esc(jn)} 사원 모두에게 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 자동으로 보여요. 정한 사람 이름이 함께 남아요.</p>
       <div class="wcomp">${COMPASS.map((c,i)=>`<button type="button" data-wb="${i*45}" class="${b===i*45?'on':''}">${c}</button>`).join('')}</div>
-      <button class="btn sm ghost" id="wCompass" type="button" style="margin-top:8px">📱 폰 나침반으로 재기</button><div class="tiny muted" id="wCompassOut"></div></details>
+      <button class="btn sm ghost" id="wCompass" type="button" style="margin-top:8px">📱 폰 나침반으로 재기</button><div class="tiny muted" id="wCompassOut"></div>`
+      : `<p class="tiny" style="margin:6px 0">과녁 방향은 ${esc(jn)} 사원이 정해요.${b!=null?' 방향이 틀렸다면':''} 관리자 방명록이나 메일(heysadae3737@gmail.com)로 알려 주세요.</p>`}
+      ${canB && b!=null ? `<p class="tiny muted" style="margin:6px 0 0">방향이 이상하면 다시 고르거나 관리자에게 알려 주세요.</p>` : ''}</details>
     <div class="actions"><button class="btn ghost" id="wClose">닫기</button></div>`);
   $('#wClose',sh).onclick=closeSheet;
-  const setB=async deg=>{ if(!isAdminNow()){ toast('과녁 방향은 관리자가 정해요'); return; } deg=Math.round(((deg%360)+360)%360); const ok=await write(st=>st.merge('settings/wind',{bearing:{[jid]:deg}, by:{[jid]:S.me?S.me.id:''}})); if(ok){ toast(`${jn} 과녁 방향을 ${compassOf(deg)}쪽으로 정했어요`); closeSheet(); renderWindBar(); } };
+  const setB=async deg=>{ if(!canB){ toast(`과녁 방향은 ${jn} 사원이 정해요`); return; } deg=Math.round(((deg%360)+360)%360); const ok=await write(st=>st.merge('settings/wind',{bearing:{[jid]:deg}, by:{[jid]:S.me.id}, at:{[jid]:Date.now()}})); if(ok){ toast(`${jn} 과녁 방향을 ${compassOf(deg)}쪽으로 정했어요`); closeSheet(); renderWindBar(); } };
   $$('[data-wb]',sh).forEach(x=>x.onclick=()=>setB(+x.dataset.wb));
-  $('#wCompass',sh).onclick=async()=>{ const out=$('#wCompassOut',sh);
+  if($('#wCompass',sh)) $('#wCompass',sh).onclick=async()=>{ const out=$('#wCompassOut',sh);
     try{ if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){ const p=await DeviceOrientationEvent.requestPermission(); if(p!=='granted'){ out.textContent='나침반 권한이 필요해요'; return; } } }catch(e){}
     let head=null; const on=e=>{ let h=null; if(typeof e.webkitCompassHeading==='number') h=e.webkitCompassHeading; else if(e.absolute && typeof e.alpha==='number') h=(360-e.alpha)%360; if(h!=null){ head=Math.round(h); out.innerHTML=`지금 폰 위쪽이 <b>${compassOf(head)}쪽 (${head}°)</b> · 폰을 눕혀 위쪽 끝을 과녁에 향하고 <button class="btn sm pri" id="wCSave" type="button">이 방향으로 정하기</button>`; const bs=$('#wCSave',sh); if(bs) bs.onclick=()=>{ stop(); setB(head); }; } };
     const stop=()=>{ window.removeEventListener('deviceorientationabsolute',on); window.removeEventListener('deviceorientation',on); };
