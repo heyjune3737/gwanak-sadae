@@ -2819,7 +2819,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.22e';
+const APP_VER = '2026.10.22f';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4113,7 +4113,7 @@ try{ Object.assign(UT_NAME, {'#rmBtn':'표 기록 › 📝 순 메모 열기', '
    그날의 바람 — 자동(Open-Meteo) + 수동, 과녁 기준 방향
    ========================================================= */
 const JEONG_GEO = { hwanghak:[37.5773,126.9644], gonghang:[37.5528,126.8438], salgoji:[37.5582,127.0697], seokho:[37.5530,127.0035],
-  yeonghak:[37.5273,126.8794], hwarang:[37.6240,127.1030], gwanak:[37.4760,126.9470], sungnak:[37.6797,127.0898], tangeum:[36.9882,127.8982] };
+  yeonghak:[37.5273,126.8794], hwarang:[37.6240,127.1030], gwanak:[37.4760,126.9470], sungnak:[37.6797,127.0898], tangeum:[36.9882,127.8982], nanji:[37.5668,126.8770] };
 // 우궁: 과녁 오른쪽 = 줌앞 → 오른쪽에서 부는 바람(RL, ⬅)이 줌앞바람 · 좌궁은 반대
 const wLeftHand = () => !!(S && S.me && S.me.hand==='좌궁');
 const WREL = { '0':{k:'·', l:'바람 없음'}, H:{k:'⬇', l:'안바람'}, T:{k:'⬆', l:'오늬바람'},
@@ -5840,6 +5840,7 @@ const JEONGS = [
   {id:'gwanak',    name:'관악정',   hanja:'冠岳亭', addr:'서울특별시 관악구 약수암길 43-3'},
   {id:'sungnak',   name:'수락정',   hanja:'',       addr:'서울특별시 노원구 덕릉로145길 86'},
   {id:'tangeum',   name:'탄금정',   hanja:'',       addr:'충청북도 충주시 탄금대안길 105 (탄금대 공원 안)'},
+  {id:'nanji',     name:'난지국궁장', hanja:'',     addr:'서울특별시 마포구 상암동 496-171 (난지한강공원)'},
 ];
 S.jeong = lsGet('sadae.jeong', null); // 예전 공용 궁패 = 소속 정을 아직 안 고른 사원·예전 등록의 기본 정
 const subSettings = sub({doc:'settings/app'}, d => { if(d && d.jeong){ S.jeong=d.jeong; lsSet('sadae.jeong',S.jeong); } renderHeader(); if(window.__booted){ renderToday(); renderRoom(); } });
