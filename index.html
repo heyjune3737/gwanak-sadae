@@ -2819,7 +2819,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21x';
+const APP_VER = '2026.10.22a';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -6045,6 +6045,11 @@ const BSETS = [
   {id:'kind',  ic:'🧩', t:'함께',     u:'번',      T:[10,100,300,1000], v:g=>kindCount(g.mid), d:'다른 사원 방명록에 남긴 글 + 보낸 응원', mag:false},
   {id:'romance', ic:'🏮', t:'낭만 궁사', u:'번',   T:[1,3,10,30], v:g=>romanceCount(g.mid), d:'같은 정 · 같은 시간대 사대에 8명 이상 함께 선 날 · 하루 한 번', mag:false, hid:1},   // p167: 숨은 배지로 찾은 뒤 단계로
 ];
+// p181 · 길잡이(각 정 첫 1~3번째 가입) · 선발대(2026년 10월 타정 가입)
+function guideBadges(mid){ const L=(S.members||[]).filter(m=>m&&m.id&&m.name&&m.id!==HUB_BOT&&+m.joinedAt>0); const me=L.find(m=>m.id===mid); if(!me) return {};
+  const J=memberJ(me).id; const rank=L.filter(m=>memberJ(m).id===J).sort((a,b)=>(+a.joinedAt)-(+b.joinedAt)||String(a.id).localeCompare(String(b.id))).findIndex(m=>m.id===mid);
+  const ym=dstr(new Date(+me.joinedAt)).slice(0,7);
+  return {guide: rank>=0 && rank<3, rank, vanguard: J!==baseJ().id && ym==='2026-10'}; }
 function romanceCount(mid){ const D=(store&&store.docs)||{}; let n=0; for(const k in D){ if(!k.startsWith('attendance/')) continue; const E=(D[k]&&D[k].entries)||{}; const me=E[mid]; if(!me||!me.slot) continue; const j=entryJid(me);
     if(Object.entries(E).filter(([id,e])=>e&&id!==HUB_BOT&&e.slot===me.slot&&entryJid(e)===j).length>=8) n++; } return n; }
 const setTier = (set, g) => { let k=0; set.T.forEach((x,i)=>{ if(set.v(g,i+1)>=x) k=i+1; }); return k; };
@@ -6114,7 +6119,7 @@ const HIDDEN = [
   {id:'stone',  ic:'🪨', t:'징검다리',   d:'한 순을 中 · 불 · 中 · 불 · 中으로 번갈아', c:'한 순 모양', h:['돌다리를 건너듯','하나 걸러 하나']},
   {id:'ends',   ic:'🪞', t:'양 끝',      d:'한 순에 1시와 5시만 관중', c:'한 순 모양', h:['처음과 끝만','가운데 세 발은 비우고']},
   {id:'oneway', ic:'🧲', t:'한 길 고집', d:'한 순 5시가 관중 없이 모두 같은 쪽으로', c:'한 순 모양', h:['한 우물만 판다','다섯 발이 같은 길로']},
-  {id:'compass',ic:'🧭', t:'동서남북',   d:'한 순에 관중 · 넘음 · 짧음 · 앞남 · 뒤남이 하나씩', c:'한 순 모양', h:['사방을 다 둘러보고','넘고 · 짧고 · 앞 · 뒤 · 그리고 하나']},
+  {id:'compass',ic:'🗺', t:'동서남북',   d:'한 순에 관중 · 넘음 · 짧음 · 앞남 · 뒤남이 하나씩', c:'한 순 모양', h:['사방을 다 둘러보고','넘고 · 짧고 · 앞 · 뒤 · 그리고 하나']},
   {id:'stairs', ic:'🪜', t:'오르막',     d:'한 날 1중 → 2중 → 3중 → 4중 → 몰기를 차례로', c:'한 순 모양', h:['한 계단씩','하나에서 다섯까지 차례로']},
   {id:'twin',   ic:'🔂', t:'판박이',     d:'같은 날 두 순의 낙점 5개가 똑같음(몰기 빼고)', c:'한 순 모양', h:['거울에 비친 듯','같은 날 같은 모양 두 번']},
   {id:'first',  ic:'🌱', t:'초순 몰기',  d:'그날 처음 쏜 순(초순)에 몰기', c:'순의 자리', h:['시작이 반','첫 순부터 다섯 발 모두']},
@@ -6126,6 +6131,8 @@ const HIDDEN = [
   {id:'samenum',ic:'🔢', t:'같은 숫자 날', d:'월과 일이 같은 날 습사(1/1 · 2/2 … 12/12)', c:'날씨 · 때', h:['숫자가 겹치는 날','달력을 보세요 — 몇 월 며칠?']},
   {id:'holiday',ic:'🎑', t:'명절 사대',  d:'설 · 추석 당일 습사', c:'날씨 · 때', h:['모두 고향 갈 때','설이나 한가위 당일']},
   {id:'crowd',  ic:'👯', t:'북적 사대',  d:'같은 시간대 사대에 6명 이상과 함께', c:'함께', h:['혼자가 아니야','한 시간대에 여섯 명 넘게']},
+  {id:'guide',  ic:'🧭', t:'길잡이',  d:'소속 정에서 첫 번째 ~ 세 번째로 가입한 궁사', c:'함께', h:['뒤따라올 이들을 위해','우리 정에서 가장 먼저 온 셋']},
+  {id:'vanguard',ic:'🛶', t:'선발대', d:'2026년 10월, 여러 정이 함께 쓰기 시작한 달에 가입한 타정 궁사', c:'함께', h:['먼저 와 본 사람들','다른 정에서 시월에']},
   {id:'romance',ic:'🏮', t:'낭만 궁사',  d:'같은 정 · 같은 시간대 사대에 8명 이상 함께 (찾으면 배지 칸에서 동 · 은 · 금 · 옥으로 올라가요)', c:'함께', h:['정이 넘치는 사대','한 시간대에 여덟 명 넘게']},
   {id:'shoot',  ic:'⚖️', t:'비교전',     d:'공식 대회에서 동점으로 비교전까지', c:'함께', h:['승부는 끝나지 않았다','같은 점수, 한 순 더']},
   {id:'jangwon',ic:'👑', t:'장원',       d:'공식 대회 1등 (부별 포함)', c:'함께', h:['정에서 가장 높은 자리','공식 대회에서 맨 위에']},
@@ -6201,6 +6208,7 @@ function hiddenOf(mid, days, upto){
   for(const k in D){ if(!k.startsWith('attendance/')||(upto&&k.slice(11)>upto)) continue; const E=(D[k]&&D[k].entries)||{}; const me=E[mid]; if(!me||!me.slot) continue; const j=entryJid(me);
     if(Object.values(E).filter(e=>e&&e.slot===me.slot&&entryJid(e)===j).length>=6){ got.crowd=1; break; } }
   if(romanceCount(mid)>=1) got.romance=1;
+  try{ const gb=guideBadges(mid); if(gb.guide) got.guide=1; if(gb.vanguard) got.vanguard=1; }catch(e){}
   if((S.comps||[]).some(c=>c&&compOfficial(c)&&c.entries&&c.entries[mid]&&c.entries[mid].shootoff!=null&&c.entries[mid].shootoff!==false)) got.shoot=1;
   if(placesOf(mid).some(p=>p.rank===1)) got.jangwon=1;
   { let n=0; for(const k in D){ const x=D[k]; if(!x||!x.entries) continue;
@@ -6383,7 +6391,7 @@ function growthKpiHTML(g){
     <div class="gk-g best"><div class="gk-h">🏆 내 최고 기록</div><div class="gk-r">${g.best?cell(Math.round(g.best.r*100),'%','🥇','하루 최고',`${fmtShort(g.best.date)} · ${g.best.h}/${g.best.n*5}시`):cell('–','','🥇','하루 최고','3순 이상 쏜 날')}${cell(g.maxN,'순','⚡','하루 최다',`${g.maxN*5}시`)}${cell(g.bestWeeks,'주','🔁','최장 연속',g.bestDays>1?`${g.bestDays}일 내리`:'')}</div></div></div>`;
 }
 // p149 · 기록 전 숨은 배지의 찾은 때 되살리기
-const HID_NODATE = ['shoot','jangwon','cheers'];
+const HID_NODATE = ['shoot','jangwon','cheers','guide','vanguard'];
 function hidWhen(id, mid, days){ const D=(days||[]).filter(d=>d&&d.date).slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0); const dates=[...new Set(D.map(d=>d.date))];
   const noon=dt=>Date.parse(dt+'T12:00:00+09:00');
   for(const dt of dates){ const base=D.filter(d=>d.date<dt); const today_=D.filter(d=>d.date===dt);
