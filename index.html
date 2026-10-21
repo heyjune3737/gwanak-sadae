@@ -2146,6 +2146,8 @@ html body #plaza .pz-bub.best{border-color:#D9822B!important;border-width:2px!im
 .vn-head{margin:14px 0 6px;font-weight:700;font-size:14px}.vn-head small{display:block;font-weight:400;font-size:11.5px;color:var(--ink3)}
 .jitem.vn .grow{display:flex;flex-direction:column;align-items:flex-start;gap:2px}.vn-sub{font-size:11px;color:var(--ink3);line-height:1.35;text-align:left}
 .vn-link{display:block;font-size:11.5px;margin:-2px 0 6px 4px;color:var(--ink2);text-decoration:underline;text-underline-offset:2px}
+/* p191 · 달력 🏠 */
+#monthCal .d.pxd{position:relative;cursor:pointer}#monthCal .d .pxm{position:absolute;right:1px;bottom:0;font-size:9px;font-style:normal;line-height:1}
 /* p190 · 근사 보기 */
 .px-day .px-dblk{margin-top:8px}.px-rp summary{cursor:pointer;list-style:none;font-size:15px}.px-rp summary::before{content:'▸ ';}.px-rp[open] summary::before{content:'▾ ';}.px-rp summary::-webkit-details-marker{display:none}
 /* p189 · 다른 연습 */
@@ -2840,7 +2842,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.22j';
+const APP_VER = '2026.10.22k';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3919,6 +3921,14 @@ function pxReportHTML(){ if(!pxOn()) return ''; const L=pxAll(); if(!L.length) r
     ${md&&md.tot?`<p class="tiny" style="margin:4px 0">근사 낙점 쏠림 · 빗나간 ${md.tot}발 — 앞 ${md.m.F} · 뒤 ${md.m.B} · 짧음 ${md.m.S} · 넘음 ${md.m.O}</p>`:''}
     ${kinds?`<p class="tiny" style="margin:4px 0">이번 달 종류별 · ${esc(kinds)}</p>`:''}
     <button class="btn sm ghost block" type="button" data-pxjr>📒 연습 일지 열기</button></details>`; }
+// p191 · 습사 달력에 🏠
+function pxCalMark(ym){ const cal=$('#monthCal'); if(!cal) return; const lg=$('#calCard .cal-lg'); const old=lg&&lg.querySelector('.pxm-lg'); if(old) old.remove();
+  if(!pxOn()) return; const by={}; pxAll().filter(x=>String(x.date).startsWith(ym)).forEach(x=>{ (by[x.date]=by[x.date]||[]).push(x); }); if(!Object.keys(by).length) return;
+  const cells=[...cal.children].filter(c=>c.classList.contains('d') && !c.classList.contains('wh'));
+  cells.forEach((c,i)=>{ const ds=`${ym}-${String(i+1).padStart(2,'0')}`; const L=by[ds]; if(!L) return;
+    c.classList.add('pxd'); c.insertAdjacentHTML('beforeend','<i class="pxm" aria-hidden="true">🏠</i>'); c.title=(c.title?c.title+' · ':ds+' · ')+'다른 연습 '+L.length+'개';
+    if(!c.dataset.cal){ c.setAttribute('role','button'); c.tabIndex=0; const go=()=>{ L.some(x=>Array.isArray(x.r)) ? openDayView(ds) : openPxJournal(); }; c.addEventListener('click',go); c.addEventListener('keydown',e=>{ if(e.key==='Enter') go(); }); } });
+  if(lg) lg.insertAdjacentHTML('beforeend','<span class="pxm-lg">🏠 다른 연습</span>'); }
 // 표 기록: 근사 칸 · 맨 아래 일지 한 줄
 S.near = lsGet('sadae.near', null) || {on:false, m:8, env:'in'};
 const nearOn = () => pxOn() && !!S.near.on;
@@ -4909,6 +4919,7 @@ function renderRecord0(){
   for(let d=1; d<=dim; d++){ const ds=`${ym}-${pad(d)}`; const dd=byDate[ds]; let cls=''; if(dd && dd.rounds && dd.rounds.length){ const h=dd.rounds.reduce((a,r)=>a+hitsOf(r),0)/(dd.rounds.length*5); cls = h<0.3?'l1':h<0.6?'l2':'l3'; } cal+= (dd&&dd.rounds&&dd.rounds.length) ? `<button type="button" class="d ${cls} ${ds===t?'today':''} ${S.recView==='view'&&S.viewDate===ds?'sel':''}" data-cal="${ds}" title="${ds} · ${dd.rounds.length}순">${d}${dd.rounds.some(r=>Array.isArray(r)&&hitsOf(r)===5)?'<b class="st">★</b>':''}</button>` : `<div class="d ${ds===t?'today':''}" title="${ds}">${d}</div>`; }
   $('#monthCal').innerHTML=cal;
   $$('#monthCal [data-cal]').forEach(b=>b.addEventListener('click',()=>{ openDayView(b.dataset.cal); }));
+  try{ pxCalMark(ym); }catch(e){ console.warn('pxcal', e); }
   $('#todayBig').hidden = !rounds.length; { const dd=$('#todayBigDesc'); if(dd) dd.hidden = !rounds.length; }
   if(S.recView==='view') renderDayView();
   renderTips(missAgg(miss));
