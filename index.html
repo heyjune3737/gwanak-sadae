@@ -2647,7 +2647,7 @@ const isPix = c => typeof c==='string' && c.includes('/');
 function charSVG(c, opts={}){
   if(c===GUEST_CHAR) return `<svg class="gs-svg" viewBox="0 0 100 120" role="img" aria-label="궁사님"><circle cx="50" cy="44" r="22" fill="#9A9488"/><path d="M12 116c4-32 20-46 38-46s34 14 38 46z" fill="#9A9488"/></svg>`;
   if(isPix(c)){ const src=(window.PIX||{})[c]||(window.PIX||{})[DEFAULT_CHAR]; if(src) return `<svg class="pixc${pixSzCls(c)}" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="캐릭터"><image href="${src}" width="100" height="120"/></svg>`; c='cat'; }
-  c = typeof c==='string' ? charById(c) : c;
+  c = typeof c==='string' ? charById(c) : (CHARS.includes(c) ? c : charById(String((c&&c.id)||'')));   // p179: 서버에서 온 캐릭터 객체는 믿지 않음
   const ink='#2A2620', ef = c.earFill || c.fur;
   let ears='';
   if(c.ears==='long') ears=`<ellipse cx="38" cy="16" rx="7" ry="16" fill="${c.fur}"/><ellipse cx="38" cy="18" rx="3.4" ry="11" fill="#F4B8C1"/><ellipse cx="62" cy="16" rx="7" ry="16" fill="${c.fur}"/><ellipse cx="62" cy="18" rx="3.4" ry="11" fill="#F4B8C1"/>`;
@@ -2819,7 +2819,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21v';
+const APP_VER = '2026.10.21w';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -2830,7 +2830,7 @@ const PIN_ERR = r => r.error==='name_taken' ? '정에 같은 이름이 이미 �
   : r.error==='reset_pending' ? '새 비밀번호는 관리자가 승인한 뒤에 쓸 수 있어요 (요청 처리 중)'
   : r.error==='wait' ? '방금 요청했어요. 10분 뒤에 다시 할 수 있어요'
   : r.error==='blocked' ? '이용이 제한된 캐릭터예요. 관리자에게 문의해 주세요'
-  : r.error==='wrong_pin' ? `비밀번호가 달라요 (남은 기회 ${r.left}번)` : r.error==='locked' ? `여러 번 틀려서 잠겼어요. ${r.wait||10}분 뒤에 다시 해 주세요`
+  : r.error==='wrong_pin' ? `비밀번호가 달라요 (남은 기회 ${r.left}번)` : r.error==='locked' ? `여러 번 틀려서 잠겼어요. ${(r.wait||10)>=60?Math.round((r.wait||10)/60)+'시간':(r.wait||10)+'분'} 뒤에 다시 해 주세요. 비밀번호가 기억나지 않으면 아래 🔑 비밀번호를 잊었어요를 눌러 주세요`
   : '잠시 후 다시 해 주세요';
 async function pinRpc(fn, args){
   try{ const {data,error}=await store.client.rpc(fn, {p_space:store.space, ...args}); if(error) throw error; return data||{}; }
@@ -3600,7 +3600,17 @@ const gsTag = m => { if(!m||!m.guest) return ''; const a=String(m.name||'').star
 const subMembers = sub({col:'members'}, rows => { S.members = rows; renderAll(); });
 const subAtt = sub({doc:'attendance/'+today()}, d => { S.attendance = d; renderToday(); });
 const subDays = sub(daysQuery(), rows => { S.myDays = rows; S.daysLoaded = true; renderRecord(); renderRoom(); if(window.__booted) renderHeader(); });
-const subComps = sub({col:'comps', orderBy:['date','desc'], limit:60}, rows => { S.comps = rows; renderComp(); setTimeout(()=>{ if(typeof compInviteCheck==='function') compInviteCheck(); }, 1200); if(typeof liveDraw==='function' && liveDraw) liveDraw(); });
+// p179 · 대회 문서 정리: 사원이 아무 값이나 넣어도 화면이 HTML 로 받지 않게
+const ID_OK = v => typeof v==='string' && /^[A-Za-z0-9_-]{1,48}$/.test(v);
+function sanComp(c){ if(!c||typeof c!=='object') return c; const o={...c};
+  o.roundCount = Math.max(1, Math.min(30, parseInt(o.roundCount,10)||3));
+  o.members = Array.isArray(o.members) ? o.members.filter(ID_OK) : [];
+  o.rules = Array.isArray(o.rules) ? o.rules.filter(r=>typeof r==='string' && /^[a-z0-9_]{1,30}$/.test(r)) : [];
+  if(o.entries && typeof o.entries==='object'){ const E={}; for(const [k,e] of Object.entries(o.entries)){ if(!ID_OK(k)||!e||typeof e!=='object') continue; const x={...e};
+      if('shootoff' in x) x.shootoff = (x.shootoff===null||x.shootoff===undefined) ? null : (Number.isFinite(+x.shootoff) ? +x.shootoff : null);
+      if(x.rounds && !Array.isArray(x.rounds)) x.rounds=[]; E[k]=x; } o.entries=E; }
+  return o; }
+const subComps = sub({col:'comps', orderBy:['date','desc'], limit:60}, rows => { S.comps = (rows||[]).map(sanComp); renderComp(); setTimeout(()=>{ if(typeof compInviteCheck==='function') compInviteCheck(); }, 1200); if(typeof liveDraw==='function' && liveDraw) liveDraw(); });
 function daysQuery(){ return {col:'days', where:[['memberId','==', S.me ? S.me.id : '__none__']], orderBy:['date','desc'], limit:2000}; }
 
 /* ---------- 탭 ---------- */
@@ -3974,9 +3984,9 @@ function renderToday(){
   $('#attCount').textContent = listAll.length ? `${listAll.length}명` : '';
   $('#attList').innerHTML = listAll.length ? listAll.map(e=>{ const m=memberById(e.id); const c=(m&&m.char)||e.char||DEFAULT_CHAR; const nm=(m&&m.name)||e.name||'사원';
       const rx=e.reactions||{}; const counts={}; Object.entries(rx).forEach(([who,em])=>{ if(em) counts[em]=(counts[em]||[]).concat(who); }); const mine=S.me?rx[S.me.id]:null; const isMe=S.me&&S.me.id===e.id;
-      const chips=Object.entries(counts).map(([em,whos])=>`<span class="react ${whos.includes(S.me&&S.me.id)?'mine':''}" title="${esc(whos.map(w=>{const mm=memberById(w);return mm?mm.name:'사원';}).join(', '))}">${em} ${whos.length}</span>`).join('');
+      const chips=Object.entries(counts).map(([em,whos])=>`<span class="react ${whos.includes(S.me&&S.me.id)?'mine':''}" title="${esc(whos.map(w=>{const mm=memberById(w);return mm?mm.name:'사원';}).join(', '))}">${esc(em)} ${whos.length}</span>`).join('');
       return `<div class="att ${reactOpen===e.id?'open':''}" data-att="${e.id}"><span class="av">${charSVG(c)}</span><div class="who"><b>${esc(nm)}</b><span>${esc([e.slot,e.note].filter(Boolean).join(' · '))}</span>${chips?`<div class="reacts">${chips}</div>`:''}</div>
-        ${!isMe&&S.me?`<button class="btn sm ghost" data-react-open="${e.id}" aria-label="응원 보내기">${mine?mine:'＋'}</button>`:''}
+        ${!isMe&&S.me?`<button class="btn sm ghost" data-react-open="${e.id}" aria-label="응원 보내기">${mine?esc(mine):'＋'}</button>`:''}
         ${reactOpen===e.id&&!isMe&&S.me?`<div class="react-pick" style="flex-basis:100%">${EMOJIS.map(em=>`<button data-react="${em}" class="${mine===em?'on':''}">${em}</button>`).join('')}<button data-react="" title="지우기">✕</button></div>`:''}</div>`; }).join('')
     : `<div class="muted">오늘 ${esc(VJ.name)}에 아직 아무도 등록하지 않았어요. 첫 번째로 사대에 서 보세요.</div>`;
   $$('[data-react-open]').forEach(b=>b.addEventListener('click',()=>{ reactOpen = reactOpen===b.dataset.reactOpen ? null : b.dataset.reactOpen; renderToday(); }));
@@ -5279,7 +5289,7 @@ function renderCompDetail(comp){
       ${rows.map(r=>{ const isMe=S.me&&S.me.id===r.id; return `<div class="nm ${isMe?'me':''}"><span class="rk ${r.rank===1?'g':r.rank===2?'s':r.rank===3?'b':''}">${r.rank}</span><span class="av">${charSVG(r.member.char||DEFAULT_CHAR)}</span><span class="nmt">${(gwNo(comp,r.id)||DV==='all')?`<span class="nmt-tg">${gwTag(comp, r.id)}${DV==='all'?`<i class="dv-t d-${divOf(comp,r.id)}">${divName(divOf(comp,r.id))}</i>`:''}</span>`:''}${esc(r.member.name)}${gsTag(r.member)}${r.tieWith&&r.tieBy==='shootoff-needed'&&r.done===comp.roundCount?'<span class="tie">재사</span>':''}</span></div>
         <span class="tot num">${r.total}</span>
         ${cols.map(i=>{ const rd=r.rounds[i]; const h=rHits(rd); const part=rd&&!rDone(rd); return `<button class="cell ${rd?(h===5?'m':''):'empty'} ${part?'cur':''}" data-cell="${r.id}:${i}" aria-label="${esc(r.member.name)} ${i+1}순">${rd?(part?h+'·':h):'–'}</button>`; }).join('')}
-        ${showShoot?`<button class="cell ${r.shootoff===null?'empty':''}" data-shoot="${r.id}">${r.shootoff===null?'–':r.shootoff}</button>`:''}`; }).join('')}
+        ${showShoot?`<button class="cell ${r.shootoff===null?'empty':''}" data-shoot="${r.id}">${r.shootoff===null?'–':esc(r.shootoff)}</button>`:''}`; }).join('')}
     </div>`;
   det.innerHTML = `<div class="cd-top"><button class="btn sm" id="cdBack">← 대회</button><span class="grow"><b style="font-size:15px">${esc(comp.name)}</b><span class="badge ${comp.kind==='friendly'?'fun':''}">${comp.kind==='friendly'?'친선':'공식 ✅'}</span>${canOfficial()?`<button type="button" class="linkbtn tiny" id="cdCert">${comp.kind==='friendly'?'✅ 공식으로 인정':'친선으로 되돌리기'}</button>`:''}<br><span class="tiny">${fmtK(comp.date)} · ${comp.roundCount}순 ${comp.roundCount*5}시 · ${rows.length}명${compOfficial(comp)?'':` · 개최 ${esc(compNm(comp.createdBy))}`}${S.me&&(comp.members||[]).includes(S.me.id)?' · 나 참가 ✅':''}</span></span>${compCanCancel(comp)?'<button class="btn sm ghost" id="cdDel" style="color:var(--red)">대회 취소</button>':''}</div><div id="cdConfirm"></div>${!compOfficial(comp)&&comp.ok?`<div class="cd-ok"><span class="tiny muted">참가 확인</span>${(comp.members||[]).filter(id=>!isGuestId(id)).map(id=>{ const m=memberById(id); const v=compOk(comp,id)?'✅':comp.ok[id]===false?'❌':'⏳'; return `<span class="cd-okm">${v} ${esc((m&&m.name)||'사원')}</span>`; }).join('')}${S.me&&(comp.members||[]).includes(S.me.id)&&!compOk(comp,S.me.id)?'<button type="button" class="btn sm pri" id="cdOkMe">참가 확인</button>':''}</div>`:''}
     <div class="card">
@@ -5289,10 +5299,10 @@ function renderCompDetail(comp){
       ${rows.map(r=>`<tr><td class="name"><span class="r ${r.rank===1?'g':r.rank===2?'s':r.rank===3?'b':''}">${r.rank}</span>${gwTag(comp, r.id)}${DV==='all'?`<i class="dv-t d-${divOf(comp,r.id)}">${divName(divOf(comp,r.id)).slice(0,2)}</i>`:''}${esc(r.member.name)}${gsTag(r.member)}${r.tieWith&&r.tieBy==='shootoff-needed'&&r.done===comp.roundCount?'<span class="tie">재사</span>':''}</td>
         <td class="total num">${r.total}<span class="tiny">/${comp.roundCount*5}</span>${comp.roundCount===9&&r.done===9&&gradeFor(r.total)?`<span class="grade">${gradeFor(r.total)}</span>`:''}</td>
         ${cols.map(i=>{ const rd=r.rounds[i]; const h=rHits(rd); const part=rd&&!rDone(rd); return `<td><button class="cell ${rd?(h===5?'m':''):'empty'} ${part?'cur':''}" data-cell="${r.id}:${i}" aria-label="${esc(r.member.name)} ${i+1}순">${rd?(part?h+'<span class="tiny">·</span>':h):'–'}</button></td>`; }).join('')}
-        ${(comp.rules||[]).includes('shootoff')?`<td><button class="cell ${r.shootoff===null?'empty':''}" data-shoot="${r.id}">${r.shootoff===null?'–':r.shootoff}</button></td>`:''}
+        ${(comp.rules||[]).includes('shootoff')?`<td><button class="cell ${r.shootoff===null?'empty':''}" data-shoot="${r.id}">${r.shootoff===null?'–':esc(r.shootoff)}</button></td>`:''}
       </tr>`).join('')}
     </tbody></table></div>`}
-    <p class="tiny" style="margin:10px 0 0">동점 규칙: ${(comp.rules||[]).length ? comp.rules.map((r,i)=>`${i+1}. ${ruleById(r)?ruleById(r).name:r}`).join(' → ') : '없음 (관중 수만)'} · 금색 = 몰기 · 칸을 누르면 5시 수정${needShoot?' · 동점자는 비교 칸에 한 순 더 쏜 관중 수를 적어주세요':''}</p>
+    <p class="tiny" style="margin:10px 0 0">동점 규칙: ${(comp.rules||[]).length ? comp.rules.map((r,i)=>`${i+1}. ${ruleById(r)?ruleById(r).name:esc(r)}`).join(' → ') : '없음 (관중 수만)'} · 금색 = 몰기 · 칸을 누르면 5시 수정${needShoot?' · 동점자는 비교 칸에 한 순 더 쏜 관중 수를 적어주세요':''}</p>
     ${comp.roundCount===9?`<p class="tiny" style="margin:6px 0 0">승급·입승단 기준(9순 45시): 1급 22중 · 초단 24중 · 2단 26 · 3단 28 · 4단 30 · 5단 31 · 6단 33 · 7단 35 · 8단 37 · 9단 39중 (만 70세 이상 1급 18중·초단 20중)</p>`:''}
   </div>
   ${divHTML(comp)}
