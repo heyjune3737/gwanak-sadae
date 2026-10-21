@@ -5624,7 +5624,12 @@ function openHopaeDeco(){
 const CAB_COL = ['#F4B63B','#E2463B','#3E8A4F','#3552A0','#6A4FA8','#C9A23A'];
 const CAB_MAX = () => HIDDEN.length + 12;
 function hidFirstOf(id, mid){ if(String(id).startsWith('mh:')) return null; const F=hidFinders(id, mid); return (F.length && F[0].at>1) ? F[0] : null; }   // 시각 1 = 기록 전부터 → 첫 발견자 없음
-function cabIds(m, own){ const H=(m&&m.hid)||{}; let ids=Object.keys(H).filter(id=>hidCat(id));
+// p188: 사람 · 가입 순서로 정해지는 배지는 기록보다 지금 조건이 우선 (회수 가능)
+const HID_LIVE = ['guide','ojakgyo','vanguard','maker'];
+function hidLiveOk(id, mid){ if(!HID_LIVE.includes(id)) return true; try{
+    if(id==='maker') return typeof DEV_MIDS!=='undefined' && DEV_MIDS.includes(mid);
+    return !!guideBadges(mid)[id]; }catch(e){ return true; } }
+function cabIds(m, own){ const H=(m&&m.hid)||{}; let ids=Object.keys(H).filter(id=>hidCat(id) && hidLiveOk(id, m&&m.id));
   if(own && S.me && m && m.id===S.me.id){ try{ const T=badgeState(m.id, S.myDays||[]); T.hidden.forEach(x=>{ if(!ids.includes(x.id)) ids.push(x.id); }); (T.mhid||[]).forEach(ym=>{ const k='mh:'+ym; if(!ids.includes(k)) ids.push(k); }); }catch(e){} }
   ids.sort((a,b)=>(+H[a]||9e15)-(+H[b]||9e15) || HIDDEN.findIndex(x=>x.id===a)-HIDDEN.findIndex(x=>x.id===b));
   const ord=Array.isArray(m&&m.cab)?m.cab.filter(id=>ids.includes(id)):[]; return [...ord, ...ids.filter(id=>!ord.includes(id))]; }
@@ -6193,7 +6198,7 @@ function mhidOf(mid, days){   // 이달의 숨은 배지를 받은 달 목록 ['
   return out.sort(); }
 // 정에서 이 숨은 배지를 찾은 사람(찾은 시각 순)
 function hidFinders(id, mid){ const me=memberById(mid||(S.me&&S.me.id))||S.me||{}; const J=memberJ(me).id;
-  return (S.members||[]).filter(m=>m && m.hid && m.hid[id] && memberJ(m).id===J && !((id==='guide'||id==='ojakgyo') && typeof DEV_MIDS!=='undefined' && DEV_MIDS.includes(m.id))).map(m=>({id:m.id, name:m.name, at:+m.hid[id]||0})).sort((a,b)=>a.at-b.at); }
+  return (S.members||[]).filter(m=>m && m.hid && m.hid[id] && hidLiveOk(id, m.id) && memberJ(m).id===J && !((id==='guide'||id==='ojakgyo') && typeof DEV_MIDS!=='undefined' && DEV_MIDS.includes(m.id))).map(m=>({id:m.id, name:m.name, at:+m.hid[id]||0})).sort((a,b)=>a.at-b.at); }
 function hidCat(id){ if(String(id).startsWith('mh:')){ const ym=String(id).slice(3), M=MHID[+ym.slice(5)]; return M?{id, ic:M[0], t:M[1], d:`${+ym.slice(5)}월의 숨은 배지 — ${M[2]}`, c:`${+ym.slice(5)}월 숨은`}:null; } return HIDDEN.find(x=>x.id===id)||null; }
 function hidFirstNews(){ const now=Date.now(); let best=null; const ids=[...HIDDEN.map(x=>x.id)];
   for(const id of ids){ const L=hidFinders(id); if(!L.length) continue; const f=L[0]; if(now-f.at<24*3600e3 && (!best||f.at>best.at)) best={...f, bid:id}; }
