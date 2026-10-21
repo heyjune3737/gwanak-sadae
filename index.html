@@ -2663,7 +2663,7 @@ class RemoteStore extends LocalStore{
     window.addEventListener('online',()=>this.refresh());
   }
   get token(){ return this.auth && this.auth.token || null; }
-  setAuth(a){ this.auth=a; lsSet(this.AKEY,a); }
+  setAuth(a){ this.auth=a; lsSet(this.AKEY,a); this.since=0; this.wantFull=true; }
   _persist(){ lsSet(this.KEY,this.docs); }
   _save(){ this._persist(); }
   async refresh(){
@@ -2676,9 +2676,17 @@ class RemoteStore extends LocalStore{
       const gate = st==='active' ? null : st;
       if(gate){ this.gate=gate; this.online=true; this.lastRefresh=Date.now(); renderGate(); renderSync(); this._readyRes(); return; }
       const wasGated=this.gate; this.gate=null; renderGate();
-      const {data,error}=await this.client.rpc('sadae_list',{p_space:this.space,p_token:this.token});
-      if(error) throw error;
-      const next={}; for(const r of (data||[])) next[r.path]=r.data;
+      // 31) 바뀐 문서만 받기: 10분마다 · 처음 · 빠진 문서가 있을 때만 전체 (서버 함수가 없으면 예전 방식)
+      const getRows=async(full)=>{ if(this.noSince) return null;
+        const r=await this.client.rpc('sadae_list_since',{p_space:this.space,p_token:this.token,p_since: full?'1970-01-01T00:00:00Z':new Date(this.since-5000).toISOString()});
+        if(r.error){ const t=(r.error.message||'')+' '+(r.error.code||''); if(/sadae_list_since|PGRST202|42883|does not exist|schema cache/i.test(t)){ this.noSince=true; return null; } throw r.error; }
+        if(!Array.isArray(r.data)){ this.noSince=true; return null; } return r.data; };
+      let full = !this.since || this.wantFull || Date.now()-(this.lastFull||0) > 600e3;
+      let rows=await getRows(full), next={};
+      if(rows){ let ts=0, miss=false; const build=R=>{ const o={}; for(const r of R){ if(r.path==='__ts'){ ts=+((r.data||{}).ts)||0; continue; } if(r.data===null){ if(Object.prototype.hasOwnProperty.call(this.docs,r.path)) o[r.path]=this.docs[r.path]; else miss=true; } else o[r.path]=r.data; } return o; };
+        next=build(rows); if(miss && !full){ full=true; miss=false; rows=await getRows(true); next=build(rows); }
+        if(ts) this.since=ts; if(full){ this.lastFull=Date.now(); this.wantFull=false; } }
+      else { const {data,error}=await this.client.rpc('sadae_list',{p_space:this.space,p_token:this.token}); if(error) throw error; for(const r of (data||[])) next[r.path]=r.data; }
       for(const op of this.pending){ if(op.op==='del') delete next[op.path]; else if(op.op==='set') next[op.path]=op.data; else next[op.path]=deepMerge(next[op.path]||{},op.data); }
       this.docs=next; this._persist(); this.online=true; this.lastRefresh=Date.now(); this._emit(); renderSync(); this._readyRes();
       if(wasGated){ const d=memberDoc(this.auth&&this.auth.mid); if(d) setMe(meFromDoc(d)); if(wasGated==='pending') toast('가입이 승인됐어요. 사대에 오신 걸 환영해요!'); }
@@ -2723,7 +2731,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.21d';
+const APP_VER = '2026.10.21e';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
