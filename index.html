@@ -2146,6 +2146,100 @@ html body #plaza .pz-bub.best{border-color:#D9822B!important;border-width:2px!im
 .vn-head{margin:14px 0 6px;font-weight:700;font-size:14px}.vn-head small{display:block;font-weight:400;font-size:11.5px;color:var(--ink3)}
 .jitem.vn .grow{display:flex;flex-direction:column;align-items:flex-start;gap:2px}.vn-sub{font-size:11px;color:var(--ink3);line-height:1.35;text-align:left}
 .vn-link{display:block;font-size:11.5px;margin:-2px 0 6px 4px;color:var(--ink2);text-decoration:underline;text-underline-offset:2px}
+/* p193 · 방 테마 1차 묶음 (2차 시안) */
+.room [class^="rm-"] svg{display:block;width:100%;height:auto}
+.room.rt-mini .rm-chand,.room.rt-mini .rm-shield,.room.rt-mini .rm-banner{transform:scale(.55);transform-origin:50% 0}.room.rt-mini .rm-stove2,.room.rt-mini .rm-armor,.room.rt-mini .rm-diya,.room.rt-mini .rm-palm,.room.rt-mini .rm-camplamp,.room.rt-mini .rm-float,.room.rt-mini .rm-pod,.room.rt-mini .rm-orb{transform:scale(.55);transform-origin:50% 100%;animation:none}.room.rt-mini .rm-pipe{display:none}
+/* ⛺ 몽골 게르 */
+.room.th-mongol{--wall:#EADBC0;--floor:#B03A2E;--floor2:#C9513F;--wood:#B9551F;background-image:repeating-conic-gradient(from 90deg at 50% -30%,#B9551F 0 2.2deg,#EADBC0 2.2deg 9deg),repeating-linear-gradient(45deg,transparent 0 11px,rgba(140,80,30,.32) 11px 12px),repeating-linear-gradient(-45deg,transparent 0 11px,rgba(140,80,30,.32) 11px 12px)!important;background-size:100% 17%,auto,auto!important;background-repeat:no-repeat,repeat,repeat!important;background-position:0 0,0 0,0 0!important}
+.room.th-mongol .floor{border-top:4px solid #7A3B1E;background:linear-gradient(90deg,#E9A23B 0 6px,transparent 6px calc(100% - 6px),#E9A23B calc(100% - 6px)),repeating-linear-gradient(90deg,#B03A2E 0 16px,#C9513F 16px 18px,#E9A23B 18px 20px,#C9513F 20px 22px)}
+.room.th-mongol .win{border:5px solid #B9551F}.room.th-mongol .win::before,.room.th-mongol .win::after{background:#B9551F}.room.th-mongol .shelf{background:#B9551F}.room.th-mongol .shelf::after{border-color:#B9551F}
+.rm-steppe{position:absolute;left:0;width:60%;top:17%;bottom:32%;z-index:0;overflow:hidden;background:radial-gradient(ellipse 60% 22% at 20% 100%,#7FB35A 0 98%,transparent 100%),radial-gradient(ellipse 70% 26% at 85% 100%,#8BC34A 0 98%,transparent 100%),linear-gradient(#8ACDEB 0 46%,#A6D27A 46% 100%)}
+.rm-steppe::before{content:"";position:absolute;left:0;right:0;top:24%;height:24%;background:#93A9C2;clip-path:polygon(0 100%,0 70%,12% 30%,22% 60%,34% 10%,48% 55%,60% 25%,74% 65%,86% 20%,100% 60%,100% 100%)}
+.rm-steppe i{position:absolute}.rm-steppe .g1{left:42%;bottom:38%;width:22px}.rm-steppe .g2{left:56%;bottom:40%;width:16px}
+.rm-steppe .h1{left:6%;bottom:12%;width:24px}.rm-steppe .h2{left:22%;bottom:18%;width:20px}.rm-steppe .h3{left:70%;bottom:10%;width:26px}.rm-steppe .h4{left:84%;bottom:20%;width:18px}
+.rm-flap{position:absolute;top:17%;bottom:32%;width:14px;z-index:0;background:repeating-linear-gradient(0deg,#D8C3A0 0 6px,#CDB28A 6px 8px);border:2px solid #9A6B3F}.rm-flap.l{left:0}.rm-flap.r{left:calc(60% - 14px)}
+.rm-pipe{position:absolute;right:calc(26% + 16px);top:51%;bottom:calc(8% + 40px);width:7px;z-index:0;background:linear-gradient(90deg,#2B2B2B,#555 50%,#2B2B2B)}
+.rm-stove2{position:absolute;right:26%;bottom:8%;width:38px;z-index:1}.rm-stove2 .sm{left:16px;bottom:44px}
+.rm-bird.pet-mongol{width:32px}
+/* 🏰 중세 성 */
+.room.th-castle{--wall:#8E8A83;--floor:#5E5A55;--floor2:#6B6660;--wood:#4E4A45;background-image:linear-gradient(rgba(0,0,0,.2) 2px,transparent 2px),linear-gradient(90deg,rgba(0,0,0,.18) 2px,transparent 2px)!important;background-size:100% 18px,36px 36px!important;background-repeat:repeat!important}
+.room.th-castle .floor{border-top:4px solid #3E3B37;background:conic-gradient(var(--floor) 25%,var(--floor2) 0 50%,var(--floor) 0 75%,var(--floor2) 0) 0 0/44px 22px}
+.room.th-castle .win{border:6px solid #4E4A45;border-radius:44% 44% 0 0/30% 30% 0 0}.room.th-castle .win::before,.room.th-castle .win::after{background:#4E4A45}.room.th-castle .shelf{background:#4E4A45}.room.th-castle .shelf::after{border-color:#4E4A45}
+.room.th-castle .rm-lan{display:none}
+.rm-gallery{position:absolute;left:3%;width:56%;top:14%;bottom:32%;z-index:0;display:flex;gap:10px}
+.rm-gallery .a{flex:1;position:relative;border:6px solid #4E4A45;border-bottom:0;border-radius:999px 999px 0 0;overflow:hidden;background:linear-gradient(#A9CDE6 0 62%,#8EA4BE 62% 70%,#7FB35A 70%)}
+.rm-gallery b{position:absolute;bottom:0}.rm-gallery .tw{left:12%;width:30px}.rm-gallery .tw.r{left:auto;right:6%}.rm-gallery .cs{left:50%;transform:translateX(-50%);width:62px}
+.rm-banner{position:absolute;top:0;width:16px;z-index:1}.rm-banner.b1{left:1%}.rm-banner.b2{left:59%}
+.rm-chand{position:absolute;left:29%;top:0;width:42px;z-index:2}.rm-chand .tglow{position:absolute;left:-14px;top:-8px;width:70px;height:46px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,90,.5),rgba(255,200,90,0) 70%);animation:rmFlick 1.8s ease-in-out infinite}
+@keyframes rmFlick{0%,100%{opacity:.7}50%{opacity:1}}.calm-fx .rm-chand .tglow{animation:none}
+.rm-shield{position:absolute;right:11%;top:53%;width:34px;z-index:1}
+.rm-armor{position:absolute;right:24%;bottom:6%;width:40px;z-index:1;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.25))}
+/* 🕌 타지마할 */
+.room.th-taj{--wall:#F4F0E8;--floor:#F1EBDD;--floor2:#D9CDB4;--wood:#C9A86A;background-image:radial-gradient(circle at 50% 50%,rgba(201,168,106,.35) 0 2px,transparent 2.5px),linear-gradient(#C9A86A 0 4px,transparent 4px 10px,#C9A86A 10px 12px,transparent 12px)!important;background-size:14px 14px,100% 100%!important;background-repeat:repeat,no-repeat!important}
+.room.th-taj .floor{border-top:4px solid #C9A86A;background:radial-gradient(circle,#2F6B3A 0 2px,transparent 2.5px) 0 0/22px 22px,conic-gradient(var(--floor) 25%,var(--floor2) 0 50%,var(--floor) 0 75%,var(--floor2) 0) 0 0/44px 22px}
+.room.th-taj .win{border:5px solid #C9A86A;border-radius:50% 50% 0 0/22% 22% 0 0}.room.th-taj .win::before,.room.th-taj .win::after{background:#C9A86A}.room.th-taj .shelf{background:#C9A86A}.room.th-taj .shelf::after{border-color:#C9A86A}
+.room.th-taj .rm-lan{display:none}
+.rm-taj{position:absolute;left:2%;width:57%;top:12%;bottom:32%;z-index:0;overflow:hidden;border:6px solid #E8DFCC;border-bottom:0;clip-path:polygon(0 100%,0 30%,10% 14%,30% 4%,50% 0,70% 4%,90% 14%,100% 30%,100% 100%);background:linear-gradient(#E98A5A 0 10%,#F2B27A 30%,#9CC6E4 58%,#7FB35A 68%,#6FA34A 100%)}
+.rm-taj i{position:absolute}.rm-taj .mk{left:44%;bottom:32%;width:62%;transform:translateX(-50%);filter:drop-shadow(0 0 1px #8A7D66)}
+.rm-taj .cy{bottom:28%;width:12px}.rm-taj .c1{left:6%}.rm-taj .c2{left:18%}.rm-taj .c3{right:18%}.rm-taj .c4{right:6%}
+.rm-taj .pool{left:33%;width:22%;bottom:0;height:34%;background:linear-gradient(#5FA8D3,#3E8EC4);border-left:3px solid #E8DFCC;border-right:3px solid #E8DFCC;clip-path:polygon(30% 0,70% 0,100% 100%,0 100%)}
+.rm-diya{position:absolute;right:24%;bottom:8%;width:26px;z-index:1}.rm-diya .tglow{position:absolute;left:-18px;top:-20px;width:60px;height:50px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,90,.55),rgba(255,200,90,0) 70%);animation:rmFlick 1.8s ease-in-out infinite}
+.rm-cushion{position:absolute;left:28%;bottom:3%;width:16%;height:8%;z-index:0;border-radius:6px;background:repeating-linear-gradient(90deg,#B3261E 0 8px,#E9A23B 8px 10px);box-shadow:0 2px 0 #7A1E18}
+/* 🌿 바빌론 공중정원 */
+.room.th-babylon{--wall:#1F4E9A;--floor:#C9A86A;--floor2:#B8955A;--wood:#C9A86A;background-image:linear-gradient(rgba(0,0,0,.22) 2px,transparent 2px),linear-gradient(90deg,rgba(0,0,0,.22) 2px,transparent 2px)!important;background-size:100% 12px,24px 24px!important;background-repeat:repeat!important}
+.room.th-babylon .floor{border-top:4px solid #8A6A3A;background:repeating-linear-gradient(90deg,var(--floor) 0 22px,var(--floor2) 22px 24px)}
+.room.th-babylon .win{border:5px solid #E9C45A}.room.th-babylon .win::before,.room.th-babylon .win::after{background:#E9C45A}.room.th-babylon .shelf{background:#E9C45A}.room.th-babylon .shelf::after{border-color:#E9C45A}
+.room.th-babylon .item .lb,.room.th-babylon .counter{color:inherit}
+.rm-garden{position:absolute;left:2%;width:57%;top:12%;bottom:32%;z-index:0;overflow:hidden;border:6px solid #E9C45A;border-bottom:0;background:linear-gradient(#F6D9A8 0 18%,#BFE0F2 50%,#C9A86A 100%)}
+.rm-garden .zg{position:absolute;left:44%;bottom:0;width:96%;transform:translateX(-50%)}
+.rm-garden::after{content:"";position:absolute;left:calc(44% - 2px);bottom:0;width:4px;height:70%;background:repeating-linear-gradient(180deg,#BFE6FF 0 6px,#7CC3E0 6px 10px);animation:rmFall 1.2s linear infinite}
+@keyframes rmFall{to{background-position:0 10px}}.calm-fx .rm-garden::after{animation:none}
+.rm-lions{position:absolute;left:0;right:0;bottom:calc(32% + 4px);height:14px;z-index:0;display:flex;justify-content:space-around;background:#163E7E;border-top:2px solid #E9C45A;border-bottom:2px solid #E9C45A}.rm-lions svg{width:22px}
+.rm-palm{position:absolute;right:23%;bottom:7%;width:40px;z-index:1}
+/* ⛰ 큰 바위 얼굴 (산장) */
+.room.th-rushmore{--wall:#9A6B3F;--floor:#8A5A30;--floor2:#7A4E28;--wood:#5A3B22;background-image:repeating-linear-gradient(180deg,#A7764A 0 14px,#8A5E36 14px 16px,#6B4426 16px 18px)!important;background-size:100% 100%!important}
+.room.th-rushmore .floor{border-top:4px solid #4A2E18;background:repeating-linear-gradient(90deg,var(--floor) 0 34px,var(--floor2) 34px 36px)}
+.room.th-rushmore .win{border:6px solid #5A3B22}.room.th-rushmore .win::before,.room.th-rushmore .win::after{background:#5A3B22}
+.room.th-rushmore .rm-lan{display:none}
+.rm-rush{position:absolute;left:2%;width:57%;top:12%;bottom:32%;z-index:0;overflow:hidden;border:7px solid #5A3B22;background:linear-gradient(#9FD0EE 0 55%,#3E7A46 55%)}
+.rm-rush i{position:absolute}.rm-rush .mt{left:44%;bottom:26%;width:82%;transform:translateX(-50%)}
+.rm-rush .p1{left:4%;bottom:6%;width:22px}.rm-rush .p2{left:22%;bottom:2%;width:28px}.rm-rush .p3{right:6%;bottom:4%;width:24px}
+.rm-camplamp{position:absolute;right:24%;bottom:8%;width:22px;z-index:1}.rm-camplamp .tglow{position:absolute;left:-20px;top:-16px;width:62px;height:50px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,120,.55),rgba(255,220,120,0) 70%);animation:rmFlick 2.2s ease-in-out infinite}
+.rm-plaid{position:absolute;left:27%;bottom:2%;width:20%;height:9%;z-index:0;background:repeating-linear-gradient(90deg,rgba(0,0,0,.25) 0 4px,transparent 4px 12px),repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0 4px,transparent 4px 12px),#B3261E}
+.rm-bird.pet-rushmore{top:auto;bottom:8%;width:34px;animation-name:rmHopGl;animation-duration:20s}.rm-bird.pet-taj{width:30px}
+/* 🚀 우주 정거장 */
+.room.th-space{--wall:#DDE3EA;--floor:#8C97A3;--floor2:#7A8592;--wood:#5A6573;background-image:linear-gradient(#2E4C8C 0 6px,#5FD0FF 6px 8px,transparent 8px),linear-gradient(90deg,rgba(0,0,0,.12) 2px,transparent 2px),linear-gradient(rgba(0,0,0,.1) 2px,transparent 2px),radial-gradient(circle,#9AA6B2 0 1.5px,transparent 2px)!important;background-size:100% 100%,64px 100%,100% 52px,16px 16px!important;background-repeat:no-repeat,repeat,repeat,repeat!important}
+.room.th-space .floor{border-top:4px solid #5FD0FF;background:repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 2px,transparent 2px 10px),repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 10px),var(--floor)}
+.room.th-space .win{border:6px solid #5A6573;border-radius:12px}.room.th-space .win::before,.room.th-space .win::after{background:#5A6573}.room.th-space .shelf{background:#5A6573}.room.th-space .shelf::after{border-color:#5A6573}
+.room.th-space .rm-lan{display:none}
+.rm-view{position:absolute;left:2%;width:57%;top:9%;bottom:33%;z-index:0;border:8px solid #5A6573;border-radius:28px;box-shadow:inset 0 0 0 2px #9AA6B2;overflow:hidden;background:radial-gradient(circle at 12% 18%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 34% 10%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 58% 26%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 80% 12%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 90% 40%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 24% 44%,#fff 0 1px,transparent 1.5px),#0B1530}
+.rm-view .earth{position:absolute;left:-10%;right:-10%;bottom:-150%;height:200%;border-radius:50%;background:radial-gradient(circle at 40% 18%,#5DB760 0 6%,transparent 7%),radial-gradient(circle at 62% 12%,#3E8E41 0 8%,transparent 9%),radial-gradient(circle at 75% 22%,#F3F6F8 0 4%,transparent 5%),radial-gradient(circle at 50% 50%,#3E6FB0 0 64%,#7FC4F0 65% 67%,transparent 68%)}
+.rm-view .sat{position:absolute;left:62%;top:18%;width:22px;animation:rmBob 7s ease-in-out infinite}
+.rm-orb{position:absolute;left:30%;bottom:44%;width:22px;height:22px;z-index:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 12%,transparent 13%),conic-gradient(#F4B63B 0 25%,#E2463B 0 50%,#3552A0 0 75%,#3E8A4F 0);box-shadow:0 0 10px rgba(95,208,255,.7);animation:rmBob 3.2s ease-in-out infinite}
+.rm-pod{position:absolute;right:7%;bottom:calc(32% - 8px);width:46px;height:76px;z-index:1;border-radius:22px;background:linear-gradient(90deg,#B8C2CC,#E8EDF2 50%,#B8C2CC);border:3px solid #5A6573}
+.rm-pod .glass{position:absolute;left:6px;right:6px;top:8px;height:34px;border-radius:14px;background:linear-gradient(#5FD0FF,#2E4C8C);opacity:.75}
+.rm-pod .zz{position:absolute;left:18px;top:12px;color:#fff;font-size:11px;font-weight:700}.rm-pod b{position:absolute;left:0;right:0;bottom:8px;text-align:center;font-size:8px;color:#2E4C8C;letter-spacing:1px}
+.rm-float{position:absolute;right:23%;bottom:22%;width:30px;z-index:1;animation:rmBob 4s ease-in-out infinite}
+@keyframes rmBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(4deg)}}.calm-fx .rm-float,.calm-fx .rm-orb,.calm-fx .rm-view .sat{animation:none}
+.rm-bird.pet-space{top:auto;bottom:8%;width:32px;animation-name:rmHopGl;animation-duration:16s}
+/* p192 · 🏛 그리스 신전 */
+.room.th-greek{--wall:#EFE9DC;--floor:#F4F1EA;--floor2:#D9D3C7;--wood:#C9C0AE;background-image:repeating-linear-gradient(90deg,#FFFDF7 0 4px,#D2C9B8 4px 6px),repeating-linear-gradient(90deg,#FFFDF7 0 4px,#D2C9B8 4px 6px),linear-gradient(#E6DFD0 0 9px,#B98F3A 9px 11px,#E6DFD0 11px 17px,#9A8F7C 17px 18px,transparent 18px),linear-gradient(180deg,#CBE8F6 0 34%,#A8D6EE 34% 44%,transparent 44%)!important;background-size:38px 100%,38px 100%,100% 100%,100% 100%!important;background-position:left top,right top,0 0,0 0!important;background-repeat:no-repeat!important}
+.room.th-greek .floor{border-top:4px solid #CFC7B6;background:conic-gradient(var(--floor) 25%,var(--floor2) 0 50%,var(--floor) 0 75%,var(--floor2) 0) 0 0/30px 15px}
+.room.th-greek .win{border:5px solid #CFC7B6;border-radius:0}.room.th-greek .win::before,.room.th-greek .win::after{background:#CFC7B6}
+.room.th-greek .shelf{background:#CFC7B6}.room.th-greek .shelf::after{border-color:#CFC7B6}
+.room.th-greek .rm-lan{display:none}
+.rm-aegean{position:absolute;left:38px;right:38px;top:44%;bottom:42%;z-index:0;background:linear-gradient(180deg,#3E8EC4 0,#2F78AE 100%);overflow:hidden}
+.rm-aegean .wv{position:absolute;left:-20%;right:-20%;top:40%;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.8) 0 12px,transparent 12px 30px);animation:rmWave 8s linear infinite}
+.calm-fx .rm-aegean .wv{display:none}
+.rm-stylo{position:absolute;left:0;right:0;bottom:32%;height:10%;z-index:0;background:linear-gradient(#F7F3EA 0 3px,#DCD5C7 3px 4px,#EFE9DC 4px)}
+.rm-amph{position:absolute;right:24%;bottom:8%;width:28px;z-index:1}.rm-olive{position:absolute;left:8%;bottom:calc(32% + 4px);width:34px;z-index:1}
+.rm-temple{position:absolute;left:20%;bottom:46%;width:86px;z-index:0}.rm-temple svg{display:block;width:100%;height:auto}
+.rm-torso{position:absolute;right:11%;bottom:calc(32% - 6px);width:40px;z-index:1;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.18))}.rm-torso svg{display:block;width:100%;height:auto}
+.room.th-greek::before{content:"";position:absolute;left:0;top:0;width:44px;height:100%;background:linear-gradient(#E6DFD0 0 18px,#F7F3EA 18px 22px,transparent 22px),linear-gradient(90deg,transparent 38px,rgba(0,0,0,.08) 38px 40px,transparent 40px);pointer-events:none;z-index:0}
+.room.th-greek::after{content:"";position:absolute;right:0;top:0;width:44px;height:100%;background:linear-gradient(#E6DFD0 0 18px,#F7F3EA 18px 22px,transparent 22px),linear-gradient(270deg,transparent 38px,rgba(0,0,0,.08) 38px 40px,transparent 40px);pointer-events:none;z-index:0}
+.room.rt-mini .rm-torso,.room.rt-mini .rm-temple{transform:scale(.6);transform-origin:50% 100%}
+.rm-amph svg,.rm-olive svg{display:block;width:100%;height:auto}
+.room.rt-mini .rm-amph,.room.rt-mini .rm-olive{transform:scale(.55);transform-origin:50% 100%}
 /* p191 · 달력 🏠 */
 #monthCal .d.pxd{position:relative;cursor:pointer}#monthCal .d .pxm{position:absolute;right:1px;bottom:0;font-size:9px;font-style:normal;line-height:1}
 /* p190 · 근사 보기 */
@@ -2842,7 +2936,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.10.22k';
+const APP_VER = '2026.10.22l';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3013,6 +3107,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-10-22b', date:'10월 22일', title:'🎨 새 방 테마 7가지', body:'내 방 → 🎨 방 꾸미기에 새 테마 7가지가 생겼어요.\n\n🏛 그리스 신전 · ⛺ 몽골 초원 게르 · 🏰 중세 성 · 🚀 우주 정거장 · 🕌 타지마할 · 🌿 바빌론 공중정원 · ⛰ 큰 바위 얼굴\n\n벽 한쪽이 그곳 풍경으로 열리고, 방 안 소품과 함께 사는 동물도 테마마다 달라요. 창밖은 어느 테마든 내 정 풍경이에요.'},
   {id:'2026-10-22a', date:'10월 22일', title:'🎯 체험 국궁장 · 🏠 다른 연습 일지', body:'🏠 다른 연습 일지\n주살 · 실내 · 근사 · 궁체 교정처럼 145m 과녁이 아닌 연습도 적을 수 있어요. 오늘 정 「오늘 나는」 아래 「🏠 오늘은 다른 연습했어요」를 누르면 켜고 바로 적어요 (안내 탭 → 🏠 다른 연습에서 켜고 끄기). 근사는 표 기록에서 거리(3 · 8 · 10 · 15m 또는 직접)를 고르고 지금처럼 낙점까지 남겨요. 145m 기록 · 관중률 · 순위와는 섞이지 않고, 일지는 나만 봐요.\n\n🎯 체험 국궁장 · 난지국궁장\n오늘 탭 위 📍 정 이름을 누르면 목록 아래에 🎯 체험 국궁장 칸이 생겼어요.\n\n소속 정이 아닌 활터예요. 가는 날만 골라 시간대를 누르면 그날 기록이 그곳 사대에 남아요.\n\n첫 번째로 난지국궁장(난지한강공원 · 가양대교 옆)이 들어왔어요. 이용 요금과 안내는 목록의 링크(서울시 미래한강본부)에서 볼 수 있어요.'},
   {id:'2026-10-21j', date:'10월 21일', title:'🎉 10월 20~21일 업데이트 모음', body:'🚩 광장 정별 모임\n모든 정 보기에서 사원들이 정마다 깃발 아래 모여요. 🌀 섞이기 · 🚩 모이기로 바꿀 수 있어요.\n\n⭐ 관심정\n우리 정 보기에서 관심정을 2곳까지 고르면 소속 정 마당 옆으로 넘겨 그 정 마당을 구경해요.\n\n🔒 광장 한마디 우리 정만\n한마디 칸 왼쪽 단추를 누르면 같은 정 사원에게만 보이는 글로 남겨요.\n\n🏯 타정은 지금\n오늘 정 화면 위에 다른 정 사대 소식이 한 줄씩 떠요. 누르면 그 정 사대를 구경해요.\n\n🏆 순위관 · 📈 리포트\n소식 탭에 반기 · 누적 순위와 최근 활약 · 최근 열심이 생겼어요. 리포트에는 성장 · 최고 기록 · 정심 · 비슷한 사원 비교 카드가 더해졌어요.\n\n🏯 충주 탄금정 · 👤 궁사님\n소속 정에 탄금정이 생겼어요. 친선 대회에는 가입하지 않은 궁사님도 넣을 수 있어요.'},
   {id:'2026-10-15c', date:'10월 15일', title:'📈 리포트 탭 · 🗄 배지 진열장 · ☔ 비 · 눈 배경 · 🎋 각궁 돌보기 외', body:'📈 리포트 탭\n아래 탭에 📈 리포트가 생겼어요(표 기록 바로 옆). 내 표 기록을 질문별로 모아 보여 줘요.\n\n• 하루 9순 쏘면 몇 중이 나오나요? (막대를 누르면 그날 기록표)\n• 순을 거듭할수록 덜 맞나요?\n• 한 순에서 몇 번째 화살이 가장 안 맞나요?\n• 안 맞은 화살은 주로 어디로 가나요?\n• 네 발 다 맞힌 순, 몰기로 끝낸 적은요?\n• 그날 첫 순은 어땠나요?\n• 어떤 바람에서 가장 못 맞히나요?\n• 추운 날엔 덜 맞나요?\n• 순 사이에 덜 쉬면 덜 맞나요?\n• 많이 쏜 주에 더 잘 맞았나요?\n• 순마다 고르게 맞히나요?\n\n기간(최근 30일 · 90일 · 올해 · 전체)을 고를 수 있고, 개량궁과 각궁을 둘 다 쓰면 활별로도 볼 수 있어요.\n\n🧹 표 기록 정리\n표 기록의 「궁체 점검」 · 「바람 · 날씨별」 카드는 리포트로 옮겼어요. 「쌓아온 기록」에는 다음 고개만 남겼어요.\n\n🗄 숨은 배지 진열장 (내 방)\n내 방 그림 바로 아래에 진열장이 생겼어요. 찾은 숨은 배지와 이달의 숨은 배지가 찾은 순서대로 놓여요. ✎ 배치에서 두 칸을 차례로 누르면 자리가 바뀌어요. 방 구경 온 사원에게도 이 순서로 보여요.\n\n🥇 첫 발견자\n우리 정에서 숨은 배지를 처음 찾은 사람의 이름이 힌트 창과 배지판에 보여요. 조건은 그대로 숨겨져요. 첫 발견 배지는 진열장에서 금테로 빛나요. 찾은 시각이 기록되기 전부터 갖고 있던 배지는, 앱을 열면 습사 기록(순 저장 시각)으로 찾은 때를 되살려 함께 견줘요.\n\n🌙 화면 색 바로 바꾸기\n오늘 정 화면 맨 위 📍 정 이름 옆 단추로 밝게 · 어둡게를 바로 바꿀 수 있어요.\n\n☔ 비 · 눈 오는 날 배경\n그 정에 지금 비나 눈이 오면 사대 · 광장 배경이 정마다 비 · 눈 그림으로 바뀌어요. 빗줄기 · 눈송이는 세기에 따라 3단계로 내려요(예: 약한 비 · 비 · 센 비). 배경 단추에 지금 날씨가 함께 보여요. 배경 그림을 직접 골라 두셨다면 그림은 그대로예요.\n\n🏹 개량궁 · 각궁 기록 나누기\n표 기록 입력판 위에서 [개량궁(카본) · 각궁]을 고르면 그 활로 기록돼요. 바꾸기 전까지 계속 유지돼요. 기록 보기 맨 위에서 [전체 · 개량궁 · 각궁]으로 따로 볼 수 있어요. 순위 · 배지 · 월보 · 대회는 지금처럼 합쳐서 셉니다. 지난 기록은 프로필에 적은 활로 봐요.\n\n🌡 각궁일 때 기온 · 습도\n표 기록에서 각궁을 고르면 정 근처의 기온 · 습도가 보이고, 각궁 순에는 습도도 함께 남아요.\n\n🎋 각궁 돌보기 (내 방)\n각궁을 쓰시는 분은 내 방 장비 아래에 새 칸이 생겨요. 오늘 기온 · 습도, 얹은 지 · 부린 지 · 점화장에 둔 지 며칠인지, 얹음 · 부림 · 점화장 · 메모 일지(그때 기온 · 습도 함께), 계절별 점화장 온도 · 습도, 각궁 얹는 순서 체크리스트를 볼 수 있어요. 설명은 관악정 국궁교본 7장에서 옮겼어요. 일지는 나만 봐요(관리자도 못 봐요).\n\n🪵 호패 꾸미기 (내 정보)\n내 정보 → 🪵 꾸미기에서 호패 재질 · 술 색 · 호(號) · 새김 한 줄을 고를 수 있어요. 재질은 잡목 → 자작목 → 황양목 → 뿔 → 상아 순서(태종 13년 호패 재질 규정)로, 단이 오르거나 배지를 모으면 열려요(자작목 1급 · 배지 15개 / 황양목 초단 · 30개 / 뿔 3단 · 50개 / 상아 5단 · 75개). 꾸민 호패는 방 구경 때도 보여요.'},
@@ -5578,7 +5673,7 @@ const pxSVG = (map, cls) => { const h=map.length, wd=map[0].length; let r=''; ma
 const PX_LANTERN = ['...ss...','..rrrr..','.rrrrrr.','.ryyyyr.','.nyyyyn.','.nnnnnn.','..nnnn..','...yy...','...y.y..'];
 const PX_CLOUD = ['...ff.....','..ffff.ff.','.fffffffff','ffffffffff','.ffffffff.'];
 const PX_CUP = ['.tttttt.','.tttttt..','.tttttttt','.tttttt.t','.tttttt..','..tttt...','sssssssss'];
-const ROOM_THEMES = [['basic','🏠 기본','지금 방'],['hanok','🏯 한옥','창호지 벽 · 대청마루 · 문살 창 · 소반 다기 · 난초'],['forest','🌲 숲속 오두막','통나무 벽 · 장작 난로 · 기름 등불 · 솔숲 창'],['modern','🏙 모던','흰 벽 · 큰 통창 · 원목 탁자 · 몬스테라 · 펜던트 조명'],['sea','🌊 바닷가 정자','단청 기둥 · 난간 너머 바다 · 파도 · 조개 · 갈매기'],['winter','❄️ 겨울 산장','벽난로 · 눈 내리는 창 · 러그 · 코코아 · 부엉이'],['glade','🌳 숲속 공터','나무 사이 풀밭 · 그루터기 버섯 · 토끼 · 밤엔 반딧불'],['valley','🏞 계곡 폭포','바위 · 폭포 · 시냇물 · 징검돌 · 오리'],['blossom','🌸 벚꽃 언덕','꽃나무 · 흩날리는 꽃잎 · 돗자리 · 나비']];
+const ROOM_THEMES = [['basic','🏠 기본','지금 방'],['hanok','🏯 한옥','창호지 벽 · 대청마루 · 문살 창 · 소반 다기 · 난초'],['forest','🌲 숲속 오두막','통나무 벽 · 장작 난로 · 기름 등불 · 솔숲 창'],['modern','🏙 모던','흰 벽 · 큰 통창 · 원목 탁자 · 몬스테라 · 펜던트 조명'],['sea','🌊 바닷가 정자','단청 기둥 · 난간 너머 바다 · 파도 · 조개 · 갈매기'],['winter','❄️ 겨울 산장','벽난로 · 눈 내리는 창 · 러그 · 코코아 · 부엉이'],['glade','🌳 숲속 공터','나무 사이 풀밭 · 그루터기 버섯 · 토끼 · 밤엔 반딧불'],['valley','🏞 계곡 폭포','바위 · 폭포 · 시냇물 · 징검돌 · 오리'],['blossom','🌸 벚꽃 언덕','꽃나무 · 흩날리는 꽃잎 · 돗자리 · 나비'],['greek','🏛 그리스 신전','대리석 기둥 · 에게해 · 암포라 · 올리브 · 비둘기'],['mongol','⛺ 몽골 초원 게르','걷힌 벽 너머 초원 · 서까래 천장 · 난로 · 양탄자 · 검독수리'],['castle','🏰 중세 성','돌 회랑 너머 성탑 · 깃발 · 샹들리에 · 방패 · 갑옷 · 까마귀'],['taj','🕌 타지마할','대리석 궁 · 아치 너머 타지마할 · 물길 · 놋쇠 등잔 · 공작'],['babylon','🌿 바빌론 공중정원','푸른 유약 벽돌 · 사자 띠 · 계단식 정원과 폭포 · 대추야자 · 앵무새'],['rushmore','⛰ 큰 바위 얼굴','통나무 산장 · 창 너머 바위산 얼굴 · 체크 담요 · 캠핑 등 · 들소'],['space','🚀 우주 정거장','관측창 너머 지구 · 수면 캡슐 · 우주 공 · 로봇']];
 const ROOM_OUT = ['glade','valley','blossom'];   // 바깥 테마: 벽 대신 풍경
 const roomThemeOf = m => { const t=m&&m.roomTheme; return ROOM_THEMES.some(x=>x[0]===t) ? t : 'basic'; };
 Object.assign(PX_COL, {A:'#F2A7BE',F:'#D9534F',L:'#8BC34A',O:'#E0E0E0',u:'#3E6FB0',j:'#B8692E',i:'#A7B0BA',B:'#8A6A4A',E:'#E59A86',S:'#E8D3A2',T:'#6B3E2A',g:'#3E8E41',G:'#5DB760',h:'#5A3B22',p:'#ECE6DA',P:'#D6CDBE',q:'#C77DB5',l:'#2F6B3A',c:'#7FB5A0',C:'#9ACBB7',e:'#8B4A2B',K:'#45403A',x:'#E8642C',m:'#4A6FA5',a:'#C8A06A',z:'#2B2B2B',v:'#F7E7A1'});
@@ -5601,7 +5696,46 @@ const PX_RABBIT = ['.f..f.....','.fA.fA....','.ffff.....','fkfff.....','.fffffff
 const PX_DUCK = ['...yyy....','..yyyky...','..yyyyyoo.','yyyyyyy...','yyyyyyyy..','.yyyyyy...','iiiiiiiiii'];
 const PX_BFLY = ['AA...AA','AAA.AAA','.AAkAA.','..AkA..','.AA.AA.'];
 const PX_STUMP = ['...FF.......','..FfFF......','...hh..FF...','...hh.FfFF..','.hhhhhhhhh..','.haaaaaaah..','.haBaaBaah..','.haaaaaaah..','hhhhhhhhhhh.'];
-const ROOM_PET = {glade:PX_RABBIT, valley:PX_DUCK, blossom:PX_BFLY, basic:PX_SPARROW, hanok:PX_MAGPIE, forest:PX_SQUIRREL, modern:PX_BUDGIE, sea:PX_GULL, winter:PX_OWL};
+const PX_AMPHORA = ['...kkkk...','....xx....','.k.xxxx.k.','.kxxxxxxk.','..xkxxkx..','..xxkkxx..','..xkxxkx..','..xxxxxx..','...xxxx...','....xx....','...kkkk...'];
+const PX_OLIVE = ['..c.l..c..','.cclcc.lc.','..lcclcc..','.c..T..c..','....T.....','....T.....','..xxxxx...','..xkkkx...','...xxx....'];
+const PX_TEMPLE = ['...........tt...........','.........tttttt.........','.......tiiiiiiit........','.....ttttttttttttttt.....','...iiiiiiiiiiiiiiiiiii...','..ftttttttttttttttttttf..','...t..t..t..t..t..t..t...','...t..t..t..t..t..t..t...','...t..t..t..t..t..t..t...','...t..t..t..t..t..t..t...','..iiiiiiiiiiiiiiiiiiiiii.','.tttttttttttttttttttttttt','cgcgcgcgcgcgcgcgcgcgcgcgc','gcgggcggggcgggcggggcggggc'];
+const PX_TORSO = ['....ffi.....','...fffii....','....fff.....','.....ff.....','.ffffffffi..','fffiffffiff.','ff.fffffi.ff','f..fffffi..f','...ffiffi...','...fffffi...','...ffffii...','..ffffffii..','..ff....fi..','..fi....fi..','.iiiiiiiiii.','..tttttttt..','..tiitttit..','..tttttttt..','.iiiiiiiiii.'];
+const PX_DOVE = ['...ff.....','..fkff....','.offff....','..fffifff.','..ffffiff.','...ff.....','....r.r...'];
+const PX_HORSE = ['..........dd','.........ddd','.dddddddddd.','dddddddddd..','.dddddddd...','.d.d...d.d..','.d.d...d.d..'];
+const PX_HORSE2 = ['..........hh','.........hhh','.hhhhhhhhhh.','hhhhhhhhhh..','.hhhhhhhh...','.h.h...h.h..','.h.h...h.h..'];
+const PX_GER = ['.....ii.....','...ffffff...','.ffffffffff.','ffffffffffff','frrffffffrrf','ffffkkffffff','ffffkkffffff'];
+const PX_EAGLE = ['...BBB....','..BkBBy...','..BBBB....','.BBBBBB...','BBBhBBBB..','BBhhBBBBB.','.BBBBBBBBB','..BBBBB...','...y.y....'];
+const PX_STOVE2 = ['....KK....','....KK....','.zzzzzzzz.','.zKKKKKKz.','.zKxyyxKz.','.zKyxxyKz.','.zKKKKKKz.','.zzzzzzzz.','.z......z.','.z......z.'];
+const PX_TOWER = ['..r.......','..rr......','..z.......','K.K.K.K...','KKKKKKK...','KiiiiiK...','KiKKKiK...','KiiiiiK...','KiiKiiK...','KiiKiiK...','KiiiiiK...','KiiiiiK...','KKKKKKK...'];
+const PX_CASTLE = ['....r..........r....','....rr.........rr...','....z..........z....','..K.K.K......K.K.K..','..KKKKK......KKKKK..','..KiiiKK.K.K.KiiiK..','..KiKiKKKKKKKKiKiK..','..KiiiKiiiiiiKiiiK..','..KiiiKiiKKiiKiiiK..','..KiKiKiKzzKiKiKiK..','..KiiiKiKzzKiKiiiK..','..KKKKKKKKKKKKKKKK..'];
+const PX_BANNER = ['zzzzzzzz','.rrrrrr.','.rryyrr.','.ryyyyr.','.rryyrr.','.rrrrrr.','.rryyrr.','.rrrrrr.','.rrrrrr.','.rr..rr.','.r....r.'];
+const PX_BANNER2 = ['zzzzzzzz','.nnnnnn.','.nnyynn.','.nyyyyn.','.nnyynn.','.nnnnnn.','.nnyynn.','.nnnnnn.','.nnnnnn.','.nn..nn.','.n....n.'];
+const PX_CHAND = ['.....zz.....','.....zz.....','..v..zz..v..','..y..zz..y..','.zzzzzzzzzz.','z..z..z...z.','.zzzzzzzzzz.'];
+const PX_SHIELD = ['.i........i.','..i......i..','KKKKKKKKKK..','KrrrryrrrK..','KrrryyyrrK..','KrrrryrrrK..','.KrrryrrK...','..KrrrrK....','...KrrK.....','....KK......','..i......i..','.i........i.'];
+const PX_ARMOR = ['.....rr.....','....rKKr....','...KmmmmK...','...KmzzmK...','...KmmmmK...','....KmmK....','.KKKimmiKKK.','KmmiiiiiimmK','Km.KiiiiK.mK','Km.KimmiK.mK','Km.KiiiiK.mK','.K.KimmiK.K.','...KiiiiK...','...KmK.KmK..','...KmK.KmK..','...KmK.KmK..','..KKmK.KmKK.','..KKKK.KKKK.'];
+const PX_RAVEN = ['...kk.....','..kKkk....','.zkkkk....','..kkkkkkkk','..kkkkKkk.','...kk.....','....z.z...'];
+const PX_TAJ = ['.............f............','............fff...........','...........fffff..........','..f.......fffffff.......f.','..f......fffffffff......f.','.fff.....fffffffff.....fff','.fff......fffffff......fff','.fff..f..iiiiiiiii..f..fff','.fff.fff.fffffffff.fff.fff','.fff.fff.ffiiiiiff.fff.fff','.fff.fff.ffi...iff.fff.fff','.fff.fff.ffi...iff.fff.fff','iiiiiiiiiiiiiiiiiiiiiiiiii','ffffffffffffffffffffffffff'];
+const PX_CYPRESS = ['..l..','.lgl.','.lgl.','lgggl','lgggl','lgggl','.lgl.','..h..'];
+const PX_PEACOCK = ['....u.......','...uuk......','....u.......','...uu.......','..uuuu.ggg..','..uuuugGyGg.','...uuugyuyG.','....uugGyGg.','....d.d.gg..'];
+const PX_DIYA = ['....o.....','...oyo....','....y.....','.yyyyyyy..','..yoooy...','...yyy....','....y.....','..yyyyy...'];
+const PX_ZIG = ['..........gGg...........','.........SSSSS..........','........gGgGgGg.........','.......SSSSSSSSS........','......gGgGgfgGgGg.......','.....SSSSSSfSSSSSSS.....','....gGgGgGgfgGgGgGgG....','...SSSSSSSSfSSSSSSSSS...','..gGgGgGgGgfgGgGgGgGgG..','.SSSSSSSSSSfSSSSSSSSSSS.','SSSSSSSSSSSfSSSSSSSSSSSS'];
+const PX_LION = ['..yyy.......','.yyyyy..yy..','yyykyyyyyyy.','.yyyyyyyyyy.','..y.y..y.y..'];
+const PX_DATEPALM = ['.g...g...g.','..gGgGgGg..','.gG.ggg.Gg.','g....h....g','.....h.....','.....h.....','.....h.....','...xxxxx...','...xkkkx...','....xxx....'];
+const PX_RUSH = ['..................................','..................................','...........iiii...................','....iiii..iOOOOiii........iiiii...','...iOOOOi.iKiiKiiiiiii...iOOOOi...','iiiiKiiKiiiiOiiiiiOOOOiiiiKiiKiiii','iiiiiOiiiiiiOOiiiiKiiKiiiiiOiiiiii','iiiiiOOiiiiiKKiiiiiOiiiiiiiOOiiiii','iiiiiKKiiiiiiiiiiiiOOiiiiiiKKiiiii','iiiiiiiiiiiiiiiiiiiKKiiiiiiiiiiiii','iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii','iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii','iiiKiiiiKiiiiKiiiiKiiiiKiiiiKiiiiK','iiKiiiiKiiiiKiiiiKiiiiKiiiiKiiiiKi','iKiiiiKiiiiKiiiiKiiiiKiiiiKiiiiKii'];
+const PX_PINE2 = ['...l...','..lgl..','..lgl..','.lgggl.','.lgggl.','lgggggl','...h...'];
+const PX_CAMPLAMP = ['...zz...','..z..z..','.zzzzzz.','.zyvvyz.','.zyvvyz.','.zyvvyz.','.zzzzzz.'];
+const PX_BISON = ['.hhh........','hhhhh.......','hkhhhhhhhh..','hhhhhhhhhhh.','.hhhhhhhhhh.','..h.h...h.h.'];
+const PX_CELADON = ['...cccc...','...cCCc...','..cCCCCc..','.cCCfCCCc.','.cCfffCCc.','.cCCfCCCc.','.cCCCCCCc.','..cCCCCc..','...cCCc...','...cCCc...','..cCCCCc..','..cccccc..'];
+const PX_CRANE = ['...r........','..fff.......','..fkf.......','..ff........','...f........','...ff.......','...fffffkk..','...ffffffkk.','....ffffkk..','.....f.f....','.....f.f....','....kk.kk...'];
+const PX_GAKGUNG = ['hwwwwwwwwwwwwh','.h..........h.','..h........h..','...hh....hh...','.....hhhh.....'];
+const PX_GAKGUNG2 = ['h............h','.h..........h.','..h...kk...h..','...hhhkkhhh...'];
+const PX_BENCH = ['..KK............','.K..K.....zzzz..','K....K....zxxz..','K.........zzzz..','bbbbbbbbbbbbbbbb','hhhhhhhhhhhhhhhh','.h............h.','.h............h.','.h............h.','hh............hh'];
+const PX_SHAFTS = ['a.a.a.a.','a.a.a.a.','a.a.a.a.','a.a.a.a.','a.a.a.a.','a.a.a.a.','a.a.a.a.','a.a.a.a.','a.a.a.a.','hhhhhhhh','a.a.a.a.','a.a.a.a.','a.a.a.a.','a.a.a.a.','a.a.a.a.','hhhhhhhh','a.a.a.a.','a.a.a.a.'];
+const PX_BRAZIER = ['..o.y.o...','.oxoyxox..','zzzzzzzzz.','zKKKKKKKz.','.zKKKKKz..','..z...z...'];
+const PX_DOG = ['........jj','.......jkj','j......jjj','.jjjjjjjj.','.jjjjjjjj.','.j.j..j.j.'];
+const PX_ROBOT = ['....y.....','....m.....','..mmmmm...','..mfkfm...','..mmmmm...','.iiiiiii..','.iuiuiui..','.iiiiiii..','..i...i...','..K...K...'];
+const PX_SAT = ['mm.ii.mm','mm.ii.mm','mmiiiimm','mm.ii.mm','mm.ii.mm'];
+const ROOM_PET = {glade:PX_RABBIT, valley:PX_DUCK, blossom:PX_BFLY, basic:PX_SPARROW, hanok:PX_MAGPIE, forest:PX_SQUIRREL, modern:PX_BUDGIE, sea:PX_GULL, winter:PX_OWL, greek:PX_DOVE, mongol:PX_EAGLE, castle:PX_RAVEN, taj:PX_PEACOCK, babylon:PX_BUDGIE, rushmore:PX_BISON, space:PX_ROBOT};
 function roomFxHTML(jid, theme){
   theme = theme || 'basic';
   const A=JEONG_ART[jid]; const pk=pzPick(); const url = A && A.pz ? (A.pz[`${pk.s}_${pk.t}`] || A.pz.summer_day) : '';
@@ -5616,6 +5750,13 @@ function roomFxHTML(jid, theme){
       ${theme==='valley'?'<div class="rm-cliff"></div><div class="rm-fall"><i class="rfx fw"></i></div><div class="rm-stream"><i class="rfx wv"></i><i class="rfx wv b"></i></div>':''}
       ${theme==='blossom'?`<div class="rm-bloom l"></div><div class="rm-bloom r"></div><div class="rm-mat"></div>${Array.from({length:12},(_,i)=>`<i class="rfx pt" style="left:${(i*43%94)+3}%;--d:${7+(i*5%6)}s;--dl:${-(i*1.1)}s"></i>`).join('')}`:''}
       ${theme==='sea'?'<div class="rm-sea"><i class="rfx wv"></i><i class="rfx wv b"></i></div><div class="rm-rail"></div>':''}
+      ${theme==='mongol'?`<div class="rm-steppe"><i class="g1">${pxSVG(PX_GER)}</i><i class="g2">${pxSVG(PX_GER)}</i><i class="h1">${pxSVG(PX_HORSE)}</i><i class="h2">${pxSVG(PX_HORSE2)}</i><i class="h3">${pxSVG(PX_HORSE)}</i><i class="h4">${pxSVG(PX_HORSE2)}</i></div><div class="rm-flap l"></div><div class="rm-flap r"></div><div class="rm-pipe"></div>`:''}
+      ${theme==='castle'?`<div class="rm-gallery"><i class="a a1"><b class="tw">${pxSVG(PX_TOWER)}</b></i><i class="a a2"><b class="cs">${pxSVG(PX_CASTLE)}</b></i><i class="a a3"><b class="tw r">${pxSVG(PX_TOWER)}</b></i></div><div class="rm-banner b1">${pxSVG(PX_BANNER)}</div><div class="rm-banner b2">${pxSVG(PX_BANNER2)}</div><div class="rm-chand">${pxSVG(PX_CHAND)}<i class="rfx tglow"></i></div><div class="rm-shield">${pxSVG(PX_SHIELD)}</div>`:''}
+      ${theme==='taj'?`<div class="rm-taj"><i class="cy c1">${pxSVG(PX_CYPRESS)}</i><i class="cy c2">${pxSVG(PX_CYPRESS)}</i><i class="mk">${pxSVG(PX_TAJ)}</i><i class="cy c3">${pxSVG(PX_CYPRESS)}</i><i class="cy c4">${pxSVG(PX_CYPRESS)}</i><i class="pool"></i></div>`:''}
+      ${theme==='babylon'?`<div class="rm-garden"><i class="zg">${pxSVG(PX_ZIG)}</i></div><div class="rm-lions">${[0,1,2,3,4,5].map(()=>pxSVG(PX_LION)).join('')}</div>`:''}
+      ${theme==='rushmore'?`<div class="rm-rush"><i class="mt">${pxSVG(PX_RUSH)}</i><i class="p1">${pxSVG(PX_PINE2)}</i><i class="p2">${pxSVG(PX_PINE2)}</i><i class="p3">${pxSVG(PX_PINE2)}</i></div>`:''}
+      ${theme==='space'?`<div class="rm-view"><i class="earth"></i><i class="sat">${pxSVG(PX_SAT)}</i></div><div class="rm-orb"></div>`:''}
+      ${theme==='greek'?`<div class="rm-aegean"><i class="rfx wv"></i></div><div class="rm-temple">${pxSVG(PX_TEMPLE)}</div><div class="rm-stylo"></div>`:''}
       ${theme==='winter'?'<div class="rm-rug"></div><div class="rm-fire"><i class="rfx fl"></i><i class="rfx fl b"></i></div>':''}
       <div class="rm-lan ${theme==='modern'?'pend':''}">${pxSVG(theme==='forest'||theme==='winter'?PX_OILLAMP:theme==='modern'?PX_PENDANT:PX_LANTERN)}<i class="rfx glow"></i></div>
       ${theme==='hanok' ? `<div class="rm-soban">${pxSVG(PX_SOBAN)}<i class="rfx sm"></i></div><div class="rm-plant orchid">${pxSVG(PX_ORCHID)}</div>`
@@ -5624,6 +5765,13 @@ function roomFxHTML(jid, theme){
        : theme==='valley' ? `<div class="rm-cup rock">${pxSVG(PX_CUP)}<i class="rfx sm"></i></div>`
        : theme==='blossom' ? `<div class="rm-cup">${pxSVG(PX_CUP)}<i class="rfx sm"></i><i class="rfx sm b"></i></div>`
        : theme==='sea' ? `<div class="rm-shell">${pxSVG(PX_SHELL)}</div>`
+       : theme==='mongol' ? `<div class="rm-stove2">${pxSVG(PX_STOVE2)}<i class="rfx sm"></i></div>`
+       : theme==='castle' ? `<div class="rm-armor">${pxSVG(PX_ARMOR)}</div>`
+       : theme==='taj' ? `<div class="rm-diya">${pxSVG(PX_DIYA)}<i class="rfx tglow"></i></div><div class="rm-cushion"></div>`
+       : theme==='babylon' ? `<div class="rm-palm">${pxSVG(PX_DATEPALM)}</div>`
+       : theme==='rushmore' ? `<div class="rm-camplamp">${pxSVG(PX_CAMPLAMP)}<i class="rfx tglow"></i></div><div class="rm-plaid"></div>`
+       : theme==='space' ? `<div class="rm-pod"><i class="glass"></i><i class="rfx zz">z</i><b>SLEEP</b></div><div class="rm-float">${pxSVG(PX_MONSTERA)}</div>`
+       : theme==='greek' ? `<div class="rm-amph">${pxSVG(PX_AMPHORA)}</div><div class="rm-olive">${pxSVG(PX_OLIVE)}</div><div class="rm-torso">${pxSVG(PX_TORSO)}</div>`
        : theme==='winter' ? `<div class="rm-cup cocoa">${pxSVG(PX_COCOA)}<i class="rfx sm"></i><i class="rfx sm b"></i></div>`
        : theme==='modern' ? `<div class="rm-side">${pxSVG(PX_SIDE)}<i class="rfx sm"></i></div><div class="rm-plant mon">${pxSVG(PX_MONSTERA)}</div>`
        : `<div class="rm-cup">${pxSVG(PX_CUP)}<i class="rfx sm"></i><i class="rfx sm b"></i></div>`}
