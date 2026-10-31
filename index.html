@@ -2993,7 +2993,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01h';
+const APP_VER = '2026.11.01i';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7654,7 +7654,7 @@ function magJx(scope, from, to){ const D=(store&&store.docs)||{}; const inJ=id=>
     for(const h of HL){ const at=+m.hid[h.id]; if(!(at>1)) continue; if(!firstAll[h.id] || at<firstAll[h.id]) firstAll[h.id]=at; if(mj===scope){ everJ.add(h.id); if(!firstJ[h.id] || at<firstJ[h.id]) firstJ[h.id]=at; }
       const dt=dstr(new Date(at)); if(dt<from || dt>to) continue; jc[mj]=(jc[mj]||0)+1; if(mj===scope) (fd[m.id]=fd[m.id]||[]).push({id:h.id, at}); } }
   const finders=Object.entries(fd).map(([mid,L])=>({mid, L:L.sort((x,y)=>x.at-y.at).map(x=>({id:x.id, at:x.at, all:firstAll[x.id]===x.at, j:firstJ[x.id]===x.at}))})).sort((x,y)=>y.L.length-x.L.length || x.L[0].at-y.L[0].at);
-  const nA=f=>f.L.filter(z=>z.all).length; const firsts=finders.map(f=>({mid:f.mid, L:f.L.filter(x=>x.all||x.j)})).filter(f=>f.L.length).sort((x,y)=>nA(y)-nA(x) || y.L.length-x.L.length || x.L[0].at-y.L[0].at).slice(0,4);
+  const nA=f=>f.L.filter(z=>z.all).length; const firsts=finders.map(f=>({mid:f.mid, L:f.L.filter(x=>x.all||x.j)})).filter(f=>f.L.length).sort((x,y)=>nA(y)-nA(x) || y.L.length-x.L.length || x.L[0].at-y.L[0].at).slice(0,7);
   const left=HL.filter(h=>!everJ.has(h.id)).map(h=>h.id);
   // 새 식구 (그달 들어온 사원)
   const news=(S.members||[]).filter(m=>m && m.name && m.id!==HUB_BOT && magJid(m.id)===scope && +m.joinedAt>0 && (j=>j>=from && j<=to)(dstr(new Date(+m.joinedAt)))).sort((x,y)=>+x.joinedAt-+y.joinedAt).map(m=>({mid:m.id, day:dstr(new Date(+m.joinedAt))}));
