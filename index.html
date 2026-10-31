@@ -2431,6 +2431,9 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .mz-sub{font-size:14px;margin:12px 0 6px}
 .mz-heat{display:grid;grid-template-columns:34px repeat(7,1fr);gap:2px;margin:4px 0 10px;font-size:11px;text-align:center}
 .mz-heat b{font-weight:700;font-size:11px}.mz-heat b.sl{text-align:left}.mz-heat i{font-style:normal;height:22px;line-height:22px;border:1px solid rgba(35,28,22,.15);color:#231C16}.mz-heat i.hi{color:#fff;font-weight:700}
+
+/* p200 */
+.mz-cover .side small.up{font-size:10px;font-weight:700;color:#fff;background:#E2463B;padding:0 4px;margin-left:2px}
 </style>
 
 <div class="app" id="app">
@@ -2990,7 +2993,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01e';
+const APP_VER = '2026.11.01f';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7408,6 +7411,8 @@ function magData(ym, scope){
     if(k.startsWith('attendance/')){ const dt=k.slice(11); if(dt<from||dt>to) continue; for(const [tid,e] of Object.entries(x.entries)){ if(!e||!inS(tid)) continue; if(e.slot){ act.att++; (act.attDay[dt]=act.attDay[dt]||new Set()).add(tid); } for(const [fr,em] of Object.entries(e.reactions||{})) if(em&&fr!==tid) act.ch++; } }
     else if(k.startsWith('guestbook/')){ for(const v of Object.values(x.entries)) if(v&&(v.text||v.secret)&&v.at&&inS(v.from)){ const dt=dayOf(v.at); if(dt>=from&&dt<=to) act.gb++; } } }
   act.members=(S.members||[]).filter(m=>m&&m.name&&inS(m.id)&&magJoinedBy(m,to)).length;
+  act.joined=(S.members||[]).filter(m=>m&&m.name&&m.id!==HUB_BOT&&inS(m.id)&&+m.joinedAt>0&&(j=>j>=from&&j<=to)(dstr(new Date(+m.joinedAt)))).length;
+  act.vis=0; for(const k in Dd){ if(!k.startsWith('visits/') || !inS(k.slice(7))) continue; for(const v of Object.values((Dd[k]||{}).entries||{})) if(v && v.date>=from && v.date<=to) act.vis++; }
   // 정별 현황 (전체 월보에서만): 가입 · 기록 사원 · 습사 · 관중
   const jst={}; if(scope==='all'){ for(const m of (S.members||[])){ if(!m||!m.name||!magJoinedBy(m,to)) continue; const j=memberJ(m); const o=jst[j.id]||(jst[j.id]={id:j.id, name:j.name, hanja:j.hanja||j.name, members:0, rec:0, days:0, n:0, h:0, mo:0, first:0});
       o.members++; if(m.joinedAt && m.id!==HUB_BOT && (!o.first || +m.joinedAt<o.first)) o.first=+m.joinedAt; const a=A.by[m.id]; if(a&&a.n){ o.rec++; o.days+=a.days; o.n+=a.n; o.h+=a.h; o.mo+=a.mo; } }
@@ -7867,7 +7872,7 @@ function renderNews(){
     <div class="mz-cover ${SP?'sp':''}" style="${SP&&spImg?`background-image:url(${spImg})`:art?`background-image:url(${art})`:''}">
       <div class="hl"><span class="k">${d.wide?'창간호 표지 · '+(SJ?esc(SJ.name)+' ':'')+'베타 성실왕':SP?DM+'월 표지 · 특별호':CC?DM+'월 표지 · '+(SJ?esc(SJ.name)+' ':'')+CC.ic+' '+CC.t:DM+'월 표지 · '+(SJ?esc(SJ.name)+' ':'')+'성실왕'}</span><h1>${SP?`${esc(SP.title)}${SP.sub?`<small>${esc(SP.sub)}</small>`:''}`:CC&&king?`${phrase}<br>${esc(CV.line)},<br>${esc(km.name)} 사원`:king?(d.wide?`베타 ${BD}일 중<br>${king.days}일 사대에 선<br>${esc(km.name)} 사원`:`${phrase}<br>${king.days}일 습사,<br>${esc(km.name)} 사원`):`${DM}월의<br>기록이<br>비어 있어요`}</h1></div>
       ${king&&!SP?`<div class="hero" data-room="${esc(king.mid)}">${charSVG(km.char||DEFAULT_CHAR)}</div>`:''}
-      <div class="side">${d.wide?`<span>👥 사원 <b>${ac.members}명</b></span><span>🏹 사대 등록 <b>${ac.att}번</b></span><span>📮 방명록·응원 <b>${ac.gb+ac.ch}번</b></span>`:`<span>🎯 ${DM}월 몰기 <b>${tot.mo}번</b></span><span>🏅 새 배지 <b>${d.nBadge}개</b></span><span>🎂 집궁 기념 <b>${d.nSince}명</b></span>`}</div>
+      <div class="side">${!d.wide&&!SJ?(()=>{ const gc=ac.gb+ac.ch, vs=ac.vis||0; return `<span>👥 사원 <b>${ac.members}명</b>${ac.joined?` <small class="up">+${ac.joined}</small>`:''}</span><span>🏹 사대 등록 <b>${ac.att.toLocaleString()}번</b></span>${vs>gc?`<span>🚪 내 방 방문 <b>${vs.toLocaleString()}번</b></span>`:`<span>📮 방명록·응원 <b>${gc.toLocaleString()}번</b></span>`}`; })():d.wide?`<span>👥 사원 <b>${ac.members}명</b></span><span>🏹 사대 등록 <b>${ac.att}번</b></span><span>📮 방명록·응원 <b>${ac.gb+ac.ch}번</b></span>`:`<span>🎯 ${DM}월 몰기 <b>${tot.mo}번</b></span><span>🏅 새 배지 <b>${d.nBadge}개</b></span><span>🎂 집궁 기념 <b>${d.nSince}명</b></span>`}</div>
       <div class="stamp ${d.cur?'':'done'}">${d.cur?'발행 중':'확정'}</div>
     </div>
     ${d.wide?`<div class="mz-beta"><b>🧪 베타 테스트 기간</b><span>${magMD(d.from).replace('월 ','.').replace('일','')} ~ ${magMD(d.end).replace('월 ','.').replace('일','')} · ${BD}일</span><small>앱을 만든 날부터 창간호를 내기 전까지의 기록이에요</small></div>`:''}
