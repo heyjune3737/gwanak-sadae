@@ -2497,6 +2497,12 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 @keyframes mzRays{to{transform:rotate(360deg)}}
 @keyframes mzTwk{0%,100%{opacity:1}50%{opacity:.75}}
 @media (prefers-reduced-motion:reduce){.mz-cover .hero::before,.mz-cover .hero::after{animation:none}}
+
+/* p212 · 정 현판: 한 줄 세로 */
+.mz-jr .pl{writing-mode:horizontal-tb;flex-direction:column;width:34px;height:60px;padding:2px 0;gap:0;box-shadow:inset 0 0 0 1px #8A6440}
+.mz-jr .pl b{display:block;line-height:1.08;font-size:14px;letter-spacing:0;text-align:center}
+.mz-jr .pl.n4 b{font-size:12px}
+.mz-jr .pl.n5 b,.mz-jr .pl.n6 b{font-size:10px}
 </style>
 
 <div class="app" id="app">
@@ -3056,7 +3062,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01o';
+const APP_VER = '2026.11.01p';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7918,7 +7924,7 @@ function renderNews(){
   // 정 소식 (전체 월보) · 정 대항 · 우리 정 (정별 월보)
   const jl = Object.values(JS).sort((a,b)=>b.members-a.members||b.rec-a.rec);
   const pctJ = (a,b) => b ? Math.round(a/b*100) : 0;
-  const jeongNewsHTML = jl.length ? `<div class="mz-jl">${jl.map(o=>`<div class="mz-jr ${o.id===myJ.id?'me':''}"><span class="pl"><b>${esc(o.hanja)}</b></span><div class="grow"><b>${esc(o.name)}</b>${o.id===myJ.id?' <small>(우리 정)</small>':''}<span>사원 ${o.members}명 · 표 기록 ${o.rec}명 · 습사 ${o.days}번</span></div>${o.ok?`<button type="button" class="mz-jgo" data-scope="${esc(o.id)}">📰 ${esc(o.name)} 월보 ▸</button>`:`<span class="mz-jprog">월보까지<br>가입 <b>${Math.min(o.members,MAG_JMIN.members)}/${MAG_JMIN.members}</b> · 기록 <b>${Math.min(o.rec,MAG_JMIN.rec)}/${MAG_JMIN.rec}</b></span>`}</div>`).join('')}</div>
+  const jeongNewsHTML = jl.length ? `<div class="mz-jl">${jl.map(o=>`<div class="mz-jr ${o.id===myJ.id?'me':''}"><span class="pl n${Math.min(6,[...String(o.hanja||o.name)].length)}">${[...String(o.hanja||o.name)].map(ch=>`<b>${esc(ch)}</b>`).join('')}</span><div class="grow"><b>${esc(o.name)}</b>${o.id===myJ.id?' <small>(우리 정)</small>':''}<span>사원 ${o.members}명 · 표 기록 ${o.rec}명 · 습사 ${o.days}번</span></div>${o.ok?`<button type="button" class="mz-jgo" data-scope="${esc(o.id)}">📰 ${esc(o.name)} 월보 ▸</button>`:`<span class="mz-jprog">월보까지<br>가입 <b>${Math.min(o.members,MAG_JMIN.members)}/${MAG_JMIN.members}</b> · 기록 <b>${Math.min(o.rec,MAG_JMIN.rec)}/${MAG_JMIN.rec}</b></span>`}</div>`).join('')}</div>
     <p class="mz-tip">가입 사원 ${MAG_JMIN.members}명 + 그 호에 표를 기록한 사원 ${MAG_JMIN.rec}명이 넘으면 그 정의 월보가 따로 나와요 · 새 정은 첫 사원이 들어온 다음 달에 창간호가 나와요</p>` : '<p class="mz-empty">아직 정 소식이 없어요.</p>';
   const vsCats = [['🙋','참여율','표 기록 사원 ÷ 가입 사원', o=>o.rec/o.members, o=>pctJ(o.rec,o.members)+'%'], ['📅','1인당 습사','습사한 날 ÷ 표 기록 사원', o=>o.days/o.rec, o=>(o.days/o.rec).toFixed(1)+'일'], ['🎯','관중률','정 사원 전체 관중 ÷ 쏜 화살', o=>o.n?o.h/(o.n*5):0, o=>(o.n?Math.round(o.h/(o.n*5)*100):0)+'%']];
   const vsHTML = vsOn ? `<div class="mz-hof">${vsCats.map(([ic,t,dsc,v,show])=>{ const L=VS.slice().sort((a,b)=>v(b)-v(a)).slice(0,3); return `<div class="mz-hofc"><h3><span>${ic} ${t}</span></h3><ol>${L.map((o,i)=>`<li><span class="md">${['🥇','🥈','🥉'][i]}</span><span class="nm">${esc(o.name)}<small>사원 ${o.members}명</small></span><b class="num">${show(o)}</b></li>`).join('')}</ol><p class="mz-tip" style="margin:0;padding:0 7px 6px">${dsc}</p></div>`; }).join('')}</div><p class="mz-tip">표 기록 사원 ${MAG_JMIN.rec}명이 넘는 정 ${VS.length}곳이 겨뤘어요 · 사원 수가 달라도 공평하게 1인당·비율로 비교해요</p>` : '';
