@@ -2568,6 +2568,18 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .mz-ojs button{flex:none;display:flex;align-items:center;gap:5px;font:inherit;font-size:12.5px;height:32px;padding:0 10px;border:2px solid var(--ink);background:var(--card);color:var(--ink);box-shadow:2px 2px 0 var(--ink);cursor:pointer;white-space:nowrap}
 .mz-ojs button b{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 3px;background:#5B3A22;color:#F2C14E!important;font-size:10.5px;border:1px solid #231C16}
 .mz-ojs button.on{background:var(--ink);color:var(--card)}
+
+/* p216 · 순위: 부문 카드 한 줄에 하나 · 이름 한 줄 */
+.mz-hof.wide{grid-template-columns:1fr;gap:10px}
+.mz-hof.wide .mz-hofc.rk h3{font-size:13.5px;padding:4px 10px}
+.mz-hof.wide .mz-hofc.rk ol{padding:4px 6px 6px}
+.mz-hof.wide .mz-hofc.rk li{gap:8px;padding:6px 8px;align-items:center}
+.mz-hof.wide .mz-hofc.rk .md{font-size:14px}
+.mz-hof.wide .mz-hofc.rk .nm{display:flex;align-items:baseline;gap:6px;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mz-hof.wide .mz-hofc.rk .nm small{display:inline;font-size:11px;opacity:.65;flex:none}
+.mz-hof.wide.one .mz-hofc.rk .nm small{display:none}
+.mz-hof.wide .mz-hofc.rk li b{font-size:16px}
+.mz-hof.wide .mz-hofc.rk li.r1 b{font-size:19px}
 </style>
 
 <div class="app" id="app">
@@ -3127,7 +3139,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01r';
+const APP_VER = '2026.11.01s';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -8022,7 +8034,7 @@ function renderNews(){
   <article class="mz" id="mz2"><div class="mz-sec"><div class="mz-kick">02 · CONGRATULATIONS</div><h2>축하합니다 🎉</h2>
     <div class="mz-cg">${cgHTML}</div>${EV.length?'<p class="mz-tip">👏를 누르면 그 사원 방명록에 축하 한 줄이 남아요</p>':''}</div></article>
   <article class="mz" id="mz3"><div class="mz-sec"><div class="mz-kick">03 · RANKING</div><h2>${d.wide?'창간호 순위':DM+'월 순위'} <small>${d.wide?`(베타 ${BD}일 · 성실 · 몰기 · 다정)`:d.cur?'(지금은 중간 순위)':'(확정)'}</small></h2>
-    ${rkData?`<div class="mz-hof">${hof}</div>`:'<p class="mz-empty">순위를 불러오는 중…</p>'}
+    ${rkData?`<div class="mz-hof wide ${SJ?'one':''}">${hof}</div>`:'<p class="mz-empty">순위를 불러오는 중…</p>'}
     <p class="mz-tip">${d.wide?'베타 기간 기록 · ':'관중률은 5순 · 정심은 20순 이상 · '}랭킹에서 숨긴 사원은 빠져요${ym===Tym&&!d.cur?` · 다음 ${NX}월호는 ${NX}월 1일에 나와요 · <button type="button" class="linkbtn" data-tab-go="plaza">이번 달 실시간 순위는 광장에서 ▸</button>`:''}</p></div></article>
   ${SJ ? `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · OUR JEONG</div><h2>${esc(SJ.name)} 한눈에</h2>${ourHTML}<p class="mz-tip">전체 순위와 다른 정 소식은 🏯 전체 월보에서 볼 수 있어요</p></div></article>${d.jx?magJxHTML(d, SJ, DM):''}`
     : `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · JEONG NEWS</div><h2>정 소식 🏯</h2>${jeongNewsHTML}</div></article>
