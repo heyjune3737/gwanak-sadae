@@ -2434,6 +2434,12 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 
 /* p200 */
 .mz-cover .side small.up{font-size:10px;font-weight:700;color:#fff;background:#E2463B;padding:0 4px;margin-left:2px}
+
+/* p204 · 표지 캐릭터가 제목을 가리지 않게 */
+.mz-cover{height:340px}
+.mz-cover .hero{left:38%;width:136px;bottom:4px}
+.mz-cover .hero svg,.mz-cover .hero img{width:136px;height:163px}
+.mz-cover .hl h1{font-size:24px}
 </style>
 
 <div class="app" id="app">
@@ -2993,7 +2999,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01i';
+const APP_VER = '2026.11.01j';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
