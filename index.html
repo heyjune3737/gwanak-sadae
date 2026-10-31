@@ -2452,6 +2452,36 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .mz-cover .flag.ob span{background:linear-gradient(180deg,#22336B,#14204A);color:#F6C945!important;border-color:#F6C945;padding:5px 18px 5px 10px;font-size:14px;letter-spacing:.06em;clip-path:polygon(0 0,100% 0,86% 50%,100% 100%,0 100%)}
 .mz-cover .flag.ob .ob5{display:block;margin:-2px 0 0 4px;width:calc(100% - 16px);height:9px;border:1px solid #231C16;border-top:0;background:linear-gradient(90deg,#1F5BB0 0 20%,#D2342A 20% 40%,#F2C230 40% 60%,#F7F3E8 60% 80%,#1B1714 80% 100%);clip-path:polygon(0 0,100% 0,100% 100%,90% 70%,80% 100%,70% 70%,60% 100%,50% 70%,40% 100%,30% 70%,20% 100%,10% 70%,0 100%)}
 .mz-cover .flag.ob::before{height:66px;background:#8A5A2B}
+
+/* p207 · 차례 구분선 */
+.mz-toc button:nth-child(n+3){border-bottom:1px solid #231C16}
+.mz-toc button:last-child,.mz-toc button:nth-child(odd):nth-last-child(2){border-bottom:0}
+.mz-toc button:last-child:nth-child(odd){grid-column:1/-1;border-right:0}
+
+/* p208 · 이달의 얼굴 카드 */
+.mz-faces .fl{gap:6px}
+.mz-faces .fc{--c1:#FFF6D8;--c2:#F2D98A;--w:#FFFBEA;position:relative;overflow:hidden;gap:2px;padding:4px 4px 6px;border:3px solid #F2C230;border-radius:7px;background:linear-gradient(165deg,var(--c1),var(--c2));box-shadow:0 0 0 1px #231C16,2px 3px 0 #231C16;color:#231C16!important}
+.mz-faces .fc b{order:1;align-self:stretch;text-align:left;font-size:11.5px;padding:0 2px}
+.mz-faces .fc .av{order:2;align-self:stretch;display:flex;justify-content:center;padding:3px 0 1px;background:radial-gradient(circle at 50% 40%,var(--w),var(--c1) 75%);border:2px solid #B8962E;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
+.mz-faces .fc small{order:3;margin-top:2px;font-size:9.5px;font-weight:700;padding:0 5px;border-radius:8px;background:rgba(35,28,22,.85);color:#FFF6D8!important}
+.mz-faces .fc em{order:4;opacity:.9;font-weight:700;color:#231C16!important}
+.mz-faces .fc::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.45) 45%,transparent 58%)}
+.mz-faces .fc[data-fcat=sincere]{--c1:#E3F4D6;--c2:#8FCB6E}
+.mz-faces .fc[data-fcat=rate]{--c1:#FFE1D6;--c2:#F08A64}
+.mz-faces .fc[data-fcat=grow]{--c1:#D8F3EE;--c2:#5EC2B3}
+.mz-faces .fc[data-fcat=molgi]{--c1:#EDE2FA;--c2:#A985DC}
+.mz-faces .fc[data-fcat=dajeong]{--c1:#FFE3EE;--c2:#F29DBE}
+.mz-faces .fc[data-fcat=hits]{--c1:#DDEBFB;--c2:#6FA6E3}
+.mz-faces .fc[data-fcat=jeongsim]{--c1:#F1E2F7;--c2:#C08AD8}
+.mz-faces .fc[data-fcat=rookie]{--c1:#F0F8D8;--c2:#B5D86A}
+.mz-faces .fc.cv{border:3px solid transparent;background:linear-gradient(165deg,var(--c1),var(--c2)) padding-box,linear-gradient(135deg,#FF5A5A,#FFC23A,#5ED36A,#4AA8FF,#B06BFF,#FF5A5A) border-box}
+.mz-faces .fc.cv::before{content:'★';position:absolute;right:3px;top:2px;font-size:11px;color:#E2463B;text-shadow:0 0 2px #fff;z-index:1}
+
+/* p209 · 전체 월보 제호 */
+.mz-mast.all{position:relative;background:linear-gradient(180deg,#22336B,#14204A);color:#F6C945!important;border-bottom:0;padding:12px 14px 16px}
+.mz-mast.all .t{color:#F6C945!important;text-shadow:2px 2px 0 #0B1230}
+.mz-mast.all .t small{color:#F5EFE0!important;text-shadow:none;opacity:.95}
+.mz-mast.all::after{content:'';position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,#1F5BB0 0 20%,#D2342A 20% 40%,#F2C230 40% 60%,#F7F3E8 60% 80%,#1B1714 80% 100%);border-top:1px solid #0B1230;border-bottom:1px solid #231C16}
 </style>
 
 <div class="app" id="app">
@@ -3011,7 +3041,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01l';
+const APP_VER = '2026.11.01m';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7887,7 +7917,7 @@ function renderNews(){
   ${ym!==Tym?`<button type="button" class="mz-backbar" data-mag="${Tym}">← 최신호(${+Tym.slice(5)}월호)로</button>`:''}
   ${scopeBar}
   <article class="mz">
-    <div class="mz-mast"><div class="t">${SJ?`${esc(SJ.hanja)}月報<small>${esc(SJ.name)} 월보 · 사대 월보 정별판</small>`:'射臺月報<small>사대 월보</small>'}</div></div>
+    <div class="mz-mast ${SJ?'':'all'}"><div class="t">${SJ?`${esc(SJ.hanja)}月報<small>${esc(SJ.name)} 월보 · 사대 월보 정별판</small>`:'射臺月報<small>사대 월보</small>'}</div></div>
     <div class="mz-meta"><span>${Y}년 ${M}월호 · ${SJ&&SJ.founding?esc(SJ.name)+' 창간호':(no>0?(no===1?'창간호':'제'+no+'호'):'준비호')}</span><span>${d.wide?(d.cur?`베타 기록 · ${magMD(T)} 현재`:'베타 기록 · 확정'):(d.cur?`${magMD(d.from)}부터 · ${magMD(T)} 현재`:`${magMD(d.from)} ~ ${magMD(d.end)} 기록`)}</span></div>
     ${devPend?magDevPanel(ym, dAll):''}
     <div class="mz-cover ${SP?'sp':''}" style="${SP&&spImg?`background-image:url(${spImg})`:art?`background-image:url(${art})`:''}">
@@ -7897,7 +7927,7 @@ function renderNews(){
       <div class="stamp ${d.cur?'':'done'}">${d.cur?'발행 중':'확정'}</div>
     </div>
     ${d.wide?`<div class="mz-beta"><b>🧪 베타 테스트 기간</b><span>${magMD(d.from).replace('월 ','.').replace('일','')} ~ ${magMD(d.end).replace('월 ','.').replace('일','')} · ${BD}일</span><small>앱을 만든 날부터 창간호를 내기 전까지의 기록이에요</small></div>`:''}
-    ${d.faces&&d.faces.length?`<div class="mz-faces"><div class="mz-kick">이달의 얼굴 · FACES</div><div class="fl">${d.faces.map(f=>{ const c=[...MAG_CATS, ...MAG_FACE_CATS].find(x=>x.id===f.cat)||{}; const m=memberById(f.mid)||{}; return ` <button type="button" class="fc ${king&&king.mid===f.mid&&!SP&&CV&&CV.cat===f.cat?'cv':''}" data-room="${esc(f.mid)}"><small>${c.ic} ${c.t}</small><span class="av">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name||'사원')}</b><em>${esc(f.line)}</em></button>`; }).join('')}</div></div>`:''}
+    ${d.faces&&d.faces.length?`<div class="mz-faces"><div class="mz-kick">이달의 얼굴 · FACES</div><div class="fl">${d.faces.map(f=>{ const c=[...MAG_CATS, ...MAG_FACE_CATS].find(x=>x.id===f.cat)||{}; const m=memberById(f.mid)||{}; return ` <button type="button" class="fc ${king&&king.mid===f.mid&&!SP&&CV&&CV.cat===f.cat?'cv':''}" data-fcat="${esc(f.cat)}" data-room="${esc(f.mid)}"><small>${c.ic} ${c.t}</small><span class="av">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name||'사원')}</b><em>${esc(f.line)}</em></button>`; }).join('')}</div></div>`:''}
     <div class="mz-toc"><button type="button" data-go="mz1"><b>01</b>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${DM}월`}</button><button type="button" data-go="mz2"><b>02</b>축하합니다</button><button type="button" data-go="mz3"><b>03</b>${d.wide?'창간호 순위':DM+'월 순위'}</button><button type="button" data-go="mz4"><b>04</b>${SJ?esc(SJ.name)+' 한눈에':'정 소식'}</button>${SJ&&d.jx?`<button type="button" data-go="mzj5"><b>05</b>이달의 짝꿍</button><button type="button" data-go="mzj6"><b>06</b>숨은 배지 탐험대</button><button type="button" data-go="mzj7"><b>07</b>우리 정 이모저모</button>`:''}${!SJ&&d.events?`<button type="button" data-go="mz5e"><b>05</b>이달의 사건</button><button type="button" data-go="mz6h"><b>06</b>광장 핫글</button>${MAG_COMPS[ym]?`<button type="button" data-go="mz7c"><b>07</b>${+ym.slice(5)}월 대회 소식</button>`:''}${magNotices(d).length?`<button type="button" data-go="mz8u"><b>${MAG_COMPS[ym]?'08':'07'}</b>${DM}월 업데이트</button>`:''}`:''}</div>
   </article>
   <article class="mz" id="mz1"><div class="mz-sec"><div class="mz-kick">01 · NUMBERS</div><h2>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${DM}월`}</h2>
