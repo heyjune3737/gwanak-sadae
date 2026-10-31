@@ -2398,7 +2398,8 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .mz-evpic.scene .crowd span{display:flex;flex-direction:column;align-items:center;width:15%;max-width:56px;cursor:pointer}.mz-evpic.scene .crowd svg{width:100%;height:auto;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
 .mz-evpic.scene .crowd i{font-style:normal;font-size:9.5px;background:#FFFDF6;color:#2A2233;border:1px solid #2A2233;padding:0 3px;margin-top:-3px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .mz-evpic.hid{height:150px;display:flex;align-items:center;justify-content:center;gap:12px;background:radial-gradient(circle,#FFF1C4,#F6D58A)}.mz-evpic.hid .bd{font-size:54px}.mz-evpic.hid .av svg{width:90px;height:108px}
-.mz-evt{font-size:15px;margin:6px 0 2px}.mz-evp{margin:4px 0 0;font-size:14px;line-height:1.6}
+.mz-evt{font-size:15.5px;margin:12px 0 8px}
+.mz-evb p{margin:0 0 10px;font-size:14px;line-height:1.75}.mz-evb p.hl{padding:8px 12px;border-left:4px solid #E2463B;background:rgba(226,70,59,.08);font-weight:700}.mz-evb p.tail{margin-top:4px;font-size:13px;opacity:.8}.mz-evp{margin:4px 0 0;font-size:14px;line-height:1.6}
 .mz-note2{margin:10px 0 0;padding:10px 12px;border-left:4px solid #E2463B;background:rgba(226,70,59,.07)}.mz-note2 p{margin:0;font-size:14px;line-height:1.6}.mz-note2 cite{display:block;margin-top:4px;font-size:11.5px;font-style:normal;opacity:.75}
 .mz-spec{margin:10px 0 0;padding-left:18px;font-size:13.5px;line-height:1.6}.mz-spec li{margin:2px 0}
 .mz-upd{display:flex;flex-direction:column;gap:4px;margin-top:8px}.mz-upd button{display:flex;gap:8px;align-items:baseline;font:inherit;color:inherit;background:transparent;border:0;border-bottom:1px dashed rgba(42,34,51,.3);padding:6px 0;text-align:left;cursor:pointer}
@@ -2971,7 +2972,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01c';
+const APP_VER = '2026.11.01d';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7585,14 +7586,17 @@ function magNoteHTML(d){ const ap=magAp(d.ym)||{}; const sp=magSpecial(d); const
 function magEvText(e, md){ const D=(store&&store.docs)||{};
   const firstOf = id => { let best=null; (S.members||[]).forEach(m=>{ const at=m&&m.hid&&+m.hid[id]; if(at && (!best || at<best)) best=at; }); return best ? dstr(new Date(best)) : null; };
   if(e.k==='hid'){ const m=memberById(e.mid)||{}; const n=(S.members||[]).filter(x=>x&&x.hid&&x.hid[e.bid]).length;
-    return `${md}, ${m.name||'사원'} 사원이 숨은 배지 ‘${e.t}’를 처음 찾았어요! 오늘 사대에서 아무도 몰랐던 배지가 처음 발견된 날이에요.${n>1?` 지금까지 ${n}명이 이 배지를 찾았어요.`:' 아직 이 배지를 가진 사원은 단 한 명이에요.'} 힌트는 내 방 → 배지 칸 '숨은 배지'에 있어요.`; }
+    return [{t:`${md}, ${m.name||'사원'} 사원이 숨은 배지 ‘${e.t}’를 처음 찾았어요!`}, {t:'오늘 사대에서 아무도 몰랐던 배지가 처음 발견된 날이에요.', k:'hl'}, {t: n>1?`지금까지 ${n}명이 이 배지를 찾았어요.`:'아직 이 배지를 가진 사원은 단 한 명이에요.'}, {t:"힌트는 내 방 → 배지 칸 '숨은 배지'에 있어요.", k:'tail'}]; }
   // 북적 · 낭만: 오늘 사대가 생긴 뒤 한 시간대 최다인지 · 숨은 배지 첫 발견인지
   let maxN=0; for(const k in D){ if(!k.startsWith('attendance/')) continue; const att=Object.entries((D[k]||{}).entries||{}).map(([id,x])=>({...(x||{}), id})).filter(x=>x.slot && x.id!==HUB_BOT); busyOf(att).forEach(b=>{ if(b.ids.length>maxN) maxN=b.ids.length; }); }
-  let t = `${md} ${e.slot}, ${e.jname} 사대에 사원 ${e.n}명이 함께 섰어요.`;
-  if(e.n>=maxN) t += ` 오늘 사대가 생긴 뒤 한 시간대에 가장 많은 사원이 모인 사대예요.`;
-  if(e.k==='romance'){ const f=firstOf('romance'); if(f===e.date) t += ` 숨은 배지 ‘🏮 낭만 궁사’가 처음 발견된 날이에요! 그날 사대에 선 ${e.n}명이 모두 이 배지를 받았어요.`; else t += ` 여덟 명이 넘게 모여 숨은 배지 ‘🏮 낭만 궁사’가 다시 열린 날이에요.`; t += ' 다음 낭만 사대는 어느 정에서 열릴까요?'; }
-  else t += ` 여덟 명이 모이면 숨은 배지 ‘🏮 낭만 궁사’가 열려요. 다음엔 ${8-e.n}명만 더!`;
-  return t; }
+  const out=[{t:`${md} ${e.slot}, ${e.jname} 사대에 사원 ${e.n}명이 함께 섰어요.`}];
+  if(e.n>=maxN) out.push({t:'오늘 사대가 생긴 뒤 한 시간대에 가장 많은 사원이 모인 사대예요.'});
+  if(e.k==='romance'){ const f=firstOf('romance');
+    if(f===e.date){ out.push({t:'숨은 배지 ‘🏮 낭만 궁사’가 처음 발견된 날이에요!', k:'hl'}); out.push({t:`그날 사대에 선 ${e.n}명이 모두 이 배지를 받았어요.`}); }
+    else out.push({t:'여덟 명이 넘게 모여 숨은 배지 ‘🏮 낭만 궁사’가 다시 열린 날이에요.', k:'hl'});
+    out.push({t:'다음 낭만 사대는 어느 정에서 열릴까요?', k:'tail'}); }
+  else { out.push({t:'여덟 명이 모이면 숨은 배지 ‘🏮 낭만 궁사’가 열려요.', k:'hl'}); out.push({t:`다음엔 ${8-e.n}명만 더!`, k:'tail'}); }
+  return out; }
 // p198 · 08 이달의 업데이트 — 그달 공지를 짧게 요약 + 공지 원문 열기 (11-01 사용자 결정)
 const magNotices = d => (typeof NOTICES!=='undefined' ? NOTICES : []).filter(n=>n && String(n.id||'').startsWith(d.end.slice(0,7)));
 const MAG_UPD_TEXT = {   // 호마다 손으로 다듬은 요약 (없으면 공지 제목으로 자동)
@@ -7618,7 +7622,8 @@ function magEvHTML(d, DM){ const E=d.events||[]; const ap=magAp(d.ym)||{}; const
     else if(e.k==='hid'){ const m=memberById(e.mid)||{}; pic=`<div class="mz-evpic hid"><span class="bd">${e.ic}</span><span class="av" data-room="${esc(e.mid)}">${charSVG(m.char||DEFAULT_CHAR)}</span></div>`; }
     else { const A=JEONG_ART[e.jid]||{}; const ss=magSeason(+e.date.slice(5,7)); const bg=A.pz?(A.pz[ss+'_day']||A.pz.summer_day):''; pic=`<div class="mz-evpic scene" style="${bg?`background-image:url(${bg})`:''}"><div class="crowd">${e.ids.map(id=>{ const m=memberById(id)||{}; return `<span data-room="${esc(id)}">${charSVG(m.char||DEFAULT_CHAR)}<i>${esc(m.name||'')}</i></span>`; }).join('')}</div></div>`; }
     const auto = magEvText(e, md);
-    body = `${pic}<h3 class="mz-evt">${magEvTitle(e)}</h3><p class="mz-evp">${esc(ap.eventText||auto)}</p>`; }
+    const lines = ap.eventText ? String(ap.eventText).split(/\n+|(?<=[.!?])\s+/).filter(x=>x.trim()).map(t=>({t})) : auto;
+    body = `${pic}<h3 class="mz-evt">${magEvTitle(e)}</h3><div class="mz-evb">${lines.map(x=>x.k==='hl'?`<p class="hl">${esc(x.t)}</p>`:x.k==='tail'?`<p class="tail">${esc(x.t)}</p>`:`<p>${esc(x.t)}</p>`).join('')}</div>`; }
   return `<article class="mz" id="mz5e"><div class="mz-sec"><div class="mz-kick">05 · EVENT</div><h2>이달의 사건</h2>${body}</div></article>`; }
 const magRxChips = m => { const R=m.rxs||{}; const L=PZ_RX.filter(r=>R[r[0]]).map(r=>`<i>${r[1]} ${R[r[0]]}</i>`); return L.length ? L.join('') : (m.rx?`<i>💛 반응 ${m.rx}</i>`:''); };
 function magHotOpen(m){ const mm=memberById(m.from)||{}; const near = m.day >= dstr(new Date(Date.now()-6*86400e3));
