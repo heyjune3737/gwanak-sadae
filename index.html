@@ -2443,6 +2443,15 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 
 /* p205 */
 .mz-cover .side .sh{display:block;background:#231C16;color:#F5EFE0!important;font-size:11px;font-weight:700;padding:3px 6px;letter-spacing:.02em}
+
+/* p206 · 표지 정 깃발 */
+.mz-cover .flag{position:absolute;left:14px;top:134px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;pointer-events:none}
+.mz-cover .flag::before{content:'';position:absolute;left:0;top:-4px;width:3px;height:60px;background:#5A3A22;border:1px solid #231C16}
+.mz-cover .flag span{position:relative;margin-left:4px;background:#E2463B;color:#fff!important;font-family:var(--display);font-size:13px;padding:4px 16px 4px 8px;border:2px solid #231C16;clip-path:polygon(0 0,100% 0,88% 50%,100% 100%,0 100%);box-shadow:2px 2px 0 rgba(0,0,0,.25);white-space:nowrap}
+/* 전체 월보 = 오방기 (정별 월보 빨간 깃발과 구분) */
+.mz-cover .flag.ob span{background:linear-gradient(180deg,#22336B,#14204A);color:#F6C945!important;border-color:#F6C945;padding:5px 18px 5px 10px;font-size:14px;letter-spacing:.06em;clip-path:polygon(0 0,100% 0,86% 50%,100% 100%,0 100%)}
+.mz-cover .flag.ob .ob5{display:block;margin:-2px 0 0 4px;width:calc(100% - 16px);height:9px;border:1px solid #231C16;border-top:0;background:linear-gradient(90deg,#1F5BB0 0 20%,#D2342A 20% 40%,#F2C230 40% 60%,#F7F3E8 60% 80%,#1B1714 80% 100%);clip-path:polygon(0 0,100% 0,100% 100%,90% 70%,80% 100%,70% 70%,60% 100%,50% 70%,40% 100%,30% 70%,20% 100%,10% 70%,0 100%)}
+.mz-cover .flag.ob::before{height:66px;background:#8A5A2B}
 </style>
 
 <div class="app" id="app">
@@ -3002,7 +3011,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01k';
+const APP_VER = '2026.11.01l';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7823,7 +7832,8 @@ function renderNews(){
   const VS = Object.values(JS).filter(o=>o.rec>=MAG_JMIN.rec); const vsOn = MAG_VS_SHOW && VS.length>=MAG_VS_MIN; const RK=S.mag.rk[ym]; if(!RK || (!RK.frozen && Date.now()-RK.at>180e3)) magRank(ym);
   const rkData = RK ? RK.data : (d.cur && !d.wide && S.rank.cur ? S.rank.cur : null);
   const DM=+d.end.slice(5,7), NX=+magNextYM().slice(5);   // DM = 이 호가 담은 기록의 달
-  const no=magIssue(ym); const art=(()=>{ const a=(JEONG_ART[homeJ().id]||{}).scene||{}; return a[magSeason(DM)]||a.autumn||a.summer||a.spring||''; })();
+  const no=magIssue(ym); const covJ = SJ ? SJ.id : (d.king && magJid(d.king.mid)) || homeJ().id; const covJN = ((typeof jById==='function' && jById(covJ))||{}).name || (SJ&&SJ.name) || '';
+  const art=(()=>{ const a=(JEONG_ART[covJ]||JEONG_ART[homeJ().id]||{}).scene||{}; return a[magSeason(DM)]||a.autumn||a.summer||a.spring||''; })();
   const pct=v=>Math.round(v*100); const rate = tot.n ? tot.h/(tot.n*5) : 0, prate = A && d.P.tot.n ? d.P.tot.h/(d.P.tot.n*5) : null;
   const phrase={spring:'봄바람 속', summer:'한여름 볕 아래', autumn:'가을 바람 속', winter:'겨울 찬바람에도'}[magSeason(DM)];
   const king=d.king, km=king&&memberById(king.mid); const CV=d.cover||null; const CC=CV?MAG_CATS.find(c=>c.id===CV.cat):null; const SP=CV&&CV.special; const spImg=SP?magImg(SP.img):'';
@@ -7882,7 +7892,7 @@ function renderNews(){
     ${devPend?magDevPanel(ym, dAll):''}
     <div class="mz-cover ${SP?'sp':''}" style="${SP&&spImg?`background-image:url(${spImg})`:art?`background-image:url(${art})`:''}">
       <div class="hl"><span class="k">${d.wide?'창간호 표지 · '+(SJ?esc(SJ.name)+' ':'')+'베타 성실왕':SP?DM+'월 표지 · 특별호':CC?DM+'월 표지 · '+(SJ?esc(SJ.name)+' ':'')+CC.ic+' '+CC.t:DM+'월 표지 · '+(SJ?esc(SJ.name)+' ':'')+'성실왕'}</span><h1>${SP?`${esc(SP.title)}${SP.sub?`<small>${esc(SP.sub)}</small>`:''}`:CC&&king?`${phrase}<br>${esc(CV.line)},<br>${esc(km.name)} 사원`:king?(d.wide?`베타 ${BD}일 중<br>${king.days}일 사대에 선<br>${esc(km.name)} 사원`:`${phrase}<br>${king.days}일 습사,<br>${esc(km.name)} 사원`):`${DM}월의<br>기록이<br>비어 있어요`}</h1></div>
-      ${king&&!SP?`<div class="hero" data-room="${esc(king.mid)}">${charSVG(km.char||DEFAULT_CHAR)}</div>`:''}
+      ${king&&!SP&&covJN?`<div class="flag ${SJ?'':'ob'}"><span>${SJ?'🚩 ':''}${esc(covJN)}</span>${SJ?'':'<b class="ob5"></b>'}</div>`:''}${king&&!SP?`<div class="hero" data-room="${esc(king.mid)}">${charSVG(km.char||DEFAULT_CHAR)}</div>`:''}
       <div class="side"><b class="sh">📊 ${d.wide?`베타 ${BD}일`:`${DM}월`} ${SJ?esc(SJ.name):'오늘 사대'}</b>${!d.wide&&!SJ?(()=>{ const gc=ac.gb+ac.ch, vs=ac.vis||0; return `<span>👥 사원 <b>${ac.members}명</b>${ac.joined?` <small class="up">+${ac.joined}</small>`:''}</span><span>🏹 사대 등록 <b>${ac.att.toLocaleString()}번</b></span>${vs>gc?`<span>🚪 내 방 방문 <b>${vs.toLocaleString()}번</b></span>`:`<span>📮 방명록·응원 <b>${gc.toLocaleString()}번</b></span>`}`; })():d.wide?`<span>👥 사원 <b>${ac.members}명</b></span><span>🏹 사대 등록 <b>${ac.att}번</b></span><span>📮 방명록·응원 <b>${ac.gb+ac.ch}번</b></span>`:`<span>🎯 ${DM}월 몰기 <b>${tot.mo}번</b></span><span>🏅 새 배지 <b>${d.nBadge}개</b></span><span>🎂 집궁 기념 <b>${d.nSince}명</b></span>`}</div>
       <div class="stamp ${d.cur?'':'done'}">${d.cur?'발행 중':'확정'}</div>
     </div>
