@@ -2993,7 +2993,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01f';
+const APP_VER = '2026.11.01g';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7645,8 +7645,8 @@ function magJx(scope, from, to){ const D=(store&&store.docs)||{}; const inJ=id=>
     for(const [id,e] of Object.entries((D[k]||{}).entries||{})){ if(!e || !e.slot || !inJ(id)) continue; const hk=dw+'|'+e.slot; heat[hk]=(heat[hk]||0)+1; const gk=entryJid({...e, id})+'|'+e.slot; (g[gk]=g[gk]||[]).push(id); }
     for(const [gk,ids] of Object.entries(g)){ const slot=gk.split('|')[1]; ids.sort();
       if(ids.length===1){ const o=so[ids[0]]||(so[ids[0]]={mid:ids[0], n:0, when:{}}); o.n++; const w=dw+'|'+slot; o.when[w]=(o.when[w]||0)+1; } for(let i=0;i<ids.length;i++) for(let j=i+1;j<ids.length;j++){ const pk=ids[i]+'|'+ids[j]; const o=pr[pk]||(pr[pk]={a:ids[i], b:ids[j], n:0, last:'', when:{}}); o.n++; if(dt>o.last) o.last=dt; const w=dw+'|'+slot; o.when[w]=(o.when[w]||0)+1; } } }
-  const pairs=Object.values(pr).filter(o=>o.n>=2).sort((x,y)=>y.n-x.n || y.last.localeCompare(x.last)).slice(0,3).map(o=>{ const w=Object.entries(o.when).sort((x,y)=>y[1]-x[1])[0]; return {a:o.a, b:o.b, n:o.n, last:o.last, dw:+w[0].split('|')[0], slot:w[0].split('|')[1], wn:w[1]}; });
-  const solo=Object.values(so).filter(o=>o.n>=2 && !DEV_MIDS.includes(o.mid)).sort((x,y)=>y.n-x.n).slice(0,1).map(o=>{ const w=Object.entries(o.when).sort((x,y)=>y[1]-x[1])[0]; return {mid:o.mid, n:o.n, dw:+w[0].split('|')[0], slot:w[0].split('|')[1], wn:w[1]}; })[0]||null;
+  const pairs=Object.values(pr).filter(o=>o.n>=2 && !DEV_MIDS.includes(o.a) && !DEV_MIDS.includes(o.b)).sort((x,y)=>y.n-x.n || y.last.localeCompare(x.last)).slice(0,3).map(o=>{ const w=Object.entries(o.when).sort((x,y)=>y[1]-x[1])[0]; return {a:o.a, b:o.b, n:o.n, last:o.last, dw:+w[0].split('|')[0], slot:w[0].split('|')[1], wn:w[1]}; });
+  const solo=Object.values(so).filter(o=>o.n>=2 && !DEV_MIDS.includes(o.mid) && !(pairs[0] && (pairs[0].a===o.mid || pairs[0].b===o.mid))).sort((x,y)=>y.n-x.n).slice(0,1).map(o=>{ const w=Object.entries(o.when).sort((x,y)=>y[1]-x[1])[0]; return {mid:o.mid, n:o.n, dw:+w[0].split('|')[0], slot:w[0].split('|')[1], wn:w[1]}; })[0]||null;
   // 숨은 배지 (날짜가 남는 배지만 · 기능 점검용 개발자 기록은 빼고)
   const HL=(typeof HIDDEN!=='undefined'?HIDDEN:[]).filter(h=>!(typeof HID_NODATE!=='undefined' && HID_NODATE.includes(h.id)));
   const firstAll={}, firstJ={}, jc={}, everJ=new Set(), fd={};
