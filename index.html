@@ -2482,6 +2482,21 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .mz-mast.all .t{color:#F6C945!important;text-shadow:2px 2px 0 #0B1230}
 .mz-mast.all .t small{color:#F5EFE0!important;text-shadow:none;opacity:.95}
 .mz-mast.all::after{content:'';position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,#1F5BB0 0 20%,#D2342A 20% 40%,#F2C230 40% 60%,#F7F3E8 60% 80%,#1B1714 80% 100%);border-top:1px solid #0B1230;border-bottom:1px solid #231C16}
+
+/* p210 · 표지 사원 황금 후광 */
+.mz-cover .hero{isolation:isolate}
+.mz-cover .hero::before{content:'';position:absolute;left:50%;top:46%;width:250px;height:250px;margin:-125px 0 0 -125px;z-index:-1;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,rgba(255,214,90,.75) 0 7deg,rgba(255,214,90,0) 7deg 18deg);
+  -webkit-mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.55) 48%,transparent 70%);mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.55) 48%,transparent 70%);animation:mzRays 24s linear infinite}
+.mz-cover .hero::after{content:'✦';position:absolute;left:50%;top:46%;width:170px;height:170px;margin:-85px 0 0 -85px;z-index:-1;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,246,200,.95) 0,rgba(255,215,90,.75) 35%,rgba(255,190,40,.25) 60%,transparent 72%);
+  color:#FFF6C8;font-size:18px;line-height:1;text-align:right;padding:6px 10px 0 0;box-sizing:border-box;
+  text-shadow:-120px 40px 0 #FFE37A,-20px 120px 0 #FFF6C8,-140px 110px 0 #FFE9A0,0 0 6px #FFC23A;animation:mzTwk 2.4s ease-in-out infinite}
+
+.mz-cover .hero svg,.mz-cover .hero img{filter:drop-shadow(0 0 3px #FFF3B0) drop-shadow(0 0 10px rgba(255,200,60,.9)) drop-shadow(0 4px 0 rgba(0,0,0,.25))}
+@keyframes mzRays{to{transform:rotate(360deg)}}
+@keyframes mzTwk{0%,100%{opacity:1}50%{opacity:.75}}
+@media (prefers-reduced-motion:reduce){.mz-cover .hero::before,.mz-cover .hero::after{animation:none}}
 </style>
 
 <div class="app" id="app">
@@ -3041,7 +3056,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01m';
+const APP_VER = '2026.11.01n';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
