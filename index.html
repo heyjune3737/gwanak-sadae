@@ -2413,6 +2413,24 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .mz-hotv .op{display:flex;gap:10px;align-items:flex-start;padding:10px;border:2px solid var(--ink);background:var(--card)}.mz-hotv .av svg{width:44px;height:53px}.mz-hotv p{margin:4px 0;font-size:14.5px;line-height:1.5;white-space:pre-wrap}
 .mz-hotv .reps{margin-top:10px;display:flex;flex-direction:column;gap:6px}.mz-hotv .rp{display:flex;gap:8px;align-items:flex-start;padding:6px 8px 6px 18px;border-left:3px solid var(--line2,#ccc)}.mz-hotv .rp .av svg{width:32px;height:38px}.mz-hotv .rp p{font-size:13.5px}
 .mz-hot .no{font-weight:700;font-size:18px;min-width:16px;color:#E2463B}.mz-hot .av svg{width:40px;height:48px}.mz-hot b{font-size:13px}.mz-hot b small{font-weight:400;opacity:.7}.mz-hot p{margin:3px 0;font-size:13.5px;line-height:1.45}.mz-hot .sc{font-size:11.5px;opacity:.8}
+
+/* p199 · 정별 월보 */
+.mz-pair{display:flex;align-items:center;justify-content:center;gap:6px;margin:8px 0 2px;padding:10px 0;background:radial-gradient(circle,#FFF1C4,rgba(255,241,196,0) 70%)}
+.mz-pair .av svg{width:78px;height:94px}.mz-pair .hd{font-size:30px}
+.mz-evt small{font-weight:400;font-size:12px;opacity:.75}
+.mz-pl{display:flex;flex-direction:column;gap:6px;margin-top:4px}.mz-pl>div{display:flex;align-items:center;gap:4px;border:1px solid rgba(35,28,22,.25);padding:5px 8px;font-size:13px}
+.mz-pl .no{font-weight:700;color:#C7362C;min-width:14px}.mz-pl .av svg{width:30px;height:36px}.mz-pl b{margin-left:4px}.mz-pl small{margin-left:auto;font-size:11.5px;opacity:.8;white-space:nowrap}
+.mz-hidl{display:flex;flex-direction:column;gap:6px;margin-top:4px}.mz-hidl .hc{display:flex;gap:8px;align-items:center;border:1px solid rgba(35,28,22,.25);padding:6px 8px}
+.mz-hidl .av svg{width:40px;height:48px}.mz-hidl .grow{flex:1;min-width:0}.mz-hidl .bs i{white-space:nowrap}
+.mz-jvs{margin:2px 0 12px;border:2px solid #231C16;font-size:12.5px}.mz-jvs>div{display:grid;grid-template-columns:76px 1fr 1fr;gap:4px;padding:6px 8px;border-top:1px solid rgba(35,28,22,.2);align-items:center}
+.mz-jvs>div.h{border-top:0;background:#231C16;color:#F5EFE0;font-weight:700;font-size:11.5px}.mz-jvs .me{font-weight:700}.mz-jvs em{font-style:normal;font-size:11px;padding:1px 5px;background:#E6DDC6;margin-left:2px}.mz-jvs em.gold{background:#F6C945}.mz-hidl b{font-size:13.5px}.mz-hidl .bs{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.mz-hidl .bs i{font-style:normal;font-size:12px;padding:2px 6px;border:1px solid rgba(35,28,22,.35);background:#FFFDF6;color:#231C16}
+.mz-hidl .bs i.all{border-color:#C7362C;background:#FFE9C2}.mz-hidl .bs i.j{background:#FFF6DE}.mz-hidl .bs em{font-style:normal;font-size:10.5px;font-weight:700;color:#B02A20}
+.mz-solo{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:10px;border:2px dashed rgba(35,28,22,.45);background:#FFFDF6;color:#231C16}.mz-solo .av svg{width:52px;height:62px}
+.mz-solo .tag{display:inline-block;font-size:11px;font-weight:700;background:#231C16;color:#F5EFE0;padding:1px 6px}.mz-solo b{display:block;font-size:14px;margin:3px 0}.mz-solo b small{font-weight:400;font-size:11.5px;opacity:.75}.mz-solo p{margin:0 0 4px;font-size:13px;line-height:1.6}.mz-solo p.tail{opacity:.8;font-size:12.5px}
+.mz-sub{font-size:14px;margin:12px 0 6px}
+.mz-heat{display:grid;grid-template-columns:34px repeat(7,1fr);gap:2px;margin:4px 0 10px;font-size:11px;text-align:center}
+.mz-heat b{font-weight:700;font-size:11px}.mz-heat b.sl{text-align:left}.mz-heat i{font-style:normal;height:22px;line-height:22px;border:1px solid rgba(35,28,22,.15);color:#231C16}.mz-heat i.hi{color:#fff;font-weight:700}
 </style>
 
 <div class="app" id="app">
@@ -2972,7 +2990,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01d';
+const APP_VER = '2026.11.01e';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7359,7 +7377,7 @@ function magHot(from, to){ const D=(store&&store.docs)||{}; const all=[];
   for(const k in D){ if(!k.startsWith('plaza/')) continue; const dt=k.slice(6); if(dt<from || dt>to) continue; plazaMsgs(D[k]).forEach(m=>all.push({...m, day:dt})); }
   const rep={}; all.forEach(m=>{ const p=String(m.id).indexOf('_re_'); if(p>0){ const r=String(m.id).slice(p+4); rep[r]=(rep[r]||0)+1; } });
   return all.filter(m=>!pzJoOf(m.id) && String(m.id).indexOf('_re_')<0 && m.from!==HUB_BOT).map(m=>({id:m.id, from:m.from, text:String(m.text).slice(0,100), day:m.day, rx:(typeof pzRxN==='function'?pzRxN(m):0), re:rep[m.id]||0, rxs:Object.fromEntries(Object.entries(typeof pzRxOf==='function'?pzRxOf(m):{}).map(([k,L])=>[k,L.length])), reps:all.filter(x=>String(x.id).endsWith('_re_'+m.id)).map(x=>({from:x.from, text:String(x.text).slice(0,100), day:x.day}))}))
-    .map(m=>({...m, sc:m.rx+m.re})).filter(m=>m.sc>0).sort((a,b)=>b.re-a.re || b.rx-a.rx || a.day.localeCompare(b.day)).slice(0,3); }
+    .map(m=>({...m, sc:m.rx+m.re})).filter(m=>m.sc>0).sort((a,b)=>b.re-a.re || b.rx-a.rx || b.day.localeCompare(a.day)).slice(0,3); }
 // p198: 한 달치 핫글은 서버에서 (폰엔 광장 글이 7일치뿐) — SQL 38 sadae_plaza_hot
 S.mag.hot = S.mag.hot || {};
 async function magHotFetch(ym){ if(!store || store.kind!=='remote' || !store.token || S.mag.hot[ym]) return; S.mag.hot[ym]={busy:1};
@@ -7429,7 +7447,8 @@ function magData(ym, scope){
     if(scope==='all'){ events=magEvents(from, to); const ap=magAp(ym); const hs=S.mag.hot[ym];
       hot = ap && Array.isArray(ap.hot) ? ap.hot : (hs && hs.L) ? hs.L : magHot(from, to);
       evSel = ap && ap.event!==undefined ? ap.event : (events[0]?events[0].key:null); } }
-  const d={ym, scope, cur, from, to, end, wide, A, P, ev, busy, king, cover, faces, events, evSel, hot, nBadge, nNew, nSince, nGrade, act, jst};
+  const jx = (!wide && ym>=MAG_APPROVE_FROM && scope!=='all' && typeof magJx==='function') ? magJx(scope, from, to) : null;
+  const d={ym, scope, cur, from, to, end, wide, A, P, ev, busy, king, cover, faces, events, evSel, hot, jx, nBadge, nNew, nSince, nGrade, act, jst};
   if(magPublished(ym)) magSnapPut(magSnapKey(ym,scope), magSnapEnc(d));   // 발간된 호 = 처음 계산한 숫자를 서버에 한 번만 저장
   S.mag.cache[ck]={at:Date.now(), d}; return d;
 }
@@ -7613,6 +7632,100 @@ function magUpdHTML(d, num){ const L=magNotices(d); if(!L.length) return ''; con
 function magNoticeOpen(id){ const n=(typeof NOTICES!=='undefined'?NOTICES:[]).find(x=>x.id===id); if(!n) return;
   const sh=openSheet(`<h3>${esc(n.title||'')}</h3><p class="tiny muted" style="margin:0 0 8px">${esc(n.date||'')} 공지</p><div class="mz-ntb">${typeof ntBody==='function'?ntBody(n.body||''):esc(n.body||'').replace(/\n/g,'<br>')}</div><div class="actions"><button class="btn ghost" type="button" id="mnClose">닫기</button></div>`);
   sh.classList.add('sheet-tall'); $('#mnClose',sh).onclick=closeSheet; }
+// ===== p199 · 정별 월보 =====
+function magJx(scope, from, to){ const D=(store&&store.docs)||{}; const inJ=id=>magJid(id)===scope && id!==HUB_BOT && memberById(id);
+  // 짝꿍 + 붐비는 때 (사대 등록)
+  const pr={}, heat={}, so={};
+  for(const k in D){ if(!k.startsWith('attendance/')) continue; const dt=k.slice(11); if(dt<from || dt>to) continue; const dw=new Date(dt+'T12:00:00').getDay(); const g={};
+    for(const [id,e] of Object.entries((D[k]||{}).entries||{})){ if(!e || !e.slot || !inJ(id)) continue; const hk=dw+'|'+e.slot; heat[hk]=(heat[hk]||0)+1; const gk=entryJid({...e, id})+'|'+e.slot; (g[gk]=g[gk]||[]).push(id); }
+    for(const [gk,ids] of Object.entries(g)){ const slot=gk.split('|')[1]; ids.sort();
+      if(ids.length===1){ const o=so[ids[0]]||(so[ids[0]]={mid:ids[0], n:0, when:{}}); o.n++; const w=dw+'|'+slot; o.when[w]=(o.when[w]||0)+1; } for(let i=0;i<ids.length;i++) for(let j=i+1;j<ids.length;j++){ const pk=ids[i]+'|'+ids[j]; const o=pr[pk]||(pr[pk]={a:ids[i], b:ids[j], n:0, last:'', when:{}}); o.n++; if(dt>o.last) o.last=dt; const w=dw+'|'+slot; o.when[w]=(o.when[w]||0)+1; } } }
+  const pairs=Object.values(pr).filter(o=>o.n>=2).sort((x,y)=>y.n-x.n || y.last.localeCompare(x.last)).slice(0,3).map(o=>{ const w=Object.entries(o.when).sort((x,y)=>y[1]-x[1])[0]; return {a:o.a, b:o.b, n:o.n, last:o.last, dw:+w[0].split('|')[0], slot:w[0].split('|')[1], wn:w[1]}; });
+  const solo=Object.values(so).filter(o=>o.n>=2 && !DEV_MIDS.includes(o.mid)).sort((x,y)=>y.n-x.n).slice(0,1).map(o=>{ const w=Object.entries(o.when).sort((x,y)=>y[1]-x[1])[0]; return {mid:o.mid, n:o.n, dw:+w[0].split('|')[0], slot:w[0].split('|')[1], wn:w[1]}; })[0]||null;
+  // 숨은 배지 (날짜가 남는 배지만 · 기능 점검용 개발자 기록은 빼고)
+  const HL=(typeof HIDDEN!=='undefined'?HIDDEN:[]).filter(h=>!(typeof HID_NODATE!=='undefined' && HID_NODATE.includes(h.id)));
+  const firstAll={}, firstJ={}, jc={}, everJ=new Set(), fd={};
+  for(const m of (S.members||[])){ if(!m || !m.hid || DEV_MIDS.includes(m.id) || m.id===HUB_BOT) continue; const mj=memberJ(m).id;
+    for(const h of HL){ const at=+m.hid[h.id]; if(!(at>1)) continue; if(!firstAll[h.id] || at<firstAll[h.id]) firstAll[h.id]=at; if(mj===scope){ everJ.add(h.id); if(!firstJ[h.id] || at<firstJ[h.id]) firstJ[h.id]=at; }
+      const dt=dstr(new Date(at)); if(dt<from || dt>to) continue; jc[mj]=(jc[mj]||0)+1; if(mj===scope) (fd[m.id]=fd[m.id]||[]).push({id:h.id, at}); } }
+  const finders=Object.entries(fd).map(([mid,L])=>({mid, L:L.sort((x,y)=>x.at-y.at).map(x=>({id:x.id, at:x.at, all:firstAll[x.id]===x.at, j:firstJ[x.id]===x.at}))})).sort((x,y)=>y.L.length-x.L.length || x.L[0].at-y.L[0].at).slice(0,8);
+  const left=HL.filter(h=>!everJ.has(h.id)).map(h=>h.id);
+  // 새 식구 (그달 들어온 사원)
+  const news=(S.members||[]).filter(m=>m && m.name && m.id!==HUB_BOT && magJid(m.id)===scope && +m.joinedAt>0 && (j=>j>=from && j<=to)(dstr(new Date(+m.joinedAt)))).sort((x,y)=>+x.joinedAt-+y.joinedAt).map(m=>({mid:m.id, day:dstr(new Date(+m.joinedAt))}));
+  return {pairs, solo, heat, hid:{finders, jc, left, nAll:HL.length}, news}; }
+const MAG_DOW_FULL = ['일','월','화','수','목','금','토'];
+const magEun = t => { const c=String(t).charCodeAt(String(t).length-1)-0xAC00; return t + (c>=0 && c<11172 && c%28 ? '은' : '는'); };
+// 01 · 우리 정 기록 + 다른 정과 견주기
+function magJ01(d, SJ, JS){ const tot=d.A.tot, DM=+d.end.slice(5,7), NX=+ymAdd(d.ym,1).slice(5); const pct=v=>Math.round(v*100); const out=[];
+  const rate=tot.n?tot.h/(tot.n*5):0; const pt=(d.P&&d.P.tot)||{n:0}; const prate=pt.n?pt.h/(pt.n*5):null;
+  if(!tot.n){ out.push({t:`${DM}월 ${SJ.name}에는 아직 표 기록이 없어요. ${NX}월에는 첫 기록을 남겨 주세요!`}); return out; }
+  out.push({t:`${DM}월 ${SJ.name}에서는 사원 ${tot.people}명이 ${tot.days}번 활터에 나와 ${tot.n.toLocaleString()}순(${(tot.n*5).toLocaleString()}시)을 냈어요.${pt.n?(tot.n>pt.n?` 지난달보다 ${(tot.n-pt.n).toLocaleString()}순 더 쐈어요.`:tot.n<pt.n?` 지난달보다는 ${(pt.n-tot.n).toLocaleString()}순 적었어요.`:''):''}`});
+  out.push({t: prate===null ? `우리 정 관중률은 ${pct(rate)}%예요.${tot.mo?` 몰기는 ${tot.mo}번 나왔어요.`:''}` : `우리 정 관중률은 ${pct(rate)}%로 지난달${pct(rate)===pct(prate)?'과 같아요.':`보다 ${Math.abs(pct(rate)-pct(prate))}%p ${rate>prate?'올랐어요 📈':'내렸어요.'}`}${tot.mo?` 몰기는 ${tot.mo}번 나왔어요.`:''}`});
+  // 다른 정과
+  const pool=Object.values(JS||{}).filter(o=>o.rec>=1); const me=pool.find(o=>o.id===SJ.id);
+  if(me && pool.length>=2){
+    const M=[{k:'part', t:'참여율', v:o=>o.rec/o.members, show:o=>pct(o.rec/o.members)+'%', gap:(a,b)=>`${pct(b.rec/b.members)-pct(a.rec/a.members)}%p`, push:'표를 한 번도 안 남긴 사원에게 “같이 쏴요” 한마디 건네 봐요'},
+      {k:'days', t:'1인당 습사', v:o=>o.days/o.rec, show:o=>(o.days/o.rec).toFixed(1)+'일', gap:(a,b)=>`${(b.days/b.rec-a.days/a.rec).toFixed(1)}일`, push:'한 사람이 한 번씩만 더 나오면 뒤집혀요'},
+      {k:'rate', t:'관중률', v:o=>o.n?o.h/(o.n*5):0, show:o=>(o.n?pct(o.h/(o.n*5)):0)+'%', gap:(a,b)=>`${pct(b.n?b.h/(b.n*5):0)-pct(a.n?a.h/(a.n*5):0)}%p`, push:'한 순에 한 발씩만 더 맞히면 따라잡아요'},
+      {k:'mo', t:'몰기', v:o=>o.mo||0, show:o=>(o.mo||0)+'번', gap:(a,b)=>`${(b.mo||0)-(a.mo||0)}번`, push:'5시 5중 한 번이 순위를 바꿔요'}];
+    const R=M.map(m=>{ const L=pool.slice().sort((a,b)=>m.v(b)-m.v(a)); const rk=1+L.filter(o=>m.v(o)>m.v(me)).length; return {...m, rk, top:L[0]}; });
+    const n=pool.length; const best=R.slice().sort((x,y)=>x.rk-y.rk)[0];
+    out.push({k:'tbl', n, R:R.map(r=>({t:r.t, me:r.show(me), rk:r.rk, tn:r.top.name, tv:r.show(r.top)}))});
+    out.push({t:`🏯 이번 달 기록을 남긴 정 ${n}곳 가운데 ${SJ.name}의 가장 높은 순위는 ${best.t} ${best.rk}위예요.`, k:'hl'});
+    const wins=R.filter(r=>r.rk===1); const chase=R.filter(r=>r.rk>1).sort((a,b)=>a.rk-b.rk)[0];
+    if(wins.length) out.push({t:`${wins.length>1?wins.map(r=>r.t).join(' · ')+'에서 모두':magEun(wins[0].t)} 우리 정이 으뜸이에요! 👑`});
+    if(chase && chase.top) { const g=chase.gap(me, chase.top); out.push({t:`${chase.t} 1위 ${chase.top.name}(${chase.show(chase.top)})과는 ${/^0(\.0)?[^0-9.]/.test(g)?'정말 근소한':g} 차이예요. ${chase.push}!`}); }
+  }
+  const bits=[]; if(d.busy && d.busy[1]>1) bits.push(`가장 붐빈 날은 ${magMD(d.busy[0])} ${magDow(d.busy[0])}요일(${d.busy[1]}명)`); if(d.nNew) bits.push(`처음 표를 남긴 사원 ${d.nNew}명`);
+  if(bits.length) out.push({t:`${bits.join(', ')}${d.nNew?'도 있었어요.':'이었어요.'}`});
+  out.push({t:`${NX}월호에서 ${SJ.name}은 몇 위에 올라 있을까요? 🏹`, k:'tail'});
+  return out; }
+const magLines = L => `<div class="mz-evb">${L.map(x=>`<p class="${x.k||''}">${esc(x.t)}</p>`).join('')}</div>`;
+function magJ01HTML(d, SJ, JS){ const L=magJ01(d, SJ, JS); const i=L.findIndex(x=>x.k==='tbl'); if(i<0) return magLines(L); const T=L[i];
+  const tbl=`<div class="mz-jvs"><div class="h"><span></span><span>${esc(SJ.name)}</span><span>1위 정</span></div>${T.R.map(r=>`<div><b>${esc(r.t)}</b><span class="me">${esc(r.me)} <em class="${r.rk===1?'gold':''}">${r.rk===1?'👑 1위':r.rk+'위'}</em></span><span>${r.rk===1?'—':`${esc(r.tn)} ${esc(r.tv)}`}</span></div>`).join('')}</div>`;
+  return magLines(L.slice(0,i)) + tbl + magLines(L.slice(i+1)); }
+// 05 짝꿍 · 06 숨은 배지 · 07 이모저모
+function magJxHTML(d, SJ, DM){ const X=d.jx; if(!X) return ''; const nm=id=>(memberById(id)||{}).name||'사원'; const av=(id,cl)=>{ const m=memberById(id)||{}; return `<span class="av ${cl||''}" data-room="${esc(id)}">${charSVG(m.char||DEFAULT_CHAR)}</span>`; };
+  // 05
+  let p5; const PR=X.pairs||[];
+  if(!PR.length) p5 = `<p class="mz-empty">${DM}월에는 두 번 넘게 같은 사대에 선 짝꿍이 아직 없어요. 사대 등록할 때 시간대를 맞춰 보세요 — 다음 호 짝꿍은 여러분일지도!</p>`;
+  else { const t=PR[0]; const when=`${MAG_DOW_FULL[t.dw]}요일 ${t.slot}`;
+    const L=[{t:`${nm(t.a)} 사원과 ${nm(t.b)} 사원, ${DM}월에 ${t.n}번이나 같은 사대에 함께 섰어요.`},
+      {t: t.n>=6 ? '이쯤 되면 사대 단짝이에요. 한 사람이 안 보이면 다른 한 사람이 먼저 걱정할 사이!' : t.n>=4 ? '“오늘도 오세요?” 소리가 절로 나오는 사이예요.' : '같은 시간에 활을 내다 보면 어느새 단짝이 돼요.', k:'hl'},
+      {t: t.wn>=2 ? `둘이 가장 자주 만난 때는 ${when}(${t.wn}번)이에요. 그 시간에 가면 두 분을 만날 수 있어요.` : `마지막으로 함께 선 날은 ${magMD(t.last)}이에요.`}];
+    p5 = `<div class="mz-pair">${av(t.a)}<span class="hd">🤝</span>${av(t.b)}</div><h3 class="mz-evt">${esc(nm(t.a))} · ${esc(nm(t.b))} <small>${t.n}번 함께</small></h3>${magLines(L)}
+`; }
+  const SO=X.solo; if(SO){ const when=`${MAG_DOW_FULL[SO.dw]}요일 ${SO.slot}`;
+    p5 += `<div class="mz-solo">${av(SO.mid)}<div class="grow"><span class="tag">🙋 나는 솔로</span><b>${esc(nm(SO.mid))} 사원 <small>혼자 선 사대 ${SO.n}번</small></b><p>${DM}월에 사대 등록을 하고 보니 ${SO.n}번이나 우리 정 사원이 아무도 없었어요. 활터를 홀로 지킨 고독한 궁사!</p><p class="tail">${SO.wn>=2?`주로 ${when}에 혼자예요. 그 시간에 가면 짝꿍 자리가 비어 있어요 👀`:'다음 달엔 짝꿍을 만날 수 있을까요? 👀'}</p></div></div>`; }
+  const s5 = `<article class="mz" id="mzj5"><div class="mz-sec"><div class="mz-kick">05 · PARTNERS</div><h2>이달의 짝꿍 🤝</h2>${p5}<p class="mz-tip">같은 날 · 같은 시간대 사대에 함께 등록한 횟수예요</p></div></article>`;
+  // 06
+  const H=X.hid||{finders:[], jc:{}, left:[], nAll:0}; const HB=id=>(typeof HIDDEN!=='undefined'?HIDDEN:[]).find(h=>h.id===id)||{ic:'❔', t:'?', h:[]};
+  const nF=H.finders.reduce((a,f)=>a+f.L.length,0); const JC=Object.entries(H.jc||{}).sort((a,b)=>b[1]-a[1]); const mine=(H.jc||{})[SJ.id]||0; const rk=1+JC.filter(([,v])=>v>mine).length; const topJ=JC[0]?jById(JC[0][0]):null;
+  const L6=[];
+  if(nF){ L6.push({t:`${DM}월 ${SJ.name} 탐험대는 숨은 배지를 ${nF}개 찾아냈어요.`});
+    const firstAll=H.finders.flatMap(f=>f.L.filter(x=>x.all).map(x=>({mid:f.mid, ...x})));
+    if(firstAll.length){ const x=firstAll[0]; const b=HB(x.id); L6.push({t:`특히 ${nm(x.mid)} 사원은 ${magMD(dstr(new Date(x.at)))}, 오늘 사대에서 아무도 몰랐던 ‘${b.ic} ${b.t}’를 맨 처음 찾아냈어요!${firstAll.length>1?` 이번 달 오늘 사대 첫 발견만 ${firstAll.length}개예요.`:''}`, k:'hl'}); }
+    else { const f=H.finders[0]; L6.push({t:`가장 많이 찾은 탐험가는 ${nm(f.mid)} 사원이에요. ${f.L.length}개를 손에 넣었어요!`, k:'hl'}); }
+    if(JC.length>1) L6.push({t: rk===1 ? `정 ${JC.length}곳 가운데 우리 정이 숨은 배지를 가장 많이 찾았어요. 보물 지도는 우리 정에 있나 봐요 🗺` : `숨은 배지를 가장 많이 찾은 정은 ${(topJ&&topJ.name)||'다른 정'}(${JC[0][1]}개)이에요. 우리 정은 ${rk}위 — ${JC[0][1]-mine}개만 더 찾으면 따라잡아요!`}); }
+  else L6.push({t:`${DM}월에는 ${SJ.name}에서 새로 찾은 숨은 배지가 없었어요. 아직 아무도 모르는 배지가 사대 어딘가에 숨어 있어요.`});
+  if(H.left.length){ const h=HB(H.left[hashN('hint:'+d.ym+SJ.id, H.left.length)]); L6.push({t:`우리 정에서 아직 아무도 못 찾은 숨은 배지가 ${H.left.length}개 남았어요. 힌트 하나 드릴게요 — ‘${(h.h||[])[0]||'?'}’`, k:'tail'}); }
+  else if(H.nAll) L6.push({t:'우리 정은 숨은 배지를 모두 찾았어요! 이제 남은 건 더 많은 사원이 모으는 일이에요.', k:'tail'});
+  const cards = H.finders.length ? `<div class="mz-hidl">${H.finders.map(f=>`<div class="hc">${av(f.mid)}<div class="grow"><b>${esc(nm(f.mid))}</b><span class="bs">${f.L.map(x=>{ const b=HB(x.id); return `<i class="${x.all?'all':x.j?'j':''}">${b.ic} ${esc(b.t)}${x.all?' <em>첫 발견</em>':x.j?' <em>우리 정 처음</em>':''}</i>`; }).join('')}</span></div></div>`).join('')}</div>` : '';
+  const s6 = `<article class="mz" id="mzj6"><div class="mz-sec"><div class="mz-kick">06 · TREASURE HUNT</div><h2>숨은 배지 탐험대 🔍</h2>${magLines(L6)}${cards}<p class="mz-tip">‘첫 발견’은 오늘 사대 전체에서 처음, ‘우리 정 처음’은 ${esc(SJ.name)}에서 처음 찾은 거예요 · 배지 이름은 찾은 뒤에야 보여요</p></div></article>`;
+  // 07
+  const NW=X.news||[]; const ym=d.ym;
+  const newHTML = NW.length ? `<div class="mz-cg">${NW.slice(0,8).map(o=>{ const m=memberById(o.mid)||{}; const e={k:'welcome', mid:o.mid}; const key=clapKey(ym,e); const c=clapsOf(key,o.mid); const st=String(m.status||'').trim();
+      return `<div class="mz-cgc">${av(o.mid)}<div class="grow"><span class="tag">${magMD(o.day)} 합류</span><b>${esc(m.name||'사원')} 사원${m.grade&&hasCert(m.grade)?` <small>${esc(m.grade)}</small>`:''}</b><p>${st?`“${esc(st)}”`:'반갑게 맞아 주세요!'}</p></div><button class="cheer ${c.mine?'on':''}" type="button" data-clap="${esc(key)}" data-cmid="${esc(o.mid)}" data-ct="${esc(SJ.name)} 새 식구가 되신 것" aria-label="환영 박수">👏${c.n?`<small>${c.n}</small>`:''}</button></div>`; }).join('')}</div>${NW.length>8?`<p class="mz-tip">그 밖에 ${NW.length-8}명이 더 함께했어요</p>`:''}`
+    : `<p class="mz-empty">${DM}월에는 새로 온 사원이 없었어요. 활터에서 만난 분께 오늘 사대를 알려 주세요!</p>`;
+  const HT=X.heat||{}; const hv=Object.values(HT); const hmax=Math.max(0,...hv); const DOWS=[1,2,3,4,5,6,0];
+  let busyHTML='';
+  if(hmax>=2){ const top=Object.entries(HT).sort((a,b)=>b[1]-a[1]); const [tk,tn]=top[0]; const [tdw,tsl]=tk.split('|');
+    const wk=(f)=>Object.entries(HT).filter(([k])=>f(+k.split('|')[0])).reduce((a,[,v])=>a+v,0); const wE=wk(x=>x===0||x===6), wD=wk(x=>x>0&&x<6);
+    const L7=[{t:`${SJ.name}은 ${MAG_DOW_FULL[+tdw]}요일 ${tsl}에 가장 붐볐어요(사대 등록 ${tn}번).${top[1]?` 그다음은 ${MAG_DOW_FULL[+top[1][0].split('|')[0]]}요일 ${top[1][0].split('|')[1]}(${top[1][1]}번)이에요.`:''}`},
+      {t: wE>wD ? '주말에 사람이 몰려요. 함께 쏘고 싶다면 주말을, 조용히 집중하고 싶다면 평일을 노려 보세요.' : '평일에도 사대가 꾸준히 채워져요. 퇴근길 한 순이 우리 정의 힘이에요.', k:'tail'}];
+    busyHTML = `<h3 class="mz-sub">🕐 우리 정은 언제 붐빌까</h3><div class="mz-heat"><span></span>${DOWS.map(w=>`<b>${MAG_DOW_FULL[w]}</b>`).join('')}${SLOTS.map(sl=>`<b class="sl">${esc(sl)}</b>${DOWS.map(w=>{ const v=HT[w+'|'+sl]||0; return `<i style="background:rgba(226,70,59,${v?(.12+.78*v/hmax).toFixed(2):0})" class="${v/hmax>.6?'hi':''}">${v||''}</i>`; }).join('')}`).join('')}</div>${magLines(L7)}`; }
+  const s7 = `<article class="mz" id="mzj7"><div class="mz-sec"><div class="mz-kick">07 · NOTES</div><h2>우리 정 이모저모 📮</h2><h3 class="mz-sub">🌱 새 식구를 소개합니다</h3>${newHTML}${busyHTML}${NW.length?'<p class="mz-tip">👏를 누르면 그 사원 방명록에 환영 한 줄이 남아요</p>':''}</div></article>`;
+  return s5+s6+s7; }
 function magEvHTML(d, DM){ const E=d.events||[]; const ap=magAp(d.ym)||{}; const e=E.find(x=>x.key===d.evSel)||null;
   let body='';
   if(!e) body = `<p class="mz-empty">${DM}월에는 따로 실을 큰 사건이 없었어요.</p>`;
@@ -7759,17 +7872,17 @@ function renderNews(){
     </div>
     ${d.wide?`<div class="mz-beta"><b>🧪 베타 테스트 기간</b><span>${magMD(d.from).replace('월 ','.').replace('일','')} ~ ${magMD(d.end).replace('월 ','.').replace('일','')} · ${BD}일</span><small>앱을 만든 날부터 창간호를 내기 전까지의 기록이에요</small></div>`:''}
     ${d.faces&&d.faces.length?`<div class="mz-faces"><div class="mz-kick">이달의 얼굴 · FACES</div><div class="fl">${d.faces.map(f=>{ const c=[...MAG_CATS, ...MAG_FACE_CATS].find(x=>x.id===f.cat)||{}; const m=memberById(f.mid)||{}; return ` <button type="button" class="fc ${king&&king.mid===f.mid&&!SP&&CV&&CV.cat===f.cat?'cv':''}" data-room="${esc(f.mid)}"><small>${c.ic} ${c.t}</small><span class="av">${charSVG(m.char||DEFAULT_CHAR)}</span><b>${esc(m.name||'사원')}</b><em>${esc(f.line)}</em></button>`; }).join('')}</div></div>`:''}
-    <div class="mz-toc"><button type="button" data-go="mz1"><b>01</b>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${DM}월`}</button><button type="button" data-go="mz2"><b>02</b>축하합니다</button><button type="button" data-go="mz3"><b>03</b>${d.wide?'창간호 순위':DM+'월 순위'}</button><button type="button" data-go="mz4"><b>04</b>${SJ?esc(SJ.name)+' 한눈에':'정 소식'}</button>${!SJ&&d.events?`<button type="button" data-go="mz5e"><b>05</b>이달의 사건</button><button type="button" data-go="mz6h"><b>06</b>광장 핫글</button>${MAG_COMPS[ym]?`<button type="button" data-go="mz7c"><b>07</b>${+ym.slice(5)}월 대회 소식</button>`:''}${magNotices(d).length?`<button type="button" data-go="mz8u"><b>${MAG_COMPS[ym]?'08':'07'}</b>${DM}월 업데이트</button>`:''}`:''}</div>
+    <div class="mz-toc"><button type="button" data-go="mz1"><b>01</b>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${DM}월`}</button><button type="button" data-go="mz2"><b>02</b>축하합니다</button><button type="button" data-go="mz3"><b>03</b>${d.wide?'창간호 순위':DM+'월 순위'}</button><button type="button" data-go="mz4"><b>04</b>${SJ?esc(SJ.name)+' 한눈에':'정 소식'}</button>${SJ&&d.jx?`<button type="button" data-go="mzj5"><b>05</b>이달의 짝꿍</button><button type="button" data-go="mzj6"><b>06</b>숨은 배지 탐험대</button><button type="button" data-go="mzj7"><b>07</b>우리 정 이모저모</button>`:''}${!SJ&&d.events?`<button type="button" data-go="mz5e"><b>05</b>이달의 사건</button><button type="button" data-go="mz6h"><b>06</b>광장 핫글</button>${MAG_COMPS[ym]?`<button type="button" data-go="mz7c"><b>07</b>${+ym.slice(5)}월 대회 소식</button>`:''}${magNotices(d).length?`<button type="button" data-go="mz8u"><b>${MAG_COMPS[ym]?'08':'07'}</b>${DM}월 업데이트</button>`:''}`:''}</div>
   </article>
   <article class="mz" id="mz1"><div class="mz-sec"><div class="mz-kick">01 · NUMBERS</div><h2>${d.wide?`숫자로 보는 베타 ${BD}일`:`숫자로 보는 ${DM}월`}</h2>
     ${d.wide?`<div class="mz-nums"><div class="mz-num red"><b class="num">${ac.members}</b><span>명이 오늘 사대에 함께했어요</span></div><div class="mz-num"><b class="num">${ac.att}</b><span>번 사대에 섰어요 (습사 등록)</span></div><div class="mz-num"><b class="num">${tot.n.toLocaleString()}</b><span>순 표를 남겼어요 · 사원 ${tot.people}명</span></div><div class="mz-num"><b class="num">${tot.mo}</b><span>번 몰기가 나왔어요</span></div><div class="mz-num"><b class="num">${ac.gb}</b><span>개 방명록이 남았어요</span></div><div class="mz-num"><b class="num">${ac.ch}</b><span>번 응원이 오갔어요</span></div></div>`:`<div class="mz-nums"><div class="mz-num red"><b class="num">${tot.days}</b><span>번 활터에 왔어요 (사원 ${tot.people}명)</span></div><div class="mz-num"><b class="num">${(tot.n*5).toLocaleString()}</b><span>시를 쐈어요 · ${tot.n.toLocaleString()}순</span></div><div class="mz-num"><b class="num">${tot.mo}</b><span>번 몰기가 나왔어요</span></div><div class="mz-num"><b class="num">${tot.n?pct(rate)+'%':'–'}</b><span>모두의 관중률${prate!==null&&tot.n?` (지난달 ${pct(prate)}%)`:''}</span></div></div>`}
-    <p class="mz-p ${/^[0-9]/.test(para)?'nd':''}">${esc(para)}</p>${typeof magNoteHTML==='function'?magNoteHTML(d):''}</div></article>
+    ${SJ && d.jx ? magJ01HTML(d, SJ, JS) : `<p class="mz-p ${/^[0-9]/.test(para)?'nd':''}">${esc(para)}</p>`}${typeof magNoteHTML==='function'?magNoteHTML(d):''}</div></article>
   <article class="mz" id="mz2"><div class="mz-sec"><div class="mz-kick">02 · CONGRATULATIONS</div><h2>축하합니다 🎉</h2>
     <div class="mz-cg">${cgHTML}</div>${EV.length?'<p class="mz-tip">👏를 누르면 그 사원 방명록에 축하 한 줄이 남아요</p>':''}</div></article>
   <article class="mz" id="mz3"><div class="mz-sec"><div class="mz-kick">03 · RANKING</div><h2>${d.wide?'창간호 순위':DM+'월 순위'} <small>${d.wide?`(베타 ${BD}일 · 성실 · 몰기 · 다정)`:d.cur?'(지금은 중간 순위)':'(확정)'}</small></h2>
     ${rkData?`<div class="mz-hof">${hof}</div>`:'<p class="mz-empty">순위를 불러오는 중…</p>'}
     <p class="mz-tip">${d.wide?'베타 기간 기록 · ':'관중률은 5순 · 정심은 20순 이상 · '}랭킹에서 숨긴 사원은 빠져요${ym===Tym&&!d.cur?` · 다음 ${NX}월호는 ${NX}월 1일에 나와요 · <button type="button" class="linkbtn" data-tab-go="plaza">이번 달 실시간 순위는 광장에서 ▸</button>`:''}</p></div></article>
-  ${SJ ? `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · OUR JEONG</div><h2>${esc(SJ.name)} 한눈에</h2>${ourHTML}<p class="mz-tip">전체 순위와 다른 정 소식은 🏯 전체 월보에서 볼 수 있어요</p></div></article>`
+  ${SJ ? `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · OUR JEONG</div><h2>${esc(SJ.name)} 한눈에</h2>${ourHTML}<p class="mz-tip">전체 순위와 다른 정 소식은 🏯 전체 월보에서 볼 수 있어요</p></div></article>${d.jx?magJxHTML(d, SJ, DM):''}`
     : `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · JEONG NEWS</div><h2>정 소식 🏯</h2>${jeongNewsHTML}</div></article>
   ${d.events?magEvHTML(d, DM):''}${d.hot?magHotHTML(d, DM):''}${d.events?magCompHTML(ym):''}${d.events?magUpdHTML(d, MAG_COMPS[ym]?'08':'07'):''}
   ${vsOn?`<article class="mz" id="mz5"><div class="mz-sec"><div class="mz-kick">${d.events?String(5+[1,1,!!MAG_COMPS[ym],magNotices(d).length>0].filter(Boolean).length).padStart(2,'0'):'05'} · JEONG VS JEONG</div><h2>정 대항 ⚔️</h2>${vsHTML}</div></article>`:''}`}
