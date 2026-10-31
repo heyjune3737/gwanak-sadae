@@ -2558,6 +2558,16 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .mz-hidl .hc.gold{border:2px solid #E8B320;background:linear-gradient(110deg,#FFF3C4,#FFFDF6 55%);box-shadow:0 0 0 1px #231C16,2px 3px 0 #231C16;position:relative}
 .mz-hidl .hc.gold::after{content:'✦';position:absolute;right:8px;top:4px;color:#E8B320;font-size:15px;text-shadow:0 0 4px #FFE37A}
 .mz-hidl .hc.silver{border:2px solid #A9B4C2;background:linear-gradient(110deg,#EEF1F5,#FFFDF6 55%)}
+
+/* p215 · 다른 정 월보 칩 */
+.mz-scope{margin-bottom:8px}
+.mz-ojs{display:flex;align-items:center;gap:8px;margin:0 0 12px}
+.mz-ojs .lb{flex:none;font-size:11.5px;font-weight:700;color:var(--ink2,#5A5048)}
+.mz-ojs .row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 4px}
+.mz-ojs .row::-webkit-scrollbar{display:none}
+.mz-ojs button{flex:none;display:flex;align-items:center;gap:5px;font:inherit;font-size:12.5px;height:32px;padding:0 10px;border:2px solid var(--ink);background:var(--card);color:var(--ink);box-shadow:2px 2px 0 var(--ink);cursor:pointer;white-space:nowrap}
+.mz-ojs button b{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 3px;background:#5B3A22;color:#F2C14E!important;font-size:10.5px;border:1px solid #231C16}
+.mz-ojs button.on{background:var(--ink);color:var(--card)}
 </style>
 
 <div class="app" id="app">
@@ -3117,7 +3127,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01q';
+const APP_VER = '2026.11.01r';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7986,7 +7996,7 @@ function renderNews(){
   const vsRank = (id) => { if(!vsOn) return null; const L=VS.slice().sort((a,b)=>b.rec/b.members-a.rec/a.members); const i=L.findIndex(o=>o.id===id); return i<0?null:i+1; };
   const ourHTML = SJ ? `<div class="mz-nums"><div class="mz-num red"><b class="num">${SJ.members}</b><span>명 가입 사원</span></div><div class="mz-num"><b class="num">${SJ.rec}</b><span>명이 표를 기록했어요 (참여 ${pctJ(SJ.rec,SJ.members)}%)</span></div><div class="mz-num"><b class="num">${SJ.rec?(SJ.days/SJ.rec).toFixed(1):'–'}</b><span>일 · 1인당 습사</span></div><div class="mz-num"><b class="num">${SJ.n?Math.round(SJ.h/(SJ.n*5)*100)+'%':'–'}</b><span>우리 정 관중률 · ${SJ.n}순</span></div></div>` : '';
   const other = SJ && scope!==myJ.id;   // 다른 정 월보를 보는 중
-  const scopeBar = `<div class="mz-scope ${other?'three':''}" role="tablist"><button type="button" role="tab" data-scope="all" class="${scope==='all'?'on':''}">🏯 전체 월보</button><button type="button" role="tab" data-scope="${esc(myJ.id)}" class="${scope===myJ.id?'on':''} ${JS[myJ.id]&&JS[myJ.id].ok?'':'wait'}">${esc(myJ.name)} 월보${JS[myJ.id]&&JS[myJ.id].ok?'':' · 준비 중'}</button>${other?`<button type="button" role="tab" data-scope="${esc(SJ.id)}" class="on">${esc(SJ.name)} 월보</button>`:''}</div>`;
+  const scopeBar = `<div class="mz-scope ${other?'oth':''}" role="tablist"><button type="button" role="tab" data-scope="all" class="${scope==='all'?'on':''}">🏯 전체 월보</button><button type="button" role="tab" data-scope="${esc(myJ.id)}" class="${scope===myJ.id?'on':''} ${JS[myJ.id]&&JS[myJ.id].ok?'':'wait'}">${esc(myJ.name)} 월보${JS[myJ.id]&&JS[myJ.id].ok?'':' · 준비 중'}</button></div>${(()=>{ const OJ=Object.values(JS).filter(o=>o.ok && o.id!==myJ.id).sort((a,b)=>b.members-a.members||b.rec-a.rec); return OJ.length ? `<div class="mz-ojs"><span class="lb">다른 정 월보</span><div class="row">${OJ.map(o=>`<button type="button" data-scope="${esc(o.id)}" class="${scope===o.id?'on':''}">📰 ${esc(o.name)}</button>`).join('')}</div></div>` : ''; })()}`;
   // 지난 호
   const NT = (typeof NOTICES!=='undefined' && NOTICES.length) ? NOTICES[0] : null;
   el.innerHTML = `${hallSwitchHTML('mag')}${magHoldNote()}
