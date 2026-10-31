@@ -2993,7 +2993,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01g';
+const APP_VER = '2026.11.01h';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -7653,11 +7653,12 @@ function magJx(scope, from, to){ const D=(store&&store.docs)||{}; const inJ=id=>
   for(const m of (S.members||[])){ if(!m || !m.hid || DEV_MIDS.includes(m.id) || m.id===HUB_BOT) continue; const mj=memberJ(m).id;
     for(const h of HL){ const at=+m.hid[h.id]; if(!(at>1)) continue; if(!firstAll[h.id] || at<firstAll[h.id]) firstAll[h.id]=at; if(mj===scope){ everJ.add(h.id); if(!firstJ[h.id] || at<firstJ[h.id]) firstJ[h.id]=at; }
       const dt=dstr(new Date(at)); if(dt<from || dt>to) continue; jc[mj]=(jc[mj]||0)+1; if(mj===scope) (fd[m.id]=fd[m.id]||[]).push({id:h.id, at}); } }
-  const finders=Object.entries(fd).map(([mid,L])=>({mid, L:L.sort((x,y)=>x.at-y.at).map(x=>({id:x.id, at:x.at, all:firstAll[x.id]===x.at, j:firstJ[x.id]===x.at}))})).sort((x,y)=>y.L.length-x.L.length || x.L[0].at-y.L[0].at).slice(0,8);
+  const finders=Object.entries(fd).map(([mid,L])=>({mid, L:L.sort((x,y)=>x.at-y.at).map(x=>({id:x.id, at:x.at, all:firstAll[x.id]===x.at, j:firstJ[x.id]===x.at}))})).sort((x,y)=>y.L.length-x.L.length || x.L[0].at-y.L[0].at);
+  const nA=f=>f.L.filter(z=>z.all).length; const firsts=finders.map(f=>({mid:f.mid, L:f.L.filter(x=>x.all||x.j)})).filter(f=>f.L.length).sort((x,y)=>nA(y)-nA(x) || y.L.length-x.L.length || x.L[0].at-y.L[0].at).slice(0,4);
   const left=HL.filter(h=>!everJ.has(h.id)).map(h=>h.id);
   // 새 식구 (그달 들어온 사원)
   const news=(S.members||[]).filter(m=>m && m.name && m.id!==HUB_BOT && magJid(m.id)===scope && +m.joinedAt>0 && (j=>j>=from && j<=to)(dstr(new Date(+m.joinedAt)))).sort((x,y)=>+x.joinedAt-+y.joinedAt).map(m=>({mid:m.id, day:dstr(new Date(+m.joinedAt))}));
-  return {pairs, solo, heat, hid:{finders, jc, left, nAll:HL.length}, news}; }
+  return {pairs, solo, heat, hid:{finders, firsts, jc, left, nAll:HL.length}, news}; }
 const MAG_DOW_FULL = ['일','월','화','수','목','금','토'];
 const magEun = t => { const c=String(t).charCodeAt(String(t).length-1)-0xAC00; return t + (c>=0 && c<11172 && c%28 ? '은' : '는'); };
 // 01 · 우리 정 기록 + 다른 정과 견주기
@@ -7715,8 +7716,9 @@ function magJxHTML(d, SJ, DM){ const X=d.jx; if(!X) return ''; const nm=id=>(mem
   else L6.push({t:`${DM}월에는 ${SJ.name}에서 새로 찾은 숨은 배지가 없었어요. 아직 아무도 모르는 배지가 사대 어딘가에 숨어 있어요.`});
   if(H.left.length){ const h=HB(H.left[hashN('hint:'+d.ym+SJ.id, H.left.length)]); L6.push({t:`우리 정에서 아직 아무도 못 찾은 숨은 배지가 ${H.left.length}개 남았어요. 힌트 하나 드릴게요 — ‘${(h.h||[])[0]||'?'}’`, k:'tail'}); }
   else if(H.nAll) L6.push({t:'우리 정은 숨은 배지를 모두 찾았어요! 이제 남은 건 더 많은 사원이 모으는 일이에요.', k:'tail'});
-  const cards = H.finders.length ? `<div class="mz-hidl">${H.finders.map(f=>`<div class="hc">${av(f.mid)}<div class="grow"><b>${esc(nm(f.mid))}</b><span class="bs">${f.L.map(x=>{ const b=HB(x.id); return `<i class="${x.all?'all':x.j?'j':''}">${b.ic} ${esc(b.t)}${x.all?' <em>첫 발견</em>':x.j?' <em>우리 정 처음</em>':''}</i>`; }).join('')}</span></div></div>`).join('')}</div>` : '';
-  const s6 = `<article class="mz" id="mzj6"><div class="mz-sec"><div class="mz-kick">06 · TREASURE HUNT</div><h2>숨은 배지 탐험대 🔍</h2>${magLines(L6)}${cards}<p class="mz-tip">‘첫 발견’은 오늘 사대 전체에서 처음, ‘우리 정 처음’은 ${esc(SJ.name)}에서 처음 찾은 거예요 · 배지 이름은 찾은 뒤에야 보여요</p></div></article>`;
+  const FS=H.firsts||H.finders; const restP=H.finders.filter(f=>!FS.some(x=>x.mid===f.mid)); const restN=restP.reduce((a,f)=>a+f.L.length,0);
+  const cards = FS.length ? `<div class="mz-hidl">${FS.map(f=>`<div class="hc">${av(f.mid)}<div class="grow"><b>${esc(nm(f.mid))}</b><span class="bs">${f.L.map(x=>{ const b=HB(x.id); return `<i class="${x.all?'all':x.j?'j':''}">${b.ic} ${esc(b.t)}${x.all?' <em>첫 발견</em>':x.j?' <em>우리 정 처음</em>':''}</i>`; }).join('')}</span></div></div>`).join('')}</div>` : '';
+  const s6 = `<article class="mz" id="mzj6"><div class="mz-sec"><div class="mz-kick">06 · TREASURE HUNT</div><h2>숨은 배지 탐험대 🔍</h2>${magLines(L6)}${cards}${restP.length?`<p class="mz-evp" style="margin-top:6px">그 밖에 ${restP.slice(0,3).map(f=>esc(nm(f.mid))).join(' · ')}${restP.length>3?` 외 ${restP.length-3}명`:''} 사원이 숨은 배지 ${restN}개를 더 모았어요.</p>`:''}<p class="mz-tip">‘첫 발견’은 오늘 사대 전체에서 처음, ‘우리 정 처음’은 ${esc(SJ.name)}에서 처음 찾은 거예요 · 배지 이름은 찾은 뒤에야 보여요</p></div></article>`;
   // 07
   const NW=X.news||[]; const ym=d.ym;
   const newHTML = NW.length ? `<div class="mz-cg">${NW.slice(0,8).map(o=>{ const m=memberById(o.mid)||{}; const e={k:'welcome', mid:o.mid}; const key=clapKey(ym,e); const c=clapsOf(key,o.mid); const st=String(m.status||'').trim();
