@@ -2687,6 +2687,13 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .pg-tip.in{margin-top:10px;border:2px dashed var(--ink);background:var(--card2)}.pg-tip.in span{color:var(--ink)!important}
 .pg-card.flash{animation:pgFlash 1.6s ease}@keyframes pgFlash{0%,60%{outline:4px solid var(--red);outline-offset:2px}100%{outline:0 solid transparent}}
 .pz-dice{padding:0 10px!important;font-size:17px}
+.pg-box{--bc:#E8B320;margin:10px 0 0;padding:8px 10px 10px;border:2px solid var(--ink);border-left:8px solid var(--bc);background:color-mix(in srgb,var(--bc) 13%,var(--card))}
+.pg-box.b2{--bc:#3B6FB6}.pg-box.b3{--bc:#D9534F}
+.pg-box .pg-sec{margin:0 0 7px}.pg-sec i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-right:6px;background:var(--bc);color:#fff;font-size:12px;border:1.5px solid var(--ink)}
+.pg-box .pg-p{background:var(--card)}.pg-box .pg-p.on{background:color-mix(in srgb,var(--bc) 30%,var(--card));border-color:var(--ink)}
+.dr-game[data-pgg=jebi],.dr-game[data-drg=jebi]{--gc:#3E9A5A}.dr-game[data-pgg=ladder],.dr-game[data-drg=ladder]{--gc:#D9862B}.dr-game[data-pgg=shoot],.dr-game[data-drg=shoot]{--gc:#C7362C}.dr-game[data-pgg=spin],.dr-game[data-drg=spin]{--gc:#3B6FB6}
+.dr-game{border-top:6px solid var(--gc,var(--ink))!important;background:color-mix(in srgb,var(--gc,#888) 10%,var(--card))!important}
+.dr-game.on{background:color-mix(in srgb,var(--gc,#888) 28%,var(--card))!important;outline-color:var(--gc,var(--red))!important}
 .pg-sec{font-family:var(--display);font-size:13px;margin:12px 0 6px}.pg-sec small{font-family:var(--body);font-size:11px;color:var(--ink3);margin-left:4px}
 .pg-titles{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
 .pg-t{font:inherit;font-size:12.5px;border:2px solid var(--ink);background:var(--card2);color:var(--ink);padding:4px 9px;cursor:pointer}.pg-t.on{background:var(--ink);color:var(--card)}
@@ -3255,7 +3262,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01y';
+const APP_VER = '2026.11.01z';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -6010,15 +6017,15 @@ function playPick(){ const box=$('#drBox'); if(!box) return; DR=null;
   const J=homeJ(); const mem=(S.members||[]).filter(m=>m && m.name && m.id!==HUB_BOT && !m.rankHide).sort((a,b)=>(memberJ(b).id===J.id)-(memberJ(a).id===J.id) || String(a.name).localeCompare(String(b.name),'ko'));
   const n=PG.pick.size+PG.names.length;
   box.innerHTML = `<h3>🎲 놀이터 <small class="tiny muted">${n}명</small></h3>
-    <div class="pg-sec">무엇을 뽑을까요?</div>
+    <section class="pg-box b1"><div class="pg-sec"><i>1</i>무엇을 뽑을까요?</div>
     <div class="pg-titles">${PG_TITLES.map(t=>`<button type="button" class="pg-t ${PG.title===t?'on':''}" data-pgt="${esc(t)}">${esc(t)}</button>`).join('')}</div>
-    <input class="input" id="pgTitle" maxlength="20" value="${esc(PG.title)}" placeholder="직접 적기 (20자)">
-    <div class="pg-sec">누가 할까요? <small>1번이 당첨이에요</small></div>
+    <input class="input" id="pgTitle" maxlength="20" value="${esc(PG.title)}" placeholder="직접 적기 (20자)"></section>
+    <section class="pg-box b2"><div class="pg-sec"><i>2</i>누가 할까요? <small>1번이 당첨이에요 · 고른 사원 ${n}명</small></div>
     <div class="pg-ppl">${mem.map(m=>`<button type="button" class="pg-p ${PG.pick.has(m.id)?'on':''}" data-pgp="${esc(m.id)}">${charSVG(m.char||DEFAULT_CHAR)}<span>${esc(m.name)}</span></button>`).join('')}${PG.names.map((x,i)=>`<button type="button" class="pg-p on nm" data-pgn="${i}">${charSVG(GUEST_CHAR)}<span>${esc(x)} ×</span></button>`).join('')}</div>
-    <form class="row" id="pgAdd" style="gap:6px;margin-top:6px"><input class="input grow" id="pgName" maxlength="10" placeholder="사원 아닌 사람 이름 더하기"><button class="btn sm" type="submit">+ 더하기</button></form>
-    <div class="pg-sec">어떻게 뽑을까요?</div>
+    <form class="row" id="pgAdd" style="gap:6px;margin-top:6px"><input class="input grow" id="pgName" maxlength="10" placeholder="사원 아닌 사람 이름 더하기"><button class="btn sm" type="submit">+ 더하기</button></form></section>
+    <section class="pg-box b3"><div class="pg-sec"><i>3</i>어떻게 뽑을까요?</div>
     <div class="dr-mode"><button type="button" data-pgm="1" class="${PG.auto?'on':''}">⚡ 자동으로<small>누르면 결과까지</small></button><button type="button" data-pgm="0" class="${PG.auto?'':'on'}">🙋 폰 한 대로<small>돌려 가며 눌러요</small></button></div>
-    <div class="dr-games">${DR_GAMES.map(x=>`<button type="button" class="dr-game ${x.id===PG.game?'on':''}" data-pgg="${x.id}"><span class="ic">${x.ic}</span><b>${x.t}</b><small>${x.d}</small></button>`).join('')}</div>
+    <div class="dr-games">${DR_GAMES.map(x=>`<button type="button" class="dr-game ${x.id===PG.game?'on':''}" data-pgg="${x.id}"><span class="ic">${x.ic}</span><b>${x.t}</b><small>${x.d}</small></button>`).join('')}</div></section>
     <div class="actions"><button class="btn ghost" type="button" id="pgX">닫기</button><button class="btn pri" type="button" id="pgStart" ${n<2?'disabled':''}>${n<2?'2명 이상 골라 주세요':'시작'}</button></div>`;
   $$('[data-pgt]',box).forEach(b=>b.onclick=()=>{ PG.title=b.dataset.pgt; playPick(); });
   $('#pgTitle',box).oninput=e=>{ PG.title=e.target.value.trim().slice(0,20)||PG_TITLES[0]; $$('.pg-t',box).forEach(x=>x.classList.toggle('on', x.dataset.pgt===PG.title)); };
