@@ -2675,9 +2675,16 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .pg-card .pg-dice{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:26px;background:#fff;border:2px solid #231C16;box-shadow:2px 2px 0 #231C16;transform:rotate(-8deg)}
 .pg-card .pg-l{flex:1;min-width:0;display:flex;flex-direction:column}.pg-card .pg-l b{font-family:var(--display);font-size:17px;color:#231C16!important}.pg-card .pg-l small{font-size:11.5px;color:#5E554D!important;line-height:1.4}
 .pg-card .pg-btn{background:#E2463B!important;color:#fff!important;border-color:#231C16!important}
-.pg-tip{position:relative;display:block;width:100%;text-align:left;font:inherit;font-size:12px;padding:7px 12px;border:0;border-top:2px dashed rgba(35,28,22,.45);background:rgba(255,255,255,.55);color:#231C16!important;cursor:pointer}
-.pg-tip u{text-decoration:none;font-weight:700;color:#C7362C}
-.pg-tip.in{margin-top:10px;border:2px dashed var(--ink);background:var(--card2);color:var(--ink)!important}
+.pg-go{position:relative;padding:0 12px 10px}.pg-go .pg-btn{width:100%;font-size:15px;padding:10px}
+.pg-card .pg-l small{white-space:nowrap}
+.pg-games{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:0 12px 10px}
+.pg-games span{font-family:var(--display);font-size:12.5px;text-align:center;padding:5px 4px;background:rgba(255,255,255,.75);border:1.5px solid #231C16;color:#231C16!important}
+.pg-tip{position:relative;margin:0;padding:8px 12px;border-top:2px dashed rgba(35,28,22,.45);background:rgba(255,255,255,.55);font-size:12px;color:#231C16!important}
+.pg-tip:not(.in){white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg-tip span{flex:1;min-width:0;font-size:12px;line-height:1.45;color:#231C16!important}
+.pg-tip .btn{flex:none;background:#fff!important;color:#231C16!important;border-color:#231C16!important}
+.pg-tip.in{display:flex;align-items:center;gap:10px}
+.pg-tip.in{margin-top:10px;border:2px dashed var(--ink);background:var(--card2)}.pg-tip.in span{color:var(--ink)!important}
 .pg-card.flash{animation:pgFlash 1.6s ease}@keyframes pgFlash{0%,60%{outline:4px solid var(--red);outline-offset:2px}100%{outline:0 solid transparent}}
 .pz-dice{padding:0 10px!important;font-size:17px}
 .pg-sec{font-family:var(--display);font-size:13px;margin:12px 0 6px}.pg-sec small{font-family:var(--body);font-size:11px;color:var(--ink3);margin-left:4px}
@@ -3248,7 +3255,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01x';
+const APP_VER = '2026.11.01y';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -5751,14 +5758,14 @@ function renderComp(){
     return `<button class="comp-item ${live?'live':''}" data-open="${c.id}"><span class="t"><b>${live?'<i class="cm-dot" aria-label="진행 중"></i>':''}${esc(c.name)}<span class="badge ${c.kind==='friendly'?'fun':''}">${c.kind==='friendly'?'친선':'공식'}</span>${compJid(c)!==homeJ().id?`<span class="badge">${esc(c.jname||'다른 정')}</span>`:''}</b><span class="sub">${fmtK(c.date)} · ${c.roundCount}순 · ${rows.length}명${live?` · ${dn}/${rows.length}명 완료`:''}${me?' · 나 참가 ✅':''}${compOfficial(c)?'':` · 개최 ${esc(compNm(c.createdBy))}`}</span></span><span class="n num">${live?'기록 ›':'›'}</span></button>`; };
   mine.sort((a,b)=>(compDone(a)-compDone(b))||String(b.date).localeCompare(String(a.date))); mine.splice(5);   // 진행 중 먼저 · 최대 5개
   const rest=V.filter(c=>!mine.includes(c));
-  list.innerHTML = `${(DR_OPEN || (typeof isDevNow==='function' && isDevNow())) ? `<div class="card pg-card" id="pgCard"><div class="pg-top"><span class="pg-dice" aria-hidden="true">🎲</span><div class="pg-l"><b>놀이터</b><small>커피 내기 · 점심 메뉴 · 당번 — 🎋 🪜 🏹 🧭 네 가지 게임으로 뽑아요</small></div><button class="btn sm pg-btn" type="button" id="pgGo">뽑기 하기</button></div><button type="button" class="pg-tip" id="pgComp">🎯 대회 사대 순번도 이 게임으로 정할 수 있어요 · <u>지금 대회 열어 보기 ▸</u></button></div>` : ''}<div class="card cm-top">
+  list.innerHTML = `${(DR_OPEN || (typeof isDevNow==='function' && isDevNow())) ? `<div class="card pg-card" id="pgCard"><div class="pg-top"><span class="pg-dice" aria-hidden="true">🎲</span><div class="pg-l"><b>놀이터</b><small>☕ 커피 내기, 🏹 화살 줍기, 🍚 점심 메뉴 정할 때<br>네 가지 미니게임으로 언제든 즐겨 보세요</small></div></div><div class="pg-games"><span>🎋 제비뽑기</span><span>🪜 사다리타기</span><span>🏹 과녁 맞히기</span><span>🧭 화살 돌리기</span></div><div class="pg-go"><button class="btn pg-btn" type="button" id="pgGo">🎲 뽑기 하기</button></div><p class="pg-tip">🎯 대회 사대 순번도 이 게임으로 정할 수 있어요</p></div>` : ''}<div class="card cm-top">
     <div class="sec-head"><h2>🏆 대회</h2><button class="btn pri sm" id="newComp">+ 새 대회 열기</button></div>
     <p class="tiny muted" style="margin:0 0 6px">지금 · 내 대회</p>
     ${mine.length?`<div style="display:flex;flex-direction:column;gap:8px">${mine.map(item).join('')}</div>`:`<p class="muted" style="margin:0">진행 중인 대회가 없어요. <b>친선</b>은 누구나 열 수 있고, <b>공식</b>(월례회 등)은 관리자가 열어요.</p>`}
     ${rest.length?`<details class="cm-rest"><summary>지난 대회 모두 보기 (${rest.length})</summary><div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">${rest.map(item).join('')}</div></details>`:''}
   </div>` + compLedHTML();
   $('#newComp').addEventListener('click', openNewComp);
-  { const pg=$('#pgGo',list); if(pg) pg.addEventListener('click', openPlay); const pc=$('#pgComp',list); if(pc) pc.addEventListener('click', openNewComp); }
+  { const pg=$('#pgGo',list); if(pg) pg.addEventListener('click', openPlay); }
   $$('[data-cmym]',list).forEach(b=>b.addEventListener('click',()=>{ if(b.disabled) return; S.cmYM=b.dataset.cmym; renderComp(); }));
   $$('[data-open]',list).forEach(b=>b.addEventListener('click',()=>{ S.openComp=b.dataset.open; renderComp(); }));
 }
@@ -5995,7 +6002,7 @@ async function lvAnim(L, key){ const box=$('#drBox'); if(!box) return; const N=L
 }
 // ===== p220 · 순번 정하기 미니게임 =====
 // ===== p222 · 🎲 놀이터 =====
-const PG_TITLES = ['☕ 커피 내기','🍚 점심 메뉴','🧹 청소 당번','🎁 간식 사기'];
+const PG_TITLES = ['☕ 커피 내기','🏹 화살 줍기','🍚 점심 메뉴','🍡 간식 사기'];
 let PG = null;   // {title, pick:Set, names:[]}
 function openPlay(){ PG = PG || {title:PG_TITLES[0], pick:new Set(S.me?[S.me.id]:[]), names:[], game:'jebi', auto:false};
   const sh=openSheet(`<div id="drBox"></div>`); sh.classList.add('sheet-tall','dr-sheet'); playPick(); }
@@ -6029,7 +6036,7 @@ function playResult(order){ const box=$('#drBox'); if(!box) return; const g=DR_G
     <div class="dr-order">${order.map((id,i)=>`<div class="o"><span class="n">${i+1}</span>${drAv(id)}<b>${esc(drNm(id))}</b>${i===0?'<span class="tag">당첨</span>':''}</div>`).join('')}</div>
     <div class="actions"><button class="btn ghost" type="button" id="pgAgain">다시</button>${S.me?`<button class="btn pri" type="button" id="pgShare">💬 광장에 올리기</button>`:''}</div>
     <p class="tiny muted" style="margin:6px 0 0">올리지 않으면 아무 데도 남지 않아요</p>
-    <button type="button" class="pg-tip in" id="pgComp2">🎯 대회 사대 순번도 이렇게 정할 수 있어요 · <u>대회 열어 보기 ▸</u></button>`;
+    <div class="pg-tip in"><span>🎯 대회 사대 순번도<br>이 게임으로 정할 수 있어요</span><button type="button" class="btn sm" id="pgComp2">대회 열기 ▸</button></div>`;
   $('#pgComp2',box).onclick=()=>{ DR=null; closeSheet(); S.openComp=null; setTab('comp'); setTimeout(openNewComp, 200); };
   $('#pgAgain',box).onclick=()=>playPick();
   const sb=$('#pgShare',box); if(sb) sb.onclick=async()=>{ sb.disabled=true; const tx=`🎲 ${PG.title} — ${drNm(win)} 당첨! (${g.t} · ${order.length}명)`.slice(0,100);
