@@ -2598,6 +2598,58 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 /* p218 · 4~7관 색 */
 .gw-g.g4{border-left:8px solid #3E9A5A}.gw-g.g5{border-left:8px solid #8257C2}.gw-g.g6{border-left:8px solid #D96A93}.gw-g.g7{border-left:8px solid #4A4F5A}
 .gw-t.g4{background:#2F7D47}.gw-t.g5{background:#7048B0}.gw-t.g6{background:#C2507B}.gw-t.g7{background:#4A4F5A}
+
+/* p220 · 순번 정하기 */
+.dr-mode{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ink);margin:0 0 10px}
+.dr-mode button{font:inherit;font-family:var(--display);font-size:13px;border:0;background:var(--card);color:var(--ink);padding:8px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
+.dr-mode button+button{border-left:2px solid var(--ink)}.dr-mode button small{font-family:var(--body);font-size:10.5px;color:var(--ink3)}
+.dr-mode button.on{background:var(--ink);color:var(--card)}.dr-mode button.on small{color:var(--card);opacity:.8}
+.dr-note{margin:0 0 8px;font-size:12px;padding:5px 8px;border:2px dashed var(--ink);background:var(--card2)}
+.gw-c .dr-no,.dr-sheet .dr-no{font-style:normal;font-family:var(--display);font-weight:700;font-size:11px;color:#fff;background:var(--red);min-width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;margin-right:2px}
+.dr-sheet h3 small{font-family:var(--body);font-weight:400;margin-left:4px}
+.dr-info{font-size:12.5px;margin:4px 0 10px;color:var(--ink2)}
+.dr-warn{margin:4px 0 10px;border:2px solid var(--red);padding:8px 10px;font-size:13px;display:flex;flex-direction:column;gap:8px}
+.dr-games{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dr-game{display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit;border:2px solid var(--ink);background:var(--card2);color:var(--ink);padding:10px 6px 8px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);text-align:center}
+.dr-game .ic{font-size:28px;line-height:1.1}.dr-game b{font-family:var(--display);font-size:14px}.dr-game small{font-size:11px;color:var(--ink2);line-height:1.35}
+.dr-game.on{background:var(--card);outline:3px solid var(--red);outline-offset:-1px}
+.dr-turn{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 0 8px;font-family:var(--display);font-size:15.5px;text-align:center}
+.dr-turn svg{width:38px;height:46px}
+.dr-first{display:flex;align-items:center;gap:8px;justify-content:center;font-family:var(--display);font-size:16px;margin:4px 0 8px}.dr-first svg{width:46px;height:55px}
+.dr-fx{text-align:center;font-family:var(--display);font-weight:700;font-size:15px;color:var(--red);min-height:22px;margin:6px 0}
+.dr-fx.pop{animation:drPop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes drPop{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+.dr-tong{position:relative;width:240px;height:250px;margin:84px auto 0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:none}
+.dr-tong.big{transform:scale(1.1)}
+.dr-tong .stk{position:absolute;bottom:70px;width:14px;height:140px;border:2px solid #5B3A22;border-radius:6px 6px 2px 2px;background:linear-gradient(90deg,#C9A35E,#E8CF95 40%,#B98F4A);transform-origin:50% 100%}
+.dr-tong .stk::before{content:'';position:absolute;top:6px;left:2px;right:2px;height:20px;background:#C7362C;border-radius:3px}
+.dr-tong .tube{position:absolute;bottom:0;left:45px;width:150px;height:104px;border:3px solid #231C16;border-radius:6px 6px 16px 16px;background:linear-gradient(90deg,#5B3A22,#9C6B3E 45%,#5B3A22);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:.12em;color:#F2C14E}
+.dr-tong.shake .tube,.dr-tong.shake .stk{animation:drShake .09s linear infinite}
+@keyframes drShake{0%{translate:0 0}25%{translate:-3px 1px}50%{translate:2px -1px}75%{translate:3px 1px}100%{translate:0 0}}
+.dr-tong .pull{position:absolute;left:108px;bottom:70px;width:24px;height:150px;opacity:0;pointer-events:none}
+.dr-tong .pull.go{animation:drFly .55s cubic-bezier(.2,1.4,.5,1) forwards}
+@keyframes drFly{0%{opacity:1;transform:translateY(0)}100%{opacity:1;transform:translateY(-118px) rotate(8deg)}}
+.dr-tong .pull .s{width:18px;height:150px;margin:0 auto;border:2px solid #5B3A22;border-radius:6px 6px 2px 2px;background:linear-gradient(90deg,#C9A35E,#E8CF95 40%,#B98F4A);position:relative}
+.dr-tong .pull .tip{position:absolute;top:4px;left:-1px;right:-1px;height:30px;border-radius:4px;background:#C7362C;color:#fff;font-family:var(--display);font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;transform:rotateY(90deg);transition:transform .35s .5s}
+.dr-tong .pull.go .tip{transform:rotateY(0)}
+.dr-order{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+.dr-order .o{display:flex;align-items:center;gap:8px;border:2px solid var(--ink);background:var(--card2);padding:3px 8px;font-size:13.5px}
+.dr-order .o svg{width:24px;height:29px}
+.dr-order .o .n{font-family:var(--display);font-weight:700;min-width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:#E8CF95;color:#231C16;border:2px solid #5B3A22}
+.dr-order .o.wait{border-style:dashed;background:transparent;color:var(--ink3)}.dr-order .o.wait .n{background:transparent;border-style:dashed;color:var(--ink3)}
+.dr-order .o.now{outline:3px solid var(--red)}.dr-order .o .tag{margin-left:auto;font-size:11px;font-family:var(--display);color:var(--red)}
+.dr-lad{overflow-x:auto}.dr-lad canvas{display:block}
+.dr-range{position:relative;margin:0 auto;width:100%;max-width:340px;aspect-ratio:3/4;border:2px solid var(--ink);background:linear-gradient(#BFD9E8 0 38%,#9FC18A 38% 100%);overflow:hidden;touch-action:manipulation}
+.dr-range .wind{position:absolute;left:8px;top:6px;font-family:var(--display);font-size:12px;color:#231C16;background:rgba(255,253,246,.85);border:1.5px solid #231C16;padding:1px 6px}
+.dr-ring{position:relative;width:300px;height:300px;margin:22px auto 0;max-width:100%}
+.dr-ring .seat{position:absolute;width:62px;text-align:center;font-size:11.5px;transform:translate(-50%,-50%);transition:opacity .3s,transform .3s;display:flex;flex-direction:column;align-items:center}
+.dr-ring .seat svg{width:40px;height:48px}
+.dr-ring .seat.out{opacity:.25;transform:translate(-50%,-50%) scale(.8)}
+.dr-ring .seat.hit svg{filter:drop-shadow(0 0 6px #F2C14E) drop-shadow(0 0 2px #F2C14E)}
+.dr-ring .disc{position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border:0;background:radial-gradient(circle,var(--card) 0 30%,var(--card2) 31% 96%,var(--ink) 97%);clip-path:circle(50%)}
+.dr-ring .arw{position:absolute;left:50%;top:50%;width:0;height:0}
+.dr-ring .arw svg{position:absolute;left:-12px;top:-118px;width:24px;height:130px}
+@media (prefers-reduced-motion:reduce){.dr-tong.shake .tube,.dr-tong.shake .stk,.dr-tong .pull.go,.dr-fx.pop{animation:none}.dr-tong .pull.go{opacity:1;transform:translateY(-118px)}}
 </style>
 
 <div class="app" id="app">
@@ -3157,7 +3209,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01v';
+const APP_VER = '2026.11.01w';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -5768,19 +5820,191 @@ const gwNo = (comp, mid) => { const g=gwOf(comp); const v=+g.of[mid]||0; return 
 const gwTag = (comp, mid) => { const v=gwNo(comp, mid); return v ? `<i class="gw-t g${v}">${v}관</i>` : ''; };
 function gwanHTML(comp){
   const g=gwOf(comp), ms=comp.members||[];
-  const btns=`${g.n<GW_MAX?`<button type="button" class="btn sm" id="gwAdd">+ ${g.n+1}관 추가</button>`:''}${g.n?`<button type="button" class="btn sm ghost" id="gwDel">− ${g.n}관 빼기</button>`:''}`;
-  if(!g.n) return `<div class="card gw-card"><div class="sec-head"><h2>🎯 관 편성 <small>과녁별 사대 그룹</small></h2><div class="row" style="gap:6px">${btns}</div></div><p class="tiny muted" style="margin:0">관(과녁)마다 사대 그룹을 나눠 표시해요. "+ 1관 추가"를 누르면 참가 사원이 모두 1관에 들어가고, 2관 · 3관을 하나씩 더한 뒤 이름을 눌러 옮기면 돼요.</p></div>`;
-  const chip=mid=>{ const m=memberById(mid)||{name:'사원'}; return `<button type="button" class="gw-c" data-gw="${esc(mid)}">${charSVG(m.char||DEFAULT_CHAR)}<span>${esc(m.name)}</span></button>`; };
-  const groups=[...Array(g.n).keys()].map(i=>i+1).map(k=>{ const L=ms.filter(id=>gwNo(comp,id)===k); return `<div class="gw-g g${k}"><div class="gw-h"><b>${k}관</b><small>${L.length}명</small></div><div class="gw-l">${L.length?L.map(chip).join(''):'<span class="tiny muted">아직 없어요</span>'}</div></div>`; }).join('');
+  const btns=`${ms.length>=2 && (DR_OPEN || (typeof isDevNow==='function' && isDevNow()))?`<button type="button" class="btn sm pri" id="gwDraw">🎲 순번 정하기</button>`:''}${g.n<GW_MAX?`<button type="button" class="btn sm" id="gwAdd">+ ${g.n+1}관 추가</button>`:''}${g.n?`<button type="button" class="btn sm ghost" id="gwDel">− ${g.n}관 빼기</button>`:''}`;
+  const dw=comp.draw; const drawNote = dw && dw.at ? `<p class="dr-note">${(DR_GAMES.find(x=>x.id===dw.game)||{ic:'🎲'}).ic} ${esc((DR_GAMES.find(x=>x.id===dw.game)||{t:'순번 정하기'}).t)}로 순번을 정했어요 · ${new Date(+dw.at).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'numeric',minute:'2-digit'})} · ${esc((memberById(dw.by)||{}).name||'사원')} · ${+dw.no||1}번째 뽑기</p>` : '';
+  if(!g.n) return `<div class="card gw-card"><div class="sec-head"><h2>🎯 관 편성 <small>과녁별 사대 그룹</small></h2><div class="row" style="gap:6px;flex-wrap:wrap;justify-content:flex-end">${btns}</div></div>${drawNote}<p class="tiny muted" style="margin:0">관(과녁)마다 사대 그룹을 나눠 표시해요. "+ 1관 추가"를 누르면 참가 사원이 모두 1관에 들어가고, 2관 · 3관을 하나씩 더한 뒤 이름을 눌러 옮기면 돼요.</p></div>`;
+  const chip=(mid,i)=>{ const m=memberById(mid)||{name:'사원'}; return `<button type="button" class="gw-c" data-gw="${esc(mid)}">${comp.draw&&i!==undefined?`<i class="dr-no">${i+1}</i>`:''}${charSVG(m.char||DEFAULT_CHAR)}<span>${esc(m.name)}</span></button>`; };
+  const groups=[...Array(g.n).keys()].map(i=>i+1).map(k=>{ const L=ms.filter(id=>gwNo(comp,id)===k); return `<div class="gw-g g${k}"><div class="gw-h"><b>${k}관</b><small>${L.length}명</small></div><div class="gw-l">${L.length?L.map((id,i)=>chip(id,i)).join(''):'<span class="tiny muted">아직 없어요</span>'}</div></div>`; }).join('');
   const none=ms.filter(id=>!gwNo(comp,id));
-  return `<div class="card gw-card"><div class="sec-head"><h2>🎯 관 편성 <small>${g.n}관</small></h2><div class="row" style="gap:6px">${btns}</div></div>
+  return `<div class="card gw-card"><div class="sec-head"><h2>🎯 관 편성 <small>${g.n}관</small></h2><div class="row" style="gap:6px;flex-wrap:wrap;justify-content:flex-end">${btns}</div></div>${drawNote}
     <div class="gw-wrap">${groups}${none.length?`<div class="gw-g g0"><div class="gw-h"><b>관 미정</b><small>${none.length}명</small></div><div class="gw-l">${none.map(chip).join('')}</div></div>`:''}</div>
     <p class="tiny muted" style="margin:8px 0 0">N관 = 처음 서는 관 기준 그룹이에요. 같은 그룹은 대회 내내 함께 움직이고, 순마다 관을 옮겨 가도 표시는 그대로예요 · 이름을 누르면 다른 관 그룹으로 옮겨요(편성 고치기)</p></div>`;
 }
+
+// ===== p220 · 순번 정하기 미니게임 =====
+const DR_OPEN = false;   // 사원 모두에게 열기 전엔 개발자만 보임 (개발자가 앱에서 써 보고 정하기)
+const DR_MAX = 7;   // 한 관 기본 인원
+const DR_GAMES = [
+  {id:'jebi', ic:'🎋', t:'제비뽑기', d:'통을 흔들어 산가지 한 개씩'},
+  {id:'ladder', ic:'🪜', t:'사다리타기', d:'천막을 걷으면 길이 보여요'},
+  {id:'shoot', ic:'🏹', t:'과녁 맞히기', d:'흔들리는 조준, 홍심에 가까울수록 앞 번호'},
+  {id:'spin', ic:'🧭', t:'화살 돌리기', d:'가운데 화살이 가리키는 사람부터'},
+];
+const drRnd = n => { try{ const a=new Uint32Array(1); crypto.getRandomValues(a); return a[0]%n; }catch(e){ return Math.floor(Math.random()*n); } };
+const drShuffle = L => { const a=L.slice(); for(let i=a.length-1;i>0;i--){ const j=drRnd(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const drBuzz = ms => { try{ navigator.vibrate && navigator.vibrate(ms); }catch(e){} };
+const drWait = ms => new Promise(r=>setTimeout(r,ms));
+const drReduce = () => { try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } };
+const drNm = id => (memberById(id)||{}).name || '사원';
+const drAv = id => charSVG((memberById(id)||{}).char||DEFAULT_CHAR);
+const drPix = id => { const c=(memberById(id)||{}).char; return (c && isPix(c) && (window.PIX||{})[c]) || ''; };
+let DR = null;   // 진행 중인 뽑기 {comp, ms, K, keep, game, run}
+function drSizes(n, K){ const b=Math.floor(n/K), r=n%K; return [...Array(K)].map((_,i)=>b+(i<r?1:0)); }
+function drFlair(no, total){ if(no===1) return '🏹 첫 발의 주인공!'; if(no===total) return '🍵 여유롭게 막사!'; return ''; }
+function drStarted(comp){ return (comp.members||[]).some(id=>{ try{ const e=entryOf(comp,id); return (e.rounds||[]).some(r=>r && r.length); }catch(x){ return false; } }); }
+function openDraw(compId){
+  const comp=S.comps.find(c=>c.id===compId); if(!comp) return;
+  if(drStarted(comp)){ toast('기록이 시작된 대회라 순번을 바꾸지 않아요'); return; }
+  const g=gwOf(comp), ms=(comp.members||[]).slice();
+  const keep = g.n>0 && ms.every(id=>gwNo(comp,id));   // 관을 다 나눠 놨으면 그 관 안에서 순번만
+  const host = S.me && (comp.createdBy===S.me.id || (store.who&&store.who.admin));
+  DR={compId, ms, K:keep?g.n:Math.max(1,g.n), keep, game:'jebi', run:0, asked:false, host, auto:!!host};
+  const sh=openSheet(`<div id="drBox"></div>`); sh.classList.add('sheet-tall','dr-sheet'); drPick();
+}
+function drPick(){ const box=$('#drBox'); if(!box||!DR) return; const n=DR.ms.length;
+  const over = !DR.keep && n>DR_MAX*DR.K && !DR.asked;
+  box.innerHTML = `<h3>🎲 순번 정하기 <small class="tiny muted">${n}명</small></h3>
+    ${DR.keep?`<p class="dr-info">🎯 지금 나눠 둔 ${DR.K}관 그대로, 관 안에서 순번만 정해요</p>`
+      : over?`<div class="dr-warn"><span>한 관에 ${DR_MAX}명이 넘어요. <b>관을 하나 더 추가할까요?</b></span><div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn sm pri" type="button" id="drAddK">+ ${DR.K+1}관 추가</button><button class="btn sm" type="button" id="drOne">한 관에 다 서기</button></div></div>`
+      : `<p class="dr-info">🎯 ${DR.K}관 · ${drSizes(n,DR.K).map((x,i)=>`${i+1}관 ${x}명`).join(' · ')}${DR.K>1?' · 뽑은 번호대로 1관부터 채워요':''}</p>`}
+    ${DR.host?`<div class="dr-mode" role="radiogroup"><button type="button" data-drm="1" class="${DR.auto?'on':''}">⚡ 자동으로 한 번에<small>대회 연 사람이 누르면 결과까지</small></button><button type="button" data-drm="0" class="${DR.auto?'':'on'}">🙋 돌아가며 하기<small>폰을 돌려 한 명씩 눌러요</small></button></div>`:''}
+    <div class="dr-games">${DR_GAMES.map(x=>`<button type="button" class="dr-game ${x.id===DR.game?'on':''}" data-drg="${x.id}"><span class="ic">${x.ic}</span><b>${x.t}</b><small>${x.d}</small></button>`).join('')}</div>
+    <p class="tiny muted" style="margin:8px 0">${DR.auto?'게임이 저절로 돌아가며 모두의 순번이 나와요':'폰 한 대를 돌려 가며 해요'} · '결과 넣기'를 눌러야 관 편성에 들어가요</p>
+    <div class="actions"><button class="btn ghost" type="button" id="drX">닫기</button><button class="btn pri" type="button" id="drGo" ${over?'disabled':''}>시작</button></div>`;
+  $$('[data-drg]',box).forEach(b=>b.onclick=()=>{ DR.game=b.dataset.drg; drPick(); });
+  $$('[data-drm]',box).forEach(b=>b.onclick=()=>{ DR.auto=b.dataset.drm==='1'; drPick(); });
+  const ak=$('#drAddK',box); if(ak) ak.onclick=()=>{ DR.K=Math.min(GW_MAX, Math.ceil(n/DR_MAX)); DR.asked=true; drPick(); };
+  const one=$('#drOne',box); if(one) one.onclick=()=>{ DR.asked=true; drPick(); };
+  $('#drX',box).onclick=()=>{ DR=null; closeSheet(); };
+  $('#drGo',box).onclick=()=>{ DR.run++; ({jebi:drJebi, ladder:drLadder, shoot:drShoot, spin:drSpin})[DR.game](DR.run); };
+}
+const drAlive = my => DR && DR.run===my && $('#drBox');
+function drHead(t, sub){ return `<h3>${t} <small class="tiny muted">${sub||''}</small></h3>`; }
+// 결과: order = 뽑은 순위(1위부터) → 관 · 순번
+function drResult(order){ const box=$('#drBox'); if(!box||!DR) return; const comp=S.comps.find(c=>c.id===DR.compId); if(!comp) return;
+  const rank={}; order.forEach((id,i)=>rank[id]=i);
+  let groups;   // [[ids…], …] 관마다
+  if(DR.keep){ groups=[...Array(DR.K)].map((_,k)=>order.filter(id=>gwNo(comp,id)===k+1)); }
+  else { const S0=drSizes(order.length, DR.K); let i=0; groups=S0.map(x=>{ const L=order.slice(i,i+x); i+=x; return L; }); }
+  DR.groups=groups; const gm=DR_GAMES.find(x=>x.id===DR.game)||{};
+  box.innerHTML = `${drHead(`${gm.ic} ${gm.t} 결과`)}
+    <div class="dr-first">${drAv(order[0])}<b>${esc(drNm(order[0]))} 사원이 첫 발!</b></div>
+    ${groups.map((L,k)=>`<div class="gw-g g${DR.K>1||DR.keep?k+1:1}"><div class="gw-h"><b>${DR.K>1||DR.keep?`${k+1}관`:'사대'}</b><small>${L.length}명</small></div><div class="gw-l">${L.map((id,i)=>`<span class="gw-c"><i class="dr-no">${i+1}</i>${drAv(id)}<span>${esc(drNm(id))}</span></span>`).join('')}</div></div>`).join('')}
+    <div class="actions"><button class="btn ghost" type="button" id="drRe">다시 뽑기</button><button class="btn pri" type="button" id="drSave">결과 넣기</button></div>
+    <p class="tiny muted" style="margin:6px 0 0">결과를 넣으면 관 편성과 사대 기록 순서가 이대로 바뀌고, 대회를 보는 모두에게 같이 보여요</p>`;
+  $('#drRe',box).onclick=()=>drPick();
+  $('#drSave',box).onclick=async()=>{ const b=$('#drSave',box); b.disabled=true;
+    const fresh=S.comps.find(c=>c.id===DR.compId)||comp; if(drStarted(fresh)){ toast('그사이 기록이 시작돼서 넣지 않았어요'); closeSheet(); return; }
+    const of={}; groups.forEach((L,k)=>L.forEach(id=>of[id]=k+1)); const members=groups.flat();
+    const no=((fresh.draw&&+fresh.draw.no)||0)+1;
+    const ok=await write(st=>st.merge('comps/'+DR.compId, {members, gwan:{n:groups.length, of}, draw:{at:Date.now(), by:S.me?S.me.id:'', game:DR.game, no}}));
+    if(ok){ toast('순번을 넣었어요 🎲'); DR=null; closeSheet(); renderComp(); } else b.disabled=false; };
+}
+// 🎋 제비뽑기
+function drJebi(my){ const ms=drShuffle(DR.ms), N=ms.length, nums=drShuffle([...Array(N)].map((_,i)=>i+1)), got={}; let t=0;
+  const draw=()=>{ const box=$('#drBox'); if(!drAlive(my)) return; const left=N-t, who=ms[t];
+    const sticks=[...Array(Math.min(left,7))].map((_,i,a)=>`<div class="stk" style="left:${120-7-(a.length-1)*9+i*18}px;transform:rotate(${(i-(a.length-1)/2)*5}deg)"></div>`).join('');
+    box.innerHTML = `${drHead('🎋 제비뽑기', `${t}/${N} 뽑음`)}
+      ${left<=2?`<p class="dr-fx pop">${left===2?'남은 제비 두 개! 1번과 막사는 누구?':'마지막 한 개!'}</p>`:''}
+      <div class="dr-turn">${drAv(who)}<b>${esc(drNm(who))} 사원 차례</b></div>
+      <div class="dr-tong ${left===2?'big':''}" id="drTong" role="button" tabindex="0" aria-label="통 눌러 제비 뽑기">${sticks}<div class="tube">射臺</div><div class="pull" id="drPull"><div class="s"><div class="tip" id="drTip">?</div></div></div></div>
+      <p class="tiny muted" style="text-align:center;margin:4px 0">통을 꾹 누르면 흔들리고, 손을 떼면 한 개가 뽑혀요</p><p class="dr-fx" id="drFx"></p>
+      <div class="dr-order">${ms.map((id,i)=>{ const v=got[id]; return `<div class="o ${v?'':'wait'} ${i===t?'now':''}"><span class="n">${v||'?'}</span>${drAv(id)}<b>${esc(drNm(id))}</b>${v&&drFlair(v,N)?`<span class="tag">${drFlair(v,N)}</span>`:''}</div>`; }).join('')}</div>`;
+    const tong=$('#drTong',box); let busy=false, held=false;
+    const down=e=>{ if(busy) return; e.preventDefault(); held=true; tong.classList.add('shake'); drBuzz(30); };
+    const up=async()=>{ if(busy||!held) return; held=false; busy=true; tong.classList.remove('shake');
+      const v=nums[t]; $('#drTip',box).textContent=v; $('#drPull',box).classList.add('go'); drBuzz([20,40,60]);
+      await drWait(drReduce()?50:(DR.auto?700:900)); if(!drAlive(my)) return; got[who]=v; const f=drFlair(v,N); const fx=$('#drFx',box); fx.textContent=f||`${v}번!`; fx.classList.add('pop'); if(f) drBuzz(120);
+      await drWait(drReduce()?300:(DR.auto&&N-t>2?650:1200)); if(!drAlive(my)) return; t++; if(t<N) draw(); else drResult(Object.keys(got).sort((a,b)=>got[a]-got[b])); };
+    tong.addEventListener('pointerdown',down); tong.addEventListener('pointerup',up); tong.addEventListener('pointerleave',()=>{ if(held) up(); });
+    tong.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&!busy){ down(e); setTimeout(up,500); } });
+    if(DR.auto) setTimeout(()=>{ if(!drAlive(my)) return; held=true; tong.classList.add('shake'); setTimeout(()=>{ if(drAlive(my)) up(); }, drReduce()?50:420); }, drReduce()?50:250); };
+  draw(); }
+// 🪜 사다리타기
+function drLadder(my){ const box=$('#drBox'); const top=drShuffle(DR.ms), N=top.length, col=52, W=Math.max(N*col,300), H=380, y0=70, y1=320;
+  const xs=[...Array(N)].map((_,i)=>col/2+i*col+(W-N*col)/2), rungs=[];
+  for(let r=0;r<N*3;r++){ const c=drRnd(N-1); const y=y0+16+drRnd(Math.floor((y1-y0-32)/8))*8; if(!rungs.some(q=>Math.abs(q.y-y)<9 && Math.abs(q.c-c)<=1)) rungs.push({c,y}); }
+  rungs.sort((a,b)=>a.y-b.y);
+  const trace=s0=>{ let p=s0; const pts=[[xs[p],y0]]; for(const q of rungs){ if(q.c===p){ pts.push([xs[p],q.y],[xs[p+1],q.y]); p++; } else if(q.c===p-1){ pts.push([xs[p],q.y],[xs[p-1],q.y]); p--; } } pts.push([xs[p],y1]); return {pts,end:p}; };
+  const paths=top.map((_,i)=>trace(i));
+  box.innerHTML = `${drHead('🪜 사다리타기', `${N}명 · 아래 번호가 순번`)}<div class="dr-lad"><canvas id="drCv"></canvas></div>
+    <button class="btn pri block" type="button" id="drLift" style="margin-top:10px">하나, 둘, 셋! 천막 걷기</button><p class="dr-fx" id="drFx"></p>`;
+  const cv=$('#drCv',box), dpr=window.devicePixelRatio||1; cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px'; const g=cv.getContext('2d'); g.scale(dpr,dpr);
+  const cs=getComputedStyle(document.body); const C=(k,f)=>(cs.getPropertyValue(k)||'').trim()||f;
+  const ink=C('--ink','#231C16'), card=C('--card2','#F1EEE2');
+  const imgs={}; top.forEach(id=>{ const src=drPix(id); if(src){ const im=new Image(); im.src=src; imgs[id]=im; } });
+  const colors=['#E2463B','#3B6FB6','#2F9A5A','#8257C2','#D9862B','#D96A93','#2C8C9A','#7A5A2E'];
+  let curtain=1; const drawn=[];
+  const paint=()=>{ g.clearRect(0,0,W,H); g.lineCap='round'; g.lineJoin='round'; g.strokeStyle=ink; g.lineWidth=3;
+    xs.forEach(x=>{ g.beginPath(); g.moveTo(x,y0); g.lineTo(x,y1); g.stroke(); }); rungs.forEach(q=>{ g.beginPath(); g.moveTo(xs[q.c],q.y); g.lineTo(xs[q.c+1],q.y); g.stroke(); });
+    drawn.forEach(d=>{ g.strokeStyle=d.color; g.lineWidth=6; g.globalAlpha=.9; g.beginPath(); d.pts.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y)); g.stroke(); g.globalAlpha=1; });
+    if(curtain>0){ const h=(y1-y0-6)*curtain; g.fillStyle='#9C6B3E'; g.fillRect(0,y0+3,W,h); g.fillStyle='#5B3A22'; for(let x=0;x<W;x+=14) g.fillRect(x,y0+3,3,h); if(curtain>.5){ g.fillStyle='#F2C14E'; g.font='700 18px Galmuri11, sans-serif'; g.textAlign='center'; g.fillText('? ? ?', W/2, y0+3+h/2+6); } }
+    top.forEach((id,i)=>{ const im=imgs[id]; if(im && im.complete) g.drawImage(im, xs[i]-17, 6, 34, 41); g.fillStyle=ink; g.font='11px Galmuri9, sans-serif'; g.textAlign='center'; const n=drNm(id); g.fillText(n.length>4?n.slice(0,4)+'…':n, xs[i], 60); });
+    xs.forEach((x,i)=>{ const done=drawn.find(d=>d.end===i); g.fillStyle=done?done.color:card; g.strokeStyle=ink; g.lineWidth=2; g.fillRect(x-17,y1+8,34,26); g.strokeRect(x-17,y1+8,34,26); g.fillStyle=done?'#fff':ink; g.font='700 14px Galmuri11, sans-serif'; g.textAlign='center'; g.fillText(String(i+1), x, y1+27); }); };
+  Object.values(imgs).forEach(im=>im.onload=paint); paint();
+  $('#drLift',box).onclick=async()=>{ const b=$('#drLift',box); b.disabled=true; const fx=$('#drFx',box); const red=drReduce();
+    for(const c of ['하나','둘','셋!']){ fx.textContent=c; fx.classList.remove('pop'); void fx.offsetWidth; fx.classList.add('pop'); drBuzz(25); await drWait(red?100:600); if(!drAlive(my)) return; }
+    fx.textContent=''; const t0=performance.now();
+    await new Promise(res=>{ const step=now=>{ curtain=Math.max(0,1-(now-t0)/700); paint(); if(curtain>0&&!red) requestAnimationFrame(step); else { curtain=0; paint(); res(); } }; requestAnimationFrame(step); });
+    const order=[];
+    for(let i=0;i<N;i++){ const P=paths[i]; const d={pts:[P.pts[0]],end:-1,color:colors[i%colors.length]}; drawn.push(d);
+      for(let k=1;k<P.pts.length;k++){ d.pts.push(P.pts[k]); paint(); await drWait(red?0:45); if(!drAlive(my)) return; }
+      d.end=P.end; paint(); const no=P.end+1; order[no-1]=top[i]; const f=drFlair(no,N); fx.textContent=`${drNm(top[i])} → ${no}번${f?' · '+f:''}`; fx.classList.remove('pop'); void fx.offsetWidth; fx.classList.add('pop'); drBuzz(f?120:30);
+      await drWait(red?150:(i>=N-2?1100:650)); if(!drAlive(my)) return; }
+    await drWait(400); if(drAlive(my)) drResult(order); };
+  if(DR.auto) setTimeout(()=>{ const b=$('#drLift',box); if(drAlive(my) && b && !b.disabled) b.click(); }, 500); }
+// 🏹 과녁 맞히기
+function drShoot(my){ const shooters=drShuffle(DR.ms), N=shooters.length, score={}; let t=0;
+  const round=()=>{ const box=$('#drBox'); if(!drAlive(my)) return; const who=shooters[t], wind=(drRnd(9)-4)*0.6;
+    box.innerHTML = `${drHead('🏹 과녁 맞히기', `${t+1}/${N} · 홍심에 가까울수록 앞 번호`)}
+      <div class="dr-turn">${drAv(who)}<b>${esc(drNm(who))} 사원 사대에 섰어요</b></div>
+      <div class="dr-range" id="drRg"><canvas id="drCv"></canvas><span class="wind">🌬 바람 ${wind===0?'잔잔':(wind>0?'→ ':'← ')+Math.abs(wind).toFixed(1)}</span></div>
+      <button class="btn pri block" type="button" id="drFire" style="margin-top:10px">발시!</button><p class="dr-fx" id="drFx"></p>
+      <div class="dr-order">${Object.keys(score).sort((a,b)=>score[a]-score[b]).map((id,i)=>`<div class="o"><span class="n">${i+1}</span>${drAv(id)}<b>${esc(drNm(id))}</b><span class="tag">홍심에서 ${score[id].toFixed(0)}</span></div>`).join('')}</div>`;
+    const rg=$('#drRg',box), cv=$('#drCv',box), W=rg.clientWidth, H=rg.clientHeight, dpr=window.devicePixelRatio||1; cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px'; const g=cv.getContext('2d'); g.scale(dpr,dpr);
+    const tw=W*.42, th=tw*1.33, tx=(W-tw)/2, ty=H*.12, cx=tx+tw/2, cy=ty+th*.45; let a=drRnd(100)/10, aim=[cx,cy], shot=null, run=true; const sp=1+t*.04;
+    const target=()=>{ g.fillStyle='#F6F1E2'; g.strokeStyle='#231C16'; g.lineWidth=2; g.fillRect(tx,ty,tw,th); g.strokeRect(tx,ty,tw,th); g.fillStyle='#231C16'; g.fillRect(tx+tw*.12,ty+th*.1,tw*.76,th*.08); g.fillRect(tx+tw*.12,ty+th*.82,tw*.76,th*.08);
+      g.fillStyle='#C7362C'; g.beginPath(); g.arc(cx,cy,tw*.16,0,7); g.fill(); g.fillStyle='#231C16'; g.beginPath(); g.arc(cx,cy,tw*.06,0,7); g.fill(); g.fillStyle='#7A5A2E'; g.fillRect(tx+tw*.1,ty+th,6,H); g.fillRect(tx+tw*.9-6,ty+th,6,H); };
+    const frame=()=>{ if(!run||!drAlive(my)) return; a+=.035*sp; aim=[cx+Math.sin(a*1.7)*tw*.62+Math.sin(a*4.3)*6, cy+Math.sin(a*1.13+1)*th*.42+Math.cos(a*3.1)*5];
+      g.clearRect(0,0,W,H); target(); g.strokeStyle='#E2463B'; g.lineWidth=2.5; g.beginPath(); g.arc(aim[0],aim[1],14,0,7); g.stroke(); g.beginPath(); g.moveTo(aim[0]-22,aim[1]); g.lineTo(aim[0]+22,aim[1]); g.moveTo(aim[0],aim[1]-22); g.lineTo(aim[0],aim[1]+22); g.stroke(); requestAnimationFrame(frame); };
+    requestAnimationFrame(frame);
+    $('#drFire',box).onclick=async()=>{ if(shot) return; run=false; $('#drFire',box).disabled=true; drBuzz(40);
+      const land=[aim[0]+wind*tw*.06+(drRnd(9)-4), aim[1]+(drRnd(9)-4)]; shot=land; const from=[W/2,H+20], t0=performance.now(), dur=drReduce()?1:520;
+      await new Promise(res=>{ const step=now=>{ const k=Math.min(1,(now-t0)/dur); const x=from[0]+(land[0]-from[0])*k, y=from[1]+(land[1]-from[1])*k-Math.sin(k*Math.PI)*40;
+        g.clearRect(0,0,W,H); target(); g.strokeStyle='#5B3A22'; g.lineWidth=3; g.beginPath(); g.moveTo(x,y); g.lineTo(x+(from[0]-land[0])*.06,y+26); g.stroke(); g.fillStyle='#231C16'; g.beginPath(); g.arc(x,y,3,0,7); g.fill(); if(k<1) requestAnimationFrame(step); else res(); }; requestAnimationFrame(step); });
+      g.fillStyle='#231C16'; g.beginPath(); g.arc(land[0],land[1],5,0,7); g.fill(); g.strokeStyle='#FFF'; g.lineWidth=1.5; g.stroke();
+      const inT=land[0]>tx&&land[0]<tx+tw&&land[1]>ty&&land[1]<ty+th, d=Math.hypot(land[0]-cx,land[1]-cy)/tw*100; score[who]=d; drBuzz(inT?[30,30,80]:200);
+      const fx=$('#drFx',box); fx.textContent = d<16?'🎯 홍심! 관중!':inT?`관중! 홍심에서 ${d.toFixed(0)}`:`불(不)… 홍심에서 ${d.toFixed(0)}`; fx.classList.add('pop');
+      await drWait(drReduce()?400:(DR.auto?900:1500)); if(!drAlive(my)) return; t++; if(t<N) round(); else drResult(Object.keys(score).sort((a,b)=>score[a]-score[b])); };
+    if(DR.auto) setTimeout(()=>{ const b=$('#drFire',box); if(drAlive(my) && b && !b.disabled) b.click(); }, 500+drRnd(900)); };
+  round(); }
+// 🧭 화살 돌리기
+function drSpin(my){ const box=$('#drBox'); const seats=drShuffle(DR.ms), N=seats.length, out=[]; let ang=0;
+  const R=125, pos=i=>{ const a=-Math.PI/2+i/N*2*Math.PI; return [150+Math.cos(a)*R, 150+Math.sin(a)*R]; };
+  box.innerHTML = `${drHead('🧭 화살 돌리기', '<span id="drSc">1번을 찾아요</span>')}
+    <div class="dr-ring"><div class="disc"></div>${seats.map((id,i)=>{ const [x,y]=pos(i); return `<div class="seat" data-i="${i}" style="left:${x}px;top:${y}px">${drAv(id)}<span>${esc(drNm(id))}</span></div>`; }).join('')}
+    <div class="arw" id="drArw"><svg viewBox="0 0 24 130"><path d="M12 0 L22 22 L15 20 L15 112 L20 124 L12 118 L4 124 L9 112 L9 20 L2 22 Z" fill="#C7362C" stroke="#231C16" stroke-width="2"/></svg></div></div>
+    <button class="btn pri block" type="button" id="drSpinB" style="margin-top:10px">화살 돌리기</button><p class="dr-fx" id="drFx"></p><div class="dr-order" id="drOl"></div>`;
+  const arw=$('#drArw',box); const setA=x=>{ arw.style.transform=`rotate(${x}rad)`; };
+  const finish=()=>drResult(out.map(i=>seats[i]));
+  $('#drSpinB',box).onclick=async()=>{ const b=$('#drSpinB',box); b.disabled=true; const left=seats.map((_,i)=>i).filter(i=>!out.includes(i));
+    const pick=left[drRnd(left.length)], tgt=pick/N*2*Math.PI, cur=((ang%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+    const extra=(DR.auto?2+drRnd(2):4+drRnd(3))*2*Math.PI+((tgt-cur)+2*Math.PI)%(2*Math.PI), start=ang, dur=drReduce()?10:(DR.auto&&left.length>2?1500+drRnd(500):3200+drRnd(900)), t0=performance.now(); let last=-1;
+    await new Promise(res=>{ const step=now=>{ const k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3.4); ang=start+extra*e; setA(ang);
+      const seat=Math.round((((ang%(2*Math.PI))+2*Math.PI)%(2*Math.PI))/(2*Math.PI)*N)%N; if(seat!==last){ last=seat; if(k>.55) drBuzz(12); } if(k<1) requestAnimationFrame(step); else res(); }; requestAnimationFrame(step); });
+    if(!drAlive(my)) return; out.push(pick); const no=out.length, el=$(`.seat[data-i="${pick}"]`,box); el.classList.add('hit'); drBuzz([40,40,100]);
+    const fx=$('#drFx',box), f=drFlair(no,N); fx.textContent=`${drNm(seats[pick])} ${no}번!${f?' '+f:''}`; fx.classList.remove('pop'); void fx.offsetWidth; fx.classList.add('pop');
+    $('#drOl',box).innerHTML = out.map((i,k)=>`<div class="o"><span class="n">${k+1}</span>${drAv(seats[i])}<b>${esc(drNm(seats[i]))}</b>${drFlair(k+1,N)?`<span class="tag">${drFlair(k+1,N)}</span>`:''}</div>`).join('');
+    await drWait(drReduce()?200:900); if(!drAlive(my)) return; el.classList.remove('hit'); el.classList.add('out');
+    const rest=N-out.length; $('#drSc',box).textContent = rest===1?'마지막 한 명은 자동으로 막사':`${no+1}번을 찾아요 · ${rest}명 남음`;
+    if(rest===1){ out.push(seats.map((_,i)=>i).find(i=>!out.includes(i))); await drWait(600); if(drAlive(my)) finish(); return; }
+    if(rest===2) fx.textContent='남은 두 명! 이번이 마지막 승부'; b.disabled=false; if(DR.auto) setTimeout(()=>{ if(drAlive(my)) b.click(); }, 500); };
+  if(DR.auto) setTimeout(()=>{ const b=$('#drSpinB',box); if(drAlive(my) && b && !b.disabled) b.click(); }, 500); }
 function bindGwan(comp, root){
   const g=gwOf(comp), ms=comp.members||[];
   const save = patch => write(st=>st.merge('comps/'+comp.id, {gwan:patch}));
   const add=$('#gwAdd',root); if(add) add.onclick=async()=>{ const n=g.n+1; const patch={n}; if(n===1){ patch.of={}; ms.forEach(id=>patch.of[id]=1); } await save(patch); };
+  const dr=$('#gwDraw',root); if(dr) dr.onclick=()=>openDraw(comp.id);
   const del=$('#gwDel',root); if(del) del.onclick=async()=>{ const n=g.n-1; const patch={n, of:{}}; ms.forEach(id=>{ if(gwNo(comp,id)===g.n) patch.of[id]= n?n:null; }); if(!Object.keys(patch.of).length) delete patch.of; await save(patch); };
   $$('[data-gw]',root).forEach(b=>b.onclick=async()=>{ const id=b.dataset.gw; const cur=gwNo(comp,id); const nx = cur>=g.n ? 1 : cur+1; await save({of:{[id]:nx}}); });
 }
@@ -7022,7 +7246,7 @@ function hidAfter(ST){ try{ if(S.daysLoaded) setTimeout(hidBackfill, 2500); }cat
     if(gone.length){ gone.forEach(k=>{ S.hidRv.add(k); S.hidW.delete(k); }); HID_NOW.delete(me); write(st=>st.merge('members/'+me, {hid:Object.fromEntries(gone.map(k=>[k,null]))})).then(()=>{ gone.forEach(k=>S.hidRv.delete(k)); }); } }
   if(!Array.isArray(seen)){ lsSet(KEY, ids); return; }
   const fresh=ids.filter(id=>!seen.includes(id)); if(fresh.length){ lsSet(KEY, [...new Set([...seen, ...ids])]); setTimeout(()=>openHidFound(fresh), 1100); } }
-function openHidFound(ids){ const L=ids.map(hidCat).filter(Boolean); if(!L.length) return; const c=L[0]; const id=ids[0];
+function openHidFound(ids){ if($('#sheetBg')){ setTimeout(()=>openHidFound(ids), 3000); return; } const L=ids.map(hidCat).filter(Boolean); if(!L.length) return; const c=L[0]; const id=ids[0];
   const others=hidFinders(id).filter(f=>!S.me||f.id!==S.me.id); const first=!others.length && !String(id).startsWith('mh:'); const jn=memberJ(memberById(S.me.id)||S.me).name||'우리 정';
   const isH=HIDDEN.some(x=>x.id===id); const nGot=badgeState(S.me.id, S.myDays||[]).hidden.length;
   const sh=openSheet(`<div class="hf-wrap"><div class="pz-fx hf-fx" aria-hidden="true">${Array.from({length:14},(_,i)=>`<i style="left:${(i*7.1+4)%94}%;top:${(i*13)%60}%;--c:${['#E2463B','#F4B63B','#3E8A4F','#3552A0','#F2A7BE','#6A4FA8'][i%6]}"></i>`).join('')}</div>
