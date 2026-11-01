@@ -2594,6 +2594,10 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .mz-hof.wide .mz-hofc.rk li b small{font-size:9px;opacity:.75}
 .mz-hof.wide .mz-hofc.rk li.r1 b{font-size:15px}
 .mz-hof.wide .mz-hofc.rk li.r1 .nm{font-size:14px}
+
+/* p218 · 4~7관 색 */
+.gw-g.g4{border-left:8px solid #3E9A5A}.gw-g.g5{border-left:8px solid #8257C2}.gw-g.g6{border-left:8px solid #D96A93}.gw-g.g7{border-left:8px solid #4A4F5A}
+.gw-t.g4{background:#2F7D47}.gw-t.g5{background:#7048B0}.gw-t.g6{background:#C2507B}.gw-t.g7{background:#4A4F5A}
 </style>
 
 <div class="app" id="app">
@@ -3153,7 +3157,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01u';
+const APP_VER = '2026.11.01v';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -5758,7 +5762,7 @@ function openGuestEdit(comp){
     const ok=await write(x=>x.merge('comps/'+comp.id, {guests:G, members:st.order, ...(Object.keys(ent).length?{entries:ent}:{})})); if(ok){ closeSheet(); toast('궁사님 명단을 저장했어요'); } };
 }
 // ---------- 관(과녁) 그룹 ----------
-const GW_MAX = 3;
+const GW_MAX = 7;   // p218: 정마다 관 수가 달라 7관까지
 const gwOf = comp => { const g=comp.gwan||{}; return {n:Math.min(+g.n||0, GW_MAX), of:g.of||{}}; };
 const gwNo = (comp, mid) => { const g=gwOf(comp); const v=+g.of[mid]||0; return g.n && v>=1 && v<=g.n ? v : 0; };
 const gwTag = (comp, mid) => { const v=gwNo(comp, mid); return v ? `<i class="gw-t g${v}">${v}관</i>` : ''; };
@@ -7987,7 +7991,7 @@ function renderNews(){
   const devPend = isDevNow() && ym===magPendingYM(); if(devPend){ magHotFetch(ym); }
   if(ym===MAG_EXTRA){ renderNewsExtra(el, Tym); return; }
   const dAll=magData(ym,'all'); const JS=dAll.jst; const myJ=homeJ();
-  let scope = S.mag.scope; if(scope===undefined) scope = (JS[myJ.id]&&JS[myJ.id].ok) ? myJ.id : 'all';
+  let scope = S.mag.scope; if(scope===undefined) scope = 'all';   // p219: 처음엔 전체 월보
   if(scope!=='all' && !(JS[scope]&&JS[scope].ok)) scope='all';
   if(devPend && S.mag.scope===undefined) scope='all';   // p198: 발간 확인은 전체 월보로 먼저
   const d = scope==='all' ? dAll : magData(ym, scope); const SJ = scope==='all' ? null : JS[scope]; const A=d.A, tot=A.tot;
