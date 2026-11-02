@@ -2703,6 +2703,16 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .pg-win{text-align:center;padding:6px 0 10px}.pg-win small{display:block;font-family:var(--display);font-size:14px;color:var(--ink2)}
 .pg-win .av svg{width:96px;height:115px;filter:drop-shadow(0 0 3px #FFF3B0) drop-shadow(0 0 10px rgba(255,200,60,.9))}
 .pg-win b{display:block;font-family:var(--display);font-size:22px;color:var(--red)}.pg-win span{font-size:12px;color:var(--ink3)}
+
+/* p223 · 사대 등록 한마디 답글 */
+.att-pzt{margin:4px 0 0}
+.att-re{font:inherit;font-size:11.5px;border:1.5px solid var(--line2,#ccc);background:var(--card);color:var(--ink2);padding:1px 7px;cursor:pointer;margin-left:2px}
+.att-re.has{border-color:var(--ink);color:var(--ink);font-weight:700;background:color-mix(in srgb,#3B6FB6 14%,var(--card))}
+.att.th-open{flex-wrap:wrap}
+.att-th{margin:8px 0 2px 6px;padding:8px 10px;border-left:4px solid #3B6FB6;background:color-mix(in srgb,#3B6FB6 8%,var(--card))}
+.att-rp{display:flex;gap:6px;align-items:flex-start;margin:0 0 6px}.att-rp .av svg{width:26px;height:31px}.att-rp b{font-size:12.5px}.att-rp small{font-size:10.5px;color:var(--ink3)}.att-rp p{margin:1px 0 0;font-size:13px;line-height:1.45}
+.att-ref{display:flex;gap:6px;margin:4px 0 6px}
+.pz-atttag{display:inline-block;font-size:10.5px;font-weight:700;padding:0 5px;margin-left:4px;background:color-mix(in srgb,#E8B320 30%,var(--card));border:1px solid var(--ink);color:var(--ink)}
 </style>
 
 <div class="app" id="app">
@@ -3262,7 +3272,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.01z';
+const APP_VER = '2026.11.02a';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4516,6 +4526,28 @@ function renderOj(quiet){ const el=$('#ojStrip'); if(!el) return; const L=ojLine
   // 우리 정 사대가 비었을 때: 처음 한 번 반짝
   if(quiet){ const key='sadae.ojFlash.'+today(); if(!lsGet(key,false)){ lsSet(key,true); const b=el.firstElementChild; if(b){ b.classList.add('flash'); setTimeout(()=>b.classList.remove('flash'), 2400); } } }
   if(L.length>1 && S.calm && S.calm.rank!==false) S.oj.t=setInterval(()=>{ if(S.tab!=='today' || document.hidden) return; S.oj.k=(S.oj.k+1)%L.length; paint(); }, 6000); }
+
+// ===== p223 · 사대 등록 한마디 ↔ 광장 =====
+S.attTh = null;
+const attPzOf = e => (e && typeof e.pz==='string' && e.pz.indexOf('att_')>=0) ? e.pz : null;
+function attPzReps(pz){ const L=plazaMsgs(S.plaza).concat(plazaMsgs(S.plazaY)); return L.filter(m=>String(m.id).endsWith('_re_'+pz)).sort((a,b)=>(a.at||0)-(b.at||0)); }
+function attThread(e){ const pz=attPzOf(e); if(!pz) return null; const root=plazaMsgs(S.plaza).find(m=>m.id===pz); if(!root) return null; return {pz, root, reps:attPzReps(pz)}; }
+function attThreadHTML(th){ return `<div class="att-th" style="flex-basis:100%">
+    ${th.reps.length?th.reps.map(r=>{ const m=memberById(r.from)||{}; return `<div class="att-rp"><span class="av">${charSVG(m.char||DEFAULT_CHAR)}</span><div><b>${esc(m.name||'사원')}</b> <small>${hhmm(r.at)}</small><p>${esc(r.text)}</p></div></div>`; }).join(''):'<p class="tiny muted" style="margin:2px 0 6px">첫 답글을 남겨 보세요</p>'}
+    ${S.me?`<form class="att-ref" id="attReF" data-pz="${esc(th.pz)}"><input class="input grow" id="attReIn" maxlength="100" placeholder="답글 (100자)" autocomplete="off"><button class="btn sm pri" type="submit">보내기</button></form>`:''}
+    <button type="button" class="linkbtn tiny" id="attReGo">광장에서 보기 ▸</button></div>`; }
+// 한마디가 바뀌면 광장 글도 맞추기 → 남길 광장 글 id 돌려줌 (없으면 null)
+async function attPzSync(day, prev, note, slot, VJ){ if(!S.me || store.kind==='db') return attPzOf(prev);
+  const old=attPzOf(prev); const oldMsg = old ? plazaMsgs(S.plaza).find(m=>m.id===old) : null; const hasRe = old ? attPzReps(old).length>0 : false;
+  const want = note ? `🏹 ${VJ.name} ${slot||''} 사대 · ${note}`.replace(/\s+/g,' ').slice(0,100) : '';
+  if(oldMsg && oldMsg.text===want) return old;
+  if(old && oldMsg && !hasRe){ await write(st=>st.merge('plaza/'+day, {entries:{[old]:null}})); }
+  else if(old && hasRe && !want) return old;               // 답글이 있으면 글은 남겨 둠
+  else if(old && hasRe) return old;                        // 답글이 있으면 원글을 바꾸지 않음
+  if(!want) return null;
+  const jo = (pzJoOk() && VJ.id===homeJ().id) ? homeJ().id : null; const k=(jo?PZ_JO+jo+'~':'')+'att_'+uid();
+  const ok=await write(st=>st.merge('plaza/'+day, {entries:{[k]:{from:S.me.id, text:want, at:Date.now()}}}));
+  return ok ? k : null; }
 function renderToday(){
   const t=today(); const allAtt=attEntries(); const VJ=viewJ(); const listAll=allAtt.filter(e=>entryJid(e)===VJ.id);
   // 시간대 칩: 사람이 많으면 그 시간대 사람만 사대에 (아래 명단은 그대로 전체)
@@ -4574,10 +4606,10 @@ function renderToday(){
       ${needPin()?`<div class="card flat" style="padding:10px 12px;margin-bottom:8px;display:flex;gap:8px;align-items:center;justify-content:space-between"><span class="tiny">비밀번호를 걸어야 습사 등록이 정 사원들에게 보여요</span><button class="btn sm pri" id="attClaim">비밀번호 걸기</button></div>`:''}
       ${away?`<div class="away-note">지금 <b>${esc(away.jname||'다른 정')}</b>에 ${esc(away.slot)} 시간대로 등록돼 있어요. 시간을 고르고 공유하면 <b>${esc(VJ.name)}</b> 사대로 옮겨요.</div>`:''}
       <div id="slotChips">${SLOTS.map(s=>`<button class="chip ${cur===s?'on':''} ${attDraft&&attDraft.slot===s?'draft':''}" data-slot="${s}">${s}</button>`).join('')}</div>
-      ${attDraft ? `<div class="note-row"><input class="input grow" id="attNote" maxlength="20" placeholder="한마디 (선택) 예: 6시 반쯤" value="${esc(noteV)}"></div>
+      ${attDraft ? `<div class="note-row"><input class="input grow" id="attNote" maxlength="100" placeholder="한마디 (선택) 예: 6시 반쯤 갈게요" value="${esc(noteV)}"></div><p class="tiny muted att-pzt">💬 한마디를 적으면 광장에도 올라가서 답글을 받을 수 있어요</p>
         <div class="share-row"><button class="btn ghost" id="attUndo">취소</button><button class="btn pri grow" id="attShare">🏹 ${moving?'바꿔서 ':''}정 공유</button></div>
         <p class="tiny muted share-tip">공유를 눌러야 오늘 사대에 내 캐릭터가 서요.</p>`
-      : mine&&!away ? `<div class="note-row"><input class="input grow" id="attNote" maxlength="20" placeholder="한마디 (선택) 예: 6시 반쯤" value="${esc(noteV)}"><button class="btn sm ghost" id="attCancel">안 가요</button></div>`
+      : mine&&!away ? `<div class="note-row"><input class="input grow" id="attNote" maxlength="100" placeholder="한마디 (선택) 예: 6시 반쯤 갈게요" value="${esc(noteV)}"><button class="btn sm ghost" id="attCancel">안 가요</button></div>`
       : `<p class="tiny muted share-tip">시간대를 고르면 한마디를 적고 정에 공유할 수 있어요. 고르기만 해선 아직 안 보여요.</p>`}`;
     const acl=$('#attClaim'); if(acl) acl.addEventListener('click',openClaim);
     $('#slotChips').addEventListener('click', e=>{ const b=e.target.closest('.chip'); if(!b) return; const sl=b.dataset.slot;
@@ -4592,11 +4624,12 @@ function renderToday(){
       if(noteEl) noteEl.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); $('#attShare').click(); } });
       $('#attUndo').addEventListener('click', ()=>{ attDraft=null; renderToday(); });
       $('#attShare').addEventListener('click', async ev=>{ const d=attDraft; if(!d) return; ev.currentTarget.disabled=true; const note=(noteEl?noteEl.value:d.note||'').trim();
-        const ok = await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:{slot:d.slot, note, name:S.me.name, char:S.me.char, at:Date.now(), jid:VJ.id, jname:VJ.name}}}));
+        const prev=(listAll.find(e=>e.id===S.me.id)||away||{}); const pz = await attPzSync(t, prev, note, d.slot, VJ);
+        const ok = await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:{slot:d.slot, note, name:S.me.name, char:S.me.char, at:Date.now(), jid:VJ.id, jname:VJ.name, pz}}}));
         if(ok){ attDraft=null; toast(`${VJ.name} ${d.slot} 사대에 섭니다 🏹`); renderToday(); } else { const b=$('#attShare'); if(b) b.disabled=false; } });
     } else {
-      const cancel=$('#attCancel'); if(cancel) cancel.addEventListener('click', async ()=>{ const ok=await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:null}})); if(ok) toast('오늘 습사 등록을 지웠어요'); });
-      if(noteEl) noteEl.addEventListener('change', async ()=>{ await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:{note:noteEl.value.trim()}}})); });
+      const cancel=$('#attCancel'); if(cancel) cancel.addEventListener('click', async ()=>{ await attPzSync(t, mine||{}, '', null, VJ); const ok=await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:null}})); if(ok) toast('오늘 습사 등록을 지웠어요'); });
+      if(noteEl) noteEl.addEventListener('change', async ()=>{ const note=noteEl.value.trim(); const pz=await attPzSync(t, mine||{}, note, (mine||{}).slot, VJ); await write(st=>st.merge('attendance/'+t, {entries:{[S.me.id]:{note, pz}}})); });
     }
   }
   $('#attHint').textContent = attDraft ? `${attDraft.slot} · 공유 전` : mine ? `${mine.slot}에 갑니다` : away ? `${away.jname||'다른 정'} ${away.slot}` : (S.me && store.kind!=='db' && store.kind!=='remote' ? '이 기기에서만 보여요' : '');
@@ -4605,11 +4638,17 @@ function renderToday(){
   $('#attList').innerHTML = listAll.length ? listAll.map(e=>{ const m=memberById(e.id); const c=(m&&m.char)||e.char||DEFAULT_CHAR; const nm=(m&&m.name)||e.name||'사원';
       const rx=e.reactions||{}; const counts={}; Object.entries(rx).forEach(([who,em])=>{ if(em) counts[em]=(counts[em]||[]).concat(who); }); const mine=S.me?rx[S.me.id]:null; const isMe=S.me&&S.me.id===e.id;
       const chips=Object.entries(counts).map(([em,whos])=>`<span class="react ${whos.includes(S.me&&S.me.id)?'mine':''}" title="${esc(whos.map(w=>{const mm=memberById(w);return mm?mm.name:'사원';}).join(', '))}">${esc(em)} ${whos.length}</span>`).join('');
-      return `<div class="att ${reactOpen===e.id?'open':''}" data-att="${e.id}"><span class="av">${charSVG(c)}</span><div class="who"><b>${esc(nm)}</b><span>${esc([e.slot,e.note].filter(Boolean).join(' · '))}</span>${chips?`<div class="reacts">${chips}</div>`:''}</div>
+      const th=attThread(e); const thOpen = th && S.attTh===e.id;
+      return `<div class="att ${reactOpen===e.id?'open':''} ${thOpen?'th-open':''}" data-att="${e.id}"><span class="av">${charSVG(c)}</span><div class="who"><b>${esc(nm)}</b><span>${esc([e.slot,e.note].filter(Boolean).join(' · '))}</span>${chips||th?`<div class="reacts">${chips}${th?`<button type="button" class="att-re ${th.reps.length?'has':''}" data-attth="${esc(e.id)}">💬 ${th.reps.length?`답글 ${th.reps.length}`:'답글 달기'}</button>`:''}</div>`:''}</div>
         ${!isMe&&S.me?`<button class="btn sm ghost" data-react-open="${e.id}" aria-label="응원 보내기">${mine?esc(mine):'＋'}</button>`:''}
-        ${reactOpen===e.id&&!isMe&&S.me?`<div class="react-pick" style="flex-basis:100%">${EMOJIS.map(em=>`<button data-react="${em}" class="${mine===em?'on':''}">${em}</button>`).join('')}<button data-react="" title="지우기">✕</button></div>`:''}</div>`; }).join('')
+        ${reactOpen===e.id&&!isMe&&S.me?`<div class="react-pick" style="flex-basis:100%">${EMOJIS.map(em=>`<button data-react="${em}" class="${mine===em?'on':''}">${em}</button>`).join('')}<button data-react="" title="지우기">✕</button></div>`:''}${thOpen?attThreadHTML(th):''}</div>`; }).join('')
     : `<div class="muted">오늘 ${esc(VJ.name)}에 아직 아무도 등록하지 않았어요. 첫 번째로 사대에 서 보세요.</div>`;
   $$('[data-react-open]').forEach(b=>b.addEventListener('click',()=>{ reactOpen = reactOpen===b.dataset.reactOpen ? null : b.dataset.reactOpen; renderToday(); }));
+  $$('[data-attth]').forEach(b=>b.addEventListener('click',()=>{ S.attTh = S.attTh===b.dataset.attth ? null : b.dataset.attth; renderToday(); setTimeout(()=>{ const i=$('#attReIn'); if(i && S.attTh) i.focus({preventScroll:true}); }, 50); }));
+  { const f=$('#attReF'); if(f) f.addEventListener('submit', async ev=>{ ev.preventDefault(); const i=$('#attReIn'); const tx=(i.value||'').trim(); if(!tx||!S.me) return; const pz=f.dataset.pz; const jo=pzJoOf(pz);
+      const k=(jo?PZ_JO+jo+'~':'')+uid()+'_re_'+pz; const bt=f.querySelector('button'); bt.disabled=true;
+      const ok=await write(st=>st.merge('plaza/'+today(), {entries:{[k]:{from:S.me.id, text:tx.slice(0,100), at:Date.now()}}})); bt.disabled=false; if(ok){ i.value=''; toast('답글을 달았어요 💬'); } }); }
+  { const g=$('#attReGo'); if(g) g.addEventListener('click',()=>{ setTab('plaza'); }); }
   $$('.att[data-att] [data-react]').forEach(b=>b.addEventListener('click', async ()=>{ const target=b.closest('.att').dataset.att; const em=b.dataset.react||null; reactOpen=null;
     const ok=await write(st=>st.merge('attendance/'+t, {entries:{[target]:{reactions:{[S.me.id]:em}}}})); if(ok&&em) toast(`${em} 응원을 보냈어요`); }));
   try{ renderHub(); }catch(e){}
@@ -7680,7 +7719,7 @@ $('#cardToday').addEventListener('click', ()=>openDayCard(today()));
    ========================================================= */
 const yday = () => { const d=new Date(); d.setDate(d.getDate()-1); return dstr(d); };
 S.plaza = null; S.plazaY = null;
-const subPlaza = sub({doc:'plaza/'+today()}, d => { S.plaza = d; if(S.tab==='plaza') renderPlaza(); });
+const subPlaza = sub({doc:'plaza/'+today()}, d => { S.plaza = d; if(S.tab==='plaza') renderPlaza(); else if(S.tab==='today' && typeof renderToday==='function'){ try{ renderToday(); }catch(e){} } });
 const subPlazaY = sub({doc:'plaza/'+yday()}, d => { S.plazaY = d; if(S.tab==='plaza') renderPlaza(); });
 const PZ_QUICK = ['안녕하세요 👋','오늘 활 내러 가요 🏹','몰기했어요! 🎯','오늘 바람이 세요 🌬️','수고하셨습니다 🙇','다들 파이팅 💪'];
 const hashN = (str, n) => { let h=2166136261; for(const ch of String(str)){ h^=ch.charCodeAt(0); h=Math.imul(h,16777619); } return (h>>>0)%n; };
@@ -8835,7 +8874,7 @@ function renderPlaza(){
   const pzMsg=(m0,rootDay)=>{ const mm=memberById(m0.from)||{}; const pn=rootDay&&byId[m0.re]?pzNm(byId[m0.re].from):'';
     const m = pn ? {...m0, text:(pzStripAt(m0.text, pn)||m0.text)} : m0;
     const can=S.me&&(m.from===S.me.id||isAdminNow());
-    return `<div class="pz-msg ${rootDay?'pz-rep':''} ${S.me&&m.from===S.me.id?'mine':''}" data-pzid="${esc(m.id)}"><span class="pz-av" data-room="${esc(m.from)}">${charSVG(mm.char||DEFAULT_CHAR)}</span><div class="grow">${rootDay?'':pzBestBand(m)}<div class="pz-who"><b data-room="${esc(m.from)}">${esc(mm.name||'사원')}</b>${pzJoOf(m.id)?`<span class="pz-jotag" title="이 정 사원과 관리자만 봐요">🔒 ${esc(((typeof jById==='function'&&jById(pzJoOf(m.id)))||{name:'우리 정'}).name)}만</span>`:''} ${rootDay&&m.day!==rootDay?`<span class="tiny muted">${+m.day.slice(5,7)}/${+m.day.slice(8)}</span> `:''}<span class="tiny muted">${esc(memberJ(mm).name)} · ${hhmm(m.at)}</span>${S.me&&mm.name?`<button class="linkbtn tiny" type="button" data-pzat="${esc(mm.name)}" data-pzre="${esc(m.re||m.id)}" data-pztx="${esc(String((m.re&&byId[m.re]?byId[m.re].text:m.text)||'').slice(0,30))}">↩ 답글</button>`:''}${can?`<button class="linkbtn tiny" data-pzdel="${esc(m.id)}" data-pzday="${m.day}">지우기</button>`:''}</div>${!rootDay&&m.re?'<div class="pz-reof tiny muted">↩ 지난 글에 단 답글</div>':''}<div class="pz-tx ${S.me&&S.me.name&&m.from!==S.me.id&&mentionRe(S.me.name).test(m.text||'')?'pz-me':''}">${esc(m.text)}</div>${pzRxHTML(m)}</div></div>`; };
+    return `<div class="pz-msg ${rootDay?'pz-rep':''} ${S.me&&m.from===S.me.id?'mine':''}" data-pzid="${esc(m.id)}"><span class="pz-av" data-room="${esc(m.from)}">${charSVG(mm.char||DEFAULT_CHAR)}</span><div class="grow">${rootDay?'':pzBestBand(m)}<div class="pz-who"><b data-room="${esc(m.from)}">${esc(mm.name||'사원')}</b>${String(m.id).indexOf('att_')>=0&&String(m.id).indexOf('_re_')<0?'<span class="pz-atttag" title="오늘 정 사대 등록 한마디">🏹 오늘 정</span>':''}${pzJoOf(m.id)?`<span class="pz-jotag" title="이 정 사원과 관리자만 봐요">🔒 ${esc(((typeof jById==='function'&&jById(pzJoOf(m.id)))||{name:'우리 정'}).name)}만</span>`:''} ${rootDay&&m.day!==rootDay?`<span class="tiny muted">${+m.day.slice(5,7)}/${+m.day.slice(8)}</span> `:''}<span class="tiny muted">${esc(memberJ(mm).name)} · ${hhmm(m.at)}</span>${S.me&&mm.name?`<button class="linkbtn tiny" type="button" data-pzat="${esc(mm.name)}" data-pzre="${esc(m.re||m.id)}" data-pztx="${esc(String((m.re&&byId[m.re]?byId[m.re].text:m.text)||'').slice(0,30))}">↩ 답글</button>`:''}${can?`<button class="linkbtn tiny" data-pzdel="${esc(m.id)}" data-pzday="${m.day}">지우기</button>`:''}</div>${!rootDay&&m.re?'<div class="pz-reof tiny muted">↩ 지난 글에 단 답글</div>':''}<div class="pz-tx ${S.me&&S.me.name&&m.from!==S.me.id&&mentionRe(S.me.name).test(m.text||'')?'pz-me':''}">${esc(m.text)}</div>${pzRxHTML(m)}</div></div>`; };
   // 1쪽이 아닌 원글에 12시간 안에 달린 답글 → 맨 위에 알림 줄 (누르면 그 글로)
   const fresh=Object.entries(reps).map(([rid,L])=>({rid, last:L[L.length-1], pg:pgOf(rid)})).filter(f=>f.pg>1 && Date.now()-(f.last.at||0)<12*3600e3).sort((a,b)=>(b.last.at||0)-(a.last.at||0)).slice(0,2);
   C.innerHTML = top.length ? fresh.map(f=>`<button type="button" class="pz-newre" data-pzjump="${esc(f.rid)}">💬 <b>${esc(pzNm(f.last.from))}</b> 님이 ${esc(pzNm(byId[f.rid].from))} 님 글에 답글 · ${hhmm(f.last.at)}<span>보기 ›</span></button>`).join('') + top.map((m,i)=>{ const pg=Math.floor(i/PER)+1; let head=''; if(m.day!==lastDay || i%PER===0){ lastDay=m.day; head=`<div class="pz-day">${pzDayLabel(m.day)}</div>`; }
