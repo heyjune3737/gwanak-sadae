@@ -476,7 +476,7 @@ function draw(){
   if(S.phase!=='title'){ const n=Math.max(S.lives||0, LIFE0); const lw=18+n*12; const lx=W/2-lw/2; g.fillStyle='rgba(255,255,255,.9)'; rr(lx,10,lw,34,17); g.fill();
     for(let i=0;i<n;i++){ const on=i<S.lives, x=lx+15+i*12, fl= !on && S.lostT && S.t-S.lostT<.6 && i===S.lives; g.globalAlpha= on?1:.2; if(fl) g.globalAlpha=.3+.7*Math.abs(Math.sin(S.t*20));
       g.strokeStyle='#3B2A1A'; g.lineWidth=2; g.beginPath(); g.moveTo(x,16); g.lineTo(x,38); g.stroke(); g.fillStyle='#555'; g.beginPath(); g.moveTo(x,13); g.lineTo(x-3.5,19); g.lineTo(x+3.5,19); g.fill(); g.fillStyle='#D2402F'; g.fillRect(x-4,31,3,8); g.fillRect(x+1,31,3,8); } g.globalAlpha=1; }
-  const left=MAXG-S.games.length - (S.phase==='play'||S.phase==='end'?1:0);
+  const left= PRAC? BR.left() : MAXG-S.games.length - (S.phase==='play'||S.phase==='end'?1:0);
   g.fillStyle='rgba(255,255,255,.9)'; rr(W-86,10,76,34,17); g.fill(); g.fillStyle='#1B2433'; g.textAlign='right'; g.fillText(`남은 판 ${Math.max(0,left)}`,W-22,32);
   // 사대지기 한마디 (오른쪽 위)
   if(S.quip && S.t-S.quip.at<2.2 && S.phase!=='title'){ const a=S.t-S.quip.at, al= a<.15? a/.15 : a>1.8? (2.2-a)/.4 : 1; g.globalAlpha=al;
