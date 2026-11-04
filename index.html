@@ -2688,6 +2688,16 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .pg-tip .btn{flex:none;background:#fff!important;color:#231C16!important;border-color:#231C16!important}
 .pg-tip.in{display:flex;align-items:center;gap:10px}
 .pg-tip.in{margin-top:10px;border:2px dashed var(--ink);background:var(--card2)}.pg-tip.in span{color:var(--ink)!important}
+.cm-sw{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ink);box-shadow:var(--hard4,4px 4px 0 var(--ink));margin:0 0 14px;background:var(--card)}
+.cm-sw button{position:relative;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;background:var(--card);color:var(--ink2);font:inherit;cursor:pointer;padding:6px 4px}
+.cm-sw button+button{border-left:2px solid var(--ink)}
+.cm-sw button .ic{font-size:21px;line-height:1}.cm-sw button b{font-family:var(--display);font-size:14px;color:var(--ink)}.cm-sw button small{font-size:10.5px;color:var(--ink3)}
+.cm-sw button.on{background:#FFE9A8}.cm-sw button.on b,.cm-sw button.on small{color:#231C16}
+.cm-sw .new{position:absolute;top:6px;right:8px;font-style:normal;font-size:9px;background:var(--red);color:#fff;padding:1px 4px}
+.pg-mini{margin-top:12px;background:#1F2440!important;color:#F1EEE6!important;border-color:#231C16!important;display:flex;flex-direction:column;gap:8px}
+.pg-mini-h{display:flex;align-items:baseline;gap:8px}.pg-mini-h b{font-family:var(--display);font-size:16px;color:#FFD66B}.pg-mini-h small{font-size:12px;color:#B8B3C4}
+.pg-mini-g{display:grid;grid-template-columns:1fr 1fr;gap:6px}.pg-mini-g span{background:#2A3158;border:1.5px solid #4A5285;padding:8px 4px;text-align:center;font-family:var(--display);font-size:13px;color:#F1EEE6}
+.pg-mini .tiny.muted{color:#B8B3C4!important}
 .pg-sec-h{display:flex;align-items:baseline;gap:8px;margin:18px 2px 8px;padding-top:14px;border-top:2px dashed var(--line)}.pg-sec-h b{font-family:var(--display);font-size:18px}.pg-sec-h small{font-size:12px;color:var(--ink3)}
 .pg-card.flash{animation:pgFlash 1.6s ease}@keyframes pgFlash{0%,60%{outline:4px solid var(--red);outline-offset:2px}100%{outline:0 solid transparent}}
 .pz-dice{padding:0 10px!important;font-size:17px}
@@ -3276,7 +3286,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.04a';
+const APP_VER = '2026.11.04b';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4153,7 +4163,7 @@ window.addEventListener('popstate', e=>{
 });
 // 크롬은 사용자가 누르기 전에 깐 '앞 화면'을 건너뛰므로, 처음 누를 때와 그 뒤 누를 때마다 확인해서 깔아 둠
 ['pointerdown','keydown'].forEach(ev=>document.addEventListener(ev, bkArm, {capture:true, passive:true}));
-function setTab(t){ try{ if(t!==UT.cur) utTab(t); }catch(e){} S.tab=t; if(t==='room') setTimeout(()=>{ try{ renderMyRank(); }catch(e){} },0); if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','news','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); { const rv=$('#view-report'); if(rv) rv.hidden = t!=='report'; if(t==='report') setTimeout(()=>{ try{ renderReport(); }catch(e){ console.warn('report', e); } },0); } { const bb=$('#bookBar'); if(bb) bb.style.display = (t==='news'||t==='report')?'none':''; } if(t==='news') setTimeout(()=>{ if(typeof renderNews==='function') renderNews(); },0); lsSet('sadae.tab',t); try{ renderRest(); }catch(e){} window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
+function setTab(t){ try{ if(t!==UT.cur) utTab(t); }catch(e){} if(t==='comp' && S.tab!=='comp'){ S.compView = S.toPlay ? 'play' : 'comp'; S.toPlay=false; } S.tab=t; if(t==='room') setTimeout(()=>{ try{ renderMyRank(); }catch(e){} },0); if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','news','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); { const rv=$('#view-report'); if(rv) rv.hidden = t!=='report'; if(t==='report') setTimeout(()=>{ try{ renderReport(); }catch(e){ console.warn('report', e); } },0); } { const bb=$('#bookBar'); if(bb) bb.style.display = (t==='news'||t==='report')?'none':''; } if(t==='news') setTimeout(()=>{ if(typeof renderNews==='function') renderNews(); },0); lsSet('sadae.tab',t); try{ renderRest(); }catch(e){} window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
 (function(){ const h=(location.hash||'').replace('#','').split('&')[0]; const t = ['today','plaza','record','news','room','comp','info','report'].includes(h) ? h : (lsGet('sadae.tab','today')); setTab(t); })();
 
 /* ---------- 헤더 ---------- */
@@ -5811,12 +5821,21 @@ function renderComp(){
   mine.sort((a,b)=>(compDone(a)-compDone(b))||String(b.date).localeCompare(String(a.date))); mine.splice(5);   // 진행 중 먼저 · 최대 5개
   const rest=V.filter(c=>!mine.includes(c));
   const pgHTML = (DR_OPEN || (typeof isDevNow==='function' && isDevNow())) ? `<div class="pg-sec-h"><b>🎲 놀이터</b><small>쉬는 시간에 가볍게</small></div><div class="card pg-card" id="pgCard"><div class="pg-top"><span class="pg-dice" aria-hidden="true">🎲</span><div class="pg-l"><b>랜덤게임 · 순번·내기 정하기</b><small>☕ 커피 내기, 🏹 화살 줍기, 🍚 점심 메뉴 정할 때<br>네 가지 게임으로 운에 맡겨 보세요</small></div></div><div class="pg-games"><span>🎋 제비뽑기</span><span>🪜 사다리타기</span><span>🏹 화살 경주</span><span>🧭 화살 돌리기</span></div><div class="pg-go"><button class="btn pg-btn" type="button" id="pgGo">🎲 뽑기 하기</button></div><p class="pg-tip">🎯 대회 사대 순번도 이 게임으로 정할 수 있어요</p></div>` : '';
-  list.innerHTML = `<div class="card cm-top">
+  const pgOn = !!pgHTML; if(!pgOn) S.compView='comp';
+  const liveN = mine.filter(c=>!compDone(c)).length;
+  const swHTML = pgOn ? `<nav class="cm-sw" aria-label="대회 탭 전환"><button type="button" data-cmsw="comp" class="${S.compView!=='play'?'on':''}" aria-pressed="${S.compView!=='play'}"><span class="ic">🏆</span><b>대회</b><small>${liveN?`진행 중 ${liveN}`:'대회 기록'}</small></button><button type="button" data-cmsw="play" class="${S.compView==='play'?'on':''}" aria-pressed="${S.compView==='play'}"><span class="ic">🎲</span><b>놀이터</b><small>랜덤게임 · 미니게임</small>${S.compView!=='play'?'<i class="new">NEW</i>':''}</button></nav>` : '';
+  if(pgOn && S.compView==='play'){
+    list.innerHTML = swHTML + pgHTML.replace(/<div class="pg-sec-h">[\s\S]*?<\/div>/,'') + `<div class="card pg-mini"><div class="pg-mini-h"><b>🕹 미니게임</b><small>혼자 도전 · 이달 랭킹</small></div><div class="pg-mini-g"><span>🎯 관중의 제왕</span><span>⏱ 8초 만작</span></div><p class="tiny muted" style="margin:0">곧 열려요. 하루 연습 20번 · 랭킹 도전 3번(사대 등록·습사하면 다시 3번)</p></div>`;
+    $$('[data-cmsw]',list).forEach(b=>b.onclick=()=>{ S.compView=b.dataset.cmsw; renderComp(); window.scrollTo({top:0}); });
+    { const pg=$('#pgGo',list); if(pg) pg.addEventListener('click', openPlay); }
+    return; }
+  list.innerHTML = swHTML + `<div class="card cm-top">
     <div class="sec-head"><h2>🏆 대회</h2><button class="btn pri sm" id="newComp">+ 새 대회 열기</button></div>
     <p class="tiny muted" style="margin:0 0 6px">지금 · 내 대회</p>
     ${mine.length?`<div style="display:flex;flex-direction:column;gap:8px">${mine.map(item).join('')}</div>`:`<p class="muted" style="margin:0">진행 중인 대회가 없어요. <b>친선</b>은 누구나 열 수 있고, <b>공식</b>(월례회 등)은 관리자가 열어요.</p>`}
     ${rest.length?`<details class="cm-rest"><summary>지난 대회 모두 보기 (${rest.length})</summary><div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">${rest.map(item).join('')}</div></details>`:''}
-  </div>` + compLedHTML() + pgHTML;
+  </div>` + compLedHTML();
+  $$('[data-cmsw]',list).forEach(b=>b.onclick=()=>{ S.compView=b.dataset.cmsw; renderComp(); window.scrollTo({top:0}); });
   $('#newComp').addEventListener('click', openNewComp);
   { const pg=$('#pgGo',list); if(pg) pg.addEventListener('click', openPlay); }
   $$('[data-cmym]',list).forEach(b=>b.addEventListener('click',()=>{ if(b.disabled) return; S.cmYM=b.dataset.cmym; renderComp(); }));
@@ -8898,7 +8917,7 @@ function renderPlaza(){
   else if(!W.dataset.ready){ W.dataset.ready='1';
     W.innerHTML = `<div class="pz-quick">${PZ_QUICK.map(q=>`<button class="chip" type="button" data-pq="${esc(q)}">${esc(q)}</button>`).join('')}</div>
       <div class="row" style="gap:6px"><button class="pz-jo" id="pzJo" type="button" aria-pressed="false" hidden>🔓 모든 정</button><input class="input grow" id="pzText" maxlength="100" placeholder="한마디 · @이름을 쓰면 알림이 갑니다" autocomplete="off">${(DR_OPEN || (typeof isDevNow==='function' && isDevNow()))?`<button class="btn pz-dice" id="pzDice" type="button" aria-label="놀이터에서 뽑기 하기">🎲</button>`:''}<button class="btn pri" id="pzGo" type="button">보내기</button></div>`;
-    { const dz=$('#pzDice',W); if(dz) dz.onclick=()=>{ S.openComp=null; setTab('comp'); setTimeout(()=>{ const c=$('#pgCard'); if(c){ c.scrollIntoView({block:'center'}); c.classList.add('flash'); setTimeout(()=>c.classList.remove('flash'),1600); } }, 250); }; }
+    { const dz=$('#pzDice',W); if(dz) dz.onclick=()=>{ S.openComp=null; S.toPlay=true; setTab('comp'); S.compView='play'; try{ renderComp(); }catch(e){} setTimeout(()=>{ const c=$('#pgCard'); if(c){ c.scrollIntoView({block:'center'}); c.classList.add('flash'); setTimeout(()=>c.classList.remove('flash'),1600); } }, 250); }; }
     $('#pzJo',W).onclick=()=>{ if(S.pzRe) return; S.pzJo=!S.pzJo; pzJoPaint(); };
     const send=async(tx)=>{ tx=String(tx||'').trim(); if(!tx){ toast('한마디를 적어 주세요'); return; } const re=S.pzRe&&S.pzRe.id;
       const jo = re ? pzJoOf(re) : (S.pzJo && pzJoOk() ? homeJ().id : null); const pre = jo ? PZ_JO+jo+'~' : '';
