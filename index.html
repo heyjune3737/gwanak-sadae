@@ -2645,6 +2645,9 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .dr-lad{overflow-x:auto}.dr-lad canvas{display:block}
 .dr-range{position:relative;margin:0 auto;width:100%;max-width:340px;aspect-ratio:3/4;border:2px solid var(--ink);background:linear-gradient(#BFD9E8 0 38%,#9FC18A 38% 100%);overflow:hidden;touch-action:manipulation}
 .dr-range .wind{position:absolute;left:8px;top:6px;font-family:var(--display);font-size:12px;color:#231C16;background:rgba(255,253,246,.85);border:1.5px solid #231C16;padding:1px 6px}
+.dr-race{position:relative;width:100%;border:2px solid var(--ink);overflow:hidden;background:#9CCB78}
+.dr-race canvas{display:block}
+.dr-race .rc-tk{position:absolute;left:6px;right:6px;top:6px;background:rgba(35,28,22,.85);color:#FFE27A;font-family:var(--display);font-size:12px;padding:4px 8px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dr-ring{position:relative;width:300px;height:300px;margin:22px auto 0;max-width:100%}
 .dr-ring .seat{position:absolute;width:62px;text-align:center;font-size:11.5px;transform:translate(-50%,-50%);transition:opacity .3s,transform .3s;display:flex;flex-direction:column;align-items:center}
 .dr-ring .seat svg{width:40px;height:48px}
@@ -2685,6 +2688,7 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .pg-tip .btn{flex:none;background:#fff!important;color:#231C16!important;border-color:#231C16!important}
 .pg-tip.in{display:flex;align-items:center;gap:10px}
 .pg-tip.in{margin-top:10px;border:2px dashed var(--ink);background:var(--card2)}.pg-tip.in span{color:var(--ink)!important}
+.pg-sec-h{display:flex;align-items:baseline;gap:8px;margin:18px 2px 8px;padding-top:14px;border-top:2px dashed var(--line)}.pg-sec-h b{font-family:var(--display);font-size:18px}.pg-sec-h small{font-size:12px;color:var(--ink3)}
 .pg-card.flash{animation:pgFlash 1.6s ease}@keyframes pgFlash{0%,60%{outline:4px solid var(--red);outline-offset:2px}100%{outline:0 solid transparent}}
 .pz-dice{padding:0 10px!important;font-size:17px}
 .pg-box{--bc:#E8B320;margin:10px 0 0;padding:8px 10px 10px;border:2px solid var(--ink);border-left:8px solid var(--bc);background:color-mix(in srgb,var(--bc) 13%,var(--card))}
@@ -3272,7 +3276,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.02b';
+const APP_VER = '2026.11.04a';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4529,9 +4533,9 @@ function renderOj(quiet){ const el=$('#ojStrip'); if(!el) return; const L=ojLine
 
 // ===== p223 · 사대 등록 한마디 ↔ 광장 =====
 S.attTh = null;
-const attPzId = (mid, jid) => { const m=memberById(mid)||(S.me&&S.me.id===mid?S.me:null); const home=m?memberJ(m).id:null; return ((pzJoOk() && home && jid===home) ? PZ_JO+home+'~' : '')+'att_'+mid; };
-const attPzOf = e => (e && typeof e.pz==='string' && e.pz.indexOf('att_')>=0) ? e.pz : (e && e.note && e.id ? attPzId(e.id, e.jid||baseJ().id) : null);
-function attPzReps(pz){ const L=plazaMsgs(S.plaza).concat(plazaMsgs(S.plazaY)); return L.filter(m=>String(m.id).endsWith('_re_'+pz)).sort((a,b)=>(a.at||0)-(b.at||0)); }
+const attPzId = (mid, jid, day) => { const m=memberById(mid)||(S.me&&S.me.id===mid?S.me:null); const home=m?memberJ(m).id:null; return ((pzJoOk() && home && jid===home) ? PZ_JO+home+'~' : '')+'att_'+mid+'_'+String(day||today()).replace(/-/g,'').slice(2); };
+const attPzOf = e => (e && typeof e.pz==='string' && e.pz.indexOf('att_')>=0) ? e.pz : (e && e.note && e.id ? attPzId(e.id, e.jid||baseJ().id, today()) : null);
+function attPzReps(pz){ return plazaMsgs(S.plaza).filter(m=>String(m.id).endsWith('_re_'+pz)).sort((a,b)=>(a.at||0)-(b.at||0)); }   // 오늘 문서의 답글만
 function attThread(e){ const pz=attPzOf(e); if(!pz) return null; const root=plazaMsgs(S.plaza).find(m=>m.id===pz) || {id:pz, text:e.note, from:e.id}; return {pz, root, reps:attPzReps(pz)}; }
 function attThreadHTML(th){ return `<div class="att-th" style="flex-basis:100%">
     ${th.reps.length?th.reps.map(r=>{ const m=memberById(r.from)||{}; return `<div class="att-rp"><span class="av">${charSVG(m.char||DEFAULT_CHAR)}</span><div><b>${esc(m.name||'사원')}</b> <small>${hhmm(r.at)}</small><p>${esc(r.text)}</p></div></div>`; }).join(''):'<p class="tiny muted" style="margin:2px 0 6px">첫 답글을 남겨 보세요</p>'}
@@ -4546,7 +4550,7 @@ async function attPzSync(day, prev, note, slot, VJ){ if(!S.me || store.kind==='d
   else if(oldMsg && hasRe) return old;                     // 답글이 있으면 원글을 바꾸지 않음
   else if(old && hasRe && !want) return old;
   if(!want) return null;
-  const k=attPzId(S.me.id, VJ.id);
+  const k=attPzId(S.me.id, VJ.id, day);
   const ok=await write(st=>st.merge('plaza/'+day, {entries:{[k]:{from:S.me.id, text:want, at:Date.now()}}}));
   return ok ? k : null; }
 function renderToday(){
@@ -5806,12 +5810,13 @@ function renderComp(){
     return `<button class="comp-item ${live?'live':''}" data-open="${c.id}"><span class="t"><b>${live?'<i class="cm-dot" aria-label="진행 중"></i>':''}${esc(c.name)}<span class="badge ${c.kind==='friendly'?'fun':''}">${c.kind==='friendly'?'친선':'공식'}</span>${compJid(c)!==homeJ().id?`<span class="badge">${esc(c.jname||'다른 정')}</span>`:''}</b><span class="sub">${fmtK(c.date)} · ${c.roundCount}순 · ${rows.length}명${live?` · ${dn}/${rows.length}명 완료`:''}${me?' · 나 참가 ✅':''}${compOfficial(c)?'':` · 개최 ${esc(compNm(c.createdBy))}`}</span></span><span class="n num">${live?'기록 ›':'›'}</span></button>`; };
   mine.sort((a,b)=>(compDone(a)-compDone(b))||String(b.date).localeCompare(String(a.date))); mine.splice(5);   // 진행 중 먼저 · 최대 5개
   const rest=V.filter(c=>!mine.includes(c));
-  list.innerHTML = `${(DR_OPEN || (typeof isDevNow==='function' && isDevNow())) ? `<div class="card pg-card" id="pgCard"><div class="pg-top"><span class="pg-dice" aria-hidden="true">🎲</span><div class="pg-l"><b>놀이터</b><small>☕ 커피 내기, 🏹 화살 줍기, 🍚 점심 메뉴 정할 때<br>네 가지 미니게임으로 언제든 즐겨 보세요</small></div></div><div class="pg-games"><span>🎋 제비뽑기</span><span>🪜 사다리타기</span><span>🏹 과녁 맞히기</span><span>🧭 화살 돌리기</span></div><div class="pg-go"><button class="btn pg-btn" type="button" id="pgGo">🎲 뽑기 하기</button></div><p class="pg-tip">🎯 대회 사대 순번도 이 게임으로 정할 수 있어요</p></div>` : ''}<div class="card cm-top">
+  const pgHTML = (DR_OPEN || (typeof isDevNow==='function' && isDevNow())) ? `<div class="pg-sec-h"><b>🎲 놀이터</b><small>쉬는 시간에 가볍게</small></div><div class="card pg-card" id="pgCard"><div class="pg-top"><span class="pg-dice" aria-hidden="true">🎲</span><div class="pg-l"><b>랜덤게임 · 순번·내기 정하기</b><small>☕ 커피 내기, 🏹 화살 줍기, 🍚 점심 메뉴 정할 때<br>네 가지 게임으로 운에 맡겨 보세요</small></div></div><div class="pg-games"><span>🎋 제비뽑기</span><span>🪜 사다리타기</span><span>🏹 화살 경주</span><span>🧭 화살 돌리기</span></div><div class="pg-go"><button class="btn pg-btn" type="button" id="pgGo">🎲 뽑기 하기</button></div><p class="pg-tip">🎯 대회 사대 순번도 이 게임으로 정할 수 있어요</p></div>` : '';
+  list.innerHTML = `<div class="card cm-top">
     <div class="sec-head"><h2>🏆 대회</h2><button class="btn pri sm" id="newComp">+ 새 대회 열기</button></div>
     <p class="tiny muted" style="margin:0 0 6px">지금 · 내 대회</p>
     ${mine.length?`<div style="display:flex;flex-direction:column;gap:8px">${mine.map(item).join('')}</div>`:`<p class="muted" style="margin:0">진행 중인 대회가 없어요. <b>친선</b>은 누구나 열 수 있고, <b>공식</b>(월례회 등)은 관리자가 열어요.</p>`}
     ${rest.length?`<details class="cm-rest"><summary>지난 대회 모두 보기 (${rest.length})</summary><div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">${rest.map(item).join('')}</div></details>`:''}
-  </div>` + compLedHTML();
+  </div>` + compLedHTML() + pgHTML;
   $('#newComp').addEventListener('click', openNewComp);
   { const pg=$('#pgGo',list); if(pg) pg.addEventListener('click', openPlay); }
   $$('[data-cmym]',list).forEach(b=>b.addEventListener('click',()=>{ if(b.disabled) return; S.cmYM=b.dataset.cmym; renderComp(); }));
@@ -5940,6 +5945,7 @@ function lvStart(){ const comp=lvComp(DR.compId); if(!comp) return; const N=DR.m
   if(DR.game==='ladder'){ plan.top=drShuffle(DR.ms); const rungs=[]; for(let r=0;r<N*3;r++){ const c=drRnd(N-1); const y=86+drRnd(29)*8; if(!rungs.some(q=>Math.abs(q.y-y)<9 && Math.abs(q.c-c)<=1)) rungs.push({c,y}); } plan.rungs=rungs.sort((a,b)=>a.y-b.y); }
   if(DR.game==='shoot'){ plan.wind={}; order.forEach(id=>plan.wind[id]=(drRnd(9)-4)*0.6); }
   if(DR.game==='spin'){ plan.seats=drShuffle(DR.ms); plan.picks=drShuffle(plan.seats.map((_,i)=>i)); }
+  if(DR.game==='race'){ plan.race=rcPlan(DR.ms); }
   const sid='l'+Date.now().toString(36)+drRnd(1e6).toString(36);
   const live={sid, game:DR.game, host:S.me.id, at:Date.now(), order, plan, acts:{}, done:false};
   DR.lvSid=sid; write(st=>st.merge('comps/'+DR.compId, {live:{...live, acts:null}}));   // acts:null = 지난 진행의 차례 지우기
@@ -5957,10 +5963,12 @@ function lvTick(){ if(LV && $('#drBox')){ lvRender(false); return; } if(LV && !$
   $('#lvLater',sh).onclick=closeSheet; $('#lvJoin',sh).onclick=()=>{ closeSheet(); lvOpen(c.id); }; drBuzz([60,60,60]); }
 setInterval(()=>{ try{ if(LV && $('#drBox')) lvRender(false); }catch(e){} }, 700);
 // 차례 계산
-function lvKeys(L){ return L.game==='spin' ? Object.keys(L.acts||{}).filter(k=>/^s\d+$/.test(k)).sort((a,b)=>+a.slice(1)-+b.slice(1)) : (L.order||[]).filter(id=>(L.acts||{})[id]); }
-function lvTurn(L){ if(L.game==='spin'){ const k=lvKeys(L).length; const N=L.plan.seats.length; if(k>=N-1) return null; return {key:'s'+k, who: k===0 ? L.host : L.plan.seats[L.plan.picks[k-1]]}; }
+function lvKeys(L){ if(L.game==='race') return (L.acts||{}).go ? ['go'] : []; return L.game==='spin' ? Object.keys(L.acts||{}).filter(k=>/^s\d+$/.test(k)).sort((a,b)=>+a.slice(1)-+b.slice(1)) : (L.order||[]).filter(id=>(L.acts||{})[id]); }
+function lvTurn(L){ if(L.game==='race') return (L.acts||{}).go ? null : {key:'go', who:L.host};
+  if(L.game==='spin'){ const k=lvKeys(L).length; const N=L.plan.seats.length; if(k>=N-1) return null; return {key:'s'+k, who: k===0 ? L.host : L.plan.seats[L.plan.picks[k-1]]}; }
   const id=(L.order||[]).find(x=>!(L.acts||{})[x]); return id ? {key:id, who:id} : null; }
 function lvOrder(L){ const N=(L.order||[]).length;
+  if(L.game==='race') return L.plan.race.fin.slice();
   if(L.game==='jebi') return L.order.slice().sort((a,b)=>L.plan.nums[a]-L.plan.nums[b]);
   if(L.game==='ladder'){ const out=[]; L.plan.top.forEach((id,i)=>{ out[lvLadEnd(L,i)]=id; }); return out; }
   if(L.game==='shoot') return L.order.slice().sort((a,b)=>(+((L.acts[a]||{}).d)||999)-(+((L.acts[b]||{}).d)||999));
@@ -5980,7 +5988,7 @@ function lvRender(first){ const box=$('#drBox'); if(!box||!LV) return; const c=l
 function lvStatus(L, host){ const t=lvTurn(L), N=L.order.length; const g=DR_GAMES.find(x=>x.id===L.game)||{};
   if(!t) return host ? '' : `<p class="lv-st">모두 끝났어요! ${esc(drNm(L.host))} 사원이 결과를 넣으면 확정돼요</p>`;
   const mine=S.me && t.who===S.me.id, guest=isGuestId(t.who);
-  const verb={jebi:'통 흔들어 뽑기', ladder:'내 사다리 타기', shoot:'🏹 꾹 눌러 당기기 · 떼면 발시', spin:'화살 돌리기'}[L.game];
+  const verb={jebi:'통 흔들어 뽑기', ladder:'내 사다리 타기', shoot:'🏹 꾹 눌러 당기기 · 떼면 발시', race:'🏹 일제히 발시!', spin:'화살 돌리기'}[L.game];
   return `<div class="lv-turn ${mine?'me':''}">${drAv(t.who)}<b>${mine?'내 차례예요!':`${esc(drNm(t.who))} 사원 차례`}</b>${guest?'<small>궁사님 — 개최자 폰에서 저절로</small>':''}</div>
     ${mine?`<button class="btn pri block lv-go" type="button" id="lvGo">${verb}</button>`:host&&!guest?`<button class="btn block" type="button" id="lvProxy">⏭ ${esc(drNm(t.who))} 대신 누르기</button>`:''}`; }
 function lvBoard(L, host){ const box=$('#drBox'); const N=L.order.length, g=DR_GAMES.find(x=>x.id===L.game)||{}; const seen=LV.seen; const keys=lvKeys(L).filter(k=>seen.has(k));
@@ -5988,15 +5996,17 @@ function lvBoard(L, host){ const box=$('#drBox'); const N=L.order.length, g=DR_G
   if(L.game==='jebi') board = `<div class="dr-tong" id="drTong">${[...Array(Math.min(N-keys.length,7))].map((_,i,a)=>`<div class="stk" style="left:${120-7-(a.length-1)*9+i*18}px;transform:rotate(${(i-(a.length-1)/2)*5}deg)"></div>`).join('')}<div class="tube">射臺</div><div class="pull" id="drPull"><div class="s"><div class="tip" id="drTip">?</div></div></div></div>
     <div class="dr-order">${L.order.map(id=>{ const v=seen.has(id)?L.plan.nums[id]:0; return `<div class="o ${v?'':'wait'}"><span class="n">${v||'?'}</span>${drAv(id)}<b>${esc(drNm(id))}</b>${v&&drFlair(v,N)?`<span class="tag">${drFlair(v,N)}</span>`:''}</div>`; }).join('')}</div>`;
   if(L.game==='ladder') board = `<div class="dr-lad"><canvas id="drCv"></canvas></div>`;
+  if(L.game==='race') board = rcBoxHTML(N) + (keys.length? `<div class="dr-order">${L.plan.race.fin.map((id,k)=>`<div class="o"><span class="n">${k+1}</span>${drAv(id)}<b>${esc(drNm(id))}</b></div>`).join('')}</div>` : '');
   if(L.game==='shoot') board = `<div class="dr-range" id="drRg"><canvas id="drCv"></canvas><span class="wind" id="lvWind"></span></div>${(lvTurn(L)||{}).who===(S.me&&S.me.id)?'<div class="dr-gauge" id="drGauge"><i></i><span></span></div>':''}
     <div class="dr-order">${keys.filter(id=>L.acts[id]).sort((a,b)=>L.acts[a].d-L.acts[b].d).map((id,i)=>`<div class="o"><span class="n">${i+1}</span>${drAv(id)}<b>${esc(drNm(id))}</b><span class="tag">홍심에서 ${(+L.acts[id].d).toFixed(0)}</span></div>`).join('')}</div>`;
   if(L.game==='spin'){ const R0=125, outI=keys.map(k=>L.plan.picks[+k.slice(1)]); board = `<div class="dr-ring">${'<div class="disc"></div>'}${L.plan.seats.map((id,i)=>{ const a=-Math.PI/2+i/N*2*Math.PI; return `<div class="seat ${outI.includes(i)?'out':''}" data-i="${i}" style="left:${150+Math.cos(a)*R0}px;top:${150+Math.sin(a)*R0}px">${drAv(id)}<span>${esc(drNm(id))}</span></div>`; }).join('')}<div class="arw" id="drArw" style="transform:rotate(${LV.ang||0}rad)"><svg viewBox="0 0 24 130"><path d="M12 0 L22 22 L15 20 L15 112 L20 124 L12 118 L4 124 L9 112 L9 20 L2 22 Z" fill="#C7362C" stroke="#231C16" stroke-width="2"/></svg></div></div>
     <div class="dr-order">${outI.map((i,k)=>`<div class="o"><span class="n">${k+1}</span>${drAv(L.plan.seats[i])}<b>${esc(drNm(L.plan.seats[i]))}</b></div>`).join('')}</div>`; }
   const done=!lvTurn(L);
-  box.innerHTML = `${drHead(`📱 ${g.ic} ${g.t}`, `다 같이 · ${keys.length}/${L.game==='spin'?N-1:N}`)}${lvStatus(L, host)}<p class="dr-fx" id="drFx"></p>${board}
-    ${host?`<div class="actions">${done?`<button class="btn pri" type="button" id="lvRes">결과 보기</button>`:''}<button class="btn ghost" type="button" id="lvStop">그만하기</button></div>`:`<div class="actions"><button class="btn ghost" type="button" id="lvClose">창 닫기</button></div>`}`;
+  box.innerHTML = `${drHead(`📱 ${g.ic} ${g.t}`, L.game==='race'? `다 같이 · ${N}명` : `다 같이 · ${keys.length}/${L.game==='spin'?N-1:N}`)}${lvStatus(L, host)}<p class="dr-fx" id="drFx"></p>${board}
+    ${host?`<div class="actions">${done&&!LV.busy?`<button class="btn pri" type="button" id="lvRes">결과 보기</button>`:''}<button class="btn ghost" type="button" id="lvStop">그만하기</button></div>`:`<div class="actions"><button class="btn ghost" type="button" id="lvClose">창 닫기</button></div>`}`;
   if(L.game==='ladder') lvLadPaint(L, null);
   if(L.game==='shoot') lvShootBoard(L);
+  if(L.game==='race'){ rcPaint(L.order, L.plan.race, keys.length? 99 : null, keys.length? L.plan.race.fin : null); if(keys.length){ const e=$('#rcTk'); if(e) e.textContent='🎯 순번이 정해졌어요!'; } }
   const t=lvTurn(L); const go=$('#lvGo',box), px=$('#lvProxy',box);
   const act=async()=>{ if(!t) return; if(L.game==='shoot'){ const r=LV.aimFire&&LV.aimFire(); if(!r) return; await lvAct(t.key, r); } else await lvAct(t.key, {t:Date.now(), by:S.me.id}); };
   if(go){ if(L.game==='shoot'){ go.classList.add('dr-fire'); drHoldBind(go, LV.hold, ()=>{ go.disabled=true; act(); }); } else go.onclick=()=>{ go.disabled=true; drBuzz(30); act(); }; }
@@ -6044,6 +6054,7 @@ async function lvAnim(L, key){ const box=$('#drBox'); if(!box) return; const N=L
   if(L.game==='shoot'){ const id=key, a=L.acts[id]||{x:.5,y:.5,d:0}; const S0=LV.shot; if(S0){ const {W,H,g,target}=S0; const land=[a.x*W, a.y*H], from=[W/2,H+20], t0=performance.now(), dur=red?1:520;
       await new Promise(res=>{ const step=now=>{ const k=Math.min(1,(now-t0)/dur); const x=from[0]+(land[0]-from[0])*k, y=from[1]+(land[1]-from[1])*k-Math.sin(k*Math.PI)*40; target(); g.strokeStyle='#5B3A22'; g.lineWidth=3; g.beginPath(); g.moveTo(x,y); g.lineTo(x+(from[0]-land[0])*.06,y+26); g.stroke(); if(k<1) requestAnimationFrame(step); else res(); }; requestAnimationFrame(step); }); }
     const d=+a.d; say((a.held!==undefined && +a.held<3000?'덜 당겼어요… ':'')+(d<16?`🎯 ${drNm(id)} 홍심! 관중!`:`${drNm(id)} · 홍심에서 ${d.toFixed(0)}`), d<16); await drWait(red?200:1500); }
+  if(L.game==='race'){ const fin=await rcRun(L.order, L.plan.race, ()=>!!(LV && $('#rcBox'))); say(`🥇 ${drNm(fin[0])} 1번!`, true); await drWait(red?200:1600); }
   if(L.game==='spin'){ const k=+key.slice(1), pick=L.plan.picks[k], tgt=pick/N*2*Math.PI; let ang=LV.ang||0; const cur=((ang%(2*Math.PI))+2*Math.PI)%(2*Math.PI); const extra=(3+drRnd(2))*2*Math.PI+((tgt-cur)+2*Math.PI)%(2*Math.PI), start=ang, dur=red?10:(N-k<=2?3600:2200), t0=performance.now(); const arw=$('#drArw'); let last=-1;
     await new Promise(res=>{ const step=now=>{ const q=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-q,3.4); ang=start+extra*e; if(arw) arw.style.transform=`rotate(${ang}rad)`; const seat=Math.round((((ang%(2*Math.PI))+2*Math.PI)%(2*Math.PI))/(2*Math.PI)*N)%N; if(seat!==last){ last=seat; if(q>.55) drBuzz(12); } if(q<1) requestAnimationFrame(step); else res(); }; requestAnimationFrame(step); });
     LV.ang=ang; const el=box.querySelector(`.seat[data-i="${pick}"]`); if(el) el.classList.add('hit'); say(`${drNm(L.plan.seats[pick])} ${k+1}번!${drFlair(k+1,N)?' '+drFlair(k+1,N):''}`, !!drFlair(k+1,N)); await drWait(red?200:1300); }
@@ -6077,7 +6088,7 @@ function playPick(){ const box=$('#drBox'); if(!box) return; DR=null;
   $$('[data-pgg]',box).forEach(b=>b.onclick=()=>{ PG.game=b.dataset.pgg; playPick(); });
   $('#pgX',box).onclick=()=>{ DR=null; closeSheet(); };
   $('#pgStart',box).onclick=()=>{ const ms=[...PG.pick, ...PG.names.map(x=>'n:'+x)]; if(ms.length<2) return;
-    DR={compId:null, ms, K:1, keep:false, game:PG.game, run:1, host:true, auto:PG.auto, play:true}; ({jebi:drJebi, ladder:drLadder, shoot:drShoot, spin:drSpin})[PG.game](DR.run); };
+    DR={compId:null, ms, K:1, keep:false, game:PG.game, run:1, host:true, auto:PG.auto, play:true}; ({jebi:drJebi, ladder:drLadder, shoot:drShoot, race:drRace, spin:drSpin})[PG.game](DR.run); };
 }
 function playResult(order){ const box=$('#drBox'); if(!box) return; const g=DR_GAMES.find(x=>x.id===DR.game)||{}; const win=order[0];
   box.innerHTML = `<div class="pg-win"><small>${esc(PG.title)}</small><div class="av">${drAv(win)}</div><b>${esc(drNm(win))} 당첨!</b><span>${g.ic} ${esc(g.t)} · ${order.length}명</span></div>
@@ -6096,7 +6107,7 @@ const DR_MAX = 7;   // 한 관 기본 인원
 const DR_GAMES = [
   {id:'jebi', ic:'🎋', t:'제비뽑기', d:'통을 흔들어 산가지 한 개씩'},
   {id:'ladder', ic:'🪜', t:'사다리타기', d:'천막을 걷으면 길이 보여요'},
-  {id:'shoot', ic:'🏹', t:'과녁 맞히기', d:'흔들리는 조준, 홍심에 가까울수록 앞 번호'},
+  {id:'race', ic:'🏹', t:'화살 경주', d:'이름 붙은 화살이 한꺼번에 145m · 먼저 닿는 순서'},
   {id:'spin', ic:'🧭', t:'화살 돌리기', d:'가운데 화살이 가리키는 사람부터'},
 ];
 const drRnd = n => { try{ const a=new Uint32Array(1); crypto.getRandomValues(a); return a[0]%n; }catch(e){ return Math.floor(Math.random()*n); } };
@@ -6147,7 +6158,7 @@ function drPick(){ const box=$('#drBox'); if(!box||!DR) return; const n=DR.ms.le
   const ak=$('#drAddK',box); if(ak) ak.onclick=()=>{ DR.K=Math.min(GW_MAX, Math.ceil(n/DR_MAX)); DR.asked=true; drPick(); };
   const one=$('#drOne',box); if(one) one.onclick=()=>{ DR.asked=true; drPick(); };
   $('#drX',box).onclick=()=>{ DR=null; closeSheet(); };
-  $('#drGo',box).onclick=()=>{ if(DR.together){ lvStart(); return; } DR.run++; ({jebi:drJebi, ladder:drLadder, shoot:drShoot, spin:drSpin})[DR.game](DR.run); };
+  $('#drGo',box).onclick=()=>{ if(DR.together){ lvStart(); return; } DR.run++; ({jebi:drJebi, ladder:drLadder, shoot:drShoot, race:drRace, spin:drSpin})[DR.game](DR.run); };
 }
 const drAlive = my => DR && DR.run===my && $('#drBox');
 function drHead(t, sub){ return `<h3>${t} <small class="tiny muted">${sub||''}</small></h3>`; }
@@ -6254,6 +6265,47 @@ function drShoot(my){ const shooters=drShuffle(DR.ms), N=shooters.length, score=
       await drWait(drReduce()?400:(DR.auto?900:1500)); if(!drAlive(my)) return; t++; if(t<N) round(); else drResult(Object.keys(score).sort((a,b)=>score[a]-score[b])); };
     if(DR.auto) setTimeout(()=>{ if(!drAlive(my) || fb.disabled) return; hold.h0=performance.now(); fb.classList.add('on'); setTimeout(()=>{ if(drAlive(my)){ fb.classList.remove('on'); fire(); } }, drReduce()?50:3000+drRnd(1800)); }, 400); };
   round(); }
+// 🏹 화살 경주 — 순서는 시작할 때 운으로 정하고(plan), 그 순서대로 들어오도록 곡선을 만든다
+function rcPlan(ids){ const fin=drShuffle(ids), P={}; fin.forEach((id,rank)=>{ P[id]={T:+(5+rank*(.16+drRnd(100)/1000)).toFixed(3), a:+(.06+drRnd(20)/1000).toFixed(3), k:+(1+drRnd(100)/100).toFixed(2), ph:+(drRnd(628)/100).toFixed(2)}; }); return {fin, P}; }
+const rcProg=(p,t)=>{ const u=Math.min(1,t/p.T); return Math.min(1, u + p.a*Math.sin(Math.PI*u)*Math.sin(p.k*Math.PI*u+p.ph)); };
+const RC_COL=['#E2463B','#2F6FD0','#2E9D57','#E3A21A','#8A4FC8','#E0678F','#1FA3A3','#7A5A2E'];
+function rcBoxHTML(n){ return `<div class="dr-race" id="rcBox" style="height:${Math.max(280, 64+n*30)}px"><canvas id="rcCv"></canvas><div class="rc-tk" id="rcTk">이름 붙은 화살이 한꺼번에 145m! 먼저 닿는 순서가 순번</div></div>`; }
+function rcPaint(lanes, plan, t, fin){ const box=$('#rcBox'), cv=$('#rcCv'); if(!box||!cv) return; const W=box.clientWidth, H=box.clientHeight, dpr=window.devicePixelRatio||1;
+  if(cv.width!==Math.round(W*dpr)){ cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px'; } const g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0);
+  ['#9FD0EC','#B3DAF0','#C7E4F4'].forEach((c,i)=>{ g.fillStyle=c; g.fillRect(0,i*14,W,14); });
+  g.fillStyle='#8FB2A0'; for(let x=0;x<W;x+=6){ const h=7+5*Math.sin(x*.05)+3*Math.sin(x*.13); g.fillRect(x,42-h,6,h); }
+  g.fillStyle='#9CCB78'; g.fillRect(0,42,W,H-42); g.fillStyle='#8DBE69'; for(let y=46;y<H;y+=10) g.fillRect(0,y,W,4);
+  const X0=30, X1=W-30, n=lanes.length, laneY=i=>52+(H-74)*(i+.5)/n;
+  g.font='11px Galmuri11, sans-serif'; g.textAlign='center';
+  [0,50,100,145].forEach(m=>{ const x=X0+(X1-X0)*m/145; g.fillStyle='rgba(255,255,255,.75)'; for(let y=46;y<H-16;y+=8) g.fillRect(x-1,y,2,4); g.fillStyle='#231C16'; g.fillText(m?m+'m':'사대',x,H-5); });
+  const th=Math.min(24,(H-80)/n*.8);
+  lanes.forEach((id,i)=>{ const y=laneY(i); g.fillStyle='#F6F1E2'; g.fillRect(X1+2,y-th/2,12,th); g.fillStyle='#24384F'; g.fillRect(X1+4,y-th/2+2,8,th-4); g.fillStyle='#C7362C'; g.fillRect(X1+6,y-3,4,6);
+    const p=plan.P[id], q=t===null? 0 : rcProg(p,t), x=Math.min(X1+8, X0+20+(X1-X0-20)*q), col=RC_COL[i%RC_COL.length], done=fin&&fin.includes(id);
+    g.fillStyle='#3B2A1A'; g.fillRect(x-30,y-1.5,30,3); g.fillStyle='#555'; g.beginPath(); g.moveTo(x+6,y); g.lineTo(x-2,y-5); g.lineTo(x-2,y+5); g.fill(); g.fillStyle=col; g.fillRect(x-32,y-6,9,4); g.fillRect(x-32,y+2,9,4);
+    const nm=drNm(id), w=g.measureText(nm).width+8, lx=Math.max(2,Math.min(W-w-2,x-32)); g.fillStyle='rgba(255,253,246,.92)'; g.fillRect(lx,y-20,w,14); g.fillStyle='#231C16'; g.textAlign='left'; g.fillText(nm,lx+4,y-9); g.textAlign='center';
+    if(done){ const no=fin.indexOf(id)+1, bx=x-46; g.fillStyle=no===1?'#C7362C':'#231C16'; g.beginPath(); g.arc(bx,y,8,0,7); g.fill(); g.fillStyle='#FFF'; g.font='700 10px Galmuri11, sans-serif'; g.fillText(no,bx,y+3.5); g.font='11px Galmuri11, sans-serif'; } }); }
+/* 경주 돌리기: 끝나면 resolve(들어온 순서) · 막판엔 느린 화면 */
+function rcRun(lanes, plan, alive){ return new Promise(res=>{ const red=drReduce(); const fin=[]; let t=red? 99 : 0, last=performance.now(), lead=-1, tick=0;
+  const tk=txt=>{ const e=$('#rcTk'); if(e) e.textContent=txt; };
+  tk('🏹 일제히 발시!'); drBuzz(40);
+  const step=now=>{ if(!alive()) return; const dt=Math.min(.05,(now-last)/1000); last=now;
+    const ps=lanes.map(id=>rcProg(plan.P[id],t)), top=Math.max(...ps); const slow=(top>.9 && fin.length<1)? .38 : 1; t+=dt*slow;
+    lanes.forEach(id=>{ if(!fin.includes(id) && rcProg(plan.P[id],t)>=1){ fin.push(id); drBuzz(fin.length===1?[30,30,60]:15); if(fin.length===1) tk(`🥇 ${drNm(id)} 1번 확정!`); } });
+    if(!fin.length){ const li=ps.indexOf(top); if(li!==lead && t>.6){ lead=li; tk(top>.85? `막판 스퍼트! ${drNm(lanes[li])} 앞서요 · ${Math.round(top*145)}m` : `${drNm(lanes[li])} 치고 나갑니다! · ${Math.round(top*145)}m`); } }
+    else if(fin.length<lanes.length) tk(fin.map((id,k)=>`${k+1}번 ${drNm(id)}`).slice(-2).join(' · '));
+    if(now-tick>(slow<1?110:160) && fin.length<lanes.length){ tick=now; drBuzz(6); }
+    rcPaint(lanes, plan, t, fin);
+    if(fin.length>=lanes.length){ tk('🎯 순번이 정해졌어요!'); res(fin); return; }
+    requestAnimationFrame(step); };
+  requestAnimationFrame(step); }); }
+function drRace(my){ const box=$('#drBox'); const lanes=DR.ms.slice(), plan=rcPlan(lanes);
+  box.innerHTML = `${drHead('🏹 화살 경주', `${lanes.length}명 · 먼저 닿는 순서가 순번`)}${rcBoxHTML(lanes.length)}
+    <button class="btn pri block" type="button" id="rcGo" style="margin-top:10px">🏹 일제히 발시!</button><p class="dr-fx" id="drFx"></p><div class="dr-order" id="drOl"></div>`;
+  rcPaint(lanes, plan, null, null);
+  const go=async()=>{ const b=$('#rcGo',box); if(!b||b.disabled) return; b.disabled=true; const fin=await rcRun(lanes, plan, ()=>drAlive(my)); if(!drAlive(my)) return;
+    $('#drOl',box).innerHTML = fin.map((id,k)=>`<div class="o"><span class="n">${k+1}</span>${drAv(id)}<b>${esc(drNm(id))}</b>${drFlair(k+1,fin.length)?`<span class="tag">${drFlair(k+1,fin.length)}</span>`:''}</div>`).join('');
+    await drWait(drReduce()?200:1400); if(drAlive(my)) drResult(fin); };
+  $('#rcGo',box).onclick=go; if(DR.auto) setTimeout(()=>{ if(drAlive(my)) go(); }, 600); }
 // 🧭 화살 돌리기
 function drSpin(my){ const box=$('#drBox'); const seats=drShuffle(DR.ms), N=seats.length, out=[]; let ang=0;
   const R=125, pos=i=>{ const a=-Math.PI/2+i/N*2*Math.PI; return [150+Math.cos(a)*R, 150+Math.sin(a)*R]; };
@@ -8863,8 +8915,10 @@ function renderPlaza(){
   const all=[...msgs.map(m=>({...m,day:t})), ...plazaMsgs(S.plazaY).sort((a,b)=>(b.at||0)-(a.at||0)).map(m=>({...m,day:yday()})), ...older].slice(0,105);
   const pzDayLabel = d => d===t ? '오늘' : d===yday() ? '어제' : `${+d.slice(5,7)}월 ${+d.slice(8,10)}일 (${'일월화수목금토'[new Date(d+'T12:00:00').getDay()]})`;
   // 답글(키에 _re_원글id)은 원글 아래에 시간 순으로 · 원글이 7일 밖이면 혼자 보임 · 쪽은 원글 기준
-  const byId={}; all.forEach(m=>{ const p=String(m.id).indexOf('_re_'); m.re=p>0?String(m.id).slice(p+4):null; byId[m.id]=m; });
-  const reps={}, top=[]; for(const m of all){ if(m.re && byId[m.re] && !byId[m.re].re) (reps[m.re]=reps[m.re]||[]).push(m); else top.push(m); }
+  const byId={}, roots={}; all.forEach(m=>{ const p=String(m.id).indexOf('_re_'); m.re=p>0?String(m.id).slice(p+4):null; byId[m.id]=m; if(!m.re) (roots[m.id]=roots[m.id]||[]).push(m); });
+  // p226: 같은 id 원글이 여러 날 있으면(날짜 없던 옛 '오늘 정' 글) 답글은 그 답글 날짜 이전 가장 가까운 날 원글에만
+  const rkey=m=>m.id+'@'+m.day; const rootFor=m=>{ const C=(roots[m.re]||[]).filter(r=>r.day<=m.day).sort((a,b)=>a.day<b.day?1:-1); return C[0]||(roots[m.re]||[])[0]; };
+  const reps={}, top=[]; for(const m of all){ const r=m.re? rootFor(m) : null; if(r) (reps[rkey(r)]=reps[rkey(r)]||[]).push(m); else top.push(m); }
   Object.values(reps).forEach(L=>L.sort((a,b)=>(a.at||0)-(b.at||0)));
   const pzNm=id=>{ const x=memberById(id); return (x&&x.name)||'사원'; };
   { let cf=$('#pzChatF'); const ok = multi && !!$('#pzChatCard'); if(!cf && ok){ cf=document.createElement('div'); cf.id='pzChatF'; cf.className='pz-chatf'; const hd=$('#pzChatCard .sec-head'); if(hd) hd.after(cf); }
@@ -8872,15 +8926,15 @@ function renderPlaza(){
       $$('[data-pcf]',cf).forEach(b=>b.onclick=()=>{ const v=b.dataset.pcf==='mine'; if(v===S.pzChatMine) return; S.pzChatMine=v; lsSet('sadae.pzChatMine',v); S.pzPage=1; renderPlaza(); }); }
     if(ok && S.pzChatMine){ const mineMsg=m=>{ const x=memberById(m.from); return x && memberJ(x).id===hjId; }; for(let i=top.length-1;i>=0;i--) if(!mineMsg(top[i])) top.splice(i,1); } }
   const C=$('#plazaChat'); let lastDay=''; const PER=10, pages=Math.max(1,Math.ceil(top.length/PER)); if(!S.pzPage||S.pzPage>pages) S.pzPage=1;
-  const pgOf=id=>{ const i=top.findIndex(x=>x.id===id); return i<0?1:Math.floor(i/PER)+1; };
+  const pgOf=id=>{ const i=top.findIndex(x=>x.id===id || rkey(x)===id); return i<0?1:Math.floor(i/PER)+1; };
   const pzMsg=(m0,rootDay)=>{ const mm=memberById(m0.from)||{}; const pn=rootDay&&byId[m0.re]?pzNm(byId[m0.re].from):'';
     const m = pn ? {...m0, text:(pzStripAt(m0.text, pn)||m0.text)} : m0;
     const can=S.me&&(m.from===S.me.id||isAdminNow());
     return `<div class="pz-msg ${rootDay?'pz-rep':''} ${S.me&&m.from===S.me.id?'mine':''}" data-pzid="${esc(m.id)}"><span class="pz-av" data-room="${esc(m.from)}">${charSVG(mm.char||DEFAULT_CHAR)}</span><div class="grow">${rootDay?'':pzBestBand(m)}<div class="pz-who"><b data-room="${esc(m.from)}">${esc(mm.name||'사원')}</b>${String(m.id).indexOf('att_')>=0&&String(m.id).indexOf('_re_')<0?'<span class="pz-atttag" title="오늘 정 사대 등록 한마디">🏹 오늘 정</span>':''}${pzJoOf(m.id)?`<span class="pz-jotag" title="이 정 사원과 관리자만 봐요">🔒 ${esc(((typeof jById==='function'&&jById(pzJoOf(m.id)))||{name:'우리 정'}).name)}만</span>`:''} ${rootDay&&m.day!==rootDay?`<span class="tiny muted">${+m.day.slice(5,7)}/${+m.day.slice(8)}</span> `:''}<span class="tiny muted">${esc(memberJ(mm).name)} · ${hhmm(m.at)}</span>${S.me&&mm.name?`<button class="linkbtn tiny" type="button" data-pzat="${esc(mm.name)}" data-pzre="${esc(m.re||m.id)}" data-pztx="${esc(String((m.re&&byId[m.re]?byId[m.re].text:m.text)||'').slice(0,30))}">↩ 답글</button>`:''}${can?`<button class="linkbtn tiny" data-pzdel="${esc(m.id)}" data-pzday="${m.day}">지우기</button>`:''}</div>${!rootDay&&m.re?'<div class="pz-reof tiny muted">↩ 지난 글에 단 답글</div>':''}<div class="pz-tx ${S.me&&S.me.name&&m.from!==S.me.id&&mentionRe(S.me.name).test(m.text||'')?'pz-me':''}">${esc(m.text)}</div>${pzRxHTML(m)}</div></div>`; };
   // 1쪽이 아닌 원글에 12시간 안에 달린 답글 → 맨 위에 알림 줄 (누르면 그 글로)
-  const fresh=Object.entries(reps).map(([rid,L])=>({rid, last:L[L.length-1], pg:pgOf(rid)})).filter(f=>f.pg>1 && Date.now()-(f.last.at||0)<12*3600e3).sort((a,b)=>(b.last.at||0)-(a.last.at||0)).slice(0,2);
+  const fresh=Object.entries(reps).map(([rk,L])=>({rid:rk.slice(0,rk.lastIndexOf('@')), last:L[L.length-1], pg:pgOf(rk)})).filter(f=>f.pg>1 && Date.now()-(f.last.at||0)<12*3600e3).sort((a,b)=>(b.last.at||0)-(a.last.at||0)).slice(0,2);
   C.innerHTML = top.length ? fresh.map(f=>`<button type="button" class="pz-newre" data-pzjump="${esc(f.rid)}">💬 <b>${esc(pzNm(f.last.from))}</b> 님이 ${esc(pzNm(byId[f.rid].from))} 님 글에 답글 · ${hhmm(f.last.at)}<span>보기 ›</span></button>`).join('') + top.map((m,i)=>{ const pg=Math.floor(i/PER)+1; let head=''; if(m.day!==lastDay || i%PER===0){ lastDay=m.day; head=`<div class="pz-day">${pzDayLabel(m.day)}</div>`; }
-      const R_=reps[m.id]||[];
+      const R_=reps[rkey(m)]||[];
       return `<div class="pz-item" data-pg="${pg}" ${pg!==S.pzPage?'hidden':''}>${head}${pzMsg(m,'')}${R_.length?`<div class="pz-reps">${R_.slice(0,PZ_REP_SHOW).map(r=>pzMsg(r,m.day)).join('')}${R_.length>PZ_REP_SHOW?(()=>{ const op=S.pzRepOpen.has(m.id); return `<div class="pz-reps-more" ${op?'':'hidden'}>${R_.slice(PZ_REP_SHOW).map(r=>pzMsg(r,m.day)).join('')}</div><button type="button" class="pz-repmore" data-pzrm="${esc(m.id)}" aria-expanded="${op}">${op?'답글 접기 ▴':`💬 답글 ${R_.length-PZ_REP_SHOW}개 더 보기 ▾`}</button>`; })():''}</div>`:''}</div>`; }).join('')
       + (pages>=1 ? `<div class="pz-pager" role="navigation" aria-label="한마디 페이지"><button type="button" data-pzpg="prev" aria-label="이전 페이지">‹</button>${Array.from({length:pages},(_,k)=>`<button type="button" data-pzpg="${k+1}" class="${k+1===S.pzPage?'on':''}">${k+1}</button>`).join('')}<button type="button" data-pzpg="next" aria-label="다음 페이지">›</button></div><div class="pz-pgnote tiny muted">최근 7일 한마디 ${all.length}개 · 한 쪽에 글 ${PER}개(답글은 원글 아래)</div>` : '')
     : (multi && S.pzChatMine ? `<div class="muted">최근 7일 ${esc(homeJ().name)} 한마디가 없어요. 첫 인사를 남겨 보세요 👋</div>` : '<div class="muted">아직 조용해요. 첫 인사를 남겨 보세요 👋</div>');
