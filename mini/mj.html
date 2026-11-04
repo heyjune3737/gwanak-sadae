@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>8초 만작</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;700&family=Noto+Serif+KR:wght@900&display=swap">
+<style>
+/* 레이아웃: 한 화면 게임 — 머리줄 · 활터(꾹 눌러 버티기) · 결과 시간줄 · 오늘 3번 기록 · 랭킹 */
+:root{
+  --bg:#EEF1F4; --card:#FFFFFF; --fg:#1B2433; --mut:#5D6878; --line:#D5DBE3; --chip:#E4E9EF;
+  --navy:#1F3A5F; --red:#D2402F; --gold:#C99A2E;
+  --fd:"Do Hyeon","Noto Sans KR",sans-serif; --fb:"Noto Sans KR",system-ui,sans-serif; --fs:"Noto Serif KR",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11161E; --card:#1A212C; --fg:#E8EDF3; --mut:#9AA6B6; --line:#2C3644; --chip:#252E3B;
+  --navy:#8FB4E0; --red:#F06A57; --gold:#E7BE5A; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#11161E; --card:#1A212C; --fg:#E8EDF3; --mut:#9AA6B6; --line:#2C3644; --chip:#252E3B;
+  --navy:#8FB4E0; --red:#F06A57; --gold:#E7BE5A; color-scheme:dark }
+body{background:var(--bg);color:var(--fg);font-family:var(--fb);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 28px}
+.wrap{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+h1{font-family:var(--fd);font-weight:400;font-size:26px;margin:0;color:var(--navy)}
+h1 small{font-family:var(--fb);font-size:12px;color:var(--mut);margin-left:6px}
+select{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:4px 6px}
+.field{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#9CC6E6;user-select:none;-webkit-user-select:none;touch-action:none;cursor:pointer}
+canvas{display:block;width:100%;height:min(60vh,500px);min-height:380px}
+.over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(15,25,40,.55);color:#fff;text-align:center;padding:20px}
+.over[hidden]{display:none}
+.snd{position:absolute;right:10px;bottom:10px;z-index:3;width:40px;height:40px;border-radius:50%;border:2px solid #1B2433;background:rgba(255,255,255,.92);font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}
+.snd.off{background:#D5DBE3}
+.snd:focus-visible{outline:3px solid #FFD66B;outline-offset:2px}
+.over h2{font-family:var(--fd);font-weight:400;font-size:28px;margin:0}
+.over .n{font-family:var(--fs);font-size:58px;line-height:1;color:#FFD66B}
+.over .g{font-family:var(--fd);font-size:22px;background:#FFD66B;color:#1B2433;border-radius:999px;padding:3px 14px}
+.over p{margin:0;font-size:14px;line-height:1.6}
+.over button{border:0;border-radius:14px;padding:13px 26px;font-family:var(--fd);font-size:21px;background:#D2402F;color:#fff;cursor:pointer;margin-top:4px}
+.over button:disabled{background:#5D6878;cursor:default}
+.over button:focus-visible{outline:3px solid #FFD66B;outline-offset:2px}
+.line{position:relative;height:50px;margin:10px 4px 0}
+.line .lb.up{top:-12px}
+.line .bar{position:absolute;left:0;right:0;top:14px;height:10px;border-radius:5px;background:repeating-linear-gradient(90deg,var(--chip) 0 6px,transparent 6px 10px);border:1px solid var(--line)}
+.line .vis{position:absolute;left:0;top:14px;height:10px;border-radius:5px 0 0 5px;background:var(--navy)}
+.line .minus{position:absolute;top:14px;height:10px;background:color-mix(in srgb,var(--red) 35%,transparent)}
+.line .eight{position:absolute;top:6px;width:3px;height:26px;background:var(--gold);border-radius:2px}
+.line .me{position:absolute;top:2px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--red);border:2px solid var(--card)}
+.line .lb{position:absolute;top:30px;font-size:11px;color:var(--mut);transform:translateX(-50%);white-space:nowrap}
+.tip{font-size:13px;color:var(--mut);line-height:1.6;margin:0}
+.tip b{color:var(--fg)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.card h2{font-family:var(--fd);font-weight:400;font-size:19px;margin:0;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.card h2 span{font-family:var(--fb);font-size:12px;color:var(--mut)}
+.tries{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tries div{border:1px dashed var(--line);border-radius:10px;padding:8px;text-align:center;font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}
+.tries div b{display:block;font-family:var(--fd);font-weight:400;font-size:20px;color:var(--fg)}
+.tries div.best{border:2px solid var(--gold)} .tries div.best b{color:var(--gold)}
+.tries div.out b{color:var(--red)}
+.tries .sum{grid-column:1/-1;border:2px solid var(--gold);color:var(--fg);font-size:14px;font-weight:700}
+.tries .sum b{display:inline;font-size:20px;color:var(--gold)}
+.grades{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:var(--mut)}
+.grades span{background:var(--chip);border-radius:999px;padding:3px 9px}
+.rank{display:flex;flex-direction:column;gap:2px;font-variant-numeric:tabular-nums}
+.rk{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;padding:6px 4px;border-radius:8px;font-size:14px}
+.rk b{font-family:var(--fd);font-weight:400;font-size:17px}
+.rk .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.rk .n small{color:var(--mut)}
+.rk.me{background:color-mix(in srgb,var(--gold) 20%,transparent)}
+.rk:nth-child(1) b{color:var(--gold)} .rk:nth-child(2) b{color:#8C99A8} .rk:nth-child(3) b{color:#B7764A}
+.ex{font-size:11px;color:var(--mut)}
+.dev{font-size:12px;color:var(--mut);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.dev button{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:5px 9px;font:inherit;cursor:pointer}
+/* 사대지기 + 규칙 칸 */
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.rules div{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;line-height:1.35;min-width:0}
+.rules div i{font-style:normal;font-size:18px;flex:none}
+.rules div b{color:var(--fg)}
+.rules div span{color:var(--mut)}
+.keeper{display:flex;gap:10px;align-items:flex-end}
+.keeper .av{flex:none;width:64px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.keeper .av img{width:64px;height:77px;object-fit:contain;display:block}
+.keeper .av b{font-size:10.5px;background:var(--gold);color:#2A2233;padding:1px 6px;border-radius:4px;white-space:nowrap}
+.keeper .bub{position:relative;flex:1;min-width:0;background:var(--card);border:2px solid var(--fg);border-radius:12px;padding:10px 12px;margin-bottom:18px;font-size:13px;line-height:1.6;color:var(--fg);word-break:keep-all}
+.keeper .bub::before{content:"";position:absolute;left:-8px;bottom:14px;width:12px;height:12px;background:var(--card);border-left:2px solid var(--fg);border-bottom:2px solid var(--fg);transform:rotate(45deg)}
+.keeper .kind{display:inline-block;font-size:11px;background:var(--chip);color:var(--mut);border-radius:999px;padding:1px 8px;margin-bottom:4px}
+.keeper .hj{font-family:var(--fs);font-size:20px;line-height:1.3}
+.keeper .rd{font-size:12px;color:var(--mut)}
+.keeper .src{font-size:11px;color:var(--mut);text-align:right;margin-top:4px}
+.over .keeper{max-width:330px;text-align:left}
+.over .keeper .bub{color:#1B2433;background:#FFFFFF;border-color:#FFFFFF}
+.over .keeper .bub::before{background:#FFFFFF;border-color:#FFFFFF}
+#wordCard[hidden],#setCard[hidden]{display:none}
+.keeper .nag{font-weight:700;margin-bottom:4px}
+.keeper .nag2{margin-top:6px;font-weight:700;color:var(--red)}
+.over .keeper .nag2{color:#D2402F}
+
+
+.mode{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--chip);color:var(--fg)}
+.mode.rk{background:var(--gold);color:#2A2233}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <h1>⏱ 8초 만작</h1>
+    <span class="ex mode" id="modeTag"></span>
+  </div>
+
+  <div class="field" id="field">
+    <canvas id="cv"></canvas>
+    <button type="button" class="snd" id="snd" aria-label="소리 끄기">🔊</button>
+    <div class="over" id="over"></div>
+  </div>
+
+  <div class="line" id="tl" hidden></div>
+
+  <div id="wordCard" hidden></div>
+  <div class="rules" aria-label="규칙">
+    <div><i>👇</i><span><b>꾹</b> 눌러 시위 당기기</span></div>
+    <div><i>👀</i><span><b>3초</b>까지만 시간 보임</span></div>
+    <div><i>🎯</i><span><b>8초</b>에 가깝게 떼기</span></div>
+    <div><i>➖</i><span>8초 넘기면 <b>−20점</b>부터</span></div>
+    <div><i>❌</i><span><b>10초</b> 넘으면 탈락</span></div>
+    <div><i>💯</i><span>한 발 <b>100점</b> × 3발</span></div>
+  </div>
+
+  <div class="card" id="setCard">
+    <h2>오늘의 세 발 <span id="date"></span></h2>
+    <div class="tries" id="tries"></div>
+    <div class="grades"><span>8초 전 0.1초당 −2점</span><span>8초 넘기면 −20점, 0.1초당 −4점 더</span><span>🎯 신궁 0.05초 · 🏹 명궁 0.15초 · 관중 0.30초 안</span></div>
+  </div>
+
+</div>
+
+<script>
+(()=>{
+const BR=(()=>{ try{ return (parent!==window && parent.MINI_BR) || null; }catch(e){ return null; } })();
+try{ const th=parent.document.documentElement.dataset.theme; if(BR && th) document.documentElement.dataset.theme=th; }catch(e){}
+const PRAC=!!(BR && BR.mode==='practice');
+if(BR){ const tp=document.querySelector('.top'); if(tp) tp.style.display='none'; }   // 앱 위 막대에 이름·모드가 이미 있음
+const CH={cat:'__cat__',dog:'__dog__',bear:'__bear__',duck:'__duck__'};
+const $=s=>document.querySelector(s);
+let MUTE=false; try{ MUTE=localStorage.getItem('sadae.mini.mute')==='1'; }catch(e){}
+function sndUI(){ const b=document.getElementById('snd'); if(!b) return; b.textContent=MUTE?'🔇':'🔊'; b.classList.toggle('off',MUTE); b.setAttribute('aria-label',MUTE?'소리 켜기':'소리 끄기'); }
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('#snd'); if(!b) return; e.stopPropagation(); MUTE=!MUTE; try{ localStorage.setItem('sadae.mini.mute',MUTE?'1':'0'); }catch(err){} sndUI(); },true);
+setTimeout(sndUI,0);
+/* 사대지기 = 츤데레 오리 (격언 좋아함). 격언 글은 앱 '오늘의 국궁 한마디'와 같은 글(관악정 국궁교본) 그대로, 앞뒤 잔소리만 사대지기 말투 */
+const DW_SRC={j:'국궁교본 5.2 집궁제원칙', g:'국궁교본 2.3.3 궁도 9계훈', s:'국궁교본 6.5 심담 14요', b:'국궁교본 6.6 불가필중', t:'국궁교본 용어 풀이'};
+const DAILY_WORDS=[
+ ['j','先觀地形 後察風勢','선관지형 후찰풍세','먼저 지형을 관찰하고 나서 다음은 바람의 흐름을 살핀다.'],
+ ['j','非丁非八 胸虛腹實','비정비팔 흉허복실','발의 위치는 丁 자도 八 자도 아니며, 가슴을 비우고 배를 든든히 한다.'],
+ ['j','前推泰山 後握虎尾','전추태산 후악호미','줌손은 태산을 밀듯이 밀고, 깍지손은 호랑이 꼬리를 잡아당기듯 뒤로 당긴다.'],
+ ['j','發而不中 反求諸己','발이부중 반구제기','활을 쏘아서 맞지 않으면 자신의 마음가짐과 자세를 다시 살핀다.'],
+ ['g','仁愛德行','인애덕행','사랑과 덕행으로 본을 보인다.'],
+ ['g','誠實謙遜','성실겸손','겸손하고 성실하게 행한다.'],
+ ['g','自重節操','자중절조','신중하고 조심스럽게 행동하라.'],
+ ['g','禮儀嚴守','예의엄수','예의 범절을 엄격히 지킨다.'],
+ ['g','廉直果敢','염직과감','청렴 강직하고 용감하게 행한다.'],
+ ['g','習射無言','습사무언','활을 쏠 때는 침묵을 지킨다.'],
+ ['g','正心正己','정심정기','몸과 마음을 항상 바르게 한다.'],
+ ['g','不怨勝者','불원승자','이긴 사람을 원망하지 않는다.'],
+ ['g','莫彎他弓','막만타궁','남의 활을 함부로 당기지 않는다.'],
+ ['s','弓要軟','궁요연','활은 자기 힘에 맞게 연해야 한다.'],
+ ['s','箭要長','전요장','살은 적당히 길어야 한다.'],
+ ['s','胸前宜吸','흉전의흡','가슴 앞은 안으로 거두어 들인다.'],
+ ['s','脚立要方','각립요방','다리는 평온하면서도 굳건하게 선다.'],
+ ['s','持弓如握卵','지궁여악란','활을 쥐는 것은 달걀을 잡듯이 한다.'],
+ ['s','搭箭如懸衡','탑전여현형','화살 끼우기는 저울질하듯 한다.'],
+ ['s','弓要梢側','궁요초측','활은 조금 기울인다.'],
+ ['s','手要平衡','수요평형','양손은 평형을 이루어야 한다.'],
+ ['s','前膀要轉','전방요전','앞팔 상반절은 틀어서 곧게 펴야 한다.'],
+ ['s','筋骨要神','근골요신','근육과 뼈는 쭉 펴야 한다.'],
+ ['s','前肩要藏','전견요장','앞어깨는 감추어야 한다.'],
+ ['s','後肩要擠','후견요제','뒷어깨는 뒤로 밀치듯이 한다.'],
+ ['s','出箭要輕','출전요경','화살을 낼 때는 가볍게 낸다.'],
+ ['s','放箭要速','방전요속','화살을 보내는 것은 빠르게 한다. 앞손이 화살을 보내는 것을 뒷손이 알지 못하듯이.'],
+ ['b','生弓 不可必中','생궁 불가필중','익지 않은 활은 적중할 수 없다.'],
+ ['b','生疎 不可必中','생소 불가필중','생소한 활로는 적중할 수 없다.'],
+ ['b','弓强矢輕 不可必中','궁강시경 불가필중','활은 강한데 살이 가벼우면 적중할 수 없다.'],
+ ['b','弓弱矢重 不可必中','궁약시중 불가필중','활은 약한데 살이 무거우면 적중할 수 없다.'],
+ ['b','氣驕志怠 不可必中','기교지태 불가필중','교만한 기와 뜻이 게으르면 적중할 수 없다.'],
+ ['b','心身恍惚 不可必中','심신황홀 불가필중','심신이 흐리멍텅하면 적중할 수 없다.'],
+ ['b','射多力疲 不可必中','사다역피 불가필중','많이 쏘아 피로하면 적중할 수 없다.'],
+ ['b','見己之病不改 不可必中','견기지병불개 불가필중','자기 잘못을 알고도 고치지 않으면 적중할 수 없다.'],
+ ['b','好勝之心甚 不可必中','호승지심심 불가필중','이기려는 마음이 심하면 적중할 수 없다.'],
+ ['b','怯懦之心生 不可必中','겁나지심생 불가필중','겁먹고 나약한 마음이 들면 적중할 수 없다.'],
+ ['t','몰기','','한 순(巡) 쏠 때 살 다섯 개가 다 맞는 것. 몰기를 하면 과녁에 대고 가볍게 목례한다.'],
+ ['t','접장','','상대를 높여 주는 말. 원래는 첫 몰기를 하면 접장이라는 칭호를 붙여 준다.'],
+ ['t','초순(初巡)','','처음 쏘는 한 순(巡).'],
+ ['t','막순','종순(終巡)','마지막에 쏘는 한 순(巡).'],
+ ['t','일획(一劃)','','관사 과녁에 10순(巡)을 쏘는 것. 즉 50시(矢)를 말한다.'],
+ ['t','시지(試紙)','','시수(矢數)를 기록하는 종이. 시수를 기록하는 사람은 획관(獲貫)이라 한다.'],
+ ['t','관중(貫中)','','화살이 과녁을 맞추는 것.'],
+ ['t','획(獲)','','화살이 과녁의 복판을 바로 맞힌 것을 이르는 말.'],
+ ['t','한배','한살','화살이 제턱에 가는 것. 좌우 편차와는 관계없이 과녁이 있는 곳까지 가는 것을 말한다.'],
+ ['t','반구비','','화살의 살고가 알맞아 적중할 수 있게 가는 것.'],
+ ['t','살고','','화살이 뜨는 높이.'],
+ ['t','평찌','','화살이 평평하고 낮게 가는 것.'],
+ ['t','앞난다','','살이 과녁의 오른쪽으로 떨어지는 것. 줌손의 앞쪽으로 떨어진다는 뜻.'],
+ ['t','뒤난다','','살이 과녁의 왼쪽으로 떨어지는 것. 줌손의 뒤쪽으로 떨어진다는 뜻.'],
+ ['t','안바람','촉바람','과녁에서 사대로 부는 바람. 안고 쏜다는 뜻이다.'],
+ ['t','오늬바람','','사대에서 과녁으로 부는 바람. 오늬의 뒤에서 부는 바람.'],
+ ['t','월촉','몰촉','활을 너무 많이 당겨서 촉이 줌을 지나 쑥 들어오는 것.'],
+ ['t','고자채기','','활을 쏠 때 발시하면서 윗고자가 과녁 쪽으로 기우는 것.'],
+ ['t','궁체(弓體)','체집','활 쏘는 자세. 활의 생긴 모습을 이르기도 한다.'],
+ ['t','사말','','활터에서 남에게 자신을 낮춰 부르는 말.'],
+ ['t','구사(舊射)','','활을 오래 쏜 사람. 처음 활을 배우는 사람은 신사(新射)라 한다.'],
+ ['t','무겁','개자리','과녁 앞에 웅덩이 등을 파고 사람이 들어앉아서 살의 적중 여부를 확인하는 장소.'],
+ ['t','바탕','','화살이 가는 거리. 즉 사대(射臺)에서 과녁까지의 거리.'],
+ ['t','정순(正巡)','','정식으로 활을 쏘는 것.'],
+ ['t','중구미','','팔꿈치. 활잡은 어깨 부위는 죽머리라 한다.'],
+];
+const KEEPER=(BR&&BR.keeper)||'';
+const wordBy=h=> DAILY_WORDS.find(w=>w[1]===h) || DAILY_WORDS[0];
+/* 결과별 잔소리 + 격언 (여러 개 중 하나) */
+const NAG={
+ bad:[ ['흥, 오늘은 바람 탓이라고 해 두지. …그래도 이 말은 새겨 두게.','發而不中 反求諸己'],
+       ['마음이 좀 들떴던 거지? 다음엔 차분히.','心身恍惚 不可必中'],
+       ['괜찮아, 다들 처음엔 그래. 딱히 위로하는 건 아니고.','正心正己'] ],
+ great:[ ['흥, 제법이구먼. …칭찬하는 거 아니야.','自重節操'],
+         ['오늘은 좀 쏘네. 그렇다고 우쭐하면 안 돼.','氣驕志怠 不可必中'] ],
+ mol:[ ['몰기…? 흥, 대단한 건 아니고. 과녁에 목례는 잊지 말게.','禮儀嚴守'] ],
+ mid:[ ['나쁘지 않네. 딱히 기대한 건 아니지만.','正心正己'],
+       ['쏠 땐 조용히. 그게 다야.','習射無言'] ],
+ over:[ ['조금만 일찍 놓았으면 됐는데… 아깝긴 하네.','好勝之心甚 不可必中'] ],
+ out:[ ['무리하지 마. 팔 아프면 쉬었다 해. …걱정하는 건 아니고.','射多力疲 不可必中'] ],
+ god:[ ['…방금 그거 진짜야? 잘했어. 정말 잘했어. …한 번만 말하는 거야.','不怨勝者'] ] };
+function keeperNag(kind){ const L=NAG[kind]||NAG.mid; const [a,h]=L[Math.floor(Math.random()*L.length)]; const [k,hj,r,m]=wordBy(h);
+  return `<div class="keeper"><div class="av"><img src="${KEEPER}" alt=""><b>사대지기</b></div><div class="bub"><div class="nag">${a}</div><div class="hj">${hj}</div>${r?`<div class="rd">${r}</div>`:''}<div>${m}</div><div class="src">관악정 ${DW_SRC[k]}</div></div></div>`; }
+function keeperSayHTML(text){ return `<div class="keeper"><div class="av"><img src="${KEEPER}" alt=""><b>사대지기</b></div><div class="bub">${text}</div></div>`; }
+function showNag(kind){ const c=document.getElementById('wordCard'); if(!c) return; c.innerHTML=keeperNag(kind); c.hidden=false; }
+/* 게임 중 짧은 한마디 (활터 오른쪽 위 작은 말풍선) */
+const kimg=new Image(); kimg.src=KEEPER;
+
+const cv=$('#cv'), g=cv.getContext('2d');
+const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+let W=0,H=0;
+const img=new Image(); img.src=(BR&&BR.char)||CH.cat;
+
+/* ── 소리 ── */
+let AC=null;
+function tone(f1,f2,dur,type,vol){ if(MUTE) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); const t=AC.currentTime,o=AC.createOscillator(),v=AC.createGain(); o.type=type; o.connect(v); v.connect(AC.destination); o.frequency.setValueAtTime(f1,t); o.frequency.exponentialRampToValueAtTime(f2,t+dur); v.gain.setValueAtTime(vol,t); v.gain.exponentialRampToValueAtTime(.001,t+dur); o.start(t); o.stop(t+dur); }catch(e){} }
+function noise(dur,vol){ if(MUTE) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); const n=AC.sampleRate*dur, b=AC.createBuffer(1,n,AC.sampleRate), d=b.getChannelData(0); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*(1-i/n); const s=AC.createBufferSource(), v=AC.createGain(); s.buffer=b; v.gain.value=vol; s.connect(v); v.connect(AC.destination); s.start(); }catch(e){} }
+const sTwang=()=>{ tone(220,80,.22,'triangle',.35); noise(.08,.15); };
+const sHit=(n)=>{ tone(150,60,.3,'sine',.9); noise(.06,.35); tone(660+n*40,880+n*40,.12,'square',.05); };
+const sMiss=()=>{ noise(.35,.25); tone(120,50,.4,'sine',.3); };
+const buzz=p=>{ try{ navigator.vibrate&&navigator.vibrate(p); }catch(e){} };
+
+
+const S={th:0, t:0, phase:'title', h0:0, held:0, tries:[], fx:[], fly:null, shake:0, flash:0, hop:0, sad:0, lastNow:0};
+const MAXT=3, GOAL=8, SHOW=3, LIMIT=10; if(BR && !PRAC) S.tries=(BR.set||[]).slice(0,3).map(x=>x||{t:0,out:true,over:false,e:9,gr:'탈락',sc:0});
+const LEFT=()=> PRAC? BR.left() : MAXT-S.tries.length;
+
+/* ── 도트 배경 6가지: 판을 시작할 때마다 무작위로 하나 (바로 앞 판과 겹치지 않게) ── */
+const THEMES=[
+ {id:'spring', name:'🌸 봄 사대',   sky:['#8FCBF2','#E6F5FF'], far:'#A9C3DA', near:'#8FBF7F', sand:'#D8C49A', grass:['#9CCB78','#76AD58'], deco:'blossom', fall:'#F7B6C8'},
+ {id:'summer', name:'☀️ 한여름 사대', sky:['#4FA8EC','#CDEBFF'], far:'#7FA8C8', near:'#4E8F55', sand:'#CDB487', grass:['#77B85A','#579641'], deco:'sun',     fall:null},
+ {id:'autumn', name:'🍁 단풍 사대',  sky:['#86C0E8','#F3E4C8'], far:'#B39C88', near:'#C8683A', sand:'#CFAF7E', grass:['#A9A65C','#878543'], deco:'maple',   fall:'#E0703A'},
+ {id:'winter', name:'❄️ 눈 내린 사대', sky:['#AFC2D4','#EEF3F7'], far:'#D5DEE7', near:'#9FB2C2', sand:'#E6E0D4', grass:['#E9EEF2','#C9D4DE'], deco:'snow',    fall:'#FFFFFF'},
+ {id:'dusk',   name:'🌇 노을 사대',  sky:['#5E5490','#F6B26B'], far:'#8A6A8C', near:'#5A566C', sand:'#C9A27A', grass:['#7E8F5A','#596A42'], deco:'dusk',    fall:null},
+ {id:'night',  name:'🌙 달밤 사대',  sky:['#141F3A','#3B567C'], far:'#26375A', near:'#1C2C42', sand:'#6B6150', grass:['#3D5B3B','#2A4229'], deco:'night',   fall:'#FFE48A'}];
+function bgBuild(th){ const P=4, w=Math.ceil((W+40)/P), h=Math.ceil((H+40)/P); const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d'); const T=THEMES[th];
+  const Y=v=>Math.round((v+20)/P);                 // 화면 y → 도트 y
+  const gy=Y(H*.31+Math.min(64,W*.15)*.95), hz=gy;   // 뒷벽 없음: 하늘·산이 바닥 끝까지
+  // 하늘: 띠 모양 그라데이션(도트 느낌)
+  const band=8; for(let i=0;i<band;i++){ x.fillStyle=mix(T.sky[0],T.sky[1],i/(band-1)); x.fillRect(0,Math.floor(hz*i/band),w,Math.ceil(hz/band)+1); }
+  // 하늘 장식
+  if(T.deco==='sun'){ circ(x,Math.round(w*.72),Math.round(hz*.55),5,'#FFE27A'); circ(x,Math.round(w*.72),Math.round(hz*.55),3,'#FFF3B8'); cloudP(x,Math.round(w*.2),Math.round(hz*.35)); cloudP(x,Math.round(w*.55),Math.round(hz*.2)); }
+  if(T.deco==='dusk'){ circ(x,Math.round(w*.5),hz-2,8,'#FF8A4C'); circ(x,Math.round(w*.5),hz-2,6,'#FFB067'); }
+  if(T.deco==='night'){ for(let i=0;i<40;i++){ x.fillStyle= i%5?'#FFFFFF':'#FFE48A'; x.fillRect(Math.floor(rnd(i)*w),Math.floor(rnd(i+50)*hz*.9),1,1); } circ(x,Math.round(w*.72),Math.round(hz*.55),4,'#FFF1C1'); x.fillStyle=mix(T.sky[0],T.sky[1],.5); x.fillRect(Math.round(w*.72)+1,Math.round(hz*.55)-4,4,5); }
+  if(T.deco==='blossom'||T.deco==='maple'||T.deco==='winter'||T.deco==='snow'){ cloudP(x,Math.round(w*.3),Math.round(hz*.3)); }
+  // 먼 산·가까운 산(계단식 도트)
+  for(let i=0;i<w;i++){ const X=i*P; const a=Math.round(hz-6-5*(.55*Math.sin(X*.012+1)+.3*Math.sin(X*.031+2)+.15*Math.sin(X*.07+3))); x.fillStyle=T.far; x.fillRect(i,a,1,hz-a+1);
+    const b=Math.round(hz-1-3*(.55*Math.sin(X*.012+2)+.3*Math.sin(X*.031+4)+.15*Math.sin(X*.07+6))); x.fillStyle=T.near; x.fillRect(i,b,1,hz-b+1);
+    if(T.deco==='snow' && a<hz-6){ x.fillStyle='#FFFFFF'; x.fillRect(i,a,1,2); } }
+  // 나무 줄(무겁 뒤)
+  for(let i=2;i<w;i+=7){ const t=hz-1, k=rnd(i);
+    if(T.deco==='blossom'){ x.fillStyle='#6B4A35'; x.fillRect(i,t-3,1,3); x.fillStyle= k>.5?'#F6B8CB':'#FAD3DF'; x.fillRect(i-2,t-6,5,3); x.fillRect(i-1,t-7,3,1); }
+    else if(T.deco==='maple'){ x.fillStyle='#6B4A35'; x.fillRect(i,t-3,1,3); x.fillStyle= k>.6?'#E0703A': k>.3?'#D9452F':'#E9A93B'; x.fillRect(i-2,t-6,5,3); x.fillRect(i-1,t-7,3,1); }
+    else { x.fillStyle= T.deco==='night'?'#1A2E26' : T.deco==='dusk'?'#3E4A3A' : '#3F6B45'; x.fillRect(i,t-6,1,6); x.fillRect(i-1,t-4,3,3); x.fillRect(i-2,t-2,5,2); if(T.deco==='snow'){ x.fillStyle='#FFFFFF'; x.fillRect(i,t-6,1,1); x.fillRect(i-1,t-4,3,1); x.fillRect(i-2,t-2,5,1); } } }
+  // 무겁(흙)과 바닥
+  const gb=6; for(let i=0;i<gb;i++){ x.fillStyle=mix(T.grass[0],T.grass[1],i/(gb-1)); x.fillRect(0,gy+Math.floor((h-gy)*i/gb),w,Math.ceil((h-gy)/gb)+1); }
+  // 풀 도트
+  for(let i=0;i<140;i++){ x.fillStyle= T.deco==='snow'? 'rgba(160,180,200,.5)' : 'rgba(0,0,0,.12)'; x.fillRect(Math.floor(rnd(i+7)*w), gy+2+Math.floor(rnd(i+9)*(h-gy-2)),1,1); }
+  // 밤: 등불
+  if(T.deco==='night'){ for(const fx of [.08,.92]){ const lx=Math.round(w*fx); x.fillStyle='#3B2A1A'; x.fillRect(lx,gy-8,1,9); x.fillStyle='#FFB547'; x.fillRect(lx-1,gy-11,3,3); x.fillStyle='rgba(255,181,71,.25)'; x.fillRect(lx-4,gy-14,9,9); } }
+  return {c, w:W, h:H, th}; }
+function mix(a,b,t){ const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)); const A=p(a),B=p(b); return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join(''); }
+function circ(x,cx,cy,r,col){ x.fillStyle=col; for(let yy=-r;yy<=r;yy++){ const ww=Math.round(Math.sqrt(r*r-yy*yy)); x.fillRect(cx-ww,cy+yy,ww*2+1,1); } }
+function cloudP(x,cx,cy){ x.fillStyle='rgba(255,255,255,.9)'; x.fillRect(cx-6,cy,13,3); x.fillRect(cx-3,cy-2,7,2); x.fillRect(cx+1,cy-3,4,1); }
+/* 떨어지는 것: 벚꽃잎·단풍잎·눈·반딧불 (도트 네모) */
+function bgFall(){ const T=THEMES[S.th]; if(!T.fall) return; const n= T.deco==='night'? 14 : 26; g.fillStyle=T.fall;
+  for(let i=0;i<n;i++){ const sp= T.deco==='snow'? 28 : T.deco==='night'? 6 : 22; const sx=(rnd(i+3)*W + Math.sin(S.t*.8+i)*24 + (T.deco==='night'?0:S.t*10))%W; const sy= T.deco==='night'? H*.3+rnd(i+11)*H*.55 + Math.sin(S.t*1.3+i)*10 : (rnd(i+5)*H + S.t*sp*(1+rnd(i)))%H;
+    if(T.deco==='night') g.globalAlpha=.3+.7*Math.abs(Math.sin(S.t*2+i)); const z= T.deco==='snow'? 4 : 4; g.fillRect(Math.round(sx/4)*4,Math.round(sy/4)*4,z,z); }
+  g.globalAlpha=1; }
+let lastTh=-1;
+function rnd(seed){ const x=Math.sin(seed*9301+49297)*233280; return x-Math.floor(x); }
+function pickTheme(){ let t; do{ t=Math.floor(Math.random()*THEMES.length); }while(t===lastTh && THEMES.length>1); lastTh=t; S.th=t; S.thT=S.t; }
+function size(){ const d=window.devicePixelRatio||1; W=cv.clientWidth; H=cv.clientHeight; cv.width=W*d; cv.height=H*d; g.setTransform(d,0,0,d,0,0); }
+function rr(x,y,w,h,r){ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); }
+
+/* 점수(한 발 100점): 8초 전 0.1초 모자랄 때마다 −2점 · 8~10초(마이너스) 넘기는 순간 −20점 + 0.1초 넘칠 때마다 −4점 · 10초 넘으면 탈락 0점 */
+const score=t=> t>LIMIT? 0 : t<=GOAL? Math.max(0,100-(GOAL-t)*20) : Math.max(0,100-20-(t-GOAL)*40);
+const fmtS=v=> (Math.round(v*10)/10).toFixed(1);
+/* 등급: 8초 전에 놓은 발만 (8초와의 차이) */
+const grade=e=> e<=.05? '신궁' : e<=.15? '명궁' : e<=.30? '관중' : '불';
+const kindOf=t=> t>LIMIT? 'out' : t>GOAL? 'over' : 'ok';
+const TW=()=> Math.min(70,W*.17), TY=()=> H*.30;
+
+/* ── 그리기 ── */
+function target(x,y,w){ const h=w*1.33, wob=S.flash>0? Math.sin(S.t*70)*S.flash*3 : 0; g.save(); g.translate(x+wob,y);
+  g.fillStyle='#5A4632'; g.fillRect(-w*.42,h*.2,4,h*.8); g.fillRect(w*.42-4,h*.2,4,h*.8);
+  g.fillStyle='#F4F1EA'; g.fillRect(-w/2,0,w,h); g.fillStyle='#24384F'; g.fillRect(-w/2+w*.08,h*.06,w*.84,h*.88);
+  g.fillStyle='#F4F1EA'; g.fillRect(-w/2+w*.2,h*.18,w*.6,h*.64); g.fillStyle='#24384F'; g.fillRect(-w/2+w*.28,h*.26,w*.44,h*.48);
+  g.fillStyle='#D2402F'; g.fillRect(-w*.12,h*.38,w*.24,h*.24); g.restore(); }
+function arrowUp(x,y,sc){ const L=120*sc; g.save(); g.translate(x,y); g.strokeStyle='#3B2A1A'; g.lineWidth=Math.max(1.5,4*sc); g.beginPath(); g.moveTo(0,0); g.lineTo(0,L); g.stroke();
+  g.fillStyle='#444'; g.beginPath(); g.moveTo(0,-8*sc); g.lineTo(-5*sc,4*sc); g.lineTo(5*sc,4*sc); g.fill();
+  g.fillStyle='#D2402F'; g.fillRect(-6*sc,L-18*sc,5*sc,16*sc); g.fillRect(1*sc,L-18*sc,5*sc,16*sc); g.restore(); }
+/* 뒤에서 본 활: 누르는 동안 시위가 당겨지고, 오래 버티면 떨림 */
+function bow(x,y,pull,shake){ const sx=shake? Math.sin(S.t*55)*shake : 0, sy=shake? Math.cos(S.t*47)*shake*.6 : 0; g.save(); g.translate(sx,sy);
+  const bend=pull*14; g.strokeStyle='#6B3E1E'; g.lineWidth=6; g.lineCap='round'; g.beginPath(); g.moveTo(x-72+bend*.6,y+8+bend*.3); g.quadraticCurveTo(x-62,y-22-bend,x-24,y-14-bend*.5); g.quadraticCurveTo(x,y-10,x+24,y-14-bend*.5); g.quadraticCurveTo(x+62,y-22-bend,x+72-bend*.6,y+8+bend*.3); g.stroke();
+  const sp=pull*44; g.lineWidth=1.8; g.strokeStyle= pull>=1? '#FFD66B' : '#eee'; g.beginPath(); g.moveTo(x-72+bend*.6,y+8+bend*.3); g.lineTo(x,y+8+sp); g.lineTo(x+72-bend*.6,y+8+bend*.3); g.stroke(); g.lineCap='butt';
+  arrowUp(x,y-58+sp,.62); g.restore(); }
+
+function draw(){
+  const sh=S.shake; g.save(); if(sh) g.translate(Math.sin(S.t*60)*sh, Math.cos(S.t*53)*sh*.6);
+  if(!S.bgc || S.bgc.w!==W || S.bgc.h!==H || S.bgc.th!==S.th) S.bgc=bgBuild(S.th);
+  g.imageSmoothingEnabled=false; g.drawImage(S.bgc.c,-20,-20,W+40,H+40); g.imageSmoothingEnabled=true; bgFall();
+  const hy=H*.31+Math.min(64,W*.15)*.95; g.strokeStyle='rgba(255,255,255,.3)'; g.lineWidth=1.5; for(let i=-3;i<=3;i++){ g.beginPath(); g.moveTo(W/2+i*W*.05,hy); g.lineTo(W/2+i*W*.32,H); g.stroke(); }
+  target(W/2, TY(), TW());
+  // 꽂힌 화살 / 떨어진 화살
+  (S.marks||[]).forEach(m=>{ g.save(); g.translate(W/2+m.x, m.y); arrowUp(0,0,.3); g.restore(); });
+  // 날아가는 화살
+  if(S.fly){ const f=S.fly, u=Math.min(1,(S.t-f.t0)/f.dur), e=1-Math.pow(1-u,1.6); const y0=H-104, y=y0+(f.y-y0)*e, x=W/2+f.x*e; g.strokeStyle='rgba(255,255,255,.7)'; g.lineWidth=2; g.beginPath(); g.moveTo(W/2,y0); g.lineTo(x,y); g.stroke(); arrowUp(x,y,1-.7*e); }
+  // 파편
+  S.fx.forEach(p=>{ g.globalAlpha=Math.max(0,p.life/.8); g.fillStyle=p.c; g.fillRect(p.x,p.y,4,4); }); g.globalAlpha=1;
+  if(S.flash>0){ g.fillStyle=`rgba(255,240,200,${S.flash*.35})`; g.fillRect(-20,-20,W+40,H+40); }
+  // 캐릭터
+  const t = S.phase==='hold'? S.t-S.h0 : 0;
+  const ch=Math.min(150,H*.3), cw=ch*320/384; const hop=S.hop>0? Math.sin(S.hop*Math.PI)*16 : 0;
+  const breathe= S.phase==='hold'? Math.sin(S.t*2.2)*2 : 0;
+  g.save(); g.translate(6+cw/2, H-4); if(S.sad>0) g.rotate(-.12*Math.min(1,S.sad*3)); if(img.complete) g.drawImage(img,-cw/2,-ch-hop+breathe,cw,ch); g.restore();
+  // 활
+  const pull = S.phase==='hold'? Math.min(1,t/1.2) : 0;
+  const shake = S.phase==='hold' && t>5.2 ? Math.min(5,(t-5.2)*.9) : 0;
+  if(S.phase!=='fly' && S.phase!=='result') bow(W/2,H-46,pull,shake); else bow(W/2,H-46,0,0);
+  g.restore();
+  // 시간 표시: 3초까지만 보이고 이후는 숨 고르기 원
+  if(S.phase==='hold'){
+    if(t<SHOW){ g.textAlign='center'; g.font='400 64px "Do Hyeon"'; g.lineWidth=6; g.strokeStyle='rgba(255,255,255,.85)'; g.strokeText(t.toFixed(1),W/2,H*.62); g.fillStyle='#1F3A5F'; g.fillText(t.toFixed(1),W/2,H*.62);
+      g.font='700 13px "Noto Sans KR"'; g.fillStyle='#fff'; g.strokeStyle='rgba(0,0,0,.35)'; g.lineWidth=3; const m= t<1.2? '시위를 당겨요…' : '만작! 3초 뒤부터는 감으로'; g.strokeText(m,W/2,H*.62+28); g.fillText(m,W/2,H*.62+28); }
+    else { const k=(t-SHOW); const r=26+Math.sin(S.t*1.7)*6; g.strokeStyle='rgba(255,255,255,.8)'; g.lineWidth=3; g.beginPath(); g.arc(W/2,H*.58,r,0,7); g.stroke(); g.fillStyle='rgba(255,255,255,.18)'; g.fill();
+      g.textAlign='center'; g.font='700 13px "Noto Sans KR"'; g.fillStyle='#fff'; g.strokeStyle='rgba(0,0,0,.35)'; g.lineWidth=3; const m= k<.6? '이제부터 감으로…' : '숨 고르고…'; g.strokeText(m,W/2,H*.58+r+22); g.fillText(m,W/2,H*.58+r+22); } }
+  // 머리줄
+  g.fillStyle='rgba(255,255,255,.9)'; rr(10,10,120,34,17); g.fill(); g.fillStyle='#1B2433'; g.font='700 13px "Noto Sans KR"'; g.textAlign='left'; g.fillText(`🏹 남은 화살 ${LEFT()}`,22,32);
+  // 배경 이름
+  if(S.thT!==undefined && S.t-S.thT<2 && S.phase!=='title'){ const a=S.t-S.thT; g.globalAlpha= a>1.5? (2-a)/.5 : 1; g.fillStyle='rgba(0,0,0,.45)'; rr(W/2-70,H*.13,140,30,15); g.fill(); g.fillStyle='#fff'; g.font='700 14px "Noto Sans KR"'; g.textAlign='center'; g.fillText(THEMES[S.th].name,W/2,H*.13+20); g.globalAlpha=1; }
+}
+
+/* ── 조작 ── */
+function down(e){ if(e){ if(e.target.closest&&e.target.closest('button')) return; e.preventDefault(); }
+  if(S.phase!=='ready') return; S.phase='hold'; S.h0=S.t; S.cue3=false; buzz(15); tone(300,420,.15,'triangle',.08); }
+function up(e){ if(e) e.preventDefault(); if(S.phase!=='hold') return; release(S.t-S.h0, false); }
+function release(t, snapped){
+  const e=Math.abs(GOAL-t), out=t>LIMIT, over=t>GOAL&&!out; S.held=t;
+  const tw=TW(), th=tw*1.33;
+  let x=0, y;
+  if(out){ y=H*.55; x=(Math.random()<.5?-1:1)*tw*.8; }                    // 팔이 풀려 힘없이 툭
+  else if(over){ y=TY()+th*(.2+Math.random()*.6); x=(Math.random()<.5?-1:1)*(tw*.35 + (t-GOAL)*tw*.45); }   // 떨리는 팔: 옆으로 틀어짐
+  else { const drop=Math.min(H*.32, e/.30*th*.5); y=TY()+th*.5+drop; x=(Math.random()*2-1)*Math.min(tw*.3, e*30); }
+  S.fly={t0:S.t, dur: out? .45 : .7, x, y, t, out, over, e};
+  S.phase='fly'; if(out){ tone(200,60,.4,'sawtooth',.08); buzz(160); } else { tone(220,80,.22,'triangle',.35); buzz(25); }
+}
+function land(){ const f=S.fly; S.fly=null; S.marks=(S.marks||[]); S.marks.push({x:f.x, y:f.y-36}); if(S.marks.length>3) S.marks.shift();
+  const gr= f.out? '탈락' : f.over? '넘침' : grade(f.e);
+  S.tries.push({t:f.t, out:f.out, over:f.over, e:f.e, gr, sc:score(f.t)}); if(BR) BR.end(score(f.t), {t:+f.t.toFixed(3), out:f.out?1:0, over:f.over?1:0, gr, sc:+score(f.t).toFixed(1)});
+  if(!f.out && !f.over && gr!=='불'){ S.flash=1; S.shake=RM?0:(gr==='신궁'?12:gr==='명궁'?8:5); S.hop=1; tone(150,60,.3,'sine',.9); if(gr!=='관중') tone(660,1320,.4,'triangle',.18); buzz([35,30,60]);
+    for(let i=0;i<16;i++) S.fx.push({x:W/2+f.x,y:f.y-20,vx:(Math.random()*2-1)*160,vy:-Math.random()*180-40,life:.7,c:i%2?'#D2402F':'#FFD66B'}); }
+  else { S.sad=1; }
+  S.phase='result'; setTimeout(showResult, 450); render(); }
+function showResult(){ const r=S.tries[S.tries.length-1];
+  showNag(r.out? 'out' : r.over? 'over' : r.gr==='신궁'? 'god' : r.gr==='명궁'? 'great' : r.gr==='관중'? 'mid' : 'bad');
+  const left=LEFT(); const o=$('#over'); o.hidden=false; tag();
+  const head= r.out? '팔이 풀렸어요' : r.over? '넘쳤어요' : r.gr==='신궁'? '신궁!' : r.gr==='명궁'? '명궁!' : r.gr==='관중'? '관중!' : '아깝다';
+  const big= r.out? '탈락' : r.over? `−${(r.t-GOAL).toFixed(2)}초` : `${r.t.toFixed(2)}초`;
+  const sub= r.out? `10초를 넘겨 팔이 풀렸어요 · 0점` : r.over? `${r.t.toFixed(2)}초에 발시 · 8초를 ${(r.t-GOAL).toFixed(2)}초 넘김` : `8초까지 ${(GOAL-r.t).toFixed(2)}초 남기고 발시`;
+  const tot=S.tries.reduce((a,x)=>a+x.sc,0);
+  o.innerHTML=`<h2>${head}</h2><div class="n">${big}</div><div class="g">${fmtS(r.sc)}점${r.out||r.over?'':' · '+r.gr}</div><p>${sub}<br>${PRAC? `연습 · 오늘 남은 화살 <b>${left}</b> · 랭킹엔 안 올라가요` : `오늘 ${S.tries.length}발 합계 <b>${fmtS(tot)}점</b> / ${S.tries.length*100}<br>${left? `남은 화살 ${left}` : '세 발 끝'+(BR&&BR.hint?'<br>'+BR.hint():' · 내일 또!')}`}</p><button id="again" ${left?'':'disabled'}>${left?'다음 화살':(PRAC?'오늘 연습 끝':'세 발 끝')}</button>`;
+  const b=$('#again'); if(left) b.onclick=e=>{ e.stopPropagation(); ready(); };
+  timeline(r); }
+function timeline(r){ const tl=$('#tl'); tl.hidden=false; const max=11, P=v=>Math.min(100,v/max*100);
+  tl.innerHTML=`<div class="bar"></div><div class="vis" style="width:${P(SHOW)}%"></div><div class="minus" style="left:${P(GOAL)}%;width:${P(LIMIT)-P(GOAL)}%"></div><div class="eight" style="left:calc(${P(GOAL)}% - 1px)"></div><div class="eight" style="left:calc(${P(LIMIT)}% - 1px);background:var(--red)"></div><div class="me" style="left:${P(Math.min(r.t,max))}%"></div>
+    <span class="lb" style="left:${P(SHOW)/2}%">0~3초 보임</span><span class="lb" style="left:${(P(SHOW)+P(GOAL))/2}%">감으로</span><span class="lb up" style="left:${P(GOAL)}%;color:var(--gold);font-weight:700">8초</span><span class="lb up" style="left:${P(LIMIT)}%;color:var(--red);font-weight:700">10초</span><span class="lb" style="left:${(P(GOAL)+P(LIMIT))/2}%;color:var(--red)">마이너스</span><span class="lb" style="left:${(P(LIMIT)+100)/2}%;color:var(--red)">탈락</span>`; }
+function ready(){ if(PRAC && S.tries.length>=MAXT){ S.tries=[]; S.marks=[]; } if(S.tries.length>=MAXT) return; if(BR && !BR.begin()){ title(); return; } $('#over').hidden=true; { const c=document.getElementById('wordCard'); if(c) c.hidden=true; } S.phase='ready'; S.sad=0; pickTheme(); }
+function tag(){ const t=$('#modeTag'); if(!t||!BR) return; t.className='ex mode'+(PRAC?'':' rk'); t.textContent= PRAC? `연습 · 남은 ${BR.left()}발` : `🏆 랭킹 도전 · 남은 ${Math.max(0,MAXT-S.tries.length)}발`; }
+function title(){ const o=$('#over'); o.hidden=false; tag(); const L= BR? LEFT() : 1;
+  const sub= !BR? '' : PRAC? `<p>연습 · 오늘 남은 <b>${L}발</b> · 기록은 안 남아요</p>` : `<p>🏆 랭킹 도전 · 오늘 남은 <b>${L}발</b> · 세 발 합계 300점</p>`;
+  o.innerHTML=`<h2>8초 만작</h2>${keeperSayHTML('에헴. 8초 만작, <b>버티는 맛</b>이야.<br>3초 뒤부턴 숫자 말고 몸으로 세게.<br>10초는 넘기지 말고. …응원하는 건 아니야.')}${sub}<button id="go" ${L>0?'':'disabled'}>${L>0?'시작':(PRAC?'오늘 연습 끝':'오늘 도전 끝')}</button>`; if(L>0) $('#go').onclick=e=>{ e.stopPropagation(); ready(); }; }
+
+/* 기록 */
+const SAMPLE=[{n:'궁사 C',j:'관악정',s:291.4},{n:'궁사 A',j:'관악정',s:276.0},{n:'궁사 B',j:'석호정',s:248.6},{n:'궁사 D',j:'황학정',s:183.2}];
+function render(){
+  const tot=S.tries.reduce((a,x)=>a+x.sc,0), done=S.tries.length===MAXT;
+  $('#tries').innerHTML=[0,1,2].map(i=>{ const r=S.tries[i]; if(!r) return `<div>${i+1}발<b>–</b></div>`;
+    const big= r.out? '탈락' : r.over? `−${(r.t-GOAL).toFixed(2)}초` : `${r.t.toFixed(2)}초`;
+    return `<div class="${r.out||r.over?'out':(r.gr==='신궁'||r.gr==='명궁'?'best':'')}">${i+1}발<b>${big}</b>${fmtS(r.sc)}점 · ${r.gr}</div>`; }).join('')
+    + `<div class="sum">오늘 합계 <b>${fmtS(tot)}점</b> / 300</div>`;
+}
+
+function loop(now){ const dt=Math.min(.05,(now-(S.lastNow||now))/1000); S.lastNow=now; S.t+=dt;
+  if(S.phase==='hold'){ const t=S.t-S.h0; if(t>=1.2 && !S.full){ S.full=true; buzz(30); tone(520,780,.12,'triangle',.08); } if(t>=SHOW && !S.cue3){ S.cue3=true; buzz(20); } if(t>LIMIT) release(t,true); }
+  else S.full=false;
+  if(S.phase==='fly' && S.t-S.fly.t0>=S.fly.dur) land();
+  S.shake*=.88; if(S.shake<.3) S.shake=0; S.flash=Math.max(0,S.flash-dt*3); S.hop=Math.max(0,S.hop-dt*3); S.sad=Math.max(0,S.sad-dt*.5);
+  S.fx.forEach(p=>{ p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=500*dt; p.life-=dt; }); S.fx=S.fx.filter(p=>p.life>0);
+  draw(); requestAnimationFrame(loop); }
+
+const fld=$('#field');
+fld.addEventListener('pointerdown',down); addEventListener('pointerup',up); addEventListener('pointercancel',up);
+fld.addEventListener('contextmenu',e=>e.preventDefault());
+addEventListener('keydown',e=>{ if(e.code==='Space'){ e.preventDefault(); if(!e.repeat) down(); } }); addEventListener('keyup',e=>{ if(e.code==='Space') up(e); });
+const d=new Date(); $('#date').textContent=`${d.getMonth()+1}월 ${d.getDate()}일 · 하루 3발`;
+if(PRAC){ const c=$('#setCard'); if(c) c.hidden=true; }
+addEventListener('resize',size); size(); pickTheme(); render(); title(); requestAnimationFrame(loop);
+})();
+</script>

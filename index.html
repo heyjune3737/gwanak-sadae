@@ -2700,6 +2700,32 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
 .pg-mini-h{display:flex;align-items:baseline;gap:8px}.pg-mini-h b{font-family:var(--display);font-size:16px;color:#FFD66B}.pg-mini-h small{font-size:12px;color:#B8B3C4}
 .pg-mini-g{display:grid;grid-template-columns:1fr 1fr;gap:6px}.pg-mini-g button,.pg-mini-g span{background:#2A3158;border:1.5px solid #4A5285;padding:8px 4px;text-align:center;font-family:var(--display);font-size:13px;color:#F1EEE6}
 .pg-mini .tiny.muted{color:#B8B3C4!important}
+.mg-row{display:flex;flex-direction:column;gap:6px;background:#2A3158;border:1.5px solid #4A5285;padding:9px 10px}
+.mg-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}.mg-h b{font-family:var(--display);font-size:15px;color:#F1EEE6}.mg-h small{font-size:11px;color:#C9C4D6}
+.mg-b{display:grid;grid-template-columns:1fr 1.35fr auto;gap:6px}
+.mg-b button{min-height:40px;display:flex;align-items:center;justify-content:center;gap:6px;border:2px solid #231C16;background:#F1EEE6;color:#231C16;font-family:var(--display);font-size:13px;cursor:pointer;padding:4px 8px;box-shadow:2px 2px 0 #10131F}
+.mg-b button i{font-style:normal;font-size:11px;color:#5A5468}
+.mg-b button.hot{background:#FFD66B}.mg-b button.rk{background:#3B4373;color:#F1EEE6;border-color:#10131F}
+.mg-b button:active{transform:translate(1px,1px);box-shadow:1px 1px 0 #10131F}
+.mini-ov{position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;background:var(--bg,#EDEFE5)}
+.mini-ov iframe{flex:1;width:100%;border:0;display:block;background:transparent}
+.mini-bar{display:flex;align-items:center;gap:8px;padding:calc(8px + env(safe-area-inset-top,0px)) 12px 8px;background:var(--card);border-bottom:2px solid var(--ink);color:var(--ink)}
+.mini-bar button{border:2px solid var(--ink);background:var(--card);color:var(--ink);font:inherit;font-size:13px;padding:6px 10px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.mini-bar b{font-family:var(--display);font-size:15px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-bar span{font-size:11.5px;padding:2px 8px;border:1.5px solid var(--ink);color:var(--ink)}.mini-bar span.rk{background:#FFD66B;color:#231C16}
+.mr{background:#1F2440;color:#F1EEE6;margin:-4px -4px 0;padding:14px;border:2px solid #10131F}
+.mr-h{display:flex;flex-direction:column;gap:2px;margin-bottom:10px}.mr-h b{font-family:var(--display);font-size:18px;color:#FFD66B}.mr-h span{font-size:12px;color:#B8B3C4;letter-spacing:.5px}
+.mr-tabs{display:grid;grid-template-columns:1fr 1fr;border:2px solid #10131F;margin-bottom:8px}
+.mr-tabs button{border:0;background:#2A3158;color:#C9C4D6;font-family:var(--display);font-size:13px;padding:8px 4px;cursor:pointer}.mr-tabs button+button{border-left:2px solid #10131F}.mr-tabs button.on{background:#FFD66B;color:#231C16}
+.mr-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;font-variant-numeric:tabular-nums}
+.mr-l li{display:grid;grid-template-columns:26px 30px minmax(0,1fr) auto;gap:8px;align-items:center;padding:5px 6px;background:#2A3158}
+.mr-l li.me{background:#5B4A1E;outline:2px solid #FFD66B}
+.mr-l li .no{font-family:var(--display);font-size:16px;text-align:center;color:#F1EEE6}.mr-l li:nth-child(1) .no{color:#FFD66B}.mr-l li:nth-child(2) .no{color:#D5D9E0}.mr-l li:nth-child(3) .no{color:#E0A070}
+.mr-l li .av svg{width:30px;height:36px;display:block}
+.mr-l li .nm{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13.5px;color:#F1EEE6}.mr-l li .nm small{margin-left:5px;font-size:11px;color:#B8B3C4}
+.mr-l li .v{font-family:var(--display);font-size:13.5px;color:#FFD66B;white-space:nowrap}
+.mr-l li.none,.mr-l li.sep{display:block;text-align:center;font-size:12.5px;color:#C9C4D6;background:transparent}
+.mr .tiny.muted{color:#B8B3C4!important}
 .pg-sec-h{display:flex;align-items:baseline;gap:8px;margin:18px 2px 8px;padding-top:14px;border-top:2px dashed var(--line)}.pg-sec-h b{font-family:var(--display);font-size:18px}.pg-sec-h small{font-size:12px;color:var(--ink3)}
 .pg-card.flash{animation:pgFlash 1.6s ease}@keyframes pgFlash{0%,60%{outline:4px solid var(--red);outline-offset:2px}100%{outline:0 solid transparent}}
 .pz-dice{padding:0 10px!important;font-size:17px}
@@ -3288,7 +3314,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.05a';
+const APP_VER = '2026.11.05b';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3459,6 +3485,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-11-05a', date:'11월 5일', title:'🕹 미니게임이 열렸어요 · 🎯 관중의 제왕 · ⏱ 8초 만작', body:'대회 탭 → 🎲 놀이터 아래 🕹 미니게임 칸에서 두 게임을 할 수 있어요. 내가 고른 캐릭터가 사대에 서요.\n\n🎯 관중의 제왕\n좌우로 움직이는 과녁이 올 자리를 보고 미리 톡! 한 판 15시, 화살 3개가 목숨이에요. 홍심을 맞히면 화살 +1, 🎁 화살통도 +1, 🐝 벌집을 맞히면 바로 끝나요.\n\n⏱ 8초 만작\n꾹 눌러 시위를 당기고 8초에 가깝게 떼세요. 시간은 3초까지만 보여요. 8초를 넘기면 감점, 10초를 넘기면 탈락이에요.\n\n🏆 랭킹 도전은 게임마다 하루 3번이에요. 오늘 사대 등록이나 습사를 하면 그날 한 번 3번 더 할 수 있어요. 연습은 하루 20번(기록 안 남음).\n\n랭킹은 이달 기록으로 매달 1일 새로 시작해요. 관중의 제왕은 한 판(15시) 최고와 승단(세 판 45시 합계 · 단) 두 가지, 8초 만작은 한 발 최고와 세 발 합계 두 가지예요. [랭킹]을 누르면 상위 10명과 내 순위가 보여요.'},
   {id:'2026-11-04a', date:'11월 4일', title:'🎲 놀이터가 열렸어요 · 🏹 화살 경주', body:'대회 탭 맨 위에 [🏆 대회] [🎲 놀이터] 버튼이 생겼어요. 놀이터를 누르면 놀이터 화면으로 바뀌어요.\n\n🎲 랜덤게임\n☕ 커피 내기, 🏹 화살 줍기, 🍚 점심 메뉴 정할 때 운에 맡겨 보세요. 🎋 제비뽑기 · 🪜 사다리타기 · 🏹 화살 경주 · 🧭 화살 돌리기 네 가지예요. 이름을 적어 넣고 [뽑기 하기]를 누르면 돼요. 결과는 광장에 올릴 수 있어요.\n\n🏹 화살 경주 (새 게임)\n이름 붙은 화살들이 한꺼번에 145m를 날아가요. 먼저 과녁에 닿는 순서가 순번이에요. 날아가는 동안 엎치락뒤치락해요.\n\n🎯 대회 사대 순번 정하기\n대회 안 관 편성 칸의 [🎲 순번 정하기]로 사대 순번을 게임으로 정할 수 있어요. 📱 다 같이를 고르면 참가한 사원 모두의 화면에 같은 장면이 떠요.\n\n광장 입력칸 옆 🎲 버튼을 눌러도 놀이터로 바로 가요.\n\n🕹 혼자 도전하는 미니게임(관중의 제왕 · 8초 만작)은 곧 열려요.'},
   {id:'2026-10-31a', date:'10월 31일', title:'🏯 안양정이 함께해요', body:'경기도 안양 안양정이 오늘 사대에 들어왔어요.\n\n자유공원 갈산 꼭대기, 평촌배수지 위 너른 잔디 활터예요. 양옆 키 큰 나무 줄과 뒤로 보이는 평촌 아파트를 사대 그림과 광장에 담았어요.\n\n안양정 사원은 안내 탭 → 소속 정 바꾸기에서 안양정을 고르면 돼요. 다른 정 사원도 오늘 정 탭 위 📍에서 안양정 사대를 구경할 수 있어요.'},
   {id:'2026-10-22b', date:'10월 22일', title:'🎨 새 방 테마 7가지', body:'내 방 → 🎨 방 꾸미기에 새 테마 7가지가 생겼어요.\n\n🏛 그리스 신전 · ⛺ 몽골 초원 게르 · 🏰 중세 성 · 🚀 우주 정거장 · 🕌 타지마할 · 🌿 바빌론 공중정원 · ⛰ 큰 바위 얼굴\n\n벽 한쪽이 그곳 풍경으로 열리고, 방 안 소품과 함께 사는 동물도 테마마다 달라요. 창밖은 어느 테마든 내 정 풍경이에요.'},
@@ -5828,11 +5855,12 @@ function renderComp(){
   const liveN = mine.filter(c=>!compDone(c)).length;
   const swHTML = pgOn ? `<nav class="cm-sw" aria-label="대회 탭 전환"><button type="button" data-cmsw="comp" class="${S.compView!=='play'?'on':''}" aria-pressed="${S.compView!=='play'}"><span class="ic">🏆</span><b>대회</b><small>${liveN?`진행 중 ${liveN}`:'대회 기록'}</small></button><button type="button" data-cmsw="play" class="${S.compView==='play'?'on':''}" aria-pressed="${S.compView==='play'}"><span class="ic">🎲</span><b>놀이터</b><small>랜덤게임 · 미니게임</small>${S.compView!=='play'?'<i class="new">NEW</i>':''}</button></nav>` : '';
   if(pgOn && S.compView==='play'){
-    list.innerHTML = swHTML + pgHTML.replace(/<div class="pg-sec-h">[\s\S]*?<\/div>/,'') + `<div class="card pg-mini"><div class="pg-mini-h"><b>🕹 미니게임</b><small>혼자 도전 · 이달 랭킹</small></div><div class="pg-mini-g"><button type="button" data-pgsoon>🎯 관중의 제왕</button><button type="button" data-pgsoon>⏱ 8초 만작</button></div><p class="tiny muted" style="margin:0">곧 열려요. 하루 연습 20번 · 랭킹 도전 3번(사대 등록·습사하면 다시 3번)</p></div>`;
+    list.innerHTML = swHTML + pgHTML.replace(/<div class="pg-sec-h">[\s\S]*?<\/div>/,'') + miniCardHTML();
     $$('[data-cmsw]',list).forEach(b=>b.onclick=()=>{ S.compView=b.dataset.cmsw; renderComp(); window.scrollTo({top:0}); });
     { const pg=$('#pgGo',list); if(pg) pg.addEventListener('click', openPlay); }
     $$('[data-pgchip]',list).forEach(b=>b.onclick=()=>{ const g=b.dataset.pgchip; openPlay(); if(PG){ PG.game=g; playPick(); } });
-    $$('[data-pgsoon]',list).forEach(b=>b.onclick=()=>toast('🕹 미니게임은 곧 열려요'));
+    $$('[data-mini]',list).forEach(b=>b.onclick=()=>{ const [g,md]=b.dataset.mini.split(':'); miniOpen(g,md); });
+    $$('[data-minirk]',list).forEach(b=>b.onclick=()=>miniRank(b.dataset.minirk));
     return; }
   list.innerHTML = swHTML + `<div class="card cm-top">
     <div class="sec-head"><h2>🏆 대회</h2><button class="btn pri sm" id="newComp">+ 새 대회 열기</button></div>
@@ -6087,6 +6115,73 @@ async function lvAnim(L, key){ const box=$('#drBox'); if(!box) return; const N=L
 // ===== p222 · 🎲 놀이터 =====
 const PG_TITLES = ['☕ 커피 내기','🏹 화살 줍기','🍚 점심 메뉴','🍡 간식 사기'];
 let PG = null;   // {title, pick:Set, names:[]}
+/* ---------- p230 미니게임 ---------- */
+const MINI_G={kw:{t:'관중의 제왕', ic:'🎯', u:'판'}, mj:{t:'8초 만작', ic:'⏱', u:'발'}};
+const MINI_PRAC=20, MINI_RANK=3, MINI_KEEPER='duck/05';
+const MINI_DAN=[[40,'9단'],[38,'8단'],[36,'7단'],[34,'6단'],[32,'5단'],[30,'4단'],[28,'3단'],[26,'2단'],[24,'초단'],[22,'1급']];
+const miniDan = n => { const d=MINI_DAN.find(x=>n>=x[0]); return d? d[1] : '입문'; };
+const miniYM = () => today().slice(0,7);
+const MINI_LOCAL = {};   // 방금 쓴 값(서버 응답 오기 전에도 화면이 맞게)
+function miniMine(g){ if(!S.me) return {m:miniYM()};
+  const m=memberById(S.me.id)||S.me; const o=(m&&m.mini&&m.mini[g])||null; const L=MINI_LOCAL[g];
+  const cur=(L && (!o || (L.at||0)>=(o.at||0))) ? L : o;
+  return (cur && cur.m===miniYM()) ? JSON.parse(JSON.stringify(cur)) : {m:miniYM(), best:0, top:0, s:null}; }
+const miniRefillOk = () => !!(S.me && ((S.attendance&&S.attendance.entries&&S.attendance.entries[S.me.id]) || (S.myDays||[]).some(d=>d&&d.date===today())));
+function miniSet(o){ const t=today(); let s=o.s; if(!s || s.d!==t) s={d:t, g:[], re:0};
+  if(s.g.length>=MINI_RANK && !s.re && miniRefillOk()) s={d:t, g:[], re:1};
+  return s; }
+const miniRankLeft = g => { const o=miniMine(g); return Math.max(0, MINI_RANK-miniSet(o).g.length); };
+const miniPracKey = g => 'sadae.mini.p.'+g+'.'+today();
+const miniPracLeft = g => { let n=0; try{ n=+localStorage.getItem(miniPracKey(g))||0; }catch(e){} return Math.max(0, MINI_PRAC-n); };
+function miniPracUse(g){ try{ localStorage.setItem(miniPracKey(g), String(MINI_PRAC-miniPracLeft(g)+1)); }catch(e){} }
+async function miniSave(g, o){ o.at=Date.now(); MINI_LOCAL[g]=o; return write(st=>st.merge('members/'+S.me.id, {mini:{[g]:o}})); }
+const miniFmt = (g, v, set) => g==='kw' ? (set? `45시 ${v}중 · ${miniDan(v)}` : `15시 ${v}중`) : `${(Math.round((+v||0)*10)/10).toFixed(1)}점${set?' / 300':''}`;
+const miniHint = () => { return miniRefillOk()? '오늘은 다 했어요 · 내일 또!' : '오늘 사대 등록이나 습사를 하면 한 번 더 3번!'; };
+function miniCardHTML(){
+  const row = g => { const G=MINI_G[g], o=miniMine(g), rl=miniRankLeft(g), pl=miniPracLeft(g);
+    const best = o.best>0 ? `이달 ${g==='kw'?'한 판':'한 발'} ${miniFmt(g,o.best)}` : '이달 기록 없음';
+    const top = o.top>0 ? ` · ${g==='kw'?'승단':'세 발'} ${miniFmt(g,o.top,1)}` : '';
+    return `<div class="mg-row"><div class="mg-h"><b>${G.ic} ${G.t}</b><small>${best}${top}</small></div>
+      <div class="mg-b"><button type="button" data-mini="${g}:practice"><span>연습</span><i>${pl}/${MINI_PRAC}</i></button><button type="button" class="hot" data-mini="${g}:rank"><span>🏆 랭킹 도전</span><i>${rl}/${MINI_RANK}</i></button><button type="button" class="rk" data-minirk="${g}" aria-label="${G.t} 랭킹">랭킹</button></div></div>`; };
+  return `<div class="card pg-mini"><div class="pg-mini-h"><b>🕹 미니게임</b><small>혼자 도전 · 이달 랭킹</small></div>${row('kw')}${row('mj')}<p class="tiny muted" style="margin:0">연습 하루 ${MINI_PRAC}번(기록 안 남음) · 랭킹 도전 하루 ${MINI_RANK}번 · 오늘 사대 등록·습사하면 한 번 더 ${MINI_RANK}번</p></div>`; }
+function miniOpen(g, mode){ if(!S.me||!MINI_G[g]) return; const G=MINI_G[g];
+  if(mode==='rank' && miniRankLeft(g)<=0){ toast(miniHint()); return; }
+  if(mode!=='rank' && miniPracLeft(g)<=0){ toast('오늘 연습은 다 했어요 · 내일 또!'); return; }
+  const P=window.PIX||{}; const o0=miniMine(g); const s0=miniSet(o0);
+  window.MINI_BR = { mode: mode==='rank'?'rank':'practice', g,
+    char: P[S.me.char]||P[(memberById(S.me.id)||{}).char]||P[DEFAULT_CHAR], keeper: P[MINI_KEEPER]||'',
+    set: mode==='rank' ? (g==='mj' ? (s0.x||[]).slice() : s0.g.slice()) : [],
+    left: ()=> mode==='rank' ? miniRankLeft(g) : miniPracLeft(g),
+    hint: miniHint,
+    begin: ()=>{ if(mode!=='rank'){ if(miniPracLeft(g)<=0) return false; miniPracUse(g); return true; }
+      const o=miniMine(g); const st=miniSet(o); if(st.g.length>=MINI_RANK) return false;
+      st.g.push(0); if(g==='mj'){ st.x=(st.x||[]).slice(0,st.g.length-1); st.x.push(null); }
+      o.s=st; miniSave(g,o); return true; },
+    end: (v, x)=>{ if(mode!=='rank') return; const o=miniMine(g); const st=o.s; if(!st||!st.g.length) return;
+      st.g[st.g.length-1]=+v||0; if(g==='mj'){ st.x=st.x||[]; st.x[st.g.length-1]=x||null; }
+      if((+v||0)>(o.best||0)){ o.best=+v||0; o.bestD=today(); }
+      if(st.g.length>=MINI_RANK){ const tot=st.g.reduce((a,b)=>a+(+b||0),0); if(tot>(o.top||0)){ o.top=+tot.toFixed(1); o.topD=today(); } }
+      miniSave(g,o); } };
+  const ov=document.createElement('div'); ov.className='mini-ov'; ov.id='miniOv';
+  ov.innerHTML=`<div class="mini-bar"><button type="button" id="miniX">← 놀이터</button><b>${G.ic} ${G.t}</b><span class="${mode==='rank'?'rk':''}">${mode==='rank'?'🏆 랭킹 도전':'연습'}</span></div><iframe src="mini/${g}.html?v=${encodeURIComponent(typeof APP_VER!=='undefined'?APP_VER:'1')}" title="${G.t}" allow="autoplay"></iframe>`;
+  document.body.appendChild(ov); document.body.style.overflow='hidden';
+  $('#miniX',ov).onclick=()=>miniClose(); }
+function miniClose(){ const ov=$('#miniOv'); if(ov) ov.remove(); document.body.style.overflow=''; window.MINI_BR=null; try{ if(S.tab==='comp') renderComp(); }catch(e){} }
+function miniBoard(g, set){ const ym=miniYM(), rows=[];
+  for(const m of (S.members||[])){ if(!m||!m.id||m.id===HUB_BOT) continue; let o=m.mini&&m.mini[g];
+    if(S.me && m.id===S.me.id) o=miniMine(g); if(!o||o.m!==ym) continue;
+    const v=+(set? o.top : o.best)||0; if(v<=0) continue; if(m.rankHide && !(S.me&&m.id===S.me.id)) continue;
+    rows.push({m, v, d:(set?o.topD:o.bestD)||''}); }
+  return rows.sort((a,b)=> b.v-a.v || String(a.d).localeCompare(String(b.d))); }
+function miniRank(g, set){ const G=MINI_G[g]; set=!!set; const L=miniBoard(g,set); const me=S.me?L.findIndex(x=>x.m.id===S.me.id):-1;
+  const ym=miniYM(); const mon=+ym.slice(5);
+  const line=(x,i)=>`<li class="${S.me&&x.m.id===S.me.id?'me':''}"><b class="no">${i+1}</b><span class="av">${charSVG(x.m.char)}</span><span class="nm">${esc(x.m.name||'')}<small>${esc(memberJ(x.m).name||'')}</small></span><span class="v">${miniFmt(g,x.v,set)}</span></li>`;
+  const top=L.slice(0,10).map(line).join('') || `<li class="none">아직 기록이 없어요 · 첫 1등이 되어 보세요!</li>`;
+  const mine= me>=10 ? `<li class="sep">…</li>${line(L[me],me)}` : (me<0? `<li class="none">내 기록: 아직 없어요 · 🏆 랭킹 도전에서 쏘면 올라가요</li>` : '');
+  const tabs=`<div class="mr-tabs"><button type="button" data-mrs="0" class="${set?'':'on'}">${g==='kw'?'한 판 (15시)':'한 발'}</button><button type="button" data-mrs="1" class="${set?'on':''}">${g==='kw'?'승단 (45시)':'세 발 합계'}</button></div>`;
+  const sh=openSheet(`<div class="mr"><div class="mr-h"><b>${G.ic} ${G.t}</b><span>${mon}월 랭킹 · HIGH SCORE</span></div>${tabs}<ol class="mr-l">${top}${mine}</ol><p class="tiny muted" style="margin:6px 0 0">${set? (g==='kw'?'랭킹 도전 세 판(45시) 합계 · 단은 승단 기준(22중 1급 ~ 40중 9단)':'랭킹 도전 세 발 합계 (300점 만점)') : (g==='kw'?'랭킹 도전 한 판(15시) 최고':'랭킹 도전 한 발 최고 (100점 만점)')} · 매달 1일 새로</p><div class="row" style="margin-top:12px"><button class="btn" type="button" id="mrGo">🏆 랭킹 도전 (${miniRankLeft(g)}/${MINI_RANK})</button></div></div>`);
+  $$('[data-mrs]',sh).forEach(b=>b.onclick=()=>miniRank(g, b.dataset.mrs==='1'));
+  $('#mrGo',sh).onclick=()=>{ closeSheet(); miniOpen(g,'rank'); }; }
 function openPlay(){ PG = PG || {title:PG_TITLES[0], pick:new Set(S.me?[S.me.id]:[]), names:[], game:'jebi', auto:false};
   const sh=openSheet(`<div id="drBox"></div>`); sh.classList.add('sheet-tall','dr-sheet'); playPick(); }
 function playPick(){ const box=$('#drBox'); if(!box) return; DR=null;
