@@ -235,7 +235,7 @@ const buzz=p=>{ try{ navigator.vibrate&&navigator.vibrate(p); }catch(e){} };
 const S={th:0, phase:'title', streak:0, t:0, tx:0, dir:1, arrows:[], stuck:[], fx:[], shake:0, flash:0, pop:null, hop:0, sad:0, games:[], day:0, lastNow:0, waitT:0};
 const MAXG=PRAC? 1e9 : 3; if(BR && !PRAC) S.games=(BR.set||[]).slice(0,3);
 
-/* ── 단계: 맞힐수록 바뀜 (무작위 없음) ──
+/* ── 단계: 맞힐수록 바뀜 (0~8중 무작위 없음 · v1.7: 9~11 끝 직전 돌아서기 · 12~14 다시 출발 · 13~15시 바람) ──
    0~2  : 천천히 좌우
    3~5  : 빨라짐
    6~8  : 과녁이 앞줄·뒷줄로 번갈아 (앞줄은 크고 빨리 닿음, 뒷줄은 작고 늦게 닿음)
@@ -301,15 +301,19 @@ let lastTh=-1;
 function rnd(seed){ const x=Math.sin(seed*9301+49297)*233280; return x-Math.floor(x); }
 function pickTheme(){ let t; do{ t=Math.floor(Math.random()*THEMES.length); }while(t===lastTh && THEMES.length>1); lastTh=t; S.th=t; S.thT=S.t; }
 function size(){ const d=window.devicePixelRatio||1; W=cv.clientWidth; H=cv.clientHeight; cv.width=W*d; cv.height=H*d; g.setTransform(d,0,0,d,0,0); }
-const lane=()=>({ l:W*.14, r:W*.86 });
+const lane=()=>({ l:W*.14, r:W*.86 }); const KS=()=> (W*.72)/244.8;   // v1.7: 화면 폭 맞춤(폰 390px 화면 = 활터 340px 기준, 폰에선 v1.6과 같음)
 const tY=()=> H*(S.ly||.31);
 const tScale=()=> S.ls||1;
 const TW=()=> Math.min(64, W*.15)*tScale();     // 과녁 너비(px)
 
 /* 과녁 움직임 */
 let pauseLeft=0, dashN=0;
+function newPass(){ S.passT=5/6+Math.random()*(7/8-5/6); S.passGo=Math.random()<.35; }   // v1.7: 이번에 끝 직전에서 돌아설지·어디서
+const WIND_K=[['약',.08],['중',.12],['강',.18]];
 function moveTarget(dt){
-  const L=lv(), ln=lane(); let v=L.speed;
+  const L=lv(), ln=lane(); let v=L.speed*KS();
+  v*= (S.vj||1);   // v1.7: 8중 확률 속도 변화
+  if(S.wind) v*= 1 + S.dir*S.wind.d*WIND_K[S.wind.k][1];   // v1.7: 13~15시 바람 — 따라가면 빠르고 거스르면 느림
   if(L.wave) v*= .55+ .75*(.5+.5*Math.sin(S.t*2.4));
   if(S.focus>0) v*=.5;                                   // 집중: 과녁이 느려짐
   if(L.dash){ // 가운데에서 비켜난 두 자리(A·B)에 멈칫 → 반대편으로 빠르게
@@ -319,8 +323,11 @@ function moveTarget(dt){
     if(S.dir>0 && S.tx>=B){ S.tx=B; S.dir=-1; pauseLeft= dashN++%2? .85 : .5; }
     if(S.dir<0 && S.tx<=A){ S.tx=A; S.dir=1; pauseLeft= dashN++%2? .85 : .5; }
     return; }
+  if(S.streak>=8 && S.streak<12 && S.passGo && S.flipShot!==S.shot){   // v1.7: 8~11 끝 직전 돌아서기 (한 발에 1번)
+    const w=ln.r-ln.l, q= S.dir>0? (S.tx-ln.l)/w : (ln.r-S.tx)/w;
+    if(q>=S.passT){ S.dir*=-1; S.flipShot=S.shot; newPass(); return; } }
   S.tx+=S.dir*v*dt;
-  if(S.tx>ln.r){ S.tx=ln.r; S.dir=-1; } if(S.tx<ln.l){ S.tx=ln.l; S.dir=1; }
+  if(S.tx>ln.r){ S.tx=ln.r; S.dir=-1; newPass(); } if(S.tx<ln.l){ S.tx=ln.l; S.dir=1; newPass(); }
 }
 /* 가림판: 과녁과 활 사이를 반대 방향으로 오감 */
 const sY=()=> H*.5, SW=()=> W*.2;
@@ -329,7 +336,7 @@ const sY=()=> H*.5, SW=()=> W*.2;
 const SCR_W=[['약',55],['중',95],['강',145]];
 function scrWindNew(){ S.swDir=Math.random()<.5?-1:1; S.swLv=Math.floor(Math.random()*3); }
 function moveScreen(dt){ const on=lv().screen; if(on && !S.scrWas){ scrWindNew(); const ln=lane(); S.sx = S.swDir>0? ln.l : ln.r; } S.scrWas=on; if(!on) return;
-  const ln=lane(), w=SW(); S.sx += S.swDir*SCR_W[S.swLv||0][1]*(S.focus>0?.5:1)*dt;
+  const ln=lane(), w=SW(); S.sx += S.swDir*SCR_W[S.swLv||0][1]*KS()*(S.focus>0?.5:1)*dt;
   if(S.swDir>0 && S.sx>ln.r+w*.6) S.sx=ln.l-w*.6; if(S.swDir<0 && S.sx<ln.l-w*.6) S.sx=ln.r+w*.6; }
 
 /* ── 쏘기 ── */
@@ -347,15 +354,21 @@ function loseLife(msg){ S.lives--; S.missN=(S.missN||0)+1; quip(S.lives<=1? '흥
 /* 벌집: 관중 9번째부터 확률로 과녁과 따로 들어와 6초 동안 천천히 좌우로 오감 — 맞히면(오발) 바로 끝 */
 const HR=()=> TW()*.38, hY=()=> tY()+TW()*.35, HHOLD=6;
 const hOn=()=> S.hive && S.t-S.hive.born>.6;
-function moveHive(dt){ const h=S.hive; if(!h || !hOn()) return; const ln=lane(), f=(S.focus>0?.6:1);
+function moveHive(dt){ const h=S.hive; if(!h || !hOn()) return; const ln=lane(), f=(S.focus>0?.6:1)*KS();
   if(h.st==='in'){ h.x+=h.dir*110*dt*f; if((h.dir>0&&h.x>=ln.l+20)||(h.dir<0&&h.x<=ln.r-20)){ h.st='hover'; h.h0=S.t; h.hd=h.dir; } return; }
   if(h.st==='hover'){ h.x+=h.hd*55*dt*f; if(h.x>ln.r-20){h.x=ln.r-20;h.hd=-1;} if(h.x<ln.l+20){h.x=ln.l+20;h.hd=1;} if(S.t-h.h0>HHOLD) h.st='out'; return; }
   h.x+=h.dir*130*dt*f; if(h.x<-60||h.x>W+60) S.hive=null; }
 function hiveHit(){ return hOn() && Math.abs(S.hive.x-W/2)<=HR(); }
 /* 막판(13발을 쏜 뒤 = 14·15시)에는 가림판과 벌집이 꼭 한 번 같이 나옴 (관중 수와 상관없이) */
-function lateBoth(){ if(S.both || S.shot<13) return; S.both=true; S.forceScr=true;
+function lateWind(){ if(S.shot<12 || S.windShot===S.shot) return; S.windShot=S.shot;   // v1.7: 13·14·15번째 발을 겨눌 때
+  const old=S.wind; S.wind= Math.random()<.4 ? {d:Math.random()<.5?-1:1, k:Math.floor(Math.random()*3)} : null;   // 발마다 40% 확률로만 바람
+  if(S.wind && (!old || old.d!==S.wind.d || old.k!==S.wind.k)) quip(old? '바람이 바뀌었어!' : '바람 분다. 조심!'); else if(!S.wind && old) quip('바람 잦아들었군.'); }
+function lateBoth(){ lateWind(); if(S.both || S.shot<13) return; S.both=true; S.forceScr=true;
   if(!S.hive){ quip('막판이야. 벌집이랑 가림판, 조심!'); const dir= Math.random()<.5? -1 : 1; S.hive={born:S.t, dir, x: dir>0? -40 : W+40, st:'in'}; S.hCount=(S.hCount||0)+1; } }
 function spawnCheck(){ const n=S.streak;
+  S.vj= n===8 && Math.random()<.4 ? 1.1+Math.random()*.05 : 1;   // v1.7: 8중(뒷줄)에서 40% 확률로 ×1.1~1.15
+  if(n>=12){ const ln=lane(), w=(ln.r-ln.l)/3, Lf=Math.random()<.5;   // v1.7: 12~14 맞힐 때마다 바깥쪽 무작위 자리·방향에서 다시 출발
+    S.tx= Lf? ln.l+Math.random()*w : ln.r-Math.random()*w; S.dir=Math.random()<.5?-1:1; pauseLeft=0; }
   // 12번째 관중부터는 가림판이 반반 확률로 다시 나옴(맞힐 때마다 새로 정함)
   if(n>=12) S.scr2 = Math.random()<.55;
   // 벌집: 관중 9번째부터 확률로(9~11: 20%, 12~: 45%) · 한 판 최대 2번 · 화살통·벌집이 이미 있으면 안 나옴
@@ -367,7 +380,7 @@ function spawnCheck(){ const n=S.streak;
 const QR=()=> TW()*.42, qY=()=> tY()+TW()*.25;
 const qOn=()=> S.quiver && S.t-S.quiver.born>.6;
 const QHOLD=5;
-function moveQuiver(dt){ const q=S.quiver; if(!q || !qOn()) return; const ln=lane(), f=(S.focus>0?.6:1);
+function moveQuiver(dt){ const q=S.quiver; if(!q || !qOn()) return; const ln=lane(), f=(S.focus>0?.6:1)*KS();
   if(q.st==='in'){ q.x+=q.dir*150*dt*f; if((q.dir>0&&q.x>=ln.l+10)||(q.dir<0&&q.x<=ln.r-10)){ q.st='hover'; q.h0=S.t; q.hd=q.dir; } return; }
   if(q.st==='hover'){ q.x+=q.hd*q.v*dt*f; if(q.x>ln.r-10){q.x=ln.r-10;q.hd=-1;} if(q.x<ln.l+10){q.x=ln.l+10;q.hd=1;} if(S.t-q.h0>QHOLD) q.st='out'; return; }
   q.x+=q.dir*170*dt*f; if(q.x<-60||q.x>W+60) S.quiver=null; }
@@ -478,6 +491,7 @@ function draw(){
       g.strokeStyle='#3B2A1A'; g.lineWidth=2; g.beginPath(); g.moveTo(x,16); g.lineTo(x,38); g.stroke(); g.fillStyle='#555'; g.beginPath(); g.moveTo(x,13); g.lineTo(x-3.5,19); g.lineTo(x+3.5,19); g.fill(); g.fillStyle='#D2402F'; g.fillRect(x-4,31,3,8); g.fillRect(x+1,31,3,8); } g.globalAlpha=1; }
   const left= PRAC? BR.left() : MAXG-S.games.length - (S.phase==='play'||S.phase==='end'?1:0);
   g.fillStyle='rgba(255,255,255,.9)'; rr(W-86,10,76,34,17); g.fill(); g.fillStyle='#1B2433'; g.textAlign='right'; g.fillText(`남은 판 ${Math.max(0,left)}`,W-22,32);
+  if(S.wind && (S.phase==='play'||S.phase==='end')){ g.fillStyle='rgba(20,30,45,.72)'; rr(10,76,104,22,11); g.fill(); g.fillStyle='#fff'; g.font='700 11px "Noto Sans KR"'; g.textAlign='center'; g.fillText(`🎯 과녁 바람 ${S.wind.d>0?'→':'←'} ${WIND_K[S.wind.k][0]}`,62,91); }
   // 사대지기 한마디 (오른쪽 위)
   if(S.quip && S.t-S.quip.at<2.2 && S.phase!=='title'){ const a=S.t-S.quip.at, al= a<.15? a/.15 : a>1.8? (2.2-a)/.4 : 1; g.globalAlpha=al;
     g.font='700 12px "Noto Sans KR"'; const tw=g.measureText(S.quip.t).width+18, bx=W-tw-48, by=52; g.fillStyle='#FFFFFF'; rr(bx,by,tw,26,8); g.fill(); g.strokeStyle='#1B2433'; g.lineWidth=1.5; rr(bx,by,tw,26,8); g.stroke();
@@ -530,7 +544,7 @@ function loop(now){
   if(S.phase==='title' && S.t>0) moveTarget(dt*.6);
   draw(); requestAnimationFrame(loop);
 }
-function start(){ if(S.games.length>=MAXG) return; if(BR && !BR.begin()) { if(PRAC) title(); return; } S.phase='play'; S.streak=0; S.stuck=[]; S.arrows=[]; S.pop=null; S.tx=lane().l; S.dir=1; pauseLeft=0; dashN=0; S.sx=lane().r; S.sdir=-1; S.focus=0; S.perfect=0; S.blocked=null; S.aimT=S.t; S.lives=LIFE0; S.combo=0; S.bestCombo=0; S.hive=null; S.bees=null; S.qCount=0; S.hCount=0; S.scr2=false; S.scrWas=false; S.both=false; S.forceScr=false; S.spawnN=0; S.missT=0; S.lostT=0; S.endMsg=''; S.shot=0; S.quiver=null; S.sunH=0; S.ly=.31; S.ls=1; S.mol=0; S.missN=0; S.quip=null; pickTheme(); { const c=document.getElementById('wordCard'); if(c) c.hidden=true; } $('#over').hidden=true; }
+function start(){ if(S.games.length>=MAXG) return; if(BR && !BR.begin()) { if(PRAC) title(); return; } S.phase='play'; S.streak=0; S.stuck=[]; S.arrows=[]; S.pop=null; S.tx=lane().l; S.dir=1; pauseLeft=0; S.wind=null; S.windShot=-1; S.flipShot=-1; S.vj=1; newPass(); dashN=0; S.sx=lane().r; S.sdir=-1; S.focus=0; S.perfect=0; S.blocked=null; S.aimT=S.t; S.lives=LIFE0; S.combo=0; S.bestCombo=0; S.hive=null; S.bees=null; S.qCount=0; S.hCount=0; S.scr2=false; S.scrWas=false; S.both=false; S.forceScr=false; S.spawnN=0; S.missT=0; S.lostT=0; S.endMsg=''; S.shot=0; S.quiver=null; S.sunH=0; S.ly=.31; S.ls=1; S.mol=0; S.missN=0; S.quip=null; pickTheme(); { const c=document.getElementById('wordCard'); if(c) c.hidden=true; } $('#over').hidden=true; }
 function finish(){ S.games.push(S.streak); if(BR) BR.end(S.streak,{mol:S.mol?1:0, combo:S.bestCombo||0});
   if(PRAC){ S.games=[]; showNag(S.mol? 'mol' : S.streak>=11? 'great' : S.streak<=5? 'bad' : 'mid'); const pl=BR.left(); const o=$('#over'); o.hidden=false;
     o.innerHTML=`<h2>연습 끝</h2><div class="n">15시 ${S.streak}중</div><p>${S.endMsg||''} · 최고 ${S.bestCombo||0}연중<br>오늘 연습 남은 <b>${pl}판</b> · 연습은 랭킹에 안 올라가요</p><button id="again" ${pl?'':'disabled'}>${pl?'한 판 더':'오늘 연습 끝'}</button>`;
