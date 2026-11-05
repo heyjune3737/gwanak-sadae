@@ -2264,7 +2264,7 @@ html body #plaza .pz-bub.best{border-color:#D9822B!important;border-width:2px!im
 /* p173 · 사대지기 말풍선 */
 html body #plaza .pz-bub.bot{background:#FFFFFF!important;border-color:#3E8A4F!important;color:#1F3A26!important;border-width:2px}
 html body #plaza .pz-bub.bot::after{border-top-color:#3E8A4F!important}
-html body #plaza .pz-bub.bot.go{cursor:pointer;pointer-events:auto;text-decoration:underline;text-underline-offset:2px}
+html body #plaza .pz-bub.bot.go{cursor:pointer;pointer-events:auto;text-decoration:none}
 /* p172 · 체감온도 소품 */
 .pz-props{position:absolute;left:54%;z-index:8;transform:translateY(-100%);display:flex;gap:6px;align-items:flex-end;pointer-events:none}
 .pz-prop{display:block;width:44px}.pz-prop svg{display:block;width:100%;height:auto}
@@ -3315,7 +3315,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.05e';
+const APP_VER = '2026.11.05f';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -8890,14 +8890,14 @@ function pzBotLines(){ const L=[]; const c=S.pzClimateNow; if(c && PZC_SAY[c.k])
 const goPlay = () => { S.openComp=null; S.toPlay=true; setTab('comp'); S.compView='play'; try{ renderComp(); }catch(e){} };
 const botRandMate = () => { const L=(S.members||[]).filter(m=>m && m.id && m.name && m.id!==HUB_BOT && (!S.me || m.id!==S.me.id) && !m.rankHide); return L.length? L[Math.floor(Math.random()*L.length)] : null; };
 const BOT_TIPS = [
-  {id:'play',  nw:'2026-11-12', tx:'심심하면 놀이터도 있지. 흥.', go:()=>goPlay()},
-  {id:'mj',    nw:'2026-11-12', tx:'8초 만작, 버틸 수 있겠나?', go:()=>{ goPlay(); setTimeout(()=>{ const c=document.querySelector('.pg-mini'); if(c) c.scrollIntoView({behavior:'smooth', block:'center'}); },200); }},
-  {id:'kw',    nw:'2026-11-12', tx:'관중의 제왕, 아직 내가 1등이지.', go:()=>{ goPlay(); setTimeout(()=>{ const c=document.querySelector('.pg-mini'); if(c) c.scrollIntoView({behavior:'smooth', block:'center'}); },200); }},
-  {id:'gb',    tx:'방명록 써 봤나? 한 줄이면 돼.', go:()=>{ const m=botRandMate(); if(m && typeof openRoom==='function') openRoom(m.id); else setTab('room'); }},
-  {id:'theme', tx:'방이 좀 썰렁하지 않나?', go:()=>{ setTab('room'); setTimeout(()=>{ try{ openRoomTheme(); }catch(e){} },150); }},
-  {id:'jx',    tx:'다른 정 사대도 구경 가 보게.', go:()=>{ setTab('today'); setTimeout(()=>{ const b=document.querySelector('#jlView'); if(b) b.click(); },150); }},
-  {id:'badge', tx:'숨은 배지, 몇 개나 찾았나?', go:()=>setTab('room')},
-  {id:'news',  tx:'이번 달 소식은 읽었나?', go:()=>setTab('news')},
+  {id:'play',  nw:'2026-11-12', tx:'심심하면 놀이터라도 가 보게. …재밌을 거야.', go:()=>goPlay()},
+  {id:'mj',    nw:'2026-11-12', tx:'8초 만작, 자네라면 버틸 거야. 아마.', go:()=>{ goPlay(); setTimeout(()=>{ const c=document.querySelector('.pg-mini'); if(c) c.scrollIntoView({behavior:'smooth', block:'center'}); },200); }},
+  {id:'kw',    nw:'2026-11-12', tx:'관중의 제왕, 자네 15중 한번 보고 싶군.', go:()=>{ goPlay(); setTimeout(()=>{ const c=document.querySelector('.pg-mini'); if(c) c.scrollIntoView({behavior:'smooth', block:'center'}); },200); }},
+  {id:'gb',    tx:'방명록에 한 줄 남겨 보게. 다들 좋아해.', go:()=>{ const m=botRandMate(); if(m && typeof openRoom==='function') openRoom(m.id); else setTab('room'); }},
+  {id:'theme', tx:'방 좀 꾸며 보게. …구경 가고 싶으니까.', go:()=>{ setTab('room'); setTimeout(()=>{ try{ openRoomTheme(); }catch(e){} },150); }},
+  {id:'jx',    tx:'다른 정 사대도 구경 가 보게. 좋더군.', go:()=>{ setTab('today'); setTimeout(()=>{ const b=document.querySelector('#jlView'); if(b) b.click(); },150); }},
+  {id:'badge', tx:'숨은 배지, 하나쯤은 찾았겠지? …응원하네.', go:()=>setTab('room')},
+  {id:'news',  tx:'소식 탭 읽어 봤나? …꽤 볼 만하던데.', go:()=>setTab('news')},
 ];
 function botTip(){ const t=today(); let seen={}; try{ seen=lsGet('sadae.tipSeen',{})||{}; }catch(e){}
   const pool=BOT_TIPS.filter(x=>!x.nw || t<=x.nw);
@@ -8910,20 +8910,20 @@ const BOT_KIND = {cat:'고양이', dog:'강아지', duck:'오리', bear:'곰', h
 const botKind = m => BOT_KIND[String((m&&m.char)||'').split('/')[0]] || '궁사';
 const BOT_COVER = [
   (n,k)=>`${n} 사원 봤나? 지난달 표지. 내가 아는 최고의 ${k}일세.`,
-  (n)=>`지난달 표지 ${n} 사원. …딱히 감탄한 건 아니고, 대단하네.`,
-  (n)=>`${n} 사원 표지, 내 방에도 걸어 둘까 싶군.`,
+  (n)=>`지난달 표지 ${n} 사원. …흥, 꾸준한 건 인정하지.`,
+  (n)=>`${n} 사원 표지, …내 방에도 하나 걸어 두고 싶군.`,
 ];
 const BOT_HOT = [
-  (n)=>`요즘 광장 인기인은 ${n} 사원이지. 인정할 건 인정해야지.`,
-  (n)=>`${n} 사원 글, 나도 몰래 봤어. 좋더군.`,
-  (n)=>`광장 스타 ${n} 사원. 사인은 내가 먼저 받았어.`,
+  (n)=>`요즘 광장은 ${n} 사원 글 보는 맛이지. …딱히 기다린 건 아니고.`,
+  (n)=>`${n} 사원, 입담이 제법이더군.`,
+  (n)=>`광장 스타 ${n} 사원. 사인은… 내가 먼저 받고 싶은데?`,
 ];
 function botStar(){ const t=today(); const day=Math.floor(new Date(t).getTime()/864e5); const out=[];
   try{ const cur=magCurYM(); if(cur && ymAdd(t.slice(0,7),-1)===cur){ const mid=magCoverMidOf(cur,'all'); const m=mid&&memberById(mid); if(m && m.id!==HUB_BOT) out.push({m, cover:1}); } }catch(e){}
   try{ const from=dstr(new Date(Date.now()-6*864e5)); const H=magHot(from, t); const h=H&&H[0]; const m=h&&memberById(h.from); if(m && m.id!==HUB_BOT) out.push({m, cover:0}); }catch(e){}
   if(!out.length) return null; const x=out[day%out.length];
   const me=S.me && x.m.id===S.me.id; const n=x.m.name||'';
-  const T= me ? (x.cover? '이번 표지는 자네군. …축하해. 진심이야.' : '요즘 광장 인기인이 자네라며? …제법이군, 좋아.') : (x.cover? BOT_COVER : BOT_HOT)[day % 3](n, botKind(x.m));
+  const T= me ? (x.cover? '이번 표지는 자네군. …축하해. 진심이야.' : '요즘 광장 인기인이 자네라며? …자랑스럽군. 흥.') : (x.cover? BOT_COVER : BOT_HOT)[day % 3](n, botKind(x.m));
   return {tx:T, tip:1, go:()=>{ if(typeof openRoom==='function') openRoom(x.m.id); }}; }
 S.botSay={k:0,t:null};
 function pzBotSay(){ const f=document.querySelector(`#plazaCrowd .pz-fig[data-room="${HUB_BOT}"]`); clearInterval(S.botSay.t); if(!f) return;
