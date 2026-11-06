@@ -3102,7 +3102,7 @@ const emptyMiss = () => Object.fromEntries(MISS_KEYS.map(k=>[k,0]));
 const missAgg = m => ({F:(m.F||0)+(m.FO||0)+(m.FS||0), B:(m.B||0)+(m.BO||0)+(m.BS||0), O:(m.O||0)+(m.FO||0)+(m.BO||0), S:(m.S||0)+(m.FS||0)+(m.BS||0), X:m.X||0});
 const SLOTS = ['새벽','오전','점심','오후','저녁'];
 const slotNow = () => { const h=new Date().getHours(); return h<8?'새벽':h<11?'오전':h<14?'점심':h<18?'오후':'저녁'; };
-const EMOJIS = ['👍','🏹','🎯','🔥','💪','☕'];
+const EMOJIS = ['👍','🏹','🎯','🔥','💪','☕','💡','🍠','🧤','❄️','✨','⛄️'];   // p233 겨울맞이 6개 (⛄는 그림 글꼴로 보이게 FE0F)
 let reactOpen=null; let attDraft=null; /* 오늘 나는: 공유 전 고른 시간대·한마디 {day,jid,slot,note} */
 
 /* ---------- 동물 궁사 캐릭터 ---------- */
@@ -3315,7 +3315,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.05f';
+const APP_VER = '2026.11.06b';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -8846,7 +8846,7 @@ async function makePlazaShot(o){
 }
 const PZ_REP_SHOW = 2;   // p118: 원글마다 처음 보이는 답글 수
 if(!S.pzRepOpen) S.pzRepOpen=new Set();
-const PZ_RX = [['heart','❤️','공감'],['clap','👏','박수'],['hit','🎯','관중!'],['laugh','😂','웃겨요'],['fire','🔥','불타요'],['tea','🍵','토닥'],['tease','😜','메롱'],['sad','😢','슬퍼요'],['hungry','🤤','배고파요'],['sleepy','😴','졸려요'],['wow','😮','대박'],['good','👍','좋아요'],['strong','💪','힘내요'],['cold','🥶','추워요'],['thanks','🙏','수고하셨습니다'],['ok','🫡','ㅇㅋ'],['gazua','🙌','가즈아'],['curious','👀','궁금'],['legend','🤯','레전드'],['sob','😭','오열'],['moved','🥹','감동'],['luck','🍀','행운을 빕니다'],['oho','😏','오호라'],['giggle','🤭','킥킥'],['melt','🫠','녹는다'],['best','💯','최고다 이순신']];
+const PZ_RX = [['heart','❤️','공감'],['clap','👏','박수'],['hit','🎯','관중!'],['laugh','😂','웃겨요'],['fire','🔥','불타요'],['tea','🍵','토닥'],['tease','😜','메롱'],['sad','😢','슬퍼요'],['hungry','🤤','배고파요'],['sleepy','😴','졸려요'],['wow','😮','대박'],['good','👍','좋아요'],['strong','💪','힘내요'],['cold','🥶','추워요'],['thanks','🙏','수고하셨습니다'],['ok','🫡','ㅇㅋ'],['gazua','🙌','가즈아'],['curious','👀','궁금'],['legend','🤯','레전드'],['sob','😭','오열'],['moved','🥹','감동'],['luck','🍀','행운을 빕니다'],['oho','😏','오호라'],['giggle','🤭','킥킥'],['melt','🫠','녹는다'],['best','💯','최고다 이순신'],['bow','🏹','쏘러 가자'],['idea','💡','아하!'],['goguma','🍠','군고구마'],['glove','🧤','따뜻하게'],['snow','❄️','첫눈'],['sparkle','✨','반짝반짝'],['snowman','⛄\uFE0F','눈사람']];   // p234 +7 (SQL 39)
 // ===== p126 · 반응 터지기 · 감정 풍선 =====
 const pzFxOff = () => document.documentElement.classList.contains('calm-fx');
 const pzRxIc = k => (PZ_RX.find(r=>r[0]===k)||[])[1] || '';
