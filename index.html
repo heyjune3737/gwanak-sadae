@@ -3315,7 +3315,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.09f';
+const APP_VER = '2026.11.09j';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3486,7 +3486,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
-  {id:'2026-11-09a', date:'11월 9일', title:'🏹 안산 광덕정이 함께해요 · 🌬 바람·과녁 방향 손봤어요', body:'안산 광덕정(光德亭)이 오늘 사대에 들어왔어요. 정 목록에서 광덕정을 고를 수 있고, 오늘 사대와 광장에 광덕정 그림(너른 잔디 활터 · 과녁 뒤 철탑 · 한옥 사대)이 계절·날씨마다 바뀌어 나와요. 광덕정 사원분들 반가워요!\n\n🌬 표 기록 바람·날씨\n다른 정에 가서 오늘 사대에서 그 정으로 바꾸면, 표 기록 바람·날씨도 그 정 기준으로 바뀌어요. 바람 칸 아래에 \'📍 ○○정 날씨\'로 어느 정 날씨인지 보여요.\n\n🎯 과녁 방향\n광덕정 · 살곶이정 · 영학정 · 탄금정 · 안양정은 위성지도에서 사대와 과녁을 이어 잰 방향이 미리 들어가 있어서, 바로 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 보여요. 다른 정은 사원이 처음 한 번 정하면 되고, 정한 방향은 관리자만 바꿀 수 있어요. 틀렸다면 관리자에게 알려 주세요.'},
+  {id:'2026-11-09a', date:'11월 9일', title:'🏹 안산 광덕정이 함께해요 · 🌬 바람·과녁 방향 손봤어요', body:'안산 광덕정(光德亭)이 오늘 사대에 들어왔어요. 정 목록에서 광덕정을 고를 수 있고, 오늘 사대와 광장에 광덕정 그림(너른 잔디 활터 · 과녁 뒤 철탑 · 한옥 사대)이 계절·날씨마다 바뀌어 나와요. 광덕정 사원분들 반가워요!\n\n🌬 표 기록 바람·날씨\n다른 정에 가서 오늘 사대에서 그 정으로 바꾸면, 표 기록 바람·날씨도 그 정 기준으로 바뀌어요. 바람 칸 아래에 \'📍 ○○정 날씨\'로 어느 정 날씨인지 보여요.\n\n🎯 과녁 방향\n이제 모든 정에 과녁 방향이 미리 들어가 있어서, 바로 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 보여요. 관악정은 사대에서 직접 정한 방향이고, 다른 정은 위성지도와 사진에서 사대와 과녁을 이어 잰 방향이에요. 정해진 방향은 관리자만 바꿀 수 있어요. 틀렸다면 관리자에게 알려 주세요.'},
   {id:'2026-11-05a', date:'11월 5일', title:'🕹 미니게임이 열렸어요 · 🎯 관중의 제왕 · ⏱ 8초 만작', body:'대회 탭 → 🎲 놀이터 아래 🕹 미니게임 칸에서 두 게임을 할 수 있어요. 내가 고른 캐릭터가 사대에 서요.\n\n🎯 관중의 제왕\n좌우로 움직이는 과녁이 올 자리를 보고 미리 톡! 한 판 15시, 화살 3개가 목숨이에요. 홍심을 맞히면 화살 +1, 🎁 화살통도 +1, 🐝 벌집을 맞히면 바로 끝나요.\n\n⏱ 8초 만작\n꾹 눌러 시위를 당기고 8초에 가깝게 떼세요. 시간은 3초까지만 보여요. 8초를 넘기면 감점, 10초를 넘기면 탈락이에요.\n\n🏆 랭킹 도전은 게임마다 하루 3번이에요. 오늘 사대 등록이나 습사를 하면 그날 한 번 3번 더 할 수 있어요. 연습은 하루 20번(기록 안 남음).\n\n랭킹은 이달 기록으로 매달 1일 새로 시작해요. 관중의 제왕은 한 판(15시) 최고와 승단(세 판 45시 합계 · 단) 두 가지, 8초 만작은 한 발 최고와 세 발 합계 두 가지예요. [랭킹]을 누르면 상위 10명과 내 순위가 보여요.'},
   {id:'2026-11-04a', date:'11월 4일', title:'🎲 놀이터가 열렸어요 · 🏹 화살 경주', body:'대회 탭 맨 위에 [🏆 대회] [🎲 놀이터] 버튼이 생겼어요. 놀이터를 누르면 놀이터 화면으로 바뀌어요.\n\n🎲 랜덤게임\n☕ 커피 내기, 🏹 화살 줍기, 🍚 점심 메뉴 정할 때 운에 맡겨 보세요. 🎋 제비뽑기 · 🪜 사다리타기 · 🏹 화살 경주 · 🧭 화살 돌리기 네 가지예요. 이름을 적어 넣고 [뽑기 하기]를 누르면 돼요. 결과는 광장에 올릴 수 있어요.\n\n🏹 화살 경주 (새 게임)\n이름 붙은 화살들이 한꺼번에 145m를 날아가요. 먼저 과녁에 닿는 순서가 순번이에요. 날아가는 동안 엎치락뒤치락해요.\n\n🎯 대회 사대 순번 정하기\n대회 안 관 편성 칸의 [🎲 순번 정하기]로 사대 순번을 게임으로 정할 수 있어요. 📱 다 같이를 고르면 참가한 사원 모두의 화면에 같은 장면이 떠요.\n\n광장 입력칸 옆 🎲 버튼을 눌러도 놀이터로 바로 가요.\n\n🕹 혼자 도전하는 미니게임(관중의 제왕 · 8초 만작)은 곧 열려요.'},
   {id:'2026-10-31a', date:'10월 31일', title:'🏯 안양정이 함께해요', body:'경기도 안양 안양정이 오늘 사대에 들어왔어요.\n\n자유공원 갈산 꼭대기, 평촌배수지 위 너른 잔디 활터예요. 양옆 키 큰 나무 줄과 뒤로 보이는 평촌 아파트를 사대 그림과 광장에 담았어요.\n\n안양정 사원은 안내 탭 → 소속 정 바꾸기에서 안양정을 고르면 돼요. 다른 정 사원도 오늘 정 탭 위 📍에서 안양정 사대를 구경할 수 있어요.'},
@@ -4829,7 +4829,7 @@ try{ Object.assign(UT_NAME, {'#rmBtn':'표 기록 › 📝 순 메모 열기', '
    그날의 바람 — 자동(Open-Meteo) + 수동, 과녁 기준 방향
    ========================================================= */
 const JEONG_GEO = { hwanghak:[37.5773,126.9644], gonghang:[37.5528,126.8438], salgoji:[37.5582,127.0697], seokho:[37.5530,127.0035],
-  yeonghak:[37.5273,126.8794], hwarang:[37.6240,127.1030], gwanak:[37.4585,126.9338], sungnak:[37.6797,127.0898], tangeum:[36.9882,127.8982], anyang:[37.3789,126.9648], gwangdeok:[37.3190,126.8059], nanji:[37.5668,126.8770] };
+  yeonghak:[37.5273,126.8794], hwarang:[37.6241,127.1058], gwanak:[37.4585,126.9338], sungnak:[37.6797,127.0898], tangeum:[36.9882,127.8982], anyang:[37.3789,126.9648], gwangdeok:[37.3190,126.8059], nanji:[37.5668,126.8770] };
 // 우궁: 과녁 오른쪽 = 줌앞 → 오른쪽에서 부는 바람(RL, ⬅)이 줌앞바람 · 좌궁은 반대
 const wLeftHand = () => !!(S && S.me && S.me.hand==='좌궁');
 const WREL = { '0':{k:'·', l:'바람 없음'}, H:{k:'⬇', l:'안바람'}, T:{k:'⬆', l:'오늬바람'},
@@ -4847,7 +4847,7 @@ const windJ = () => homeJ();   // 표 기록은 내 소속 정 기준 (다른 �
 function windJid(){ try{ const me=S.me&&attEntries().find(e=>e.id===S.me.id); if(me && entryJid(me)) return entryJid(me); }catch(e){}
   try{ if(S.viewJ && S.viewJ.id && JEONG_GEO[S.viewJ.id]) return S.viewJ.id; }catch(e){}   // p237: 오늘 사대에서 바꿔 본 정
   return windJ().id; }
-const BEARING_SAT = { gwangdeok:120, salgoji:216, yeonghak:205, tangeum:265, anyang:223 };   // p239: 위성지도로 잰 사대→과녁 방위
+const BEARING_SAT = { gwangdeok:120, salgoji:216, yeonghak:205, tangeum:265, anyang:223, seokho:214, hwanghak:108, gonghang:178, hwarang:21, sungnak:36, nanji:245 };   // p243 +난지   // p241 +화랑정 · p242 +수락정   // p240 +석호정·황학정·공항정   // p239: 위성지도로 잰 사대→과녁 방위
 const bearingSet = jid => { const b=S.windSet&&S.windSet.bearing&&S.windSet.bearing[jid]; return (typeof b==='number' && b>=0 && b<360) ? b : null; };
 const bearingOf = jid => { const b=bearingSet(jid); return b!=null ? b : (BEARING_SAT[jid]!=null ? BEARING_SAT[jid] : null); };
 S.windNow = {}; // jid → {at, ms, deg, g} 또는 {err}
@@ -8239,17 +8239,18 @@ function magEvents(from, to){ const D=(store&&store.docs)||{}; const L=[];
   const rk={romance:0, busy:1, hid:2}; return L.sort((a,b)=>rk[a.k]-rk[b.k] || (b.n||0)-(a.n||0) || a.date.localeCompare(b.date)).slice(0,8); }
 const magEvTitle = e => e.k==='hid' ? `${e.ic} ${(memberById(e.mid)||{}).name||'사원'} 사원, 숨은 배지 ‘${e.t}’ 첫 발견` : `${e.k==='romance'?'🏮 낭만 사대':'🎉 북적 사대'} · ${esc(e.jname||'')} ${esc(e.slot)} ${e.n}명`;
 // 06 광장 핫글: 그달 반응 + 답글이 많은 글 (우리 정만 글은 빼고)
-function magHot(from, to){ const D=(store&&store.docs)||{}; const all=[];
+const magHotPick = (m, scope) => (!scope || scope==='all') ? (!pzJoOf(m.id) && String(m.id).indexOf('att_')<0) : ((!pzJoOf(m.id) || pzJoOf(m.id)===scope) && magJid(m.from)===scope);   // p245
+function magHot(from, to, scope){ const D=(store&&store.docs)||{}; const all=[];
   for(const k in D){ if(!k.startsWith('plaza/')) continue; const dt=k.slice(6); if(dt<from || dt>to) continue; plazaMsgs(D[k]).forEach(m=>all.push({...m, day:dt})); }
   const rep={}; all.forEach(m=>{ const p=String(m.id).indexOf('_re_'); if(p>0){ const r=String(m.id).slice(p+4); rep[r]=(rep[r]||0)+1; } });
-  return all.filter(m=>!pzJoOf(m.id) && String(m.id).indexOf('_re_')<0 && m.from!==HUB_BOT).map(m=>({id:m.id, from:m.from, text:String(m.text).slice(0,100), day:m.day, rx:(typeof pzRxN==='function'?pzRxN(m):0), re:rep[m.id]||0, rxs:Object.fromEntries(Object.entries(typeof pzRxOf==='function'?pzRxOf(m):{}).map(([k,L])=>[k,L.length])), reps:all.filter(x=>String(x.id).endsWith('_re_'+m.id)).map(x=>({from:x.from, text:String(x.text).slice(0,100), day:x.day}))}))
+  return all.filter(m=>magHotPick(m, scope) && String(m.id).indexOf('_re_')<0 && m.from!==HUB_BOT).map(m=>({id:m.id, from:m.from, text:String(m.text).slice(0,100), day:m.day, rx:(typeof pzRxN==='function'?pzRxN(m):0), re:rep[m.id]||0, rxs:Object.fromEntries(Object.entries(typeof pzRxOf==='function'?pzRxOf(m):{}).map(([k,L])=>[k,L.length])), reps:all.filter(x=>String(x.id).endsWith('_re_'+m.id)).map(x=>({from:x.from, text:String(x.text).slice(0,100), day:x.day}))}))
     .map(m=>({...m, sc:m.rx+m.re})).filter(m=>m.sc>0).sort((a,b)=>b.re-a.re || b.rx-a.rx || b.day.localeCompare(a.day)).slice(0,3); }
 // p198: 한 달치 핫글은 서버에서 (폰엔 광장 글이 7일치뿐) — SQL 38 sadae_plaza_hot
 S.mag.hot = S.mag.hot || {};
 async function magHotFetch(ym){ if(!store || store.kind!=='remote' || !store.token || S.mag.hot[ym]) return; S.mag.hot[ym]={busy:1};
   const [from,to]=magRange(ym);
   try{ const {data,error}=await store.client.rpc('sadae_plaza_hot',{p_space:store.space, p_token:store.token, p_from:from, p_to:to});
-    if(!error && Array.isArray(data)){ S.mag.hot[ym]={L:data.filter(m=>m && m.from && memberById(m.from) && m.from!==HUB_BOT).map(m=>({id:String(m.id), from:m.from, text:String(m.text||'').slice(0,100), day:m.day, rx:+m.rx||0, re:+m.re||0, sc:(+m.rx||0)+(+m.re||0), rxs:Object.fromEntries(Object.entries(m.rxs||{}).filter(([k,v])=>PZ_RX.some(r=>r[0]===k)).map(([k,v])=>[k,+v||0])), reps:(Array.isArray(m.reps)?m.reps:[]).slice(0,20).map(r=>({from:String(r.from||''), text:String(r.text||'').slice(0,100), day:String(r.day||'')}))})).sort((a,b)=>b.re-a.re || b.rx-a.rx).slice(0,3)};
+    if(!error && Array.isArray(data)){ S.mag.hot[ym]={L:data.filter(m=>m && m.from && memberById(m.from) && m.from!==HUB_BOT).map(m=>({id:String(m.id), from:m.from, text:String(m.text||'').slice(0,100), day:m.day, rx:+m.rx||0, re:+m.re||0, sc:(+m.rx||0)+(+m.re||0), rxs:Object.fromEntries(Object.entries(m.rxs||{}).filter(([k,v])=>PZ_RX.some(r=>r[0]===k)).map(([k,v])=>[k,+v||0])), reps:(Array.isArray(m.reps)?m.reps:[]).slice(0,20).map(r=>({from:String(r.from||''), text:String(r.text||'').slice(0,100), day:String(r.day||'')}))})).sort((a,b)=>b.re-a.re || b.rx-a.rx)}; S.mag.hot[ym].R=S.mag.hot[ym].L; S.mag.hot[ym].L=S.mag.hot[ym].R.filter(m=>magHotPick(m,'all')).slice(0,3);   // p245
       Object.keys(S.mag.cache).forEach(k=>{ if(k.startsWith(ym+'|')) delete S.mag.cache[k]; }); if(S.tab==='news') renderNews(); } else S.mag.hot[ym]=null; }
   catch(e){ S.mag.hot[ym]=null; } }
 // 🎤 주접왕: 발간된 호(11월호부터)의 전체 월보 광장 핫글 1위
@@ -8316,7 +8317,12 @@ function magData(ym, scope){
       hot = ap && Array.isArray(ap.hot) ? ap.hot : (hs && hs.L) ? hs.L : magHot(from, to);
       evSel = ap && ap.event!==undefined ? ap.event : (events[0]?events[0].key:null); } }
   const jx = (!wide && ym>=MAG_APPROVE_FROM && scope!=='all' && typeof magJx==='function') ? magJx(scope, from, to) : null;
+  let hotWait=false;
+  if(!wide && ym>=MAG_APPROVE_FROM && scope!=='all'){ const hs=S.mag.hot[ym]; if(!hs) magHotFetch(ym);   // p245: 우리 정 핫글 (서버 받는 중엔 폰 7일치로 보여 주고, 고정 저장은 미룸)
+    hotWait = !(hs && hs.R) && hs!==null && !!store && store.kind==='remote';
+    hot = (hs && hs.R) ? hs.R.filter(m=>magHotPick(m, scope)).slice(0,3) : magHot(from, to, scope); }
   const d={ym, scope, cur, from, to, end, wide, A, P, ev, busy, king, cover, faces, events, evSel, hot, jx, nBadge, nNew, nSince, nGrade, act, jst};
+  if(hotWait) return d;   // p245
   if(magPublished(ym)) magSnapPut(magSnapKey(ym,scope), magSnapEnc(d));   // 발간된 호 = 처음 계산한 숫자를 서버에 한 번만 저장
   S.mag.cache[ck]={at:Date.now(), d}; return d;
 }
@@ -8616,7 +8622,7 @@ function magHotOpen(m){ const mm=memberById(m.from)||{}; const near = m.day >= d
   $('#mhClose',sh).onclick=closeSheet; const g=$('#mhGo',sh); if(g) g.onclick=()=>{ closeSheet(); setTab('plaza'); }; }
 function magHotHTML(d, DM){ const H=d.hot||[];
   const body = H.length ? `<div class="mz-hot">${H.map((m,i)=>{ const mm=memberById(m.from)||{}; return `<button type="button" class="hp r${i+1}" data-mzhot="${i}"><span class="no">${i+1}</span><span class="av">${charSVG(mm.char||DEFAULT_CHAR)}</span><div class="grow"><b>${esc(mm.name||'사원')} <small>${magMD(m.day)}</small></b><p>“${esc(m.text)}”</p><span class="sc">${magRxChips(m)}${m.re?`<i>💬 답글 ${m.re}</i>`:''}<i class="go">원글 보기 ▸</i></span></div></button>`; }).join('')}</div>` : `<p class="mz-empty">${DM}월 광장에는 반응이 붙은 글이 아직 없어요.</p>`;
-  return `<article class="mz" id="mz6h"><div class="mz-sec"><div class="mz-kick">06 · HOT</div><h2>광장 핫글 🔥</h2>${body}<p class="mz-tip">반응과 답글이 많이 붙은 글이에요 · 우리 정만 보기 글은 빠져요</p></div></article>`; }
+  return `<article class="mz" id="mz6h"><div class="mz-sec"><div class="mz-kick">06 · HOT</div><h2>${d.scope&&d.scope!=='all'?'우리 정 핫글 🔥':'광장 핫글 🔥'}</h2>${body}<p class="mz-tip">${d.scope&&d.scope!=='all'?'우리 정 사원 글 중 반응과 답글이 많이 붙은 글이에요 · 사대 등록 한마디도 들어가요':'반응과 답글이 많이 붙은 글이에요 · 우리 정만 보기 글과 사대 등록 한마디는 빠져요'}</p></div></article>`; }
 // p198 · 개발자 발간 확인 판
 function magDevPanel(ym, d){ const dr=S.magDraft[ym]||{}; const CV=d.cover||{}; const M=+ym.slice(5);
   const catChips = MAG_CATS.map(c=>`<button type="button" data-mdcat="${c.id}" class="${CV.cat===c.id&&!(CV.special)?'on':''}">${c.ic} ${c.t.replace('왕','')}</button>`).join('');
@@ -8753,7 +8759,7 @@ function renderNews(){
   <article class="mz" id="mz3"><div class="mz-sec"><div class="mz-kick">03 · RANKING</div><h2>${d.wide?'창간호 순위':DM+'월 순위'} <small>${d.wide?`(베타 ${BD}일 · 성실 · 몰기 · 다정)`:d.cur?'(지금은 중간 순위)':'(확정)'}</small></h2>
     ${rkData?`<div class="mz-hof wide ${SJ?'one':''}">${hof}</div>`:'<p class="mz-empty">순위를 불러오는 중…</p>'}
     <p class="mz-tip">${d.wide?'베타 기간 기록 · ':'관중률은 5순 · 정심은 20순 이상 · '}랭킹에서 숨긴 사원은 빠져요${ym===Tym&&!d.cur?` · 다음 ${NX}월호는 ${NX}월 1일에 나와요 · <button type="button" class="linkbtn" data-tab-go="plaza">이번 달 실시간 순위는 광장에서 ▸</button>`:''}</p></div></article>
-  ${SJ ? `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · OUR JEONG</div><h2>${esc(SJ.name)} 한눈에</h2>${ourHTML}<p class="mz-tip">전체 순위와 다른 정 소식은 🏯 전체 월보에서 볼 수 있어요</p></div></article>${d.jx?magJxHTML(d, SJ, DM):''}`
+  ${SJ ? `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · OUR JEONG</div><h2>${esc(SJ.name)} 한눈에</h2>${ourHTML}<p class="mz-tip">전체 순위와 다른 정 소식은 🏯 전체 월보에서 볼 수 있어요</p></div></article>${d.jx?magJxHTML(d, SJ, DM):''}${d.hot?magHotHTML(d, DM):''}`
     : `<article class="mz" id="mz4"><div class="mz-sec"><div class="mz-kick">04 · JEONG NEWS</div><h2>정 소식 🏯</h2>${jeongNewsHTML}</div></article>
   ${d.events?magEvHTML(d, DM):''}${d.hot?magHotHTML(d, DM):''}${d.events?magCompHTML(ym):''}${d.events?magUpdHTML(d, MAG_COMPS[ym]?'08':'07'):''}
   ${vsOn?`<article class="mz" id="mz5"><div class="mz-sec"><div class="mz-kick">${d.events?String(5+[1,1,!!MAG_COMPS[ym],magNotices(d).length>0].filter(Boolean).length).padStart(2,'0'):'05'} · JEONG VS JEONG</div><h2>정 대항 ⚔️</h2>${vsHTML}</div></article>`:''}`}
@@ -8768,7 +8774,7 @@ function renderNews(){
   $$('[data-tab-go]',el).forEach(b=>b.onclick=()=>setTab(b.dataset.tabGo)); hallSwitchBind(el);
   if(devPend) magDevBind(el, ym, dAll);
   $$('[data-mznt]',el).forEach(b=>b.onclick=()=>magNoticeOpen(b.dataset.mznt));
-  $$('[data-mzhot]',el).forEach(b=>b.onclick=()=>{ const m=(dAll.hot||[])[+b.dataset.mzhot]; if(m) magHotOpen(m); });
+  $$('[data-mzhot]',el).forEach(b=>b.onclick=()=>{ const m=(d.hot||[])[+b.dataset.mzhot];   /* p245: 우리 정 핫글도 */ if(m) magHotOpen(m); });
   const mb=$('#mzMore',el); if(mb) mb.onclick=()=>{ S.mag.more=!S.mag.more; renderNews(); };
   $$('[data-clap]',el).forEach(b=>b.onclick=async()=>{ const key=b.dataset.clap, mid=b.dataset.cmid;
     if(!S.me){ toast('캐릭터를 먼저 골라 주세요'); return; } if(mid===S.me.id){ toast('내 소식에는 박수를 받을 수만 있어요 🙂'); return; }
@@ -8924,9 +8930,21 @@ const BOT_HOT = [
   (n)=>`${n} 사원, 입담이 제법이더군.`,
   (n)=>`광장 스타 ${n} 사원. 사인은… 내가 먼저 받고 싶은데?`,
 ];
+/* p244 · 광장 인기인: 직접 쓴 광장 글만(사대 등록 자동 글 빼고) · 최근 3일 · 반응+답글 3개 이상 · 1~3위 날마다 돌림 · 같은 사람 연달아 이틀까지 */
+function botHotMate(t){ const from=dstr(new Date(Date.now()-2*864e5));
+  const H=(magHot(from, t)||[]).filter(h=>String(h.id).indexOf('att_')<0 && (h.sc||0)>=3);
+  const ids=[]; H.forEach(h=>{ const m=memberById(h.from); if(m && m.id!==HUB_BOT && ids.indexOf(m.id)<0) ids.push(m.id); });
+  if(!ids.length) return null;
+  let hist={}; try{ hist=lsGet('sadae.botHot',{})||{}; }catch(e){}
+  if(hist.d===t && ids.indexOf(hist.id)>=0) return memberById(hist.id);   // 오늘은 이미 정함
+  const day=Math.floor(new Date(t).getTime()/864e5); let pick=ids[day%ids.length];
+  if(hist.id===pick && (hist.n||1)>=2 && hist.d===dstr(new Date(new Date(t).getTime()-864e5))){ const o=ids.filter(x=>x!==pick); if(!o.length) return null; pick=o[day%o.length]; }
+  const yd=dstr(new Date(new Date(t).getTime()-864e5)); const n = hist.id===pick && hist.d===yd ? (hist.n||1)+1 : 1;
+  try{ lsSet('sadae.botHot',{d:t, id:pick, n}); }catch(e){}
+  return memberById(pick); }
 function botStar(){ const t=today(); const day=Math.floor(new Date(t).getTime()/864e5); const out=[];
   try{ const cur=magCurYM(); if(cur && ymAdd(t.slice(0,7),-1)===cur){ const mid=magCoverMidOf(cur,'all'); const m=mid&&memberById(mid); if(m && m.id!==HUB_BOT) out.push({m, cover:1}); } }catch(e){}
-  try{ const from=dstr(new Date(Date.now()-6*864e5)); const H=magHot(from, t); const h=H&&H[0]; const m=h&&memberById(h.from); if(m && m.id!==HUB_BOT) out.push({m, cover:0}); }catch(e){}
+  try{ const m=botHotMate(t); if(m) out.push({m, cover:0}); }catch(e){}   // p244
   if(!out.length) return null; const x=out[day%out.length];
   const me=S.me && x.m.id===S.me.id; const n=x.m.name||'';
   const T= me ? (x.cover? '이번 표지는 자네군. …축하해. 진심이야.' : '요즘 광장 인기인이 자네라며? …자랑스럽군. 흥.') : (x.cover? BOT_COVER : BOT_HOT)[day % 3](n, botKind(x.m));
