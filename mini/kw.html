@@ -127,7 +127,7 @@ const CH={cat:'__cat__',dog:'__dog__',bear:'__bear__',duck:'__duck__'};
 const $=s=>document.querySelector(s);
 let MUTE=false; try{ MUTE=localStorage.getItem('sadae.mini.mute')==='1'; }catch(e){}
 function sndUI(){ const b=document.getElementById('snd'); if(!b) return; b.textContent=MUTE?'🔇':'🔊'; b.classList.toggle('off',MUTE); b.setAttribute('aria-label',MUTE?'소리 켜기':'소리 끄기'); }
-document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('#snd'); if(!b) return; e.stopPropagation(); MUTE=!MUTE; try{ localStorage.setItem('sadae.mini.mute',MUTE?'1':'0'); }catch(err){} sndUI(); },true);
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('#snd'); if(!b) return; e.stopPropagation(); MUTE=!MUTE; try{ localStorage.setItem('sadae.mini.mute',MUTE?'1':'0'); }catch(err){} sndUI(); acOn(); },true);
 setTimeout(sndUI,0);
 /* 사대지기 = 츤데레 오리 (격언 좋아함). 격언 글은 앱 '오늘의 국궁 한마디'와 같은 글(관악정 국궁교본) 그대로, 앞뒤 잔소리만 사대지기 말투 */
 const DW_SRC={j:'국궁교본 5.2 집궁제원칙', g:'국궁교본 2.3.3 궁도 9계훈', s:'국궁교본 6.5 심담 14요', b:'국궁교본 6.6 불가필중', t:'국궁교본 용어 풀이'};
@@ -224,7 +224,10 @@ const img=new Image(); img.src=(BR&&BR.char)||CH.cat;
 
 /* ── 소리 ── */
 let AC=null;
-function tone(f1,f2,dur,type,vol){ if(MUTE) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); const t=AC.currentTime,o=AC.createOscillator(),v=AC.createGain(); o.type=type; o.connect(v); v.connect(AC.destination); o.frequency.setValueAtTime(f1,t); o.frequency.exponentialRampToValueAtTime(f2,t+dur); v.gain.setValueAtTime(vol,t); v.gain.exponentialRampToValueAtTime(.001,t+dur); o.start(t); o.stop(t+dur); }catch(e){} }
+function acOn(){ if(MUTE) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); if(AC.state!=='running') AC.resume(); const b=AC.createBuffer(1,1,22050), x=AC.createBufferSource(); x.buffer=b; x.connect(AC.destination); x.start(0); }catch(e){} }   // 소리 잠금 풀기
+['pointerdown','touchend','mousedown','keydown'].forEach(ev=>document.addEventListener(ev, acOn, {capture:true, passive:true}));
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && AC && AC.state!=='running'){ try{ AC.resume(); }catch(e){} } });
+function tone(f1,f2,dur,type,vol){ if(MUTE) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); const t=AC.currentTime,o=AC.createOscillator(),v=AC.createGain(); o.type=type; o.connect(v); v.connect(AC.destination); o.frequency.setValueAtTime(f1,t); o.frequency.exponentialRampToValueAtTime(f2,t+dur); v.gain.setValueAtTime(vol,t); v.gain.exponentialRampToValueAtTime(.001,t+dur); o.start(t); o.stop(t+dur); }catch(e){} }
 function noise(dur,vol){ if(MUTE) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); const n=AC.sampleRate*dur, b=AC.createBuffer(1,n,AC.sampleRate), d=b.getChannelData(0); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*(1-i/n); const s=AC.createBufferSource(), v=AC.createGain(); s.buffer=b; v.gain.value=vol; s.connect(v); v.connect(AC.destination); s.start(); }catch(e){} }
 const sTwang=()=>{ tone(220,80,.22,'triangle',.35); noise(.08,.15); };
 const sHit=(n)=>{ tone(150,60,.3,'sine',.9); noise(.06,.35); tone(660+n*40,880+n*40,.12,'square',.05); };
