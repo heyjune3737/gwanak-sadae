@@ -3315,7 +3315,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.09b';
+const APP_VER = '2026.11.09e';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4828,7 +4828,7 @@ try{ Object.assign(UT_NAME, {'#rmBtn':'표 기록 › 📝 순 메모 열기', '
    그날의 바람 — 자동(Open-Meteo) + 수동, 과녁 기준 방향
    ========================================================= */
 const JEONG_GEO = { hwanghak:[37.5773,126.9644], gonghang:[37.5528,126.8438], salgoji:[37.5582,127.0697], seokho:[37.5530,127.0035],
-  yeonghak:[37.5273,126.8794], hwarang:[37.6240,127.1030], gwanak:[37.4760,126.9470], sungnak:[37.6797,127.0898], tangeum:[36.9882,127.8982], anyang:[37.3890,126.9625], gwangdeok:[37.3190,126.8059], nanji:[37.5668,126.8770] };
+  yeonghak:[37.5273,126.8794], hwarang:[37.6240,127.1030], gwanak:[37.4585,126.9338], sungnak:[37.6797,127.0898], tangeum:[36.9882,127.8982], anyang:[37.3789,126.9648], gwangdeok:[37.3190,126.8059], nanji:[37.5668,126.8770] };
 // 우궁: 과녁 오른쪽 = 줌앞 → 오른쪽에서 부는 바람(RL, ⬅)이 줌앞바람 · 좌궁은 반대
 const wLeftHand = () => !!(S && S.me && S.me.hand==='좌궁');
 const WREL = { '0':{k:'·', l:'바람 없음'}, H:{k:'⬇', l:'안바람'}, T:{k:'⬆', l:'오늬바람'},
@@ -4843,8 +4843,12 @@ function wRelOf(deg, bearing){ const a=((deg-bearing)%360+360)%360; return a<45|
 S.windSet = null;
 const subWindSet = sub({doc:'settings/wind'}, d => { S.windSet=d||{}; if(window.__booted && typeof renderWindBar==='function') renderWindBar(); });
 const windJ = () => homeJ();   // 표 기록은 내 소속 정 기준 (다른 정에 간 날은 오늘 등록한 정)
-function windJid(){ try{ const me=S.me&&attEntries().find(e=>e.id===S.me.id); if(me && entryJid(me)) return entryJid(me); }catch(e){} return windJ().id; }
-const bearingOf = jid => { const b=S.windSet&&S.windSet.bearing&&S.windSet.bearing[jid]; return (typeof b==='number' && b>=0 && b<360) ? b : null; };
+function windJid(){ try{ const me=S.me&&attEntries().find(e=>e.id===S.me.id); if(me && entryJid(me)) return entryJid(me); }catch(e){}
+  try{ if(S.viewJ && S.viewJ.id && JEONG_GEO[S.viewJ.id]) return S.viewJ.id; }catch(e){}   // p237: 오늘 사대에서 바꿔 본 정
+  return windJ().id; }
+const BEARING_SAT = { gwangdeok:120, salgoji:216, yeonghak:205, tangeum:265, anyang:223 };   // p239: 위성지도로 잰 사대→과녁 방위
+const bearingSet = jid => { const b=S.windSet&&S.windSet.bearing&&S.windSet.bearing[jid]; return (typeof b==='number' && b>=0 && b<360) ? b : null; };
+const bearingOf = jid => { const b=bearingSet(jid); return b!=null ? b : (BEARING_SAT[jid]!=null ? BEARING_SAT[jid] : null); };
 S.windNow = {}; // jid → {at, ms, deg, g} 또는 {err}
 async function fetchWind(jid, force){
   const geo=JEONG_GEO[jid]; if(!geo) return null;
@@ -4884,7 +4888,7 @@ function renderWindBar(){ try{ renderGakWx(); }catch(e){}
   if(cw && (cw.r || cw.ms!=null)){ main = cw.r ? (cw.r==='0' ? '· 바람 없음' : `${WREL[cw.r].k} ${WREL[cw.r].l} · ${WLV[WSV(cw)]}`) : `🌬 ${WLV[WSV(cw)]} 바람`; sub=windDetail(cw) + (b==null&&!cw.r?' · 눌러서 과녁 방향을 정해 주세요':''); const x=WX(cw.wc); wx = x||cw.t!=null ? `<span class="wb-wx"><i>${x?x[0]:'🌡'}</i><b>${x?x[1]+' ':''}${cw.t!=null?cw.t+'℃':''}</b></span>` : ''; }
   else if(w===undefined){ main='바람 불러오는 중…'; sub=''; }
   else { main='바람 정보를 못 받았어요'; sub='잠시 뒤 다시 받아요'; }
-  el.innerHTML = `<span class="wb-row"><span class="wb-wind ws${cw?WSV(cw):1}"><b>${esc(main)}</b>${sub?`<small>${esc(sub)}</small>`:''}</span>${wx}</span><span class="wb-foot"><span>순 저장 때 자동 기록</span><span class="wb-go">자세히 ›</span></span>`;
+  el.innerHTML = `<span class="wb-row"><span class="wb-wind ws${cw?WSV(cw):1}"><b>${esc(main)}</b>${sub?`<small>${esc(sub)}</small>`:''}</span>${wx}</span><span class="wb-foot"><span>📍 ${esc((JEONGS.find(j=>j.id===jid)||VENUES.find(j=>j.id===jid)||windJ()).name)} 날씨 · 순 저장 때 자동 기록</span><span class="wb-go">자세히 ›</span></span>`;
 }
 async function refreshWind(force){ const jid=windJid(); if(!JEONG_GEO[jid]){ S.windNow[jid]={err:true}; renderWindBar(); return; } renderWindBar(); await fetchWind(jid, force); renderWindBar(); }
 $('#windBar').addEventListener('click', openWindSheet);
@@ -4893,20 +4897,20 @@ function openWindSheet(){
   let pr=cw.r||null, pl=cw.l||1;
   const by = S.windSet&&S.windSet.by&&S.windSet.by[jid]; const byName = by ? ((memberById(by)||{}).name||'사원') : '';
   const byAt = S.windSet&&S.windSet.at&&S.windSet.at[jid]; const canB0 = !!S.me && (isAdminNow() || homeJ().id===jid);   // p174: 그 정 소속 사원 · 관리자
-  const B_LOCK=30*864e5; const lockTill = (b!=null && !isAdminNow()) ? (byAt ? byAt+B_LOCK : Infinity) : 0; const canB = canB0 && Date.now()>=lockTill;   // p175: 한 번 정하면 30일
+  const lockTill = (b!=null && !isAdminNow()) ? Infinity : 0; const canB = canB0 && Date.now()>=lockTill;   // p238: 한 번 정하면 관리자만 바꿈
   const md = t => `${new Date(t).getMonth()+1}월 ${new Date(t).getDate()}일`;
   const sh=openSheet(`<h3>🌬 지금 바람</h3>
     <div class="card flat" style="padding:10px 12px">${w && !w.err ? `<b>${esc(jn)} · ${esc(windLine(cw.ms!=null?cw:w))}</b><br><span class="tiny muted">${new Date(w.at).toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit'})} 기준 · 날씨 정보 Open-Meteo.com</span>` : `<span class="tiny muted">${JEONG_GEO[jid]?'날씨 정보를 불러오지 못했어요. 잠시 뒤 다시 받아요.':'이 정은 위치 정보가 없어 바람을 자동으로 받을 수 없어요.'}</span>`}</div>
     <p class="tiny muted" style="margin:8px 2px 0">순을 저장할 때 이 바람 · 날씨가 그 순에 자동으로 남아요. 같은 정 · 같은 시각이면 모두 같은 값이에요. (세기: 약 ~3m/s · 중 ~6m/s · 강 6m/s 넘게)</p>
-    <details class="notice" ${b==null&&canB?'open':''}><summary>🎯 ${esc(jn)} 과녁 방향 ${b!=null?`<span class="tiny muted">· ${compassOf(b)}쪽 (${b}°)${byAt?` · ${md(byAt)} 기록`:''}${isAdminNow()&&byName?' · '+esc(byName):''}</span>`:'<span class="tiny" style="color:var(--red)">· 아직 안 정함</span>'}</summary>
-      ${canB ? `<p class="tiny" style="margin:6px 0">사대에서 과녁이 어느 쪽에 있나요? 한 번 정하면 ${esc(jn)} 사원 모두에게 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 자동으로 보여요.${isAdminNow()?'':' 정한 뒤 30일 동안은 바꿀 수 없어요.'}</p>
+    <details class="notice" ${b==null&&canB?'open':''}><summary>🎯 ${esc(jn)} 과녁 방향 ${b!=null?`<span class="tiny muted">· ${compassOf(b)}쪽 (${b}°)${bearingSet(jid)==null?' · 위성지도로 잰 값':''}${byAt&&bearingSet(jid)!=null?` · ${md(byAt)} 기록`:''}${isAdminNow()&&byName?' · '+esc(byName):''}</span>`:'<span class="tiny" style="color:var(--red)">· 아직 안 정함</span>'}</summary>
+      ${canB ? `<p class="tiny" style="margin:6px 0">사대에서 과녁이 어느 쪽에 있나요? 한 번 정하면 ${esc(jn)} 사원 모두에게 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 자동으로 보여요.${isAdminNow()?'':' 한 번 정하면 관리자만 바꿀 수 있어요.'}</p>
       <div class="wcomp">${COMPASS.map((c,i)=>`<button type="button" data-wb="${i*45}" class="${b===i*45?'on':''}">${c}</button>`).join('')}</div>
       <button class="btn sm ghost" id="wCompass" type="button" style="margin-top:8px">📱 폰 나침반으로 재기</button><div class="tiny muted" id="wCompassOut"></div>`
-      : `<p class="tiny" style="margin:6px 0">${b!=null ? `${esc(jn)} 과녁 방향은 ${byAt?md(byAt)+'에 ':''}기록됐어요. 기록이 틀렸다면 관리자에게 문의해 주세요 (관리자 방명록 · heysadae3737@gmail.com).` : `${esc(jn)} 과녁 방향은 ${esc(jn)} 사원이 정해요.`}</p>`}</details>
+      : `<p class="tiny" style="margin:6px 0">${b!=null ? (bearingSet(jid)==null ? `${esc(jn)} 과녁 방향은 위성지도에서 사대와 과녁을 이어 잰 값이에요.` : `${esc(jn)} 과녁 방향은 ${byAt?md(byAt)+'에 ':''}기록됐어요.`)+` 기록이 틀렸다면 관리자에게 문의해 주세요 (관리자 방명록 · heysadae3737@gmail.com).` : `${esc(jn)} 과녁 방향은 ${esc(jn)} 사원이 정해요.`}</p>`}</details>
     <div class="actions"><button class="btn ghost" id="wClose">닫기</button></div>`);
   $('#wClose',sh).onclick=closeSheet;
   const setB=async deg=>{ if(!canB){ toast(`과녁 방향은 ${jn} 사원이 정해요`); return; } deg=Math.round(((deg%360)+360)%360);
-    if(!isAdminNow() && setB.sure!==deg){ setB.sure=deg; toast(`${compassOf(deg)}쪽으로 정할까요? 30일 동안 못 바꿔요 · 한 번 더 누르면 정해요`); $$('[data-wb]',sh).forEach(x=>x.classList.toggle('sure', +x.dataset.wb===deg)); return; } const ok=await write(st=>st.merge('settings/wind',{bearing:{[jid]:deg}, by:{[jid]:S.me.id}, at:{[jid]:Date.now()}})); if(ok){ toast(`${jn} 과녁 방향을 ${compassOf(deg)}쪽으로 정했어요`); closeSheet(); renderWindBar(); } };
+    if(!isAdminNow() && setB.sure!==deg){ setB.sure=deg; toast(`${compassOf(deg)}쪽으로 정할까요? 정하면 관리자만 바꿀 수 있어요 · 한 번 더 누르면 정해요`); $$('[data-wb]',sh).forEach(x=>x.classList.toggle('sure', +x.dataset.wb===deg)); return; } const ok=await write(st=>st.merge('settings/wind',{bearing:{[jid]:deg}, by:{[jid]:S.me.id}, at:{[jid]:Date.now()}})); if(ok){ toast(`${jn} 과녁 방향을 ${compassOf(deg)}쪽으로 정했어요`); closeSheet(); renderWindBar(); } };
   $$('[data-wb]',sh).forEach(x=>x.onclick=()=>setB(+x.dataset.wb));
   if($('#wCompass',sh)) $('#wCompass',sh).onclick=async()=>{ const out=$('#wCompassOut',sh);
     try{ if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){ const p=await DeviceOrientationEvent.requestPermission(); if(p!=='granted'){ out.textContent='나침반 권한이 필요해요'; return; } } }catch(e){}
