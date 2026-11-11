@@ -3356,7 +3356,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.11d';
+const APP_VER = '2026.11.11e';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4241,7 +4241,7 @@ window.addEventListener('popstate', e=>{
 // ===== p251 · 빼빼로데이 추첨 이벤트 띠 (11-11 하루만) =====
 const EV_PPR = {day:'2026-11-11', steps:[
   {h:14, t:'오늘 사대 등록한 사원'}, {h:16, t:'최근 2주 안에 새로 가입한 사원'}, {h:18, t:'최근 1주 관중의 제왕 · 8초 만작 랭킹에 도전한 사원'},
-  {h:20, t:'오늘 표 기록에서 몰기한 사원'}, {h:22, t:null, reveal:'광장에 내린 빼빼로를 눌러 주운 사원'}]};
+  {h:20, t:'이번 달 오늘 사대에 습사 기록을 한 번이라도 남긴 사원'}, {h:22, t:null, reveal:'광장에 내린 빼빼로를 눌러 주운 사원'}]};
 const evHr = h => (h>12?(h>=21?'밤 ':'오후 ')+(h-12):'오전 '+h)+'시';
 function evBarHTML(){ if(today()!==EV_PPR.day) return '';
   const now=new Date(), H=now.getHours()+now.getMinutes()/60; const st=EV_PPR.steps; const nx=st.find(x=>x.h>H);
