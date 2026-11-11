@@ -2285,6 +2285,40 @@ html body #plaza .pz-bub.bot.go{cursor:pointer;pointer-events:auto;text-decorati
 .pp-blade{transform-box:fill-box;transform-origin:center;animation:pp-spin .5s linear infinite}@keyframes pp-spin{to{transform:rotate(360deg)}}
 .pp-swing{transform-box:fill-box;transform-origin:50% 100%;animation:pp-swing 1.4s ease-in-out infinite}@keyframes pp-swing{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
 .pz-fx2{position:absolute;inset:0;pointer-events:none;z-index:150;overflow:hidden}
+/* p250 빼빼로 비 */
+.pz-ppr{position:absolute;inset:0;pointer-events:none;z-index:151;overflow:hidden}
+.pz-ppr .pp{position:absolute;top:-80px;width:8px;height:58px;border-radius:4px 4px 2px 2px;
+  background:repeating-linear-gradient(to bottom,#E8B96A 0 3px,#D9A453 3px 4px);   /* 과자 손잡이 결 */
+  box-shadow:0 0 0 1px rgba(70,35,10,.45),1.5px 2px 0 rgba(0,0,0,.18);animation:pprfall var(--d) linear var(--dl) infinite;will-change:transform}
+.pz-ppr .pp::before{content:'';position:absolute;left:-1px;right:-1px;top:-1px;height:74%;border-radius:5px 5px 3px 3px;
+  background:linear-gradient(to right,rgba(255,255,255,0) 0 22%,rgba(255,255,255,.45) 22% 40%,rgba(255,255,255,0) 40%),var(--coat,#5A2E14);
+  box-shadow:inset -1.5px 0 0 rgba(0,0,0,.22),0 1px 0 rgba(0,0,0,.25)}
+.pz-ppr .pp::after{content:'';position:absolute;left:-1px;right:-1px;top:calc(74% - 3px);height:4px;border-radius:0 0 3px 3px;background:var(--coat,#5A2E14);clip-path:polygon(0 0,100% 0,100% 40%,80% 100%,60% 45%,40% 100%,20% 50%,0 100%)}   /* 초콜릿 흘러내린 끝 */
+.pz-ppr .pp.ch{--coat:#5A2E14}
+.pz-ppr .pp.al{--coat:#6A3819}
+.pz-ppr .pp.al::before{background:radial-gradient(circle at 30% 30%,#F1D7A2 0 1.2px,transparent 1.6px) 0 0/5px 7px,radial-gradient(circle at 70% 70%,#E7C68A 0 1px,transparent 1.4px) 0 3px/5px 7px,linear-gradient(to right,rgba(255,255,255,0) 0 22%,rgba(255,255,255,.35) 22% 40%,rgba(255,255,255,0) 40%),#6A3819}
+.pz-ppr .pp.st{--coat:#F07FA3}
+.pz-ppr .pp.st::before{background:radial-gradient(circle,#C9284F 0 .9px,transparent 1.3px) 0 0/4px 6px,linear-gradient(to right,rgba(255,255,255,0) 0 22%,rgba(255,255,255,.5) 22% 40%,rgba(255,255,255,0) 40%),#F07FA3}
+.pz-ppr .pp.ck{--coat:#FBF4E6}
+.pz-ppr .pp.ck::before{background:radial-gradient(circle,#3A2416 0 .9px,transparent 1.3px) 1px 1px/5px 6px,radial-gradient(circle,#3A2416 0 .7px,transparent 1.1px) 3px 4px/6px 7px,#FBF4E6}
+.pz-ppr .pp.nu{background:linear-gradient(to right,#B97E3C 0 18%,#E3AE62 18% 70%,#C98F4A 70%);border-radius:4px}
+.pz-ppr .pp.nu::before{top:0;left:1.5px;right:1.5px;height:5px;border-radius:3px 3px 1px 1px;background:#5A2E14;box-shadow:none}   /* 누드: 겉은 과자, 끝에 보이는 초코 속 */
+.pz-ppr .pp.nu::after{display:none}
+.pz-ppr .pp.s2{width:7px;height:50px}.pz-ppr .pp.s3{width:6px;height:42px;opacity:.75;filter:saturate(.85)}
+.pz-ppr b{position:absolute;top:-30px;font-weight:400;line-height:1;animation:pprfall2 var(--d) ease-in-out var(--dl) infinite}
+.pz-ppr b.heart{font-size:15px;color:#F06292;text-shadow:0 0 0 #fff,1px 1px 0 rgba(0,0,0,.15)}.pz-ppr b.gift{font-size:16px}
+@keyframes pprfall{0%{transform:translate(0,0) rotate(var(--r0))}50%{transform:translate(var(--x),55vh) rotate(calc(var(--r0) + var(--r)/2))}100%{transform:translate(calc(var(--x) * -.4),calc(100vh + 120px)) rotate(calc(var(--r0) + var(--r)))}}
+@keyframes pprfall2{0%{transform:translate(0,0) scale(.9)}25%{transform:translate(var(--x),25vh) scale(1.05)}50%{transform:translate(0,50vh) scale(.9)}75%{transform:translate(calc(var(--x) * -1),75vh) scale(1.05)}100%{transform:translate(0,calc(100vh + 60px)) scale(.9)}}
+#plaza.ppr-on .pz-fx:not(.bz){display:none}
+.pz-ppr .pp.got{transition:transform .5s ease-out,opacity .5s ease-out;opacity:0}
+.pz-ppr .pp-pop,#plaza .pp-pop{position:absolute;z-index:160;font-size:22px;transform:translate(-50%,-50%);pointer-events:none;animation:ppPop .9s ease-out forwards}
+@keyframes ppPop{0%{transform:translate(-50%,-50%) scale(.6);opacity:0}25%{transform:translate(-50%,-90%) scale(1.25);opacity:1}100%{transform:translate(-50%,-190%) scale(1);opacity:0}}
+/* p251 이벤트 띠 */
+.ev-bar{display:block;width:100%;text-align:left;background:var(--gold-soft);color:var(--ink);border:2px solid var(--ink);box-shadow:var(--hard);padding:8px 10px;margin:0 0 12px;font:inherit;font-size:13px;line-height:1.45;cursor:pointer}
+.ev-bar b{font-weight:700}.ev-bar .ev-s{display:block;font-family:var(--small);font-size:11.5px;color:var(--ink2);margin-top:2px}
+.ev-bar .ev-me{display:inline-block;margin-left:6px;padding:0 5px;border:1px solid var(--ink);background:var(--card);font-size:11px}
+.calm-fx .pz-ppr{display:none!important}
+@media (prefers-reduced-motion:reduce){.pz-ppr{display:none}}
 .pz-fx2 i{position:absolute;top:-24px;font-style:normal;font-size:15px;line-height:1;animation:pzfall2 var(--d) linear var(--dl) infinite}
 @keyframes pzfall2{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--x),1100px) rotate(var(--r))}}
 .pz-cl .pz-fx{display:none!important}
@@ -3322,7 +3356,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.11a';
+const APP_VER = '2026.11.11c';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -4204,7 +4238,28 @@ window.addEventListener('popstate', e=>{
 });
 // 크롬은 사용자가 누르기 전에 깐 '앞 화면'을 건너뛰므로, 처음 누를 때와 그 뒤 누를 때마다 확인해서 깔아 둠
 ['pointerdown','keydown'].forEach(ev=>document.addEventListener(ev, bkArm, {capture:true, passive:true}));
-function setTab(t){ try{ if(t!==UT.cur) utTab(t); }catch(e){} if(t==='comp' && S.tab!=='comp'){ S.compView = S.toPlay ? 'play' : 'comp'; S.toPlay=false; } S.tab=t; if(t==='room') setTimeout(()=>{ try{ renderMyRank(); }catch(e){} },0); if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','news','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); { const rv=$('#view-report'); if(rv) rv.hidden = t!=='report'; if(t==='report') setTimeout(()=>{ try{ renderReport(); }catch(e){ console.warn('report', e); } },0); } { const bb=$('#bookBar'); if(bb) bb.style.display = (t==='news'||t==='report')?'none':''; } if(t==='news') setTimeout(()=>{ if(typeof renderNews==='function') renderNews(); },0); lsSet('sadae.tab',t); try{ renderRest(); }catch(e){} window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
+// ===== p251 · 빼빼로데이 추첨 이벤트 띠 (11-11 하루만) =====
+const EV_PPR = {day:'2026-11-11', steps:[
+  {h:14, t:'오늘 사대 등록한 사원'}, {h:16, t:'최근 2주 안에 새로 가입한 사원'}, {h:18, t:'오늘 관중의 제왕을 한 판이라도 한 사원'},
+  {h:20, t:'오늘 표 기록에서 몰기한 사원'}, {h:22, t:null, reveal:'광장에 내린 빼빼로를 눌러 주운 사원'}]};
+const evHr = h => (h>12?(h>=21?'밤 ':'오후 ')+(h-12):'오전 '+h)+'시';
+function evBarHTML(){ if(today()!==EV_PPR.day) return '';
+  const now=new Date(), H=now.getHours()+now.getMinutes()/60; const st=EV_PPR.steps; const nx=st.find(x=>x.h>H);
+  const done=st.filter(x=>x.h<=H).map(x=>String(x.h-12)).join(' · ');
+  const me=S.me&&memberById(S.me.id); const got=!!(me&&me.ppr&&me.ppr[EV_PPR.day]);
+  let main;
+  if(nx && nx.t) main=`🍫 <b>빼빼로데이 이벤트</b> · 다음 추첨 <b>${evHr(nx.h)}</b> — ${esc(nx.t)}이에요`;
+  else if(nx) main=`🍫 <b>빼빼로데이 이벤트</b> · 다음 추첨 <b>${evHr(nx.h)}</b> — 🤫 <b>히든!</b> 조건은 10시에 공개해요`;
+  else main=`🍫 <b>히든 조건 공개!</b> ${esc(st[st.length-1].reveal)}이었어요${got?'<span class="ev-me">나도 주웠어요 🍫</span>':''}`;
+  const sub=`오늘 2 · 4 · 6 · 8 · 10시 한 명씩 빼빼로를 드려요 · 당첨 발표는 광장에서 · 선물은 방명록 비밀글로${done?` · 지난 추첨 ${done}시`:''}`;
+  return main+`<span class="ev-s">${sub}</span>`; }
+function evBarAll(){ const html=evBarHTML(); ['today','plaza','record','comp'].forEach(v=>{ const sec=document.getElementById('view-'+v); if(!sec) return; let b=sec.querySelector(':scope > .ev-bar');
+    if(!html){ if(b) b.remove(); return; }
+    if(!b){ b=document.createElement('button'); b.type='button'; b.className='ev-bar'; b.onclick=()=>{ if(S.tab!=='plaza') setTab('plaza'); else { const f=document.getElementById('plazaFeed'); if(f) f.scrollIntoView({behavior:'smooth', block:'start'}); } }; sec.prepend(b); }
+    if(b.innerHTML!==html) b.innerHTML=html; }); }
+setInterval(()=>{ if(!document.hidden) try{ evBarAll(); }catch(e){} }, 30e3);
+setTimeout(()=>{ try{ evBarAll(); }catch(e){} }, 800);
+function setTab(t){ try{ setTimeout(evBarAll, 0); }catch(e){} try{ if(t!==UT.cur) utTab(t); }catch(e){} if(t==='comp' && S.tab!=='comp'){ S.compView = S.toPlay ? 'play' : 'comp'; S.toPlay=false; } S.tab=t; if(t==='room') setTimeout(()=>{ try{ renderMyRank(); }catch(e){} },0); if(t==='record' && typeof refreshWind==='function') setTimeout(()=>refreshWind(),0); if(t==='plaza') setTimeout(()=>{ if(typeof renderPlaza==='function') renderPlaza(); },0); $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t)); ['today','plaza','record','news','room','comp','info'].forEach(v=>{ const el=$('#view-'+v); if(el) el.hidden = v!==t; }); if(t==='info' && typeof renderInfo==='function') renderInfo(); { const rv=$('#view-report'); if(rv) rv.hidden = t!=='report'; if(t==='report') setTimeout(()=>{ try{ renderReport(); }catch(e){ console.warn('report', e); } },0); } { const bb=$('#bookBar'); if(bb) bb.style.display = (t==='news'||t==='report')?'none':''; } if(t==='news') setTimeout(()=>{ if(typeof renderNews==='function') renderNews(); },0); lsSet('sadae.tab',t); try{ renderRest(); }catch(e){} window.scrollTo({top:0}); if(window.__booted) renderHeader(); }
 (function(){ const h=(location.hash||'').replace('#','').split('&')[0]; const t = ['today','plaza','record','news','room','comp','info','report'].includes(h) ? h : (lsGet('sadae.tab','today')); setTab(t); })();
 
 /* ---------- 헤더 ---------- */
@@ -7449,6 +7504,7 @@ const HIDDEN = [
   {id:'crowd',  ic:'👯', t:'북적 사대',  d:'같은 시간대 사대에 6명 이상과 함께', c:'함께', h:['혼자가 아니야','한 시간대에 여섯 명 넘게']},
   {id:'guide',  ic:'🧭', t:'길잡이',  d:'소속 정에서 첫 번째 ~ 세 번째로 가입한 궁사', c:'함께', h:['뒤따라올 이들을 위해','우리 정에서 가장 먼저 온 셋']},
   {id:'ojakgyo',ic:'🌉', t:'오작교', d:'많은 사원을 오늘 사대로 이어 준 궁사 · 각 정의 첫 가입자, 그리고 개발자가 특별히 드려요', c:'함께', h:['까치와 까마귀가 놓은 다리','사람과 사람을 이어 준']},
+  {id:'pepero', ic:'🍫', t:'달콤한 행운', d:'2026년 빼빼로데이, 광장에 내린 빼빼로를 주운 궁사', c:'특별', h:['하늘에서 내린 선물','11월 11일, 광장에서 손을 뻗어']},   // p251: 받은 사람에게만
   {id:'maker',  ic:'🔨', t:'사대를 지은 이', d:'오늘 사대를 만든 단 한 사람', c:'특별', h:['세상에 하나뿐','이 사대를 지은']},   // only: 개발자 하나뿐 · 남의 ❓ 목록엔 안 보임
   {id:'vanguard',ic:'🛶', t:'선발대', d:'2026년 10월, 여러 정이 함께 쓰기 시작한 달에 가입한 타정 궁사', c:'함께', h:['먼저 와 본 사람들','다른 정에서 시월에']},
   {id:'romance',ic:'🏮', t:'낭만 궁사',  d:'같은 정 · 같은 시간대 사대에 8명 이상 함께 (찾으면 배지 칸에서 동 · 은 · 금 · 옥으로 올라가요)', c:'함께', h:['정이 넘치는 사대','한 시간대에 여덟 명 넘게']},
@@ -7526,6 +7582,7 @@ function hiddenOf(mid, days, upto){
   for(const k in D){ if(!k.startsWith('attendance/')||(upto&&k.slice(11)>upto)) continue; const E=(D[k]&&D[k].entries)||{}; const me=E[mid]; if(!me||!me.slot) continue; const j=entryJid(me);
     if(Object.values(E).filter(e=>e&&e.slot===me.slot&&entryJid(e)===j).length>=6){ got.crowd=1; break; } }
   if(romanceCount(mid)>=1) got.romance=1;
+  { const pp=(memberById(mid)||{}).ppr; if(pp && typeof pp==='object' && pp['2026-11-11']) got.pepero=1; }   // p251
   try{ const gb=guideBadges(mid); if(gb.guide) got.guide=1; if(gb.vanguard) got.vanguard=1; if(gb.ojakgyo) got.ojakgyo=1; }catch(e){}
   if(typeof DEV_MIDS!=='undefined' && DEV_MIDS.includes(mid)) got.maker=1;
   try{ if(typeof magHotTops==='function' && magHotTops().has(mid)) got.jujeop=1; }catch(e){}
@@ -7712,7 +7769,7 @@ function growthKpiHTML(g){
 }
 // p149 · 기록 전 숨은 배지의 찾은 때 되살리기
 const HID_NODATE = ['shoot','jangwon','cheers','guide','vanguard','ojakgyo','maker','jujeop'];
-const HID_ONLY = ['maker'];   // p184: 받은 사람에게만 보이는 배지
+const HID_ONLY = ['maker','pepero'];   // p184: 받은 사람에게만 보이는 배지
 function hidWhen(id, mid, days){ const D=(days||[]).filter(d=>d&&d.date).slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0); const dates=[...new Set(D.map(d=>d.date))];
   const noon=dt=>Date.parse(dt+'T12:00:00+09:00');
   for(const dt of dates){ const base=D.filter(d=>d.date<dt); const today_=D.filter(d=>d.date===dt);
@@ -9407,7 +9464,34 @@ function pzClimateFx(pz, jid, wx){ const c=pzClimate(jid); pz.dataset.climate=c?
     if(f2.dataset.k!==c.k){ f2.dataset.k=c.k; const L=PZC_FALL[c.k]; f2.innerHTML=Array.from({length:12},(_,i)=>`<i style="left:${(i*61%97)}%;--d:${8+(i*37%7)}s;--dl:${-(i*53%11)}s;--x:${(i%2?1:-1)*(10+i%5*6)}px;--r:${(i%2?1:-1)*(20+i%4*15)}deg">${L[i%L.length]}</i>`).join(''); } }
   pz.classList.toggle('pz-cl', !!fall);   // 소품이 떨어지는 동안 계절 꽃잎 · 낙엽은 쉼
   return c; }
+const PEPERO_DAYS = ['2026-11-11'];   // p250: 빼빼로 데이 (하루만)
+function pzPepero(pz){ const on = PEPERO_DAYS.includes(today()); let L=pz.querySelector(':scope > .pz-ppr'); pz.classList.toggle('ppr-on', on);
+  if(!on){ if(L) L.remove(); return; } if(L) return;
+  L=document.createElement('div'); L.className='pz-ppr'; L.setAttribute('aria-hidden','true');
+  const K=['ch','al','st','ck','ch','nu','al','ch','st','ck'], Z=['s1','s2','s3','s2','s1','s3','s2'];
+  const sticks=Array.from({length:30},(_,i)=>`<i class="pp ${K[i%K.length]} ${Z[i%Z.length]}" style="left:${(i*47%97)}%;--d:${7+(i*37%7)}s;--dl:${-(i*53%17)}s;--x:${(i%2?1:-1)*(10+i%5*9)}px;--r0:${(i*71%360)}deg;--r:${(i%2?1:-1)*(160+i%4*70)}deg"></i>`).join('');
+  const extra=Array.from({length:7},(_,i)=>`<b class="${i%3===2?'gift':'heart'}" style="left:${(i*29+11)%95}%;--d:${9+(i*5%5)}s;--dl:${-(i*7%13)}s;--x:${(i%2?1:-1)*(14+i*4)}px">${i%3===2?'🎁':'♥'}</b>`).join('');
+  L.innerHTML=sticks+extra; pz.appendChild(L); try{ pprBind(pz); }catch(e){} }
+function pprBind(pz){ if(window._pprB) return; window._pprB=1;
+  document.addEventListener('pointerdown', e=>{ if(!PEPERO_DAYS.includes(today()) || S.tab!=='plaza' || document.querySelector('#sheetBg')) return;
+    const pz=document.getElementById('plaza'); const L=pz&&pz.querySelector(':scope > .pz-ppr'); if(!L) return;
+    const x=e.clientX, y=e.clientY; const R0=pz.getBoundingClientRect(); if(x<R0.left||x>R0.right||y<R0.top||y>R0.bottom) return;
+    let hit=null, best=1e9;
+    L.querySelectorAll('.pp:not(.got)').forEach(p=>{ const r=p.getBoundingClientRect(); const dx=Math.max(r.left-x,0,x-r.right), dy=Math.max(r.top-y,0,y-r.bottom); const d=Math.hypot(dx,dy); if(d<best){ best=d; hit=p; } });
+    if(!hit || best>20) return;
+    e.preventDefault(); e.stopPropagation(); pprCatch(hit, L, pz, x, y); }, {capture:true}); }
+function pprCatch(p, L, pz, x, y){
+  const tf=getComputedStyle(p).transform; p.style.animation='none'; p.style.transform=(tf&&tf!=='none'?tf:'')+' scale(1.9)'; p.classList.add('got');
+  setTimeout(()=>{ p.classList.remove('got'); p.style.animation=''; p.style.transform=''; }, 650);
+  const r=pz.getBoundingClientRect(); const f=document.createElement('b'); f.className='pp-pop'; f.textContent='🍫'; f.style.left=(x-r.left)+'px'; f.style.top=(y-r.top)+'px'; pz.appendChild(f); setTimeout(()=>f.remove(), 900);
+  if(!S.me){ toast('🍫 로그인하면 주울 수 있어요'); return; }
+  const me=S.me.id, day=today(); const m=memberById(me)||{};
+  if(m.ppr && m.ppr[day]){ toast('🍫 냠! 오늘은 벌써 하나 주웠어요'); return; }
+  const at=Date.now(); m.ppr={...(m.ppr||{}), [day]:at}; if(S.me!==m) S.me.ppr={...(S.me.ppr||{}), [day]:at};
+  write(st=>st.merge('members/'+me, {ppr:{[day]:at}})).then(ok=>{ if(!ok) return; try{ HID_NOW.delete(me); }catch(e){} try{ renderGrowth(); }catch(e){} });
+  toast('🍫 빼빼로를 주웠어요! 무언가 생길지도…'); try{ evBarAll(); }catch(e){} }
 function pzFx(pz, season, tod){
+  try{ pzPepero(pz); }catch(e){}
   let fx=pz.querySelector('.pz-fx'); if(!fx){ fx=document.createElement('div'); fx.className='pz-fx'; fx.setAttribute('aria-hidden','true'); pz.appendChild(fx); }
   const kind = season==='spring'?'petal': season==='autumn'?'leaf': season==='winter'?'snow': (tod==='night'?'fly':'');
   if(fx.dataset.k===kind) return; fx.dataset.k=kind;
