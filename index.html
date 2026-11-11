@@ -1432,6 +1432,10 @@ button.pz-more{cursor:pointer;font:inherit;font-size:12px;color:var(--ink);botto
 .wb-wind{flex:1;min-width:0;border:2px solid var(--ink);padding:8px 10px;display:flex;flex-direction:column;gap:3px}
 .wb-wind b{font-family:var(--display);font-size:20px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wb-wind small{font-size:13px!important;color:inherit!important;opacity:.85}
 .wb-wx{flex:none;width:84px;border:2px solid var(--ink);padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.wb-wx i{font-style:normal;font-size:22px;line-height:1}.wb-wx b{font-family:var(--display);font-size:15px!important;text-align:center}
+.cnt-ask{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:10px 12px;border:2px solid var(--ink);background:var(--card);box-shadow:3px 3px 0 var(--ink)}
+.cnt-ask .cnt-q{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.cnt-ask .cnt-q b{font-size:15px;color:var(--ink)}.cnt-ask .cnt-q span{font-size:12px;color:var(--ink2)}
+.cnt-ask .btn{flex:none;padding:8px 12px}.cnt-ask .cnt-x{flex:none;border:0;background:none;color:var(--ink3);font-size:12px;padding:6px 2px;cursor:pointer}
+.cnt-step{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 16px}.cnt-step b{font-size:40px;min-width:56px;text-align:center;color:var(--ink);font-family:var(--display)}.cnt-step span{font-size:16px;color:var(--ink2)}.cnt-step .btn{width:52px;height:52px;font-size:24px;justify-content:center}
 .wb-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;min-height:28px;font-size:13px;color:var(--ink3)}
 .wb-foot .wb-rj{margin-left:auto;padding:3px 8px;border:1.5px solid var(--ink3);border-radius:999px;font-size:12px;color:var(--ink2);white-space:nowrap}
 .rj-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.rj-list .btn{justify-content:center}.rj-list .btn.on{background:var(--ink);color:var(--card);border-color:var(--ink)}.rj-list .btn.on .tiny{color:inherit}.wb-foot .wb-go{font-family:var(--display);font-size:14px!important;font-weight:700;color:var(--ink)!important;text-decoration:none!important}
@@ -2778,6 +2782,7 @@ html body #plaza .pz-bub{background:#FFEFA8!important;border-color:#2A2233!impor
     <!-- ===== 오늘 정 ===== -->
     <section class="view" id="view-today">
       <div class="jrow"><button class="jbar" id="jBar" type="button"></button><button class="th-quick" id="thQuick" type="button" aria-label="화면 색 바꾸기"></button></div>
+      <div id="cntAsk" hidden></div>
       <div id="ojStrip" hidden></div>
       <div class="slotf" id="slotFilter" hidden></div>
       <div class="scene" id="scene" aria-label="오늘 사대">
@@ -3317,7 +3322,7 @@ class RemoteStore extends LocalStore{
 /* ---------- 이름 + 비밀번호 4자리 (웹앱 전용) ----------
    캐릭터를 만들 때 비밀번호를 정하면 서버가 이 기기에 "열쇠"를 줌 → 그 열쇠로만 내 기록을 저장.
    다른 폰에서는 이름 + 비밀번호로 불러오기. 보기는 정 사원 누구나. */
-const APP_VER = '2026.11.10b';
+const APP_VER = '2026.11.11a';
 const needPin = () => store.kind==='remote' && !store.token;
 function memberDoc(mid){ const d=store.docs&&store.docs['members/'+mid]; return d ? {id:mid, ...d} : null; }
 function meFromDoc(d){ return {id:d.id, name:d.name, char:d.char||DEFAULT_CHAR, bow:d.bow||'개량궁', arrow:d.arrow||'카본시', hand:d.hand||'우궁', grade:d.grade||'신사', since:d.since, status:d.status, gear:d.gear, jeong:d.jeong}; }
@@ -3488,6 +3493,7 @@ const NOTICES = [   // 새 공지는 맨 위에 추가 → 안내 탭에 빨간 
   {id:'2026-09-29c', date:'9월 29일', title:'기록 보기 · 관악정 배경 🖼', body:'① 표 기록 위의 "📖 기록 보기"에서 순 기록을 큰 글씨로 보고, ◀ ▶(또는 옆으로 밀기)로 지난날을 넘겨 봐요. 달력 날짜를 눌러도 그날 기록이 열리고, 🎯 낙점 그림으로 화살이 어디로 갔는지 한눈에 보여요. ② 오늘 사대와 광장에 관악정 풍경 배경이 생겼어요. 계절·시간에 따라 자동으로 바뀌고, 사대 오른쪽 위 🖼 를 누르면 여름·가을·겨울·해질녘을 골라 볼 수 있어요.'},
   {id:'2026-09-29a', date:'9월 29일', title:'광장 · 정별 사대 · 기록 카드 · 배지 🎉', body:'⓪ 새 탭 "광장": 모든 정 사원이 모여 한마디를 나누고, 오늘 몰기·새 배지 소식을 볼 수 있어요. ① 오늘 사대에 내 소속 정 사원만 보여요. 궁패를 눌러 소속 정을 고르고, 다른 정에 가는 날은 오늘 탭 위 📍정 이름을 눌러 바꿔 등록하세요. ② 표 기록의 "📸 기록 카드"로 오늘 기록을 그림으로 만들어 카톡에 자랑할 수 있어요. ③ 내 방에 달마다 관중률 그래프와 배지 15개가 생겼어요.'},
   {id:'2026-09-26a', date:'9월 26일', title:'방 구경 · 방명록 · 사원 명부 🏠', body:'사대 위 캐릭터나 오늘 명단의 이름, 내 방의 "우리 정 사원"을 누르면 그 사원의 방을 구경하고 방명록에 응원을 남길 수 있어요. 다른 사원에겐 이번 달 통계만 보이고, 날짜별 기록은 내 방에서 공개를 켠 사람만 보여요.'},
+  {id:'2026-11-11a', date:'11월 11일', title:'📅 사대 등록한 날도 성실에 들어가요', body:'이제 오늘 사대에 등록한 날은 표 기록을 안 해도 성실(활터에 나온 날)에 들어가요. 등록을 취소하면 그날은 빠져요.\n\n🏹 오늘 몇 순 쐈어요?\n등록한 시간대가 지났는데 오늘 표 기록이 없으면, 오늘 사대 맨 위에 [순 수 넣기]가 떠요. 몇 순 쐈는지만 넣으면 성실의 순 수에 더해져요. 순 수만 넣은 기록은 관중 · 관중률 · 몰기 · 정심 계산에는 들어가지 않아요. 자정이 지나면 사라져요.\n\n표 기록으로 남기면 내 리포트가 쌓이고, 관중·몰기 순위에도 참여할 수 있어요.'},
   {id:'2026-11-10a', date:'11월 10일', title:'🏹 구리 온달정이 함께해요 · 📍 습사 정 바꾸기', body:'구리 온달정이 오늘 사대에 들어왔어요. 아차산 자락 백교배수지 안에 있는 활터예요. 정 목록에서 온달정을 고를 수 있고, 오늘 사대와 광장에 온달정 그림이 나와요. 날씨와 과녁 방향(위성지도로 잰 값)도 들어가 있어요.\n\n📍 습사 정 바꾸기\n표 기록의 바람은 오늘 사대에 등록한 정을 따라가요. 등록하지 않고 다른 정에서 쏘는 날엔, 바람 칸 아래 [습사 정 바꾸기]를 눌러 그 정을 골라 주세요. 순을 저장할 때 그 정의 바람 · 날씨가 기록돼요. 오늘 하루만, 내 폰에만 바뀌어요.'},
   {id:'2026-11-09a', date:'11월 9일', title:'🏹 안산 광덕정이 함께해요 · 🌬 바람·과녁 방향 손봤어요', body:'안산 광덕정(光德亭)이 오늘 사대에 들어왔어요. 정 목록에서 광덕정을 고를 수 있고, 오늘 사대와 광장에 광덕정 그림(너른 잔디 활터 · 과녁 뒤 철탑 · 한옥 사대)이 계절·날씨마다 바뀌어 나와요. 광덕정 사원분들 반가워요!\n\n🌬 표 기록 바람·날씨\n다른 정에 가서 오늘 사대에서 그 정으로 바꾸면, 표 기록 바람·날씨도 그 정 기준으로 바뀌어요. 바람 칸 아래에 \'📍 ○○정 날씨\'로 어느 정 날씨인지 보여요.\n\n🎯 과녁 방향\n이제 모든 정에 과녁 방향이 미리 들어가 있어서, 바로 안바람 · 오늬바람 · 줌앞바람 · 줌뒷바람으로 보여요. 관악정은 사대에서 직접 정한 방향이고, 다른 정은 위성지도와 사진에서 사대와 과녁을 이어 잰 방향이에요. 정해진 방향은 관리자만 바꿀 수 있어요. 틀렸다면 관리자에게 알려 주세요.'},
   {id:'2026-11-05a', date:'11월 5일', title:'🕹 미니게임이 열렸어요 · 🎯 관중의 제왕 · ⏱ 8초 만작', body:'대회 탭 → 🎲 놀이터 아래 🕹 미니게임 칸에서 두 게임을 할 수 있어요. 내가 고른 캐릭터가 사대에 서요.\n\n🎯 관중의 제왕\n좌우로 움직이는 과녁이 올 자리를 보고 미리 톡! 한 판 15시, 화살 3개가 목숨이에요. 홍심을 맞히면 화살 +1, 🎁 화살통도 +1, 🐝 벌집을 맞히면 바로 끝나요.\n\n⏱ 8초 만작\n꾹 눌러 시위를 당기고 8초에 가깝게 떼세요. 시간은 3초까지만 보여요. 8초를 넘기면 감점, 10초를 넘기면 탈락이에요.\n\n🏆 랭킹 도전은 게임마다 하루 3번이에요. 오늘 사대 등록이나 습사를 하면 그날 한 번 3번 더 할 수 있어요. 연습은 하루 20번(기록 안 남음).\n\n랭킹은 이달 기록으로 매달 1일 새로 시작해요. 관중의 제왕은 한 판(15시) 최고와 승단(세 판 45시 합계 · 단) 두 가지, 8초 만작은 한 발 최고와 세 발 합계 두 가지예요. [랭킹]을 누르면 상위 10명과 내 순위가 보여요.'},
@@ -4124,7 +4130,7 @@ const gsTag = m => { if(!m||!m.guest) return ''; const a=String(m.name||'').star
 /* ---------- 구독 ---------- */
 const subMembers = sub({col:'members'}, rows => { S.members = rows; renderAll(); });
 const subAtt = sub({doc:'attendance/'+today()}, d => { S.attendance = d; renderToday(); });
-const subDays = sub(daysQuery(), rows => { S.myDays = rows; S.myDaysFull = rows; S.daysLoaded = true; renderRecord(); renderRoom(); if(window.__booted) renderHeader(); });
+const subDays = sub(daysQuery(), rows => { S.myDays = rows; S.myDaysFull = rows; S.daysLoaded = true; renderRecord(); renderRoom(); try{ renderCntAsk(); }catch(e){} if(window.__booted) renderHeader(); });
 // p179 · 대회 문서 정리: 사원이 아무 값이나 넣어도 화면이 HTML 로 받지 않게
 const ID_OK = v => typeof v==='string' && /^[A-Za-z0-9_-]{1,48}$/.test(v);
 function sanComp(c){ if(!c||typeof c!=='object') return c; const o={...c};
@@ -4598,7 +4604,24 @@ async function attPzSync(day, prev, note, slot, VJ){ if(!S.me || store.kind==='d
   const k=attPzId(S.me.id, VJ.id, day);
   const ok=await write(st=>st.merge('plaza/'+day, {entries:{[k]:{from:S.me.id, text:want, at:Date.now()}}}));
   return ok ? k : null; }
+const CNT_SLOT_END={'새벽':8,'오전':12,'점심':14,'오후':18,'저녁':21};   // p249: 그 시간대가 끝난 뒤부터 묻기
+function cntAskOn(){ try{ if(!S.me || !S.daysLoaded) return false; const t=today(); if(lsGet('sadae.cntSkip','')===t) return false;
+    const d=((store&&store.docs)||{})['attendance/'+t]; const e=d&&d.entries&&d.entries[S.me.id]; if(!e||!e.slot) return false;
+    if(new Date().getHours() < (CNT_SLOT_END[e.slot]||18)) return false;
+    const td=(S.myDays||[]).find(x=>x.date===t); if(td && ((td.rounds||[]).some(Array.isArray) || td.cnt>0)) return false; return true; }catch(e){ return false; } }
+function renderCntAsk(){ const el=$('#cntAsk'); if(!el) return; const on=cntAskOn(); el.hidden=!on; if(!on){ el.innerHTML=''; return; }
+  el.innerHTML=`<div class="cnt-ask"><div class="cnt-q"><b>🏹 오늘 몇 순 쐈어요?</b><span>순 수만 남겨도 성실에 들어가요</span></div><button class="btn" id="cntGo" type="button">순 수 넣기</button><button class="cnt-x" id="cntLater" type="button" aria-label="나중에">나중에</button></div>`;
+  $('#cntGo',el).onclick=openCntSheet; $('#cntLater',el).onclick=()=>{ lsSet('sadae.cntSkip', today()); renderCntAsk(); }; }
+function openCntSheet(){ let n=3;
+  const sh=openSheet(`<h3>🏹 오늘 몇 순 쐈어요?</h3><p class="tiny muted" style="margin:0 2px 14px">표 기록으로 남기면 내 리포트가 쌓이고, 관중·몰기 순위에도 참여할 수 있어요.</p>
+    <div class="cnt-step"><button class="btn ghost" id="cntM" type="button" aria-label="한 순 빼기">−</button><b id="cntN">${n}</b><span>순</span><button class="btn ghost" id="cntP" type="button" aria-label="한 순 더하기">+</button></div>
+    <div class="actions"><button class="btn ghost" id="cntRec" type="button">표 기록하러 가기</button><button class="btn" id="cntSave" type="button">저장</button></div>`);
+  const upd=()=>{ $('#cntN',sh).textContent=n; }; $('#cntM',sh).onclick=()=>{ n=Math.max(1,n-1); upd(); }; $('#cntP',sh).onclick=()=>{ n=Math.min(30,n+1); upd(); };
+  $('#cntRec',sh).onclick=()=>{ closeSheet(); setTab('record'); };
+  $('#cntSave',sh).onclick=async()=>{ const t=today(); const ok=await write(st=>st.merge(`days/${S.me.id}_${t}`, {memberId:S.me.id, date:t, cnt:n, cntAt:Date.now()}));
+    if(ok){ closeSheet(); toast(`오늘 ${n}순, 성실에 넣었어요`); const td=(S.myDays||[]).find(x=>x.date===t); if(td) td.cnt=n; else (S.myDays=S.myDays||[]).push({memberId:S.me.id, date:t, cnt:n}); renderCntAsk(); try{ refreshRank(true); }catch(e){} } }; }
 function renderToday(){
+  try{ renderCntAsk(); }catch(e){}
   const t=today(); const allAtt=attEntries(); const VJ=viewJ(); const listAll=allAtt.filter(e=>entryJid(e)===VJ.id);
   // 시간대 칩: 사람이 많으면 그 시간대 사람만 사대에 (아래 명단은 그대로 전체)
   const slotCnt={}; listAll.forEach(e=>{ slotCnt[e.slot]=(slotCnt[e.slot]||0)+1; });
@@ -7959,7 +7982,7 @@ function openPlazaList(onlyJ){
    웹앱: 서버 sadae_rank(기간 집계만) / 그 밖: 이 기기에 있는 기록으로 계산
    ========================================================= */
 const RK_CATS = [
-  {id:'sincere', t:'성실', ic:'📅', d:'이번 달 습사한 날 (같으면 순 수)', ok:o=>o.days>0, v:o=>o.days*1000+o.n, big:o=>[o.days,'일'], sub:o=>`${o.n}순`},
+  {id:'sincere', t:'성실', ic:'📅', d:'이번 달 활터에 나온 날 · 사대 등록한 날 포함 (같으면 순 수)', ok:o=>o.days>0, v:o=>o.days*1000+o.n+(o.nc||0), big:o=>[o.days,'일'], sub:o=>`${o.n+(o.nc||0)}순`},
   {id:'hits', t:'관중', ic:'🎯', d:'이번 달 맞힌 화살 수', ok:o=>o.h>0, v:o=>o.h*1000-o.n, big:o=>[o.h,'시'], sub:o=>`${o.n*5}시 중`},
   {id:'rate', t:'관중률', ic:'📈', d:'이번 달 5순 이상 쏜 사원의 관중률', ok:o=>o.n>=5, v:o=>o.h/(o.n*5)*1e6+o.n, big:o=>[Math.round(o.h/(o.n*5)*100),'%'], sub:o=>`${o.n}순`},
   {id:'molgi', t:'몰기', ic:'🏅', d:'이번 달 5시 5중 몰기 횟수', ok:o=>o.mo>0, v:o=>o.mo*1e6+o.h, big:o=>[o.mo,'번'], sub:o=>`${o.n}순 중`},
@@ -7977,20 +8000,21 @@ function jeongsimOf(h, n, rs, miss){
   const hr=n?h/(n*5)*50:0; return {t:Math.round(hr+go+nk), hr, go, nk};
 }
 function rankLocal(from, to){
-  const D=(store&&store.docs)||{}; const by={}; const g=id=>by[id]||(by[id]={mid:id,days:0,n:0,h:0,mo:0,rs:[],miss:{},dj:0,act:{}});
+  const D=(store&&store.docs)||{}; const by={}; const g=id=>by[id]||(by[id]={mid:id,days:0,n:0,h:0,mo:0,rs:[],miss:{},dj:0,act:{},dset:{},nc:0});
   for(const k in D){ if(!k.startsWith('days/')) continue; const d=D[k]; if(!d||!d.date||d.date<from||d.date>to) continue; const id=d.memberId||k.slice(5).split('_')[0]; const o=g(id);
-    if(d.summary){ if(d.n){ o.days++; o.n+=d.n; o.h+=d.h||0; o.mo+=d.molgi||0; } continue; }
-    const rr=(d.rounds||[]).filter(Array.isArray); if(!rr.length) continue; o.days++;
+    if(d.summary){ if(d.n){ o.dset[d.date]=1; o.n+=d.n; o.h+=d.h||0; o.mo+=d.molgi||0; } continue; }
+    const rr=(d.rounds||[]).filter(Array.isArray); if(!rr.length){ if(d.cnt>0){ o.dset[d.date]=1; o.nc+=+d.cnt; } continue; } o.dset[d.date]=1;   // p249: 순 수만
     for(const r of rr){ const h=r.filter(x=>x==='H').length; o.n++; o.h+=h; if(h===5) o.mo++; o.rs.push(h); r.forEach(x=>{ if(x&&x!=='H') o.miss[x]=(o.miss[x]||0)+1; }); } }
   const day = ms => dstr(new Date(ms)); const t0=from, t1=to; const add=(id,dt,p)=>{ if(!id||dt<t0||dt>t1) return; const o=g(id); o.act[dt]=(o.act[dt]||0)+p; };
   for(const k in D){ const d=D[k]; if(!d||!d.entries) continue;
     if(k.startsWith('guestbook/')) for(const v of Object.values(d.entries)) if(v&&v.from&&v.at&&k!=='guestbook/'+v.from) add(v.from, day(v.at), 2);
     if(k.startsWith('plaza/')) for(const v of Object.values(d.entries)) if(v&&v.from&&v.at) add(v.from, day(v.at), 1);
-    if(k.startsWith('attendance/')){ const dt=k.slice(11); for(const [tid,e] of Object.entries(d.entries)) for(const [f,em] of Object.entries((e&&e.reactions)||{})) if(em&&f!==tid) add(f, dt, 1); } }
+    if(k.startsWith('attendance/')){ const dt=k.slice(11); for(const [tid,e] of Object.entries(d.entries)) for(const [f,em] of Object.entries((e&&e.reactions)||{})) if(em&&f!==tid) add(f, dt, 1);
+      if(dt>=from && dt<=to) for(const [tid,e] of Object.entries(d.entries)) if(e && e.slot) g(tid).dset[dt]=1; } }   // p249: 사대 등록한 날
   const out=[]; for(const o of Object.values(by)){ const m=memberById(o.mid); if(!m||m.rankHide) continue;
-    o.dj=Object.values(o.act).reduce((a,p)=>a+Math.min(10,p),0);
+    o.dj=Object.values(o.act).reduce((a,p)=>a+Math.min(10,p),0); o.days=Object.keys(o.dset).length;
     if(o.rs.length){ const js=jeongsimOf(o.h, o.n, o.rs, o.miss); o.js=js.t; } else o.js=0;
-    if(o.n>0||o.dj>0) out.push({mid:o.mid,days:o.days,n:o.n,h:o.h,mo:o.mo,js:o.js,dj:o.dj}); }
+    if(o.n>0||o.dj>0||o.days>0) out.push({mid:o.mid,days:o.days,n:o.n,nc:o.nc,h:o.h,mo:o.mo,js:o.js,dj:o.dj}); }
   return {members:out};
 }
 async function rankFetch(from, to){
@@ -8169,8 +8193,12 @@ function magIndex(){
 function magAgg(idx, from, to){
   const by={}, perDay={};
   for(const [id,days] of Object.entries(idx)){ if(!memberById(id)) continue;
-    for(const d of days){ if(d.date<from||d.date>to) continue; const b=dayBrief(d); if(!b.n) continue;
-      const o=by[id]||(by[id]={mid:id,days:0,n:0,h:0,mo:0}); o.days++; o.n+=b.n; o.h+=b.h; o.mo+=b.mo; (perDay[d.date]=perDay[d.date]||new Set()).add(id); } }
+    for(const d of days){ if(d.date<from||d.date>to) continue; const b=dayBrief(d);
+      if(!b.n){ if(d.cnt>0 && !(d.rounds||[]).some(Array.isArray)){ const o=by[id]||(by[id]={mid:id,days:0,n:0,h:0,mo:0,nc:0}); o.nc=(o.nc||0)+(+d.cnt); (perDay[d.date]=perDay[d.date]||new Set()).add(id); } continue; }   // p249: 순 수만
+      const o=by[id]||(by[id]={mid:id,days:0,n:0,h:0,mo:0,nc:0}); o.n+=b.n; o.h+=b.h; o.mo+=b.mo; (perDay[d.date]=perDay[d.date]||new Set()).add(id); } }
+  { const D=(store&&store.docs)||{}; for(const k in D){ if(!k.startsWith('attendance/')) continue; const dt=k.slice(11); if(dt<from||dt>to) continue;   // p249: 사대 등록한 날
+      for(const [id,e] of Object.entries((D[k]||{}).entries||{})){ if(!e||!e.slot||!memberById(id)) continue; by[id]=by[id]||{mid:id,days:0,n:0,h:0,mo:0,nc:0}; (perDay[dt]=perDay[dt]||new Set()).add(id); } } }
+  for(const [dt,set] of Object.entries(perDay)) for(const id of set) if(by[id]) by[id].days++;
   const L=Object.values(by); const tot={people:L.length, days:L.reduce((a,o)=>a+o.days,0), n:L.reduce((a,o)=>a+o.n,0), h:L.reduce((a,o)=>a+o.h,0), mo:L.reduce((a,o)=>a+o.mo,0)};
   return {by, perDay, tot};
 }
@@ -9405,7 +9433,7 @@ function renderAll(){ if(S.mag) S.mag.cache={}; renderHeader(); renderToday(); r
 window.__booted = true;
 renderAll(); renderSync();
 // 자정이 지나면 오늘 날짜 구독 갱신
-setInterval(()=>{ if(typeof applySceneArt==='function') applySceneArt(); if(typeof applyPlazaArt==='function' && S.tab==='plaza') applyPlazaArt(); const t=today(); if(subAtt.q.doc!=='attendance/'+t){ resub(subAtt,{doc:'attendance/'+t}); resub(subPlaza,{doc:'plaza/'+t}); resub(subPlazaY,{doc:'plaza/'+yday()}); renderAll(); } }, 60*1000);
+setInterval(()=>{ try{ renderCntAsk(); }catch(e){} if(typeof applySceneArt==='function') applySceneArt(); if(typeof applyPlazaArt==='function' && S.tab==='plaza') applyPlazaArt(); const t=today(); if(subAtt.q.doc!=='attendance/'+t){ resub(subAtt,{doc:'attendance/'+t}); resub(subPlaza,{doc:'plaza/'+t}); resub(subPlazaY,{doc:'plaza/'+yday()}); renderAll(); } }, 60*1000);
 // 공유 저장소 연결 (웹앱: Supabase / 아티팩트: claude db)
 (async ()=>{
   try{
